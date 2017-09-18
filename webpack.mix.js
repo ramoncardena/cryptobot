@@ -11,5 +11,21 @@ let mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/assets/js/app.js', 'public/js')
-   .sass('resources/assets/sass/app.scss', 'public/css');
+ mix.js('resources/assets/js/app.js', 'public/js')
+ .sass('resources/assets/sass/app.scss', 'public/css')
+ .browserSync({
+ 	host: '192.168.10.10',
+    proxy: 'bitbot.app',
+    open: false,
+    files: [
+        'app/**/*.php',
+        'resources/views/**/*.php',
+        'packages/mixdinternet/frontend/src/**/*.php',
+        'public/js/**/*.js',
+        'public/css/**/*.css'
+    ],
+    watchOptions: {
+        usePolling: true,
+        interval: 500
+    }
+ });
