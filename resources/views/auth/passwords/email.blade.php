@@ -1,47 +1,53 @@
 @extends('layouts.app')
 
 @section('content')
+
 <div class="container">
+
     <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Reset Password</div>
 
-                <div class="panel-body">
-                    @if (session('status'))
-                        <div class="alert alert-success">
-                            {{ session('status') }}
-                        </div>
-                    @endif
+        <div class="form-container small-6 small-centered columns">
 
-                    <form class="form-horizontal" method="POST" action="{{ route('password.email') }}">
-                        {{ csrf_field() }}
-
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="col-md-4 control-label">E-Mail Address</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required>
-
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    Send Password Reset Link
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+            <div class="status_message">
+                @if (session('status'))
+                    <div class="callout">
+                        {{ session('status') }}
+                    </div>
+                @endif
             </div>
+
+            <div class="form-title text-center">
+                Reset Password
+            </div>
+
+            <form class="forgot-password-form" method="POST" action="{{ route('password.email') }}">
+
+                {{ csrf_field() }}
+
+                <div class="email">
+                    <label for="email">E-Mail Address</label>
+
+                    <input id="email" type="email" name="email" value="{{ old('email') }}" aria-describedby="emailHelpText" required autofocus>
+
+                    @if ($errors->has('email'))
+                        <span class="help-text" id="emailHelpText">
+                            <strong>{{ $errors->first('email') }}</strong>
+                        </span>
+                    @endif
+                </div>
+
+                <div class="send-button">
+                    <button type="submit" class="button">
+                        Send Password Reset Link
+                    </button>
+                </div>
+
+            </form>
+
         </div>
+
     </div>
+
 </div>
+
 @endsection
