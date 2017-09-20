@@ -1,133 +1,94 @@
 <!doctype html>
 <html lang="{{ app()->getLocale() }}">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <!-- CSRF Token -->
-        <meta name="csrf-token" content="{{ csrf_token() }}">
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>Laravel {{ app()->version() }}</title>
+    <title>Laravel {{ app()->version() }}</title>
 
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
 
-        <!-- Styles -->
-        <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <!-- Styles -->
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
-        <!-- Styles -->
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Raleway', sans-serif;
-                font-weight: 100;
-                height: 100vh;
-                margin: 0;
-            }
+    <!-- Styles -->
+    <style>
+    html, body {
+        height: 100vh;
+        margin: 0;
+    }
 
-            .full-height {
-                height: 100vh;
-            }
+    .full-height {
+        height: 100vh;
+    }
 
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
+    .flex-center {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+    }
 
-            .position-ref {
-                position: relative;
-            }
+    .position-ref {
+        position: relative;
+    }
 
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
-
-            .content {
-                text-align: center;
-            }
-
-            .title {
-                font-size: 84px;
-            }
-
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 12px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            .versioninfo {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 12px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-            }
-
-            .framwork_title {
-                font-weight: 600;
-                padding-top: 20px;
-            }
+    .top-right {
+        position: absolute;
+        right: 10px;
+        top: 18px;
+    }
 
 
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-        </style>
-    </head>
-    <body>
+    .title {
+        font-size: 84px;
+    }
 
-        <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @if (Auth::check())
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ url('/login') }}">Login</a>
-                        <a href="{{ url('/register') }}">Register</a>
-                    @endif
-                </div>
-            @endif
+    .versioninfo {
+        color: #636b6f;
+        padding: 0 25px;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: .1rem;
+        text-decoration: none;
+    }
 
-            <div class="content">
-
+    .m-b-md {
+        margin-bottom: 30px;
+    }
+</style>
+</head>
+<body>
+    <div class="grid-container flex-center position-ref full-height">
+        <div class="grid-x grid-padding-x align-center">
+            <div class="cell text-center">
                 <div class="title m-b-md">
-                    BitBot 4
-                    <p class="versioninfo">Version {{ app()->version() }}</p>
+                    BitBot
+                    <p class="versioninfo">Your Platform For Crytocurrency Trading</p>
                 </div>
-
-                <div class="links">
-                    <a href="https://laravel.com/docs">Documentation</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
-                </div>
-
-                <div class="foundation_button_test">
-                    <p class="framwork_title">Zurb Foundation 6.4.3</p>
-                    <a class="button primary" href="#">Primary</a>
-                    <a class="button secondary" href="#">Secondary</a>
-                    <a class="button success" href="#">Success</a>
-                    <a class="button alert" href="#">Alert</a>
-                    <a class="button warning" href="#">Warning</a>
-                </div>
-
+                @if (Route::has('login'))
+               
+                    @if (Auth::check())
+                        <a class="hollow button large" href="{{ url('/home') }}">Dashboard</a>
+                    @else    
+                        <div class="expanded button-group">
+                          <a class="hollow button success"  href="{{ url('/login') }}">Login</a>
+                          <a class="hollow button alert"  href="{{ url('/register') }}">Register</a>
+                        </div>
+                    @endif
+                
+                @endif
             </div>
         </div>
+    </div>
 
-        <!-- Scripts -->
-        <script src="{{ asset('js/app.js') }}"></script>
 
-    </body>
+<!-- Scripts -->
+<script src="{{ asset('js/app.js') }}"></script>
+
+</body>
 </html>
