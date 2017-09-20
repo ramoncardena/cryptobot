@@ -102,7 +102,7 @@
             <div class="content">
 
                 <div class="title m-b-md">
-                    Laravel
+                    BitBot 4
                     <p class="versioninfo">Version {{ app()->version() }}</p>
                 </div>
 

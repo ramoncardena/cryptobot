@@ -30,6 +30,7 @@ class BittrexServiceProvider extends ServiceProvider
             );
         });
     }
+    
 
     /**
      * Get the services provided by the provider.
