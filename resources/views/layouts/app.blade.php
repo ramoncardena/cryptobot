@@ -26,9 +26,6 @@
             <div class="top-bar-left">
                 <ul class="menu">
                     <li class="menu-text"><img class="logo" src="<?php echo asset('storage/cryptobot-logo-40px.png') ?>"/></li>
-                    <li><a href="#">Watchlist</a></li>
-                    <li><a href="#">Orders</a></li>
-                    <li><a href="#">Trades</a></li>
                 </ul>
             </div>
             <div class="top-bar-right">
@@ -38,9 +35,14 @@
                     <li><a href="{{ route('register') }}">Register</a></li>
                 @else
                     <ul class="dropdown menu" data-dropdown-menu>
+                        <li><a href="#">Watchlist</a></li>
+                        <li><a href="#">Orders</a></li>
+                        <li><a href="#">Trades</a></li>
                         <li>
                             <a href="#">{{ Auth::user()->name }}</a>
                             <ul class="menu">
+                                <li><a href="#">Dashboard</a></li>
+                                <li><a href="#">Settings</a></li>
                                 <li>
                                     <a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
                                         Logout

@@ -14284,3 +14284,42 @@ section#register .login-icon .fa {
   margin-bottom: 1rem;
 }
 
+section#dashboard .full-height {
+  height: 100vh;
+}
+
+section#dashboard .flex-center {
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+section#dashboard .position-ref {
+  position: relative;
+}
+
+section#dashboard .form-title {
+  font-size: 3rem;
+  font-weight: 100;
+  margin-bottom: 2rem;
+  color: #cacaca;
+}
+
+section#dashboard .email,
+section#dashboard .password {
+  width: 300px;
+}
+
+section#dashboard .login-icon .fa {
+  color: #009ACE;
+  font-size: 3rem;
+  font-weight: 100;
+  margin-bottom: 1rem;
+}
+

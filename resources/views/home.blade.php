@@ -2,24 +2,21 @@
 
 @section('content')
 
-<div class="container">
+<section id="dashboard">
+    <div class="grid-container flex-center position-ref full-height">
 
-    <div class="row">
+        <div class="grid-x">
 
-        <div class="form-container small-6 small-centered columns">
+            <div class="form-container cell">
 
-            <div class="form-title text-center">
-                Dashboard
-            </div>
+                <div class="form-title text-center">
+                    Dashboard
+                </div>
 
-            <div class="callout">
-                You are logged in!
             </div>
 
         </div>
 
     </div>
-
-</div>
-
+</section>
 @endsection

@@ -1,0 +1,38 @@
+section#dashboard {
+
+	.full-height {
+		height: 100vh;
+	}
+
+	.flex-center {
+		align-items: center;
+		display: flex;
+		justify-content: center;
+	}
+
+	.position-ref {
+		position: relative;
+	}
+
+	.form-title {
+		font-size: 3rem;
+		font-weight: 100;
+		margin-bottom: 2rem;
+		color: $medium-gray;
+	}
+
+	
+	.email, .password {
+		width: 300px;
+	}
+
+	.login-icon {
+		.fa {
+			color: $primary-color;
+			font-size: 3rem;
+			font-weight: 100;
+			margin-bottom: 1rem;
+		}
+	}
+
+}

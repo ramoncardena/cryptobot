@@ -22,6 +22,9 @@
         <div class="grid-container flex-center position-ref full-height">
             <div class="grid-x grid-padding-x align-center">
                 <div class="cell text-center">
+                    <div class="title-image">
+                        <img src="<?php echo asset('storage/cryptobot-logo-300px.png') ?>" alt="">
+                    </div>
                     <div class="title m-b-md">
                         CryptoBot
                         <p class="versioninfo">Your Platform For Crytocurrency Trading</p>
