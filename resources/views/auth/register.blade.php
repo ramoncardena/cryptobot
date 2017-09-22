@@ -2,74 +2,71 @@
 
 @section('content')
 
-<div class="container">
+<section id="login">
+    <div class="grid-container flex-center position-ref full-height">
+        <div class="grid-x align-center">
 
-    <div class="row">
+             <div class="form-container cell text-center">
 
-        <div class="form-container small-6 small-centered columns">
+                <div class="login-icon">
+                    <i class="fa fa-user-plus" aria-hidden="true"></i> 
+                </div>
+                <div class="form-title">
+                    CryptoBot
+                </div>
 
-            <div class="form-title text-center">
-                Register
-            </div>
+                <form class="register-form" method="POST" action="{{ route('register') }}">
 
-            <form class="register-form" method="POST" action="{{ route('register') }}">
+                    {{ csrf_field() }}
 
-                {{ csrf_field() }}
+                    <div class="name">
+                        <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" aria-describedby="nameHelpText" placeholder="Name" required autofocus>
 
-                <div class="name">
-                    <label for="email">Name</label>
-
-                    <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" aria-describedby="nameHelpText" required autofocus>
-
-                    @if ($errors->has('name'))
+                        @if ($errors->has('name'))
                         <span class="help-text" id="nameHelpText">
                             <strong>{{ $errors->first('name') }}</strong>
                         </span>
-                    @endif
-                </div>
+                        @endif
+                    </div>
 
-                <div class="email">
-                    <label for="email">E-Mail Address</label>
+                    <div class="email">
+                        <input id="email" type="email" name="email" value="{{ old('email') }}" aria-describedby="emailHelpText" placeholder="E-Mail Address" required>
 
-                    <input id="email" type="email" name="email" value="{{ old('email') }}" aria-describedby="emailHelpText" required>
-
-                    @if ($errors->has('email'))
+                        @if ($errors->has('email'))
                         <span class="help-text" id="emailHelpText">
                             <strong>{{ $errors->first('email') }}</strong>
                         </span>
-                    @endif
-                </div>
+                        @endif
+                    </div>
 
-                <div class="password">
-                    <label for="password">Password</label>
+                    <div class="password">
+                        <input id="password" type="password" name="password" aria-describedby="passwordHelpText"  placeholder="Password" required>
 
-                    <input id="password" type="password" name="password" aria-describedby="passwordHelpText" required>
-
-                    @if ($errors->has('password'))
+                        @if ($errors->has('password'))
                         <span class="help-text" id="passwordHelpText">
                             <strong>{{ $errors->first('password') }}</strong>
                         </span>
-                    @endif
-                </div>
+                        @endif
+                    </div>
 
-                <div class="password-confirm">
-                    <label for="password-confirm">Confirm Password</label>
-                    <input id="password-confirm" type="password" name="password_confirmation" required>
-                </div>
+                    <div class="password-confirm">
+                        <input id="password-confirm" type="password" name="password_confirmation" placeholder="Confirm Password" required>
+                    </div>
 
-                <div class="register_button">
-                    <button type="submit" class="button">
-                        Register
-                    </button>
-                </div>
+                    <div class="register_button">
+                        <button type="submit" class="hollow button large">
+                            Register
+                        </button>
+                    </div>
 
 
-            </form>
+                </form>
+
+            </div>
 
         </div>
 
     </div>
-
-</div>
+</section>
 
 @endsection

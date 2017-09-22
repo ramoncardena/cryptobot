@@ -2,8 +2,21 @@
 // Fonts
 @import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);
 
+@import "node_modules/font-awesome/scss/font-awesome";
+
 // Variables
 @import "settings";
 
 // Foundation
 @import "foundation";
+
+
+// Modules
+@import "modules/global";
+
+// Partials
+@import "partials/nav";
+@import "partials/home";
+@import "partials/login";
+@import "partials/register";
+

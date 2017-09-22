@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }} {{ app()->version() }}</title>
+    <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -16,19 +16,25 @@
 <body>
     <div id="app">
 
-        {{-- top bar  --}}
-        <div class="top-bar">
+    <nav class="navigation">
+        <div class="title-bar" data-responsive-toggle="example-menu" data-hide-for="medium">
+              <button class="menu-icon" type="button" data-toggle="example-menu"></button>
+              <div class="title-bar-title">Menu</div>
+        </div>
 
-          <div class="top-bar-left">
-            <ul class="dropdown menu" data-dropdown-menu>
-              <li class="menu-text">{{ config('app.name', 'Laravel') }} {{ app()->version() }}</li>
-            </ul>
-          </div>
-
-          <div class="top-bar-right">
-            <ul class="menu">
+        <div class="top-bar" id="example-menu">
+            <div class="top-bar-left">
+                <ul class="menu">
+                    <li class="menu-text"><img class="logo" src="<?php echo asset('storage/cryptobot-logo-40px.png') ?>"/></li>
+                    <li><a href="#">Watchlist</a></li>
+                    <li><a href="#">Orders</a></li>
+                    <li><a href="#">Trades</a></li>
+                </ul>
+            </div>
+            <div class="top-bar-right">
+                <ul class="menu">
                 @if (Auth::guest())
-                    <li><a href="{{ route('login') }}">Login</a></li>
+                    <li><a href="{{ route('login') }}">Login</i></a></li>
                     <li><a href="{{ route('register') }}">Register</a></li>
                 @else
                     <ul class="dropdown menu" data-dropdown-menu>
@@ -49,9 +55,9 @@
                     </ul>
                 @endif
             </ul>
-          </div>
-
+            </div>
         </div>
+    </nav>
 
         @yield('content')
 

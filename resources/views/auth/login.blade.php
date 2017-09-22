@@ -1,66 +1,67 @@
 @extends('layouts.app')
 
 @section('content')
+<section id="login">
+    <div class="grid-container flex-center position-ref full-height">
+        <div class="grid-x align-center">
 
-<div class="container">
+            <div class="form-container cell text-center">
 
-    <div class="row">
+                <div class="login-icon">
+                    <i class="fa fa-user-o" aria-hidden="true"></i> 
+                </div>
+                <div class="form-title">
+                    CryptoBot
+                </div>
+                
 
-        <div class="form-container small-6 small-centered columns">
+                <form class="login-form" method="POST" action="{{ route('login') }}">
 
-            <div class="form-title text-center">
-                Login
-            </div>
+                    {{ csrf_field() }}
 
-            <form class="login-form" method="POST" action="{{ route('login') }}">
+                    <div class="email">
+                        <input id="email" type="email" name="email" value="{{ old('email') }}" aria-describedby="emailHelpText" placeholder="E-Mail Address" required autofocus>
 
-                {{ csrf_field() }}
-
-                <div class="email">
-                    <label for="email">E-Mail Address</label>
-
-                    <input id="email" type="email" name="email" value="{{ old('email') }}" aria-describedby="emailHelpText" required autofocus>
-
-                    @if ($errors->has('email'))
+                        @if ($errors->has('email'))
                         <span class="help-text" id="emailHelpText">
                             <strong>{{ $errors->first('email') }}</strong>
                         </span>
-                    @endif
-                </div>
+                        @endif
+                    </div>
 
-                <div class="password">
-                    <label for="password">Password</label>
+                    <div class="password">
+                        <input id="password" type="password" name="password" aria-describedby="passwordHelpText" placeholder="Password" required>
 
-                    <input id="password" type="password" name="password" aria-describedby="passwordHelpText" required>
-
-                    @if ($errors->has('password'))
+                        @if ($errors->has('password'))
                         <span class="help-text" id="passwordHelpText">
                             <strong>{{ $errors->first('password') }}</strong>
                         </span>
-                    @endif
-                </div>
+                        @endif
+                    </div>
 
-                <div class="checkbox">
-                    <label>
-                        <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Remember Me
-                    </label>
-                </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Remember Me
+                        </label>
+                    </div>
 
-                <div class="button-plus-link">
-                    <button type="submit" class="button">
-                        Login
-                    </button>
+                    <div class="button-plus-link">
+                        <button type="submit" class="hollow button large">
+                            Login
+                        </button>
+                    </div>
+                    <div>
+                        <a href="{{ route('password.request') }}">
+                            &nbsp;
+                            Forgot Your Password?
+                        </a>
+                    </div>
+                </form>
 
-                    <a href="{{ route('password.request') }}">
-                        &nbsp;
-                        Forgot Your Password?
-                    </a>
-                </div>
-            </form>
+            </div>
 
         </div>
-
     </div>
+</section>
 
-</div>
 @endsection
