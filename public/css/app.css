@@ -7831,11 +7831,11 @@ a.button:focus {
 
 .accordion-menu .nested.is-accordion-submenu {
   margin-right: 0;
-  margin-left: 1rem;
+  margin-left: 2rem;
 }
 
 .accordion-menu.align-right .nested.is-accordion-submenu {
-  margin-right: 1rem;
+  margin-right: 2rem;
   margin-left: 0;
 }
 
@@ -8457,7 +8457,7 @@ a.button:focus {
 
 .menu.nested {
   margin-right: 0;
-  margin-left: 1rem;
+  margin-left: 2rem;
 }
 
 .menu.icons a {
@@ -8574,7 +8574,7 @@ a.button:focus {
 }
 
 .menu.align-right .nested {
-  margin-right: 1rem;
+  margin-right: 2rem;
   margin-left: 0;
 }
 
@@ -14150,10 +14150,6 @@ a.thumbnail image {
   .grid-margin-y.large-grid-frame {
     height: calc(100vh + 1.875rem);
   }
-}
-
-.fa {
-  font-size: 2rem;
 }
 
 section#home html,

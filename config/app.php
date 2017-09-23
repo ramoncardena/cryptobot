@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'BitBot'),
+    'name' => env('APP_NAME', 'CryptoBot'),
 
     /*
     |--------------------------------------------------------------------------
@@ -177,6 +177,11 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        /*
+         * User Service Providers...
+         */
+
+        App\Providers\BittrexServiceProvider::class,
     ],
 
     /*
@@ -225,6 +230,7 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+        'Bittrex' => Library\Services\Bittrex\Facades\Bittrex::class,
 
     ],
 

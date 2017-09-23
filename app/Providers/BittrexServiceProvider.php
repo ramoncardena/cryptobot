@@ -23,10 +23,10 @@ class BittrexServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind('bittrex' function () {
+        $this->app->bind('bittrex', function () {
             return new Bittrex(
                 config('services.bittrex.key'),
-                config('service.bittrex.secret')
+                config('services.bittrex.secret')
             );
         });
     }

@@ -24,5 +24,11 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         //
+
+        $this->app->singleton(BittrexServiceProvider::class, function ($app) {
+
+            return new \App\Providers\BittrexServiceProvider;
+
+        });
     }
 }

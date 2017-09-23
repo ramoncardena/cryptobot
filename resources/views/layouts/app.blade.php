@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'CryptoBot') }}</title>
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -25,38 +25,35 @@
         <div class="top-bar" id="example-menu">
             <div class="top-bar-left">
                 <ul class="menu">
-                    <li class="menu-text"><img class="logo" src="<?php echo asset('storage/cryptobot-logo-40px.png') ?>"/></li>
+                    <li><img class="logo" src="<?php echo asset('storage/cryptobot-logo-40px.png') ?>"/></li>
+                    @auth
+                    <li> <a href="{{ route('home') }}">  {{ Auth::user()->name }} </a></li>
+                    @endauth
                 </ul>
             </div>
             <div class="top-bar-right">
                 <ul class="menu">
-                @if (Auth::guest())
-                    <li><a href="{{ route('login') }}">Login</i></a></li>
-                    <li><a href="{{ route('register') }}">Register</a></li>
-                @else
-                    <ul class="dropdown menu" data-dropdown-menu>
+                    @if (Auth::guest())
+                        <li><a href="{{ route('login') }}">Login</i></a></li>
+                        <li><a href="{{ route('register') }}">Register</a></li>
+                    @else
+                        
                         <li><a href="#">Watchlist</a></li>
                         <li><a href="#">Orders</a></li>
                         <li><a href="#">Trades</a></li>
+                        <li><a href="#"><i class="fa fa-cog" aria-hidden="true"></i></a></li>
                         <li>
-                            <a href="#">{{ Auth::user()->name }}</a>
-                            <ul class="menu">
-                                <li><a href="#">Dashboard</a></li>
-                                <li><a href="#">Settings</a></li>
-                                <li>
-                                    <a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
-                                        Logout
-                                    </a>
+                            <a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                                <i class="fa fa-sign-out" aria-hidden="true"></i>
+                            </a>
 
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                        {{ csrf_field() }}
-                                    </form>
-                                </li>
-                            </ul>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                {{ csrf_field() }}
+                            </form>
                         </li>
-                    </ul>
-                @endif
-            </ul>
+                       
+                    @endif
+                </ul>
             </div>
         </div>
     </nav>

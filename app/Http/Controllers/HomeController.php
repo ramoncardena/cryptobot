@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Library\Services\Bittrex\Bittrex;
 
 class HomeController extends Controller
 {
@@ -23,6 +24,11 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $bittrex = new Bittrex(config('services.bittrex.key'), config('services.bittrex.secret'));
+
+        $balances = $bittrex->getBalances();
+
+
+        return view('home', ['balances' => $balances->result]);
     }
 }
