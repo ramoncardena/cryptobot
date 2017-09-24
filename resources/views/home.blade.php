@@ -9,16 +9,23 @@
 
             <div class="form-container cell">
 
+            	<balance></balance>
+
                 <div class="form-title text-center">
                     Dashboard
 
-                    @foreach ($balances as $balance)
-                    	@if ($balance->Balance > 0)
-					    <p> {{ $balance->Currency }}: {{ $balance->Balance }}: </p>
+                    @foreach ($portfolio as $coin => $balance)
+					    <p> {{ $coin }} : {{ $balance }} </p>
 
-					    @endif
+				
 					@endforeach
 
+ 					@foreach ($values as $value)
+					    <p> {{ $value }} BTC</p>
+				
+					@endforeach
+
+					<p> Total: {{ $total }} BTC
                 </div>
 
             </div>

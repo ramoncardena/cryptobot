@@ -789,6 +789,8 @@ module.exports = __webpack_require__(40);
 
 __webpack_require__(10);
 
+__webpack_require__(53);
+
 window.Vue = __webpack_require__(35);
 
 /**
@@ -797,11 +799,11 @@ window.Vue = __webpack_require__(35);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('example', __webpack_require__(36));
+Vue.component('balance', __webpack_require__(50));
 
-var app = new Vue({
-  el: '#app'
-});
+//const app = new Vue({
+//    el: '#app'
+//});
 
 /***/ }),
 /* 10 */
@@ -51299,52 +51301,7 @@ module.exports = Vue$3;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ }),
-/* 36 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(37)
-/* script */
-var __vue_script__ = __webpack_require__(38)
-/* template */
-var __vue_template__ = __webpack_require__(39)
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/Example.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] Example.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-185ff66c", Component.options)
-  } else {
-    hotAPI.reload("data-v-185ff66c", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
+/* 36 */,
 /* 37 */
 /***/ (function(module, exports) {
 
@@ -51442,7 +51399,70 @@ module.exports = function normalizeComponent (
 
 
 /***/ }),
-/* 38 */
+/* 38 */,
+/* 39 */,
+/* 40 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 41 */,
+/* 42 */,
+/* 43 */,
+/* 44 */,
+/* 45 */,
+/* 46 */,
+/* 47 */,
+/* 48 */,
+/* 49 */,
+/* 50 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(37)
+/* script */
+var __vue_script__ = __webpack_require__(51)
+/* template */
+var __vue_template__ = __webpack_require__(52)
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/Balance.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] Balance.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-6e534ade", Component.options)
+  } else {
+    hotAPI.reload("data-v-6e534ade", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 51 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -51465,59 +51485,77 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+    name: 'Balance',
+    data: function data() {
+        return {
+            message: 'This is balance component'
+        };
+    },
     mounted: function mounted() {
         console.log('Component mounted.');
     }
 });
 
 /***/ }),
-/* 39 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "container" }, [
-      _c("div", { staticClass: "row" }, [
-        _c("div", { staticClass: "col-md-8 col-md-offset-2" }, [
-          _c("div", { staticClass: "panel panel-default" }, [
-            _c("div", { staticClass: "panel-heading" }, [
-              _vm._v("Example Component")
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "panel-body" }, [
-              _vm._v(
-                "\n                    I'm an example component!\n                "
-              )
-            ])
+  return _c("div", { staticClass: "balance" }, [
+    _c("div", { staticClass: "grid-x" }, [
+      _c("div", { staticClass: "cell" }, [
+        _c("div", { staticClass: "panel panel-default" }, [
+          _c("div", { staticClass: "panel-heading" }, [
+            _vm._v("Example Component")
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "panel-body" }, [
+            _vm._v(
+              "\n                    " +
+                _vm._s(_vm.message) +
+                "\n                "
+            )
           ])
         ])
       ])
     ])
-  }
-]
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-185ff66c", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-6e534ade", module.exports)
   }
 }
 
 /***/ }),
-/* 40 */
-/***/ (function(module, exports) {
+/* 53 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-// removed by extract-text-webpack-plugin
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_Balance_vue__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_Balance_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_Balance_vue__);
+__webpack_require__(9);
+
+window.Vue = __webpack_require__(35);
+
+
+
+var app = new Vue({
+    name: 'App',
+    el: '#app',
+    components: { Balance: __WEBPACK_IMPORTED_MODULE_0__components_Balance_vue___default.a },
+    data: {
+        test: 'This is from the welcome page component'
+    }
+});
 
 /***/ })
 /******/ ]);
