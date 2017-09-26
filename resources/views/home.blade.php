@@ -9,23 +9,29 @@
 
             <div class="form-container cell">
 
-            	<balance></balance>
+
 
                 <div class="form-title text-center">
                     Dashboard
-
-                    @foreach ($portfolio as $coin => $balance)
-					    <p> {{ $coin }} : {{ $balance }} </p>
+					<balance type="header"></balance>
+                    @foreach ($coins as $coin)
+						
+                    	<balance 
+	                    	type="item" 
+	                    	coin="{{ $coin['Name'] }}" 
+	                    	logo="{{ $coin['LogoUrl'] }}" 
+	                    	balance="{{ $coin['Balance'] }}"  
+	                    	price="{{ $coin['Price'] }}" 
+	                    	valueBTC="{{ $coin['BTC-Value'] }}" 
+	                    	valueEUR="{{ $coin['EUR-Value'] }}" 
+	                    	valueUSD="{{ $coin['USD-Value'] }}" 
+	                    	gain="">
+                    	</balance>
 
 				
 					@endforeach
 
- 					@foreach ($values as $value)
-					    <p> {{ $value }} BTC</p>
-				
-					@endforeach
-
-					<p> Total: {{ $total }} BTC
+					<p> 
                 </div>
 
             </div>

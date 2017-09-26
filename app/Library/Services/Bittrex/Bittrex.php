@@ -141,8 +141,14 @@ class Bittrex
      */
     public function getOrderHistory($market = '')
     {
-        return $this->authRequest('account/getorderhistory', "market={$market}");
+        if ($market) {
+            return $this->authRequest('account/getorderhistory', "market={$market}");
+        }   
+        else {
+           return $this->authRequest('account/getorderhistory');
+       }
     }
+
     /**
      * @param string $currency
      *
@@ -150,7 +156,12 @@ class Bittrex
      */
     public function getWithdrawalHistory($currency = '')
     {
-        return $this->authRequest('account/getwithdrawalhistory', "currency={$currency}");
+        if ($currency) {
+            return $this->authRequest('account/getwithdrawalhistory', "currency={$currency}");
+        } 
+        else {
+            return $this->authRequest('account/getwithdrawalhistory');
+        }
     }
     /**
      * @param string $currency
@@ -159,7 +170,12 @@ class Bittrex
      */
     public function getDepositHistory($currency = '')
     {
-        return $this->authRequest('account/getdeposithistory', "currency={$currency}");
+        if ($currency) {
+            return $this->authRequest('account/getdeposithistory', "currency={$currency}");
+        } 
+        else {
+            return $this->authRequest('account/getdeposithistory');
+        }
     }
     /**
      * @param $market

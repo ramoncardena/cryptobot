@@ -7,7 +7,7 @@
 
 require('./bootstrap');
 
-require('./pages/home');
+require('./components/balance');
 
 window.Vue = require('vue');
 

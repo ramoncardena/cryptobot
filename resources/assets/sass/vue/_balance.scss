@@ -1,0 +1,18 @@
+.balance {
+	font-size: 1rem;
+	color: $dark-gray;
+	
+
+	.header {
+		.cell {
+			color: #000;
+			border: 1px solid get-color(primary);
+			margin: 5px;
+		}
+	}
+
+	.coin-logo {
+		height: 20px;
+		margin: 2px;
+	}
+}

@@ -182,6 +182,7 @@ return [
          */
 
         App\Providers\BittrexServiceProvider::class,
+        App\Providers\BitcoinServiceProvider::class,
     ],
 
     /*

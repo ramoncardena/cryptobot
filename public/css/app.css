@@ -14319,3 +14319,19 @@ section#dashboard .login-icon .fa {
   margin-bottom: 1rem;
 }
 
+.balance {
+  font-size: 1rem;
+  color: #8a8a8a;
+}
+
+.balance .header .cell {
+  color: #000;
+  border: 1px solid #009ACE;
+  margin: 5px;
+}
+
+.balance .coin-logo {
+  height: 20px;
+  margin: 2px;
+}
+
