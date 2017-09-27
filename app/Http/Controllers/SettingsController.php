@@ -25,8 +25,8 @@ class SettingsController extends Controller
 	{
 		$settings = settings();
 
-		$settings->set('bittrex_key','a8sd98as8ajlk3lkj4h88snal');
+		// $settings->set('bittrex_key','a8sd98as8ajlk3lkj4h88snal');
 
-		return view('settings');
+		return view('settings', ['settings' => $settings->all()]);
 	}
   }

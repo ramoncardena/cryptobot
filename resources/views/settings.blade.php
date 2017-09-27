@@ -10,6 +10,12 @@
             <div class="form-container cell">
 
             	<h1>Settings</h1>
+
+            	@foreach ($settings as $key => $value)
+
+					{{ $key }}: {{ $value}}           	
+						
+            	@endforeach
             </div>
         </div>
     </div>

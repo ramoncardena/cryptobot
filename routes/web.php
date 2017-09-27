@@ -15,9 +15,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('settings', function () {
-	 return view('settings');
-});
+Route::get('/settings', 'SettingsController@index');
 
 Auth::routes();
 
