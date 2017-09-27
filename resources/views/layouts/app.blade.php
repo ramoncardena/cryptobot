@@ -11,7 +11,7 @@
     <title>{{ config('app.name', 'CryptoBot') }}</title>
 
     <!-- Styles -->
-    <link href="/open-iconic/font/css/open-iconic-foundation.css" rel="stylesheet">
+    <link href="node_modules/open-iconic/font/css/open-iconic-foundation.css" rel="stylesheet">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
@@ -24,27 +24,32 @@
         </div>
 
         <div class="top-bar" id="example-menu">
+
             <div class="top-bar-left">
                 <ul class="menu">
                     <li><img class="logo" src="<?php echo asset('storage/cryptobot-logo-40px.png') ?>"/></li>
-                    @auth
-                    <li> <a href="{{ route('home') }}">  {{ Auth::user()->email }} </a></li>
-                    @endauth
+
                 </ul>
             </div>
+
             <div class="top-bar-right">
-                <ul class="menu">
+                <ul class="dropdown menu" data-dropdown-menu data-disable-hover="true" data-click-open="true">
                     @if (Auth::guest())
                         <li><a href="{{ route('login') }}">Login</i></a></li>
+
                         <li><a href="{{ route('register') }}">Register</a></li>
                     @else
-                        
-                        <li><a href="#">Watchlist</a></li>
-                        <li><a href="#">Orders</a></li>
-                        <li><a href="#">Trades</a></li>
-                        
-                        <li><a href="#"><span class="fi-grid-three-up"></span></a></li>
-
+                        <li> <a href="{{ route('home') }}">  {{ Auth::user()->email }} </a></li>
+                        <li>
+                            <a href="{{ route('home') }}"><i class="fa fa-th" aria-hidden="true"></i></a>
+                            <ul class="menu">
+                                <li><a href="#">Watchlist</a></li>
+                                <li><a href="#">Orders</a></li>
+                                <li><a href="#">Trades</a></li>
+                                <li><a href="#">Documentation</a></li>
+                                <li><a href="#">Support</a></li>
+                            </ul>
+                        </li>
                         <li><a href="/settings"><i class="fa fa-cog" aria-hidden="true"></i></a></li>
                         <li>
                             <a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">

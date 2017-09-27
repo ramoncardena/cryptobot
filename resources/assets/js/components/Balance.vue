@@ -54,7 +54,7 @@
         name: 'Balance',
         data: () => {
             return {
-                message: 'This is balance component'
+                 
             }
         },
         props: ['type', 'coin', 'logo', 'price', 'balance', 'valuebtc', 'valueeur', 'valueusd'],

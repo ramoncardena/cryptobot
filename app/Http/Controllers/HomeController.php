@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Library\Services\Bittrex\Bittrex;
 use App\Library\Services\Bitcoin\Bitcoin;
 
 class HomeController extends Controller
 {
+    protected $user;
+
     /**
      * Create a new controller instance.
      *
@@ -26,17 +29,29 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $coins = $this->getCoins();
 
-        $totals = $this->getTotals($coins);
+        if (Auth::check()) 
+        {
 
-        return view('home', ['coins' => $coins, 'totals' => $totals]);
+           $this->user = Auth::user();
+
+           $coins = $this->getCoins();
+
+           $totals = $this->getTotals($coins);
+
+           return view('home', ['coins' => $coins, 'totals' => $totals]);
+
+        }
+        else {
+            throw new Exception ("You must be authenticated to get your settings");
+        }
     }
-
+    
     protected function getCoinLogo( $coin ) {
 
         if ( $coin != 'BTC') {
-            $bittrex = new Bittrex(config('services.bittrex.key'), config('services.bittrex.secret'));
+
+            $bittrex = new Bittrex($this->user->settings()->get('bittrex_key'), $this->user->settings()->get('bittrex_secret'));
 
             $market = $bittrex->getMarkets();
 
@@ -70,7 +85,7 @@ class HomeController extends Controller
      */
     protected function getCoins() {
 
-        $bittrex = new Bittrex(config('services.bittrex.key'), config('services.bittrex.secret'));
+        $bittrex = new Bittrex($this->user->settings()->get('bittrex_key'), $this->user->settings()->get('bittrex_secret'));
 
         $this->getCoinLogo('BTC');
 
@@ -101,7 +116,7 @@ class HomeController extends Controller
         }
 
         $coins = $coins->map(function ($coin) {
-            $bittrex = new Bittrex(config('services.bittrex.key'), config('services.bittrex.secret'));
+            $bittrex = new Bittrex($this->user->settings()->get('bittrex_key'), $this->user->settings()->get('bittrex_secret'));
             if ($coin['Name'] != 'BTC') {
                 $ticker = $bittrex->getTicker('BTC-'. $coin['Name']);
                 $coin['Price'] = round($ticker->result->Last, 8);
@@ -115,7 +130,7 @@ class HomeController extends Controller
 
         // Get value in BTC for each item in portfolio (ignoring BTC item)
         $coins = $coins->map(function ($coin) {
-            $bittrex = new Bittrex(config('services.bittrex.key'), config('services.bittrex.secret'));
+            $bittrex = new Bittrex($this->user->settings()->get('bittrex_key'), $this->user->settings()->get('bittrex_secret'));
             if ($coin['Name'] != 'BTC') {
                 $ticker = $bittrex->getTicker('BTC-'. $coin['Name']);
                 $coin['BTC-Value'] = round($coin['Balance'] * $ticker->result->Last, 8);

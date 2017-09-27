@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 use App\User;
 
@@ -24,11 +25,16 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+
         $this->app->singleton('App\Settings', function() {
 
-            // CHANGE TO AUTH USER
-            return User::first()->settings();
+            if (Auth::check()) {
+               return Auth::user()->settings();
+            }
+            else {
+                throw new Exception ("You must be authenticated to get your settings");
+            }
+            
 
         });
 

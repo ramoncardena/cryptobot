@@ -5,9 +5,7 @@
 
 	.header {
 		.cell {
-			color: #000;
-			border: 1px solid get-color(primary);
-			margin: 5px;
+			color: get-color(primary);
 		}
 	}
 
