@@ -9,10 +9,13 @@
 
             <div class="form-container cell">
 
-
-
                 <div class="form-title text-center">
-                    Dashboard
+                	<div class="section-title">
+                    	
+                    	<h1>Dashboard</h1>
+
+                	</div>
+					
 					<balance type="header"></balance>
                     @foreach ($coins as $coin)
 						
@@ -27,11 +30,9 @@
 	                    	valueUSD="{{ $coin['USD-Value'] }}" 
 	                    	gain="">
                     	</balance>
-
 				
 					@endforeach
 
-					<p> 
                 </div>
 
             </div>

@@ -11,6 +11,7 @@
     <title>{{ config('app.name', 'CryptoBot') }}</title>
 
     <!-- Styles -->
+    <link href="/open-iconic/font/css/open-iconic-foundation.css" rel="stylesheet">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
@@ -27,7 +28,7 @@
                 <ul class="menu">
                     <li><img class="logo" src="<?php echo asset('storage/cryptobot-logo-40px.png') ?>"/></li>
                     @auth
-                    <li> <a href="{{ route('home') }}">  {{ Auth::user()->name }} </a></li>
+                    <li> <a href="{{ route('home') }}">  {{ Auth::user()->email }} </a></li>
                     @endauth
                 </ul>
             </div>
@@ -41,7 +42,10 @@
                         <li><a href="#">Watchlist</a></li>
                         <li><a href="#">Orders</a></li>
                         <li><a href="#">Trades</a></li>
-                        <li><a href="#"><i class="fa fa-cog" aria-hidden="true"></i></a></li>
+                        
+                        <li><a href="#"><span class="fi-grid-three-up"></span></a></li>
+
+                        <li><a href="/settings"><i class="fa fa-cog" aria-hidden="true"></i></a></li>
                         <li>
                             <a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
                                 <i class="fa fa-sign-out" aria-hidden="true"></i>
