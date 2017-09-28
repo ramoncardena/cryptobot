@@ -1,38 +1,21 @@
 section#dashboard {
 
-	.full-height {
-		height: 100vh;
+	.section-title {
+		background-color: $title-background;
+
+		border-bottom: 1px solid $light-gray;
+
+		h1 {
+			color: get-color(secondary);
+		}	
 	}
 
-	.flex-center {
-		align-items: center;
-		display: flex;
-		justify-content: center;
+	.portfolio {
+		margin-top: 20px;
 	}
 
-	.position-ref {
-		position: relative;
-	}
+	.title-bar-right	{
 
-	.form-title {
-		font-size: 3rem;
-		font-weight: 100;
-		margin-bottom: 2rem;
-		color: $medium-gray;
-	}
-
-	
-	.email, .password {
-		width: 300px;
-	}
-
-	.login-icon {
-		.fa {
-			color: $primary-color;
-			font-size: 3rem;
-			font-weight: 100;
-			margin-bottom: 1rem;
-		}
-	}
+	} 
 
 }

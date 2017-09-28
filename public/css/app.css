@@ -9182,7 +9182,7 @@ a.button:focus {
   transition: transform 0.5s ease, -webkit-transform 0.5s ease;
   -webkit-backface-visibility: hidden;
           backface-visibility: hidden;
-  background: #e6e6e6;
+  background: #009ACE;
 }
 
 [data-whatinput='mouse'] .off-canvas {
@@ -9202,8 +9202,8 @@ a.button:focus {
 }
 
 .off-canvas.is-transition-overlap.is-open {
-  -webkit-box-shadow: 0 0 10px rgba(10, 10, 10, 0.7);
-          box-shadow: 0 0 10px rgba(10, 10, 10, 0.7);
+  -webkit-box-shadow: 0;
+          box-shadow: 0;
 }
 
 .off-canvas.is-open {
@@ -9220,7 +9220,7 @@ a.button:focus {
   transition: transform 0.5s ease, -webkit-transform 0.5s ease;
   -webkit-backface-visibility: hidden;
           backface-visibility: hidden;
-  background: #e6e6e6;
+  background: #009ACE;
 }
 
 [data-whatinput='mouse'] .off-canvas-absolute {
@@ -9240,8 +9240,8 @@ a.button:focus {
 }
 
 .off-canvas-absolute.is-transition-overlap.is-open {
-  -webkit-box-shadow: 0 0 10px rgba(10, 10, 10, 0.7);
-          box-shadow: 0 0 10px rgba(10, 10, 10, 0.7);
+  -webkit-box-shadow: 0;
+          box-shadow: 0;
 }
 
 .off-canvas-absolute.is-open {
@@ -9275,8 +9275,8 @@ a.button:focus {
 }
 
 .position-left.is-transition-push {
-  -webkit-box-shadow: inset -13px 0 20px -13px rgba(10, 10, 10, 0.25);
-          box-shadow: inset -13px 0 20px -13px rgba(10, 10, 10, 0.25);
+  -webkit-box-shadow: inset 0 0 0 0 rgba(10, 10, 10, 0.25);
+          box-shadow: inset 0 0 0 0 rgba(10, 10, 10, 0.25);
 }
 
 .position-right {
@@ -9305,8 +9305,8 @@ a.button:focus {
 }
 
 .position-right.is-transition-push {
-  -webkit-box-shadow: inset 13px 0 20px -13px rgba(10, 10, 10, 0.25);
-          box-shadow: inset 13px 0 20px -13px rgba(10, 10, 10, 0.25);
+  -webkit-box-shadow: inset 0 0 0 0 rgba(10, 10, 10, 0.25);
+          box-shadow: inset 0 0 0 0 rgba(10, 10, 10, 0.25);
 }
 
 .position-top {
@@ -9335,8 +9335,8 @@ a.button:focus {
 }
 
 .position-top.is-transition-push {
-  -webkit-box-shadow: inset 0 -13px 20px -13px rgba(10, 10, 10, 0.25);
-          box-shadow: inset 0 -13px 20px -13px rgba(10, 10, 10, 0.25);
+  -webkit-box-shadow: inset 0 0 0 0 rgba(10, 10, 10, 0.25);
+          box-shadow: inset 0 0 0 0 rgba(10, 10, 10, 0.25);
 }
 
 .position-bottom {
@@ -9365,8 +9365,8 @@ a.button:focus {
 }
 
 .position-bottom.is-transition-push {
-  -webkit-box-shadow: inset 0 13px 20px -13px rgba(10, 10, 10, 0.25);
-          box-shadow: inset 0 13px 20px -13px rgba(10, 10, 10, 0.25);
+  -webkit-box-shadow: inset 0 0 0 0 rgba(10, 10, 10, 0.25);
+          box-shadow: inset 0 0 0 0 rgba(10, 10, 10, 0.25);
 }
 
 .off-canvas-content {
@@ -13983,15 +13983,23 @@ a.thumbnail image {
   }
 }
 
-.section-title {
-  background-color: #F7F8FB;
-  margin-bottom: 10px;
-  text-align: left;
-  border-bottom: 1px solid #e6e6e6;
+.off-canvas .menu-title {
+  font-size: 1.3rem;
+  text-transform: uppercase;
+  margin-top: 0.5rem;
+  margin-bottom: 2rem;
+  color: #fefefe;
 }
 
-.section-title h1 {
-  color: #FF7276;
+.off-canvas a {
+  font-size: 1.1rem;
+  color: #fefefe;
+  text-align: center;
+  margin: 0.5rem 0;
+}
+
+.off-canvas a:hover {
+  color: #0a0a0a;
 }
 
 .top-bar {
@@ -14130,43 +14138,17 @@ section#register .login-icon .fa {
   margin-bottom: 1rem;
 }
 
-section#dashboard .full-height {
-  height: 100vh;
+section#dashboard .section-title {
+  background-color: #F7F8FB;
+  border-bottom: 1px solid #e6e6e6;
 }
 
-section#dashboard .flex-center {
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+section#dashboard .section-title h1 {
+  color: #FF7276;
 }
 
-section#dashboard .position-ref {
-  position: relative;
-}
-
-section#dashboard .form-title {
-  font-size: 3rem;
-  font-weight: 100;
-  margin-bottom: 2rem;
-  color: #cacaca;
-}
-
-section#dashboard .email,
-section#dashboard .password {
-  width: 300px;
-}
-
-section#dashboard .login-icon .fa {
-  color: #009ACE;
-  font-size: 3rem;
-  font-weight: 100;
-  margin-bottom: 1rem;
+section#dashboard .portfolio {
+  margin-top: 20px;
 }
 
 .balance {

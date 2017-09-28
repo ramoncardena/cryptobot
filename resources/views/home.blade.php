@@ -8,18 +8,13 @@
 
 	    <div class="grid-x grid-padding-x">
 
-	        <div class="form-container cell section-title">
+	        <div class="form-container section-title cell text-left">
 
-	            <div class="text-left">
-	           
-	                	<h1>Dashboard</h1>
-
-	            </div>
-
+	            <h1>Dashboard</h1>
 
 	        </div>
 
-	        <div class="form-container cell text-center">
+	        <div class="form-container cell text-center portfolio">
 	
 				<balance type="header"></balance>
                 @foreach ($coins as $coin)

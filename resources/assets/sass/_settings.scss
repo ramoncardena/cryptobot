@@ -500,9 +500,9 @@ $offcanvas-sizes: (
 $offcanvas-vertical-sizes: (
   small: 250px,
 );
-$offcanvas-background: $light-gray;
-$offcanvas-shadow: 0 0 10px rgba($black, 0.7);
-$offcanvas-inner-shadow-size: 20px;
+$offcanvas-background: get-color(primary);
+$offcanvas-shadow: 0;
+$offcanvas-inner-shadow-size: 0;
 $offcanvas-inner-shadow-color: rgba($black, 0.25);
 $offcanvas-overlay-zindex: 11;
 $offcanvas-push-zindex: 12;
