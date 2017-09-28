@@ -25,13 +25,13 @@
                 CryptoBot
             </div>
             <ul class="vertical menu text-center">
-                <li><a href="#">Dashboard</a></li>
+                <li><a href="/home">Dashboard</a></li>
                 <li><a href="#">Watchlist</a></li>
                 <li><a href="#">Orders</a></li>
                 <li><a href="#">Trades</a></li>
                 <li><a href="#">Documentation</a></li>
                 <li><a href="#">Support</a></li>
-                <li><a href="#">Settings</a></li>
+                <li><a href="/settings">Settings</a></li>
                 <li>
                     <a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
                         Logout

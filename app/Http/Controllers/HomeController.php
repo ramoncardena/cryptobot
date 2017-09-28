@@ -43,6 +43,7 @@ class HomeController extends Controller
 
            $fiat = $settings->fiat;
 
+
            return view('home', ['coins' => $coins, 'totals' => $totals, 'fiat' => $fiat]);
 
         }

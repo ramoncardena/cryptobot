@@ -14016,6 +14016,15 @@ section#home body {
   margin: 0;
 }
 
+section#home .section-title {
+  background-color: #F7F8FB;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+section#home .section-title h1 {
+  color: #FF7276;
+}
+
 section#home .full-height {
   height: 100vh;
 }
@@ -14144,6 +14153,10 @@ section#dashboard .section-title {
 }
 
 section#dashboard .section-title h1 {
+  color: #FF7276;
+}
+
+section#dashboard .section-title .value {
   color: #FF7276;
 }
 

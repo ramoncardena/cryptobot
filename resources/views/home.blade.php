@@ -9,7 +9,26 @@
 	    <div class="grid-x grid-padding-x">
 
 	        <div class="form-container section-title cell text-left">
-	            <h1>Dashboard</h1>
+	            
+                    <div class="grid-x grid-padding-x">
+
+                        <div class="small-6 cell text-left">
+                            <div class="align-vertical">
+                                <h1>Dashboard</h1>
+                            </div>
+                        </div>
+
+                        <div class="small-6 cell text-right align-self-middle">
+                            <div class="align-vertical">
+                                @if ($fiat === 'eur')
+                                    <div class="value"> {{$totals['BTC']}}BTC / {{ $totals['EUR'] }}€ </div>
+                                @elseif ($fiat === 'usd')
+                                    <div class="value"> {{$totals['BTC']}}BTC / ${{ $totals['USD'] }} </div>
+                                @endif
+                            </div>
+                        </div>
+
+                    </div>
 	        </div>
 
 	        <div class="form-container cell text-center portfolio">
