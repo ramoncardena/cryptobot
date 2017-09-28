@@ -34,12 +34,16 @@ class HomeController extends Controller
         {
 
            $this->user = Auth::user();
+           
+           $settings = settings();
 
            $coins = $this->getCoins();
 
            $totals = $this->getTotals($coins);
 
-           return view('home', ['coins' => $coins, 'totals' => $totals]);
+           $fiat = $settings->fiat;
+
+           return view('home', ['coins' => $coins, 'totals' => $totals, 'fiat' => $fiat]);
 
         }
         else {

@@ -16,6 +16,9 @@ Route::get('/', function () {
 });
 
 Route::get('/settings', 'SettingsController@index');
+Route::get('/settings/{setting}', 'SettingsController@show');
+Route::patch('/settings', 'SettingsController@update');
+Route::post('/settings', 'SettingsController@store');
 
 Auth::routes();
 

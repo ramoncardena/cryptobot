@@ -14,13 +14,14 @@
 // Modules
 @import "modules/offcanvas";
 @import "modules/global";
+@import "modules/nav";
 
 // Partials
-@import "partials/nav";
 @import "partials/home";
 @import "partials/login";
 @import "partials/register";
 @import "partials/dashboard";
+@import "partials/settings";
 
 // Vue Components
 

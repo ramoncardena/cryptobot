@@ -25,11 +25,23 @@
                 CryptoBot
             </div>
             <ul class="vertical menu text-center">
+                <li><a href="#">Dashboard</a></li>
                 <li><a href="#">Watchlist</a></li>
                 <li><a href="#">Orders</a></li>
                 <li><a href="#">Trades</a></li>
                 <li><a href="#">Documentation</a></li>
                 <li><a href="#">Support</a></li>
+                <li><a href="#">Settings</a></li>
+                <li>
+                    <a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                        Logout
+                    </a>
+
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        {{ csrf_field() }}
+                    </form>
+                </li>
+
             </ul>
 
       </div>

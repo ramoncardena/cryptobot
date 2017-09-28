@@ -13,10 +13,10 @@
             <div class="large-2 cell text-right">
                 Value (BTC)
             </div>
-            <div class="large-2 cell text-right">
+            <div v-if="fiat === 'eur'" class="large-2 cell text-right">
                 Value (EUR)
             </div>
-            <div class="large-2 cell text-right">
+            <div v-if="fiat === 'usd'" class="large-2 cell text-right">
                 Value (USD)
             </div>
             <div class="large-1 cell text-right">
@@ -39,10 +39,10 @@
             <div class="large-2 cell text-right">
                 {{ valuebtc}}BTC
             </div>
-            <div class="large-2 cell text-right">
+            <div v-if="fiat === 'eur'" class="large-2 cell text-right">
                 {{ valueeur }}€
             </div>
-            <div class="large-2 cell text-right">
+            <div v-if="fiat === 'usd'" class="large-2 cell text-right">
                 ${{ valueusd }}
             </div>
         </div>
@@ -57,7 +57,7 @@
                  
             }
         },
-        props: ['type', 'coin', 'logo', 'price', 'balance', 'valuebtc', 'valueeur', 'valueusd'],
+        props: ['type', 'coin', 'logo', 'price', 'balance', 'valuebtc', 'valueeur', 'valueusd', 'fiat', 'gain'],
         mounted() {
             console.log('Component balance mounted.')
         }

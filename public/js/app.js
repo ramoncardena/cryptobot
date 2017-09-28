@@ -51361,8 +51361,11 @@ window.Vue = __webpack_require__(9);
 
 
 var app = new Vue({
+
     name: 'App',
+
     el: '#app',
+
     components: { Balance: __WEBPACK_IMPORTED_MODULE_0__components_Balance_vue___default.a }
 });
 
@@ -51526,7 +51529,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {};
     },
-    props: ['type', 'coin', 'logo', 'price', 'balance', 'valuebtc', 'valueeur', 'valueusd'],
+    props: ['type', 'coin', 'logo', 'price', 'balance', 'valuebtc', 'valueeur', 'valueusd', 'fiat', 'gain'],
     mounted: function mounted() {
         console.log('Component balance mounted.');
     }
@@ -51541,7 +51544,41 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _vm.type === "header"
-    ? _c("div", { staticClass: "balance" }, [_vm._m(0)])
+    ? _c("div", { staticClass: "balance" }, [
+        _c("div", { staticClass: "grid-x grid-margin-x header" }, [
+          _c("div", { staticClass: "large-1 cell text-left" }, [
+            _vm._v("\n            Coin\n        ")
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "large-2 cell text-right" }, [
+            _vm._v("\n            Balance\n        ")
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "large-2 cell text-right" }, [
+            _vm._v("\n            Price\n        ")
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "large-2 cell text-right" }, [
+            _vm._v("\n            Value (BTC)\n        ")
+          ]),
+          _vm._v(" "),
+          _vm.fiat === "eur"
+            ? _c("div", { staticClass: "large-2 cell text-right" }, [
+                _vm._v("\n            Value (EUR)\n        ")
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.fiat === "usd"
+            ? _c("div", { staticClass: "large-2 cell text-right" }, [
+                _vm._v("\n            Value (USD)\n        ")
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _c("div", { staticClass: "large-1 cell text-right" }, [
+            _vm._v("\n            Gain\n        ")
+          ])
+        ])
+      ])
     : _c("div", { staticClass: "balance" }, [
         _c("div", { staticClass: "grid-x grid-margin-x" }, [
           _c("div", { staticClass: "large-1 cell text-left" }, [
@@ -51564,52 +51601,21 @@ var render = function() {
             _vm._v("\n            " + _vm._s(_vm.valuebtc) + "BTC\n        ")
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "large-2 cell text-right" }, [
-            _vm._v("\n            " + _vm._s(_vm.valueeur) + "€\n        ")
-          ]),
+          _vm.fiat === "eur"
+            ? _c("div", { staticClass: "large-2 cell text-right" }, [
+                _vm._v("\n            " + _vm._s(_vm.valueeur) + "€\n        ")
+              ])
+            : _vm._e(),
           _vm._v(" "),
-          _c("div", { staticClass: "large-2 cell text-right" }, [
-            _vm._v("\n            $" + _vm._s(_vm.valueusd) + "\n        ")
-          ])
+          _vm.fiat === "usd"
+            ? _c("div", { staticClass: "large-2 cell text-right" }, [
+                _vm._v("\n            $" + _vm._s(_vm.valueusd) + "\n        ")
+              ])
+            : _vm._e()
         ])
       ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "grid-x grid-margin-x header" }, [
-      _c("div", { staticClass: "large-1 cell text-left" }, [
-        _vm._v("\n            Coin\n        ")
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "large-2 cell text-right" }, [
-        _vm._v("\n            Balance\n        ")
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "large-2 cell text-right" }, [
-        _vm._v("\n            Price\n        ")
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "large-2 cell text-right" }, [
-        _vm._v("\n            Value (BTC)\n        ")
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "large-2 cell text-right" }, [
-        _vm._v("\n            Value (EUR)\n        ")
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "large-2 cell text-right" }, [
-        _vm._v("\n            Value (USD)\n        ")
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "large-1 cell text-right" }, [
-        _vm._v("\n            Gain\n        ")
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {

@@ -14151,6 +14151,39 @@ section#dashboard .portfolio {
   margin-top: 20px;
 }
 
+section#settings .section-title {
+  background-color: #F7F8FB;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+section#settings .section-title h1 {
+  color: #FF7276;
+}
+
+section#settings .settings-area {
+  margin-top: 20px;
+}
+
+section#settings .align-vertical {
+  display: inline;
+}
+
+section#settings .align-vertical button {
+  margin: 0;
+  display: inline;
+  vertical-align: middle;
+}
+
+section#settings .align-vertical h1 {
+  display: inline;
+  vertical-align: middle;
+}
+
+section#settings .input-group-label {
+  color: #FF7276;
+  background-color: transparent;
+}
+
 .balance {
   font-size: 1rem;
   color: #8a8a8a;
