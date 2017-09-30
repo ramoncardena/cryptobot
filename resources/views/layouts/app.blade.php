@@ -15,6 +15,7 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
+    <div class="loader"></div>
     <div class="off-canvas-wrapper">
         <div class="off-canvas position-right" id="offCanvas" data-off-canvas data-auto-focus="false">
 
@@ -107,6 +108,10 @@
     <script src="{{ asset('js/app.js') }}"></script>
     <script>
         $(document).foundation();
+
+        $(document).ready(function() {
+            $(".loader").fadeOut("slow");
+        });
     </script>
 
 </div>

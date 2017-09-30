@@ -11,12 +11,13 @@ let mix = require('laravel-mix');
  |
  */
 
+
  mix.sass('resources/assets/sass/app.scss', 'public/css')
  .js('resources/assets/js/app.js', 'public/js')
  .browserSync({
-    proxy: 'bitbot.app',
-    open: false,
-    files: [
+ 	proxy: 'bitbot.app',
+ 	open: false,
+ 	files: [
  	'app/**/*.php',
  	'resources/views/**/*.php',
  	'packages/mixdinternet/frontend/src/**/*.php',
