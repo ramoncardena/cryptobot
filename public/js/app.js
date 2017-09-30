@@ -51523,13 +51523,46 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'Balance',
     data: function data() {
         return {};
     },
-    props: ['type', 'coin', 'logo', 'price', 'balance', 'valuebtc', 'valueeur', 'valueusd', 'fiat', 'gain'],
+    props: ['type', 'coin', 'logo', 'price', 'balance', 'valuebtc', 'valueeur', 'valueusd', 'fiat'],
     mounted: function mounted() {
         console.log('Component balance mounted.');
     }
@@ -51572,46 +51605,107 @@ var render = function() {
             ? _c("div", { staticClass: "large-2 cell text-right" }, [
                 _vm._v("\n            Value (USD)\n        ")
               ])
-            : _vm._e(),
-          _vm._v(" "),
-          _c("div", { staticClass: "large-1 cell text-right" }, [
-            _vm._v("\n            Gain\n        ")
-          ])
+            : _vm._e()
         ])
       ])
     : _c("div", { staticClass: "balance" }, [
-        _c("div", { staticClass: "grid-x grid-margin-x" }, [
-          _c("div", { staticClass: "large-1 cell text-left" }, [
-            _c("img", {
-              staticClass: "coin-logo",
-              attrs: { src: _vm.logo, alt: "Cryptocoin logo" }
-            }),
-            _vm._v(" " + _vm._s(_vm.coin) + "\n        ")
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "large-2 cell text-right" }, [
-            _vm._v("\n            " + _vm._s(_vm.balance) + "\n        ")
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "large-2 cell text-right" }, [
-            _vm._v("\n             " + _vm._s(_vm.price) + "BTC\n        ")
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "large-2 cell text-right" }, [
-            _vm._v("\n            " + _vm._s(_vm.valuebtc) + "BTC\n        ")
-          ]),
-          _vm._v(" "),
-          _vm.fiat === "eur"
-            ? _c("div", { staticClass: "large-2 cell text-right" }, [
-                _vm._v("\n            " + _vm._s(_vm.valueeur) + "€\n        ")
+        _c("div", { staticClass: "grid-container fluid" }, [
+          _c("div", { staticClass: "grid-x align-middle" }, [
+            _c("div", { staticClass: "medium-auto cell" }, [
+              _c("div", { staticClass: "coin-logo" }, [
+                _c("img", {
+                  staticClass: "coin-logo",
+                  attrs: { src: _vm.logo, alt: "Cryptocoin logo" }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "coin-name" }, [
+                _vm._v(
+                  "\n                    " +
+                    _vm._s(_vm.coin) +
+                    "\n                "
+                )
               ])
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.fiat === "usd"
-            ? _c("div", { staticClass: "large-2 cell text-right" }, [
-                _vm._v("\n            $" + _vm._s(_vm.valueusd) + "\n        ")
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "small-6 medium-auto cell" }, [
+              _c("div", { staticClass: "balance-title" }, [
+                _vm._v("\n                    Balance\n                ")
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "coin-balance" }, [
+                _vm._v(
+                  "\n                    " +
+                    _vm._s(_vm.balance) +
+                    "\n                "
+                )
               ])
-            : _vm._e()
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "small-6 medium-auto cell" }, [
+              _c("div", { staticClass: "balance-title" }, [
+                _vm._v("\n                    Price\n                ")
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "coin-price" }, [
+                _vm._v(
+                  "\n                    " +
+                    _vm._s(_vm.price) +
+                    "BTC\n                "
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "small-6 medium-auto cell" }, [
+              _c("div", { staticClass: "balance-title" }, [
+                _vm._v("\n                    Value (BTC)\n                ")
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "btc-value" }, [
+                _vm._v(
+                  "\n                    " +
+                    _vm._s(_vm.valuebtc) +
+                    "BTC\n                "
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _vm.fiat === "eur"
+              ? _c("div", { staticClass: "small-6 medium-auto cell" }, [
+                  _c("div", { staticClass: "balance-title" }, [
+                    _vm._v(
+                      "\n                    Value (EUR)\n                "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "eur-value" }, [
+                    _vm._v(
+                      "\n                    " +
+                        _vm._s(_vm.valueeur) +
+                        "€\n                "
+                    )
+                  ])
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.fiat === "usd"
+              ? _c("div", { staticClass: "small-6 medium-auto cell" }, [
+                  _c("div", { staticClass: "balance-title" }, [
+                    _vm._v(
+                      "\n                    Value (USD)\n                "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "usd-value" }, [
+                    _vm._v(
+                      "\n                    $" +
+                        _vm._s(_vm.valueusd) +
+                        "\n                "
+                    )
+                  ])
+                ])
+              : _vm._e()
+          ])
         ])
       ])
 }

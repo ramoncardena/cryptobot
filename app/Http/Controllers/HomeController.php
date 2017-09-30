@@ -124,7 +124,7 @@ class HomeController extends Controller
             $bittrex = new Bittrex($this->user->settings()->get('bittrex_key'), $this->user->settings()->get('bittrex_secret'));
             if ($coin['Name'] != 'BTC') {
                 $ticker = $bittrex->getTicker('BTC-'. $coin['Name']);
-                $coin['Price'] = round($ticker->result->Last, 8);
+                $coin['Price'] = number_format($ticker->result->Last, 8);
                 return $coin;
             } else {
                 $coin['Price'] = $coin['Balance'];
@@ -138,7 +138,7 @@ class HomeController extends Controller
             $bittrex = new Bittrex($this->user->settings()->get('bittrex_key'), $this->user->settings()->get('bittrex_secret'));
             if ($coin['Name'] != 'BTC') {
                 $ticker = $bittrex->getTicker('BTC-'. $coin['Name']);
-                $coin['BTC-Value'] = round($coin['Balance'] * $ticker->result->Last, 8);
+                $coin['BTC-Value'] = number_format($coin['Balance'] * $ticker->result->Last, 8);
                 return $coin;
             } else {
                 $coin['BTC-Value'] = $coin['Balance'];
@@ -151,7 +151,7 @@ class HomeController extends Controller
         $coins = $coins->map(function ($coin) {
             $bitcoin = new Bitcoin();
             $btcTicker = $bitcoin->getTicker();
-            $coin['EUR-Value'] = round($coin['BTC-Value'] * $btcTicker->EUR->last, 2);
+            $coin['EUR-Value'] = number_format($coin['BTC-Value'] * $btcTicker->EUR->last, 2);
             return $coin; 
         });
 
@@ -159,7 +159,7 @@ class HomeController extends Controller
         $coins = $coins->map(function ($coin) {
             $bitcoin = new Bitcoin();
             $btcTicker = $bitcoin->getTicker();
-            $coin['USD-Value'] = round($coin['BTC-Value'] * $btcTicker->USD->last, 2);
+            $coin['USD-Value'] = number_format($coin['BTC-Value'] * $btcTicker->USD->last, 2);
             return $coin; 
         });
 

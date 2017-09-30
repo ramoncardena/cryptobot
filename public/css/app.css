@@ -14202,12 +14202,35 @@ section#settings .input-group-label {
   color: #8a8a8a;
 }
 
+.balance .cell {
+  border: 0px solid #000;
+}
+
 .balance .header .cell {
   color: #009ACE;
 }
 
-.balance .coin-logo {
+.balance .col-coin .coin-logo {
   height: 20px;
   margin: 2px;
+}
+
+.balance hr {
+  margin: 0;
+}
+
+.balance .coin-logo {
+  height: 35px;
+  padding: 2px;
+}
+
+.balance .coin-name {
+  font-size: 1.1rem;
+}
+
+.balance .balance-title {
+  color: #cacaca;
+  font-size: 0.8rem;
+  font-style: italic;
 }
 
