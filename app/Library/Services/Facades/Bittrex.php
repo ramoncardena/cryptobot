@@ -1,5 +1,5 @@
 <?php
-namespace Library\Services\Bittrex\Facades;
+namespace App\Library\Services\Facades;
 use Illuminate\Support\Facades\Facade;
 class Bittrex extends Facade {
     /**

@@ -231,7 +231,8 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-        'Bittrex' => Library\Services\Bittrex\Facades\Bittrex::class,
+        'Bittrex' => App\Library\Services\Facades\Bittrex::class,
+        'Bitcoin' => App\Library\Services\Facades\Bitcoin::class,
 
     ],
 

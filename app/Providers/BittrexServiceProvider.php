@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Library\Services\Bittrex\Bittrex;
 
 class BittrexServiceProvider extends ServiceProvider
 {
@@ -22,12 +23,9 @@ class BittrexServiceProvider extends ServiceProvider
      * @return void
      */
     public function register()
-    {
+    { 
         $this->app->bind('bittrex', function () {
-            return new Bittrex(
-                config('services.bittrex.key'),
-                config('services.bittrex.secret')
-            );
+            return new Bittrex();
         });
     }
     

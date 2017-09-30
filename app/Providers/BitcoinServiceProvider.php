@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Library\Services\Bitcoin\Bitcoin;
 
 class BitcoinServiceProvider extends ServiceProvider
 {

@@ -29,6 +29,14 @@ class Bittrex
             'base_uri' => 'https://bittrex.com/api/v1.1/'
         ]);
     }
+
+    public function setAPI($key, $secret)
+    {
+        $this->key = $key;
+        $this->secret = $secret;
+        return $this;
+    }
+
     /**
      * @return object
      */

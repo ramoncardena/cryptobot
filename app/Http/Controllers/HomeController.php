@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use App\Library\Services\Bittrex\Bittrex;
-use App\Library\Services\Bitcoin\Bitcoin;
+use App\Library\Services\Facades\Bittrex;
+use App\Library\Services\Facades\Bitcoin;
 
 class HomeController extends Controller
 {
@@ -21,7 +21,6 @@ class HomeController extends Controller
         $this->middleware('auth');
     }
 
-
     /**
      * Show the application dashboard.
      *
@@ -33,18 +32,18 @@ class HomeController extends Controller
         if (Auth::check()) 
         {
 
-           $this->user = Auth::user();
-           
-           $settings = settings();
+            $this->user = Auth::user();
 
-           $coins = $this->getCoins();
+            Bittrex::setAPI($this->user->settings()->get('bittrex_key'), $this->user->settings()->get('bittrex_secret'));
 
-           $totals = $this->getTotals($coins);
+            $coins = $this->getCoins();
 
-           $fiat = $settings->fiat;
+            $totals = $this->getTotals($coins);
+
+            $fiat = $this->user->settings()->fiat;
 
 
-           return view('home', ['coins' => $coins, 'totals' => $totals, 'fiat' => $fiat]);
+            return view('home', ['coins' => $coins, 'totals' => $totals, 'fiat' => $fiat]);
 
         }
         else {
@@ -56,9 +55,7 @@ class HomeController extends Controller
 
         if ( $coin != 'BTC') {
 
-            $bittrex = new Bittrex($this->user->settings()->get('bittrex_key'), $this->user->settings()->get('bittrex_secret'));
-
-            $market = $bittrex->getMarkets();
+            $market = Bittrex::getMarkets();
 
             $market = collect($market->result);
 
@@ -90,12 +87,8 @@ class HomeController extends Controller
      */
     protected function getCoins() {
 
-        $bittrex = new Bittrex($this->user->settings()->get('bittrex_key'), $this->user->settings()->get('bittrex_secret'));
-
-        $this->getCoinLogo('BTC');
-
         // Get balance
-        $balances= $bittrex->getBalances();
+        $balances= Bittrex::getBalances();
         $balanceCollection = collect($balances->result);
         
         // Split Currency and Balance arrays
@@ -121,9 +114,9 @@ class HomeController extends Controller
         }
 
         $coins = $coins->map(function ($coin) {
-            $bittrex = new Bittrex($this->user->settings()->get('bittrex_key'), $this->user->settings()->get('bittrex_secret'));
+
             if ($coin['Name'] != 'BTC') {
-                $ticker = $bittrex->getTicker('BTC-'. $coin['Name']);
+                $ticker = Bittrex::getTicker('BTC-'. $coin['Name']);
                 $coin['Price'] = number_format($ticker->result->Last, 8);
                 return $coin;
             } else {
@@ -135,9 +128,9 @@ class HomeController extends Controller
 
         // Get value in BTC for each item in portfolio (ignoring BTC item)
         $coins = $coins->map(function ($coin) {
-            $bittrex = new Bittrex($this->user->settings()->get('bittrex_key'), $this->user->settings()->get('bittrex_secret'));
+            
             if ($coin['Name'] != 'BTC') {
-                $ticker = $bittrex->getTicker('BTC-'. $coin['Name']);
+                $ticker = Bittrex::getTicker('BTC-'. $coin['Name']);
                 $coin['BTC-Value'] = number_format($coin['Balance'] * $ticker->result->Last, 8);
                 return $coin;
             } else {
@@ -149,16 +142,14 @@ class HomeController extends Controller
 
         // Get value in EUR for each item in portfolio
         $coins = $coins->map(function ($coin) {
-            $bitcoin = new Bitcoin();
-            $btcTicker = $bitcoin->getTicker();
+            $btcTicker = Bitcoin::getTicker();
             $coin['EUR-Value'] = number_format($coin['BTC-Value'] * $btcTicker->EUR->last, 2);
             return $coin; 
         });
 
         // Get value in USD for each item in portfolio
         $coins = $coins->map(function ($coin) {
-            $bitcoin = new Bitcoin();
-            $btcTicker = $bitcoin->getTicker();
+            $btcTicker = Bitcoin::getTicker();
             $coin['USD-Value'] = number_format($coin['BTC-Value'] * $btcTicker->USD->last, 2);
             return $coin; 
         });
@@ -168,8 +159,6 @@ class HomeController extends Controller
             $coin['LogoUrl'] = $this->getCoinLogo($coin['Name']);
             return $coin;
         });
-
-
         return $coins;
     }
 
