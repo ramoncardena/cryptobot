@@ -28,7 +28,7 @@
             <ul class="vertical menu text-center">
                 <li><a href="/home">Dashboard</a></li>
                 <li><a href="#">Watchlist</a></li>
-                <li><a href="#">Orders</a></li>
+                <li><a href="/orders">Orders</a></li>
                 <li><a href="#">Trades</a></li>
                 <li><a href="#">Documentation</a></li>
                 <li><a href="#">Support</a></li>

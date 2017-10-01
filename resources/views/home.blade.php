@@ -32,7 +32,7 @@
 
 	        <div class="large-8 cell text-center portfolio form-container">
 
-                    @foreach ($coins as $coin)
+                @foreach ($coins as $coin)
                     <balance 
                         type="item" 
                         coin="{{ $coin['Name'] }}" 

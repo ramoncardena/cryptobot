@@ -14207,6 +14207,39 @@ section#settings .input-group-label {
   background-color: transparent;
 }
 
+section#orders .section-title {
+  background-color: #F7F8FB;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+section#orders .section-title h1 {
+  color: #FF7276;
+}
+
+section#orders .orders-area {
+  margin-top: 20px;
+}
+
+section#orders .align-vertical {
+  display: inline;
+}
+
+section#orders .align-vertical button {
+  margin: 0;
+  display: inline;
+  vertical-align: middle;
+}
+
+section#orders .align-vertical h1 {
+  display: inline;
+  vertical-align: middle;
+}
+
+section#orders .input-group-label {
+  color: #FF7276;
+  background-color: transparent;
+}
+
 .balance {
   font-size: 1rem;
   color: #8a8a8a;

@@ -223,7 +223,7 @@ class Bittrex
      *
      * @return object
      */
-    public function getOpenOrders($market = 'BTC-LTC')
+    public function getOpenOrders($market = '')
     {
         return $this->authRequest('market/getopenorders', "market={$market}");
     }

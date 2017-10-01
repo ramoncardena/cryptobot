@@ -18,6 +18,8 @@ Route::get('/settings/{setting}', 'SettingsController@show');
 Route::patch('/settings', 'SettingsController@update');
 Route::post('/settings', 'SettingsController@store');
 
+Route::get('/orders', 'OrdersController@index');
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
