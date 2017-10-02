@@ -1,0 +1,48 @@
+.order {
+	font-size: 0.8rem;
+	color: $dark-gray;
+
+	.cell {
+		border: 0px solid #000;
+	}
+
+	.header {
+		.cell {
+			color: get-color(primary);
+		}
+	}
+
+	.col-coin {
+		.coin-logo {
+			height: 20px;
+			margin: 2px;
+		}
+	}
+	hr {
+		margin: 0;
+	}
+	.coin-logo {
+		height: 35px;
+		padding: 2px;
+	}
+	.coin-name {
+		font-size: 1.1rem;
+	}
+	.order-title {
+		color: get-color(primary);
+		font-size: 0.8rem;
+		font-style: italic;
+	}
+	.order-pair {
+		color: get-color(secondary);
+		font-weight: 400;
+	}
+	.order-cancel{
+		color: get-color(alert);
+		font-size: 1.3rem;
+		.button {
+			padding: 0;
+			margin: 0;
+		}
+	}
+}

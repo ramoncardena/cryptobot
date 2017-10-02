@@ -7,7 +7,9 @@
 
 require('./bootstrap');
 
+require('./components/order');
 require('./components/balance');
+
 
 window.Vue = require('vue');
 
@@ -18,6 +20,7 @@ window.Vue = require('vue');
  */
 
 Vue.component('balance', require('./components/Balance.vue'));
+Vue.component('order', require('./components/Order.vue'));
 
 //const app = new Vue({
 //    el: '#app'

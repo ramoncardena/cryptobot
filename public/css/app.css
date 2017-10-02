@@ -14277,3 +14277,55 @@ section#orders .input-group-label {
   font-style: italic;
 }
 
+.order {
+  font-size: 0.8rem;
+  color: #8a8a8a;
+}
+
+.order .cell {
+  border: 0px solid #000;
+}
+
+.order .header .cell {
+  color: #009ACE;
+}
+
+.order .col-coin .coin-logo {
+  height: 20px;
+  margin: 2px;
+}
+
+.order hr {
+  margin: 0;
+}
+
+.order .coin-logo {
+  height: 35px;
+  padding: 2px;
+}
+
+.order .coin-name {
+  font-size: 1.1rem;
+}
+
+.order .order-title {
+  color: #009ACE;
+  font-size: 0.8rem;
+  font-style: italic;
+}
+
+.order .order-pair {
+  color: #FF7276;
+  font-weight: 400;
+}
+
+.order .order-cancel {
+  color: #cc4b37;
+  font-size: 1.3rem;
+}
+
+.order .order-cancel .button {
+  padding: 0;
+  margin: 0;
+}
+

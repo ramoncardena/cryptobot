@@ -1,27 +1,5 @@
 <template>
-    <div class="balance" v-if="type === 'header' " >
-        <div class="grid-x grid-margin-x header">
-            <div class="large-1 cell text-left">
-                Coin
-            </div>
-            <div class="large-2 cell text-right">
-                Balance
-            </div>
-            <div class="large-2 cell text-right">
-                Price
-            </div>
-            <div class="large-2 cell text-right">
-                Value (BTC)
-            </div>
-            <div v-if="fiat === 'eur'" class="large-2 cell text-right">
-                Value (EUR)
-            </div>
-            <div v-if="fiat === 'usd'" class="large-2 cell text-right">
-                Value (USD)
-            </div>
-        </div>
-    </div>
-    <div class="balance" v-else>
+ <div class="balance">
         <div class="grid-container fluid">
             <div class="grid-x align-middle">
                 <div class="medium-auto cell">
