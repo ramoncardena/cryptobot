@@ -6,7 +6,8 @@
 
     <div class="grid-container fluid">
         <div class="grid-x grid-padding-x align-middle align-left">
-
+            
+            <!-- Header -->
             <div class="small-12 cell form-container section-title text-left">
 
                 <div class="grid-x grid-padding-x">
@@ -24,22 +25,25 @@
                     </div>
                 </div>
             </div>
-            <!-- Trade Panel -->
-            <div class="small-12 cell ">
-                <tradepanel></tradepanel>   
-            </div>
             
+            <!-- Trade Panel, Active Trades and History -->
             <div class="small-12 cell text-center portfolio form-container">
                     <div class="trades-area">
                         <ul class="accordion" data-accordion data-multi-expand="true" data-allow-all-closed="true">
+                            <li class="accordion-item is-active" data-accordion-item>
+                                <a href="#" class="accordion-title">Trade Panel</a>
+                                <div class="accordion-content" data-tab-content >
+                                    <tradepanel></tradepanel>
+                                </div>
+                            </li>
                             <li class="accordion-item" data-accordion-item>
-                                <a href="#" class="accordion-title">Open Trades</a>
+                                <a href="#" class="accordion-title">Active Trades</a>
                                 <div class="accordion-content" data-tab-content >
 
                                 </div>
                             </li>
                             <li class="accordion-item" data-accordion-item>
-                                <a href="#" class="accordion-title">Trades History</a>
+                                <a href="#" class="accordion-title">Trade History</a>
                                 <div class="accordion-content" data-tab-content >
 
                                 </div>

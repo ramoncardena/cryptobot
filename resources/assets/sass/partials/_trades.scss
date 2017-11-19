@@ -26,31 +26,28 @@ section#trades{
 		background-color: transparent;
 	}
 	#cryptologo {
-		width: 4.5rem;
+		width: 3rem;
 	}
-	.high-low, .ask, .bid, .last {
+	.high-low, .ask, .bid, .last, .volume {
 		font-weight: bold;
 	}
 
 	.ask {
 		color: get-color(alert);
-		font-size: 1.4rem;
 		background-color: #F7F8FB;
-		padding-top: 0.5rem;
-		margin-top: 1rem;
-		margin-bottom: 1rem;
+		padding-top: 0.2rem;
+		margin-top: 0.5rem;
+		margin-bottom: 0.5rem;
 
 	}
 	.bid {
 		color: get-color(success);
-		font-size: 1.4rem;
 		background-color: #F7F8FB;
-		padding-top: 0.5rem;
-		margin-top: 1rem;
-		margin-bottom: 1rem;
+		padding-top: 0.2rem;
+		margin-top: 0.5rem;
+		margin-bottom: 0.5rem;
 	}
-	.last {
-		font-size: 1.3rem;
+	.last, .volume {
 		margin-bottom: 1rem;
 	}
 

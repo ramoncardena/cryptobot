@@ -14268,36 +14268,35 @@ section#trades .input-group-label {
 }
 
 section#trades #cryptologo {
-  width: 4.5rem;
+  width: 3rem;
 }
 
 section#trades .high-low,
 section#trades .ask,
 section#trades .bid,
-section#trades .last {
+section#trades .last,
+section#trades .volume {
   font-weight: bold;
 }
 
 section#trades .ask {
   color: #cc4b37;
-  font-size: 1.4rem;
   background-color: #F7F8FB;
-  padding-top: 0.5rem;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
+  padding-top: 0.2rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
 section#trades .bid {
   color: #3adb76;
-  font-size: 1.4rem;
   background-color: #F7F8FB;
-  padding-top: 0.5rem;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
+  padding-top: 0.2rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
-section#trades .last {
-  font-size: 1.3rem;
+section#trades .last,
+section#trades .volume {
   margin-bottom: 1rem;
 }
 

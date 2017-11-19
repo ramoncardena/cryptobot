@@ -52235,8 +52235,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'tradepanel',
@@ -52246,6 +52244,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             autofilled: false,
             loadingpairs: false,
             loadingprice: false,
+            marketLoaded: false,
             priceselected: "",
             exchange: "",
             selected: "",
@@ -52253,8 +52252,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             bittrexcoin: [],
             marketsummary: [],
             errors: [],
+            basecurrency: "",
             coinname: { 'long': '', 'short': '' },
             coinlogo: "",
+            volume: 0,
             price: 0,
             last: 0,
             bid: 0,
@@ -52271,7 +52272,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     computed: {
         highC: function highC() {
-            return this.high.toFixed(8);
+            return this.high.toFixed(8).toString();
         },
         lowC: function lowC() {
             return this.low.toFixed(8);
@@ -52284,6 +52285,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         lastC: function lastC() {
             return this.last.toFixed(8);
+        },
+        volumeC: function volumeC() {
+            return this.volume.toFixed(4);
         },
         stoploss: function stoploss() {
             var sl = this.price - this.price * (this.slpercent / 100);
@@ -52347,6 +52351,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     _this2.ask = _this2.marketsummary.Ask;
                     _this2.high = _this2.marketsummary.High;
                     _this2.low = _this2.marketsummary.Low;
+                    _this2.volume = _this2.marketsummary.BaseVolume;
 
                     // Set price for current pair to 0
                     _this2.price = 0;
@@ -52377,8 +52382,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 }).then(function (response) {
                     var res = response.data[0];
                     _this3.coinname = { 'long': res.MarketCurrencyLong, 'short': res.MarketCurrency };
-
                     _this3.coinlogo = res.LogoUrl;
+                    _this3.basecurrency = res.BaseCurrency;
+                    _this3.marketLoaded = true;
                     _this3.loadingpairs = false;
                     console.log("Success coin info: " + _this3.coinname);
                 }).catch(function (e) {
@@ -52402,6 +52408,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     _this4.last = _this4.marketsummary.Last;
                     _this4.bid = _this4.marketsummary.Bid;
                     _this4.ask = _this4.marketsummary.Ask;
+                    _this4.volume = _this4.marketsummary.BaseVolume;
 
                     if (pricetype.toLowerCase() == "last") {
                         _this4.price = _this4.last;
@@ -52835,170 +52842,170 @@ var render = function() {
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "cell large-5 small-order-1 large-order-2" }, [
-      _c("div", { staticClass: "grid-x grid-margin-x" }, [
-        _c("div", { staticClass: "cell small-12 text-center" }, [
-          _c("img", {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.coinlogo != "",
-                expression: "coinlogo != ''"
-              }
-            ],
-            attrs: {
-              id: "cryptologo",
-              src: _vm.coinlogo,
-              alt: _vm.coinname.short
-            },
-            model: {
-              value: _vm.coinlogo,
-              callback: function($$v) {
-                _vm.coinlogo = $$v
-              },
-              expression: "coinlogo"
+      _c(
+        "div",
+        {
+          directives: [
+            {
+              name: "show",
+              rawName: "v-show",
+              value: _vm.marketLoaded,
+              expression: "marketLoaded"
             }
-          }),
-          _vm._v(" "),
-          _c(
-            "p",
-            {
+          ],
+          staticClass: "grid-x grid-margin-x"
+        },
+        [
+          _c("div", { staticClass: "cell small-12 text-center" }, [
+            _c("img", {
               directives: [
                 {
                   name: "show",
                   rawName: "v-show",
-                  value: _vm.coinname != "",
-                  expression: "coinname != ''"
+                  value: _vm.coinlogo != "",
+                  expression: "coinlogo != ''"
                 }
               ],
-              staticClass: "h2",
+              attrs: {
+                id: "cryptologo",
+                src: _vm.coinlogo,
+                alt: _vm.coinname.short
+              },
               model: {
-                value: _vm.coinname,
+                value: _vm.coinlogo,
                 callback: function($$v) {
-                  _vm.coinname = $$v
+                  _vm.coinlogo = $$v
                 },
-                expression: "coinname"
+                expression: "coinlogo"
               }
-            },
-            [_vm._v(" " + _vm._s(_vm.coinname.long) + " ")]
-          ),
-          _vm._v(" "),
-          _c(
-            "p",
-            {
-              directives: [
-                {
-                  name: "show",
-                  rawName: "v-show",
-                  value: _vm.coinname != "",
-                  expression: "coinname != ''"
+            }),
+            _vm._v(" "),
+            _c(
+              "p",
+              {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.coinname != "",
+                    expression: "coinname != ''"
+                  }
+                ],
+                staticClass: "h3",
+                model: {
+                  value: _vm.coinname,
+                  callback: function($$v) {
+                    _vm.coinname = $$v
+                  },
+                  expression: "coinname"
                 }
-              ],
-              staticClass: "h4",
-              model: {
-                value: _vm.coinname,
-                callback: function($$v) {
-                  _vm.coinname = $$v
-                },
-                expression: "coinname"
-              }
-            },
-            [_vm._v(" " + _vm._s(_vm.coinname.short) + " ")]
-          )
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "cell small-6 text-center" }, [
-          _c(
-            "div",
-            {
-              staticClass: "high-low",
-              model: {
-                value: _vm.highC,
-                callback: function($$v) {
-                  _vm.highC = $$v
-                },
-                expression: "highC"
-              }
-            },
-            [_vm._v(" " + _vm._s(_vm.highC))]
-          ),
+              },
+              [
+                _vm._v(" " + _vm._s(_vm.coinname.long) + " "),
+                _c("small", [_vm._v(" " + _vm._s(_vm.coinname.short) + " ")])
+              ]
+            )
+          ]),
           _vm._v(" "),
-          _c("div", [_vm._v("24h High")])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "cell small-6 text-center" }, [
-          _c(
-            "div",
-            {
-              staticClass: "high-low",
-              model: {
-                value: _vm.lowC,
-                callback: function($$v) {
-                  _vm.lowC = $$v
-                },
-                expression: "lowC"
-              }
-            },
-            [_vm._v(" " + _vm._s(_vm.lowC) + " ")]
-          ),
+          _c("div", { staticClass: "cell small-12 text-center volume" }, [
+            _c(
+              "div",
+              {
+                model: {
+                  value: _vm.volumeC,
+                  callback: function($$v) {
+                    _vm.volumeC = $$v
+                  },
+                  expression: "volumeC"
+                }
+              },
+              [_vm._v(" Vol: " + _vm._s(_vm.volumeC))]
+            )
+          ]),
           _vm._v(" "),
-          _c("div", [_vm._v("24h Low")])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "cell small-6 text-center bid" }, [
-          _c(
-            "div",
-            {
-              model: {
-                value: _vm.bidC,
-                callback: function($$v) {
-                  _vm.bidC = $$v
-                },
-                expression: "bidC"
-              }
-            },
-            [_vm._v(" " + _vm._s(_vm.bidC))]
-          ),
+          _c("div", { staticClass: "cell small-6 text-center" }, [
+            _c(
+              "div",
+              {
+                staticClass: "high-low",
+                model: {
+                  value: _vm.highC,
+                  callback: function($$v) {
+                    _vm.highC = $$v
+                  },
+                  expression: "highC"
+                }
+              },
+              [_vm._v(" H: " + _vm._s(_vm.highC))]
+            )
+          ]),
           _vm._v(" "),
-          _c("div", [_vm._v("BID")])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "cell small-6 text-center ask" }, [
-          _c(
-            "div",
-            {
-              model: {
-                value: _vm.askC,
-                callback: function($$v) {
-                  _vm.askC = $$v
-                },
-                expression: "askC"
-              }
-            },
-            [_vm._v(" " + _vm._s(_vm.askC) + " ")]
-          ),
+          _c("div", { staticClass: "cell small-6 text-center" }, [
+            _c(
+              "div",
+              {
+                staticClass: "high-low",
+                model: {
+                  value: _vm.lowC,
+                  callback: function($$v) {
+                    _vm.lowC = $$v
+                  },
+                  expression: "lowC"
+                }
+              },
+              [_vm._v(" L: " + _vm._s(_vm.lowC) + " ")]
+            )
+          ]),
           _vm._v(" "),
-          _c("div", [_vm._v("ASK")])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "cell small-12 text-center last" }, [
-          _c(
-            "div",
-            {
-              model: {
-                value: _vm.lastC,
-                callback: function($$v) {
-                  _vm.lastC = $$v
-                },
-                expression: "lastC"
-              }
-            },
-            [_vm._v(" " + _vm._s(_vm.lastC) + " ")]
-          ),
+          _c("div", { staticClass: "cell small-6 text-center bid" }, [
+            _c(
+              "div",
+              {
+                model: {
+                  value: _vm.bidC,
+                  callback: function($$v) {
+                    _vm.bidC = $$v
+                  },
+                  expression: "bidC"
+                }
+              },
+              [_vm._v(" BID: " + _vm._s(_vm.bidC))]
+            )
+          ]),
           _vm._v(" "),
-          _c("div", [_vm._v("Last")])
-        ])
-      ])
+          _c("div", { staticClass: "cell small-6 text-center ask" }, [
+            _c(
+              "div",
+              {
+                model: {
+                  value: _vm.askC,
+                  callback: function($$v) {
+                    _vm.askC = $$v
+                  },
+                  expression: "askC"
+                }
+              },
+              [_vm._v(" ASK: " + _vm._s(_vm.askC) + " ")]
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "cell small-12 text-center last" }, [
+            _c(
+              "div",
+              {
+                model: {
+                  value: _vm.lastC,
+                  callback: function($$v) {
+                    _vm.lastC = $$v
+                  },
+                  expression: "lastC"
+                }
+              },
+              [_vm._v(" LAST: " + _vm._s(_vm.lastC) + " ")]
+            )
+          ])
+        ]
+      )
     ])
   ])
 }

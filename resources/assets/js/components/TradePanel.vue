@@ -98,36 +98,34 @@
         </div>
 
         <div class="cell large-5 small-order-1 large-order-2">
-            <div class="grid-x grid-margin-x">
+            <div v-show="marketLoaded" class="grid-x grid-margin-x">
+                <!-- Coin Info -->
                 <div class="cell small-12 text-center">
                     <img id="cryptologo" v-show="coinlogo != ''" v-model="coinlogo" :src="coinlogo" :alt="coinname.short">
-                    <p v-show="coinname != ''" v-model="coinname" class="h2"> {{ coinname.long }} </p>
-                    <p v-show="coinname != ''" v-model="coinname" class="h4"> {{ coinname.short }} </p>
+                    <p v-show="coinname != ''" v-model="coinname" class="h3"> {{ coinname.long }} <small> {{ coinname.short }} </small></p>
+                </div>
+                <div class="cell small-12 text-center volume">
+                    <div v-model="volumeC"> Vol: {{ volumeC }}</div>
                 </div>
                 <!-- 24h High -->
                 <div class="cell small-6 text-center">
-                    <div v-model="highC" class="high-low"> {{ highC }}</div>
-                    <div>24h High</div>
+                    <div v-model="highC" class="high-low"> H: {{ highC }}</div>
                 </div>
                 <!-- 24h Low -->
                 <div class="cell small-6 text-center">
-                    <div v-model="lowC" class="high-low"> {{ lowC }} </div>
-                    <div>24h Low</div>
+                    <div v-model="lowC" class="high-low"> L: {{ lowC }} </div>
                 </div>
                 <!-- Bid -->
                 <div class="cell small-6 text-center bid">
-                    <div v-model="bidC"> {{ bidC }}</div>
-                    <div>BID</div>
+                    <div v-model="bidC"> BID: {{ bidC }}</div>
                 </div>
                 <!-- Ask -->
                 <div class="cell small-6 text-center ask">
-                    <div v-model="askC"> {{ askC }} </div>
-                    <div>ASK</div>
+                    <div v-model="askC"> ASK: {{ askC }} </div> 
                 </div>
                 <!-- Last -->
                 <div class="cell small-12 text-center last">
-                    <div v-model="lastC"> {{ lastC }} </div>
-                    <div>Last</div>
+                    <div v-model="lastC"> LAST: {{ lastC }} </div>
                 </div>
             </div>
         </div>
@@ -144,6 +142,7 @@ export default {
             autofilled: false,
             loadingpairs: false,
             loadingprice: false,
+            marketLoaded: false,
             priceselected: "",
             exchange: "",
             selected: "",
@@ -151,8 +150,10 @@ export default {
             bittrexcoin: [],
             marketsummary: [],
             errors: [],
+            basecurrency: "",
             coinname: { 'long':'','short':''},
             coinlogo: "",
+            volume: 0,
             price: 0,
             last: 0,
             bid: 0,
@@ -170,7 +171,7 @@ export default {
     },
     computed: {
         highC: function() {
-            return this.high.toFixed(8);
+            return this.high.toFixed(8).toString();
         },
         lowC: function() {
             return this.low.toFixed(8) ;
@@ -183,6 +184,9 @@ export default {
         },
         lastC: function() {
             return this.last.toFixed(8);
+        },
+        volumeC: function() {
+            return this.volume.toFixed(4);
         },
         stoploss: function() {
             let sl = this.price - (this.price * (this.slpercent / 100));
@@ -247,6 +251,7 @@ export default {
                     this.ask = this.marketsummary.Ask;
                     this.high = this.marketsummary.High;
                     this.low = this.marketsummary.Low;
+                    this.volume = this.marketsummary.BaseVolume;
 
                     // Set price for current pair to 0
                     this.price = 0;
@@ -277,8 +282,9 @@ export default {
                 .then(response => {
                     let res = response.data[0];  
                     this.coinname = {'long': res.MarketCurrencyLong, 'short':res.MarketCurrency};
-
                     this.coinlogo = res.LogoUrl;
+                    this.basecurrency = res.BaseCurrency;
+                    this.marketLoaded = true;
                     this.loadingpairs = false;
                     console.log("Success coin info: " + this.coinname );
                 })
@@ -303,6 +309,7 @@ export default {
                     this.last = this.marketsummary.Last;
                     this.bid = this.marketsummary.Bid;
                     this.ask = this.marketsummary.Ask;
+                    this.volume = this.marketsummary.BaseVolume;
 
                     if (pricetype.toLowerCase() == "last") {
                         this.price =  this.last;
