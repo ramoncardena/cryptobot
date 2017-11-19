@@ -14240,6 +14240,71 @@ section#orders .input-group-label {
   background-color: transparent;
 }
 
+section#trades .section-title {
+  background-color: #F7F8FB;
+  border-bottom: 1px solid #e6e6e6;
+  margin-bottom: 1rem;
+}
+
+section#trades .section-title h1 {
+  color: #FF7276;
+}
+
+section#trades .input-group #price-select {
+  width: 5rem;
+  margin: 0;
+  height: auto;
+  min-width: 0;
+  color: #FF7276;
+}
+
+section#trades .input-group input[type=number] {
+  text-align: right;
+}
+
+section#trades .input-group-label {
+  color: #FF7276;
+  background-color: transparent;
+}
+
+section#trades #cryptologo {
+  width: 4.5rem;
+}
+
+section#trades .high-low,
+section#trades .ask,
+section#trades .bid,
+section#trades .last {
+  font-weight: bold;
+}
+
+section#trades .ask {
+  color: #cc4b37;
+  font-size: 1.4rem;
+  background-color: #F7F8FB;
+  padding-top: 0.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+section#trades .bid {
+  color: #3adb76;
+  font-size: 1.4rem;
+  background-color: #F7F8FB;
+  padding-top: 0.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+section#trades .last {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+}
+
+section#trades .trades-area {
+  margin-top: 2rem;
+}
+
 .balance {
   font-size: 1rem;
   color: #8a8a8a;

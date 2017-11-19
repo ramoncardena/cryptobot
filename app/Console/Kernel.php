@@ -13,7 +13,10 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        Commands\BitfinexWebsocketCommand::class,
+        Commands\CoincapWebsocketCommand::class,
+        Commands\CryptocompareWebsocketCommand::class,
+        Commands\BittrexStreamCommand::class
     ];
 
     /**

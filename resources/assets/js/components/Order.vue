@@ -112,7 +112,7 @@
 
    <script>
    export default {
-    name: 'Order',
+    name: 'order',
     data: () => {
         return {
         }

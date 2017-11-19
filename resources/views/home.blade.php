@@ -10,7 +10,7 @@
 
 	        <div class="form-container section-title cell text-left">
 	            
-                    <div class="grid-x grid-padding-x">
+                    <div class="grid-x grid-padding-x align-middle">
 
                         <div class="small-4 cell text-left">
                             <div class="align-vertical">
@@ -30,7 +30,7 @@
                     </div>
 	        </div>
 
-	        <div class="large-8 cell text-center portfolio form-container">
+	        <div class="large-10 cell text-center portfolio form-container">
 
                 @foreach ($coins as $coin)
                     <balance 

@@ -72,7 +72,7 @@ class Bittrex
      *
      * @return object
      */
-    public function getMarketSummary($market = 'BTC-LTC')
+    public function getMarketSummary($market = '')
     {
         return $this->request('public/getmarketsummary', "market={$market}");
     }

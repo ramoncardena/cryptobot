@@ -176,13 +176,12 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\BittrexServiceProvider::class,
+        App\Providers\BitcoinServiceProvider::class,
 
         /*
          * User Service Providers...
          */
-
-        App\Providers\BittrexServiceProvider::class,
-        App\Providers\BitcoinServiceProvider::class,
     ],
 
     /*

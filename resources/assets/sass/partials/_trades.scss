@@ -1,0 +1,60 @@
+section#trades{
+
+	.section-title {
+		background-color: $title-background;
+		border-bottom: 1px solid $light-gray;
+		margin-bottom: 1rem;
+		h1 {
+			color: get-color(secondary);
+		}	
+	}
+
+	.input-group {
+		#price-select {
+			width: 5rem;
+			margin: 0;
+			height: auto;
+			min-width: 0;
+			color: get-color(secondary);
+		}
+		input[type=number] {
+			text-align: right;
+		}
+	}
+	.input-group-label {
+		color: get-color(secondary);
+		background-color: transparent;
+	}
+	#cryptologo {
+		width: 4.5rem;
+	}
+	.high-low, .ask, .bid, .last {
+		font-weight: bold;
+	}
+
+	.ask {
+		color: get-color(alert);
+		font-size: 1.4rem;
+		background-color: #F7F8FB;
+		padding-top: 0.5rem;
+		margin-top: 1rem;
+		margin-bottom: 1rem;
+
+	}
+	.bid {
+		color: get-color(success);
+		font-size: 1.4rem;
+		background-color: #F7F8FB;
+		padding-top: 0.5rem;
+		margin-top: 1rem;
+		margin-bottom: 1rem;
+	}
+	.last {
+		font-size: 1.3rem;
+		margin-bottom: 1rem;
+	}
+
+	.trades-area {
+		margin-top: 2rem;
+	}
+}

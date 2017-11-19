@@ -62,7 +62,7 @@
 
 <script>
 export default {
-    name: 'Balance',
+    name: 'balance',
     data: () => {
         return {
 

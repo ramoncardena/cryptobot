@@ -16,3 +16,8 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('bittrexapi/getpairs', 'BittrexApiController@getpairs');
+Route::get('bittrexapi/getmarketsummary/{pair}', 'BittrexApiController@getmarketsummary');
+Route::get('bittrexapi/getmarkets/{coin}', 'BittrexApiController@getmarkets');
+

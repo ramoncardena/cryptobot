@@ -22,14 +22,15 @@
             <!-- Menu -->
 
             <div class="menu-title text-center">
-                <img class="logo" width="60" src="<?php echo asset('storage/cryptobot-logo-white-200px.png') ?>"/>
+                <img class="logo" width="60" src="<?php echo Storage::url('cryptobot-logo-white-200px.png')?>"/>
                 CryptoBot
+                <!--asset('storage/cryptobot-logo-white-200px.png') -->
             </div>
             <ul class="vertical menu text-center">
                 <li><a href="/home">Dashboard</a></li>
                 <li><a href="#">Watchlist</a></li>
                 <li><a href="/orders">Orders</a></li>
-                <li><a href="#">Trades</a></li>
+                <li><a href="/trades">Trades</a></li>
                 <li><a href="#">Documentation</a></li>
                 <li><a href="#">Support</a></li>
                 <li><a href="/settings">Settings</a></li>

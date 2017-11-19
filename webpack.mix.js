@@ -15,7 +15,7 @@ let mix = require('laravel-mix');
  mix.sass('resources/assets/sass/app.scss', 'public/css')
  .js('resources/assets/js/app.js', 'public/js')
  .browserSync({
- 	proxy: 'bitbot.app',
+ 	proxy: 'cryptobot.app',
  	open: false,
  	files: [
  	'app/**/*.php',
