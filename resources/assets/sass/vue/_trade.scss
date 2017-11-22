@@ -1,0 +1,66 @@
+.trade {
+	font-size: 0.8rem;
+	color: $dark-gray;
+
+	.cell {
+		border: 0px solid #000;
+	}
+
+	.header {
+		.cell {
+			color: get-color(primary);
+		}
+	}
+
+	.col-coin {
+		.coin-logo {
+			height: 20px;
+			margin: 2px;
+		}
+	}
+	hr {
+		margin: 0;
+	}
+	.coin-logo {
+		height: 35px;
+		padding: 2px;
+	}
+	.coin-name {
+		font-size: 1.1rem;
+	}
+	.trade-title {
+		color: get-color(primary);
+		font-size: 0.8rem;
+		font-style: italic;
+	}
+	.trade-status{
+		color: get-color(success);
+		font-weight: 400;
+	}
+	.trade-cancel{
+		color: get-color(alert);
+		font-size: 1.3rem;
+		.button {
+			padding: 0;
+			margin: 0;
+		}
+	}
+	.Opened {
+		color: get-color(success);
+	}
+	.Closed {
+		color: $dark-gray;
+	}
+	.refresh-icon {
+		font-size: 1rem;
+		color: get-color(primary);
+
+	}
+	.cancel-icon {
+		font-size: 1rem;
+		color: get-color(alert);
+	}
+	.icons-area {
+
+	}
+}

@@ -31,21 +31,21 @@
                     <div class="trades-area">
                         <ul class="accordion" data-accordion data-multi-expand="true" data-allow-all-closed="true">
                             <li class="accordion-item is-active" data-accordion-item>
-                                <a href="#" class="accordion-title">Trade Panel</a>
+                                <a href="#" class="accordion-title">Trading Panel</a>
                                 <div class="accordion-content" data-tab-content >
                                     <tradepanel></tradepanel>
                                 </div>
                             </li>
-                            <li class="accordion-item" data-accordion-item>
+                            <li class="accordion-item is-active" data-accordion-item>
                                 <a href="#" class="accordion-title">Active Trades</a>
                                 <div class="accordion-content" data-tab-content >
-
+                                    <tradelist type="opened" :trades="{{ $tradesOpened }}"></tradelist>
                                 </div>
                             </li>
                             <li class="accordion-item" data-accordion-item>
                                 <a href="#" class="accordion-title">Trade History</a>
                                 <div class="accordion-content" data-tab-content >
-
+                                    <tradelist type="history" :trades="{{ $tradesHistory }}"></tradelist>
                                 </div>
                             </li>
                         </ul>

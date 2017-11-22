@@ -87,11 +87,16 @@
                        
 
                         
-                        <li><a href="/settings"><i class="fa fa-cog" aria-hidden="true"></i></a></li>
+                        <li>
+                            <a href="/settings"><i class="fa fa-cog" aria-hidden="true"></i></a>
+                        </li>
+
+                        <li>
+                            <a href="#"><i class="fa fa-bell-o" aria-hidden="true"></i><span class="badge alert">14</span></a>
+                        </li>
 
                         <li>
                             <a href="#"><i class="fa fa-th" aria-hidden="true" data-toggle="offCanvas"></i></a>
-                      
                         </li>
                         
 

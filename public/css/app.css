@@ -14393,3 +14393,73 @@ section#trades .trades-area {
   margin: 0;
 }
 
+.trade {
+  font-size: 0.8rem;
+  color: #8a8a8a;
+}
+
+.trade .cell {
+  border: 0px solid #000;
+}
+
+.trade .header .cell {
+  color: #009ACE;
+}
+
+.trade .col-coin .coin-logo {
+  height: 20px;
+  margin: 2px;
+}
+
+.trade hr {
+  margin: 0;
+}
+
+.trade .coin-logo {
+  height: 35px;
+  padding: 2px;
+}
+
+.trade .coin-name {
+  font-size: 1.1rem;
+}
+
+.trade .trade-title {
+  color: #009ACE;
+  font-size: 0.8rem;
+  font-style: italic;
+}
+
+.trade .trade-status {
+  color: #3adb76;
+  font-weight: 400;
+}
+
+.trade .trade-cancel {
+  color: #cc4b37;
+  font-size: 1.3rem;
+}
+
+.trade .trade-cancel .button {
+  padding: 0;
+  margin: 0;
+}
+
+.trade .Opened {
+  color: #3adb76;
+}
+
+.trade .Closed {
+  color: #8a8a8a;
+}
+
+.trade .refresh-icon {
+  font-size: 1rem;
+  color: #009ACE;
+}
+
+.trade .cancel-icon {
+  font-size: 1rem;
+  color: #cc4b37;
+}
+

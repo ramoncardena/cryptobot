@@ -19,7 +19,8 @@ Route::patch('/settings', 'SettingsController@update');
 Route::post('/settings', 'SettingsController@store');
 
 Route::get('/orders', 'OrdersController@index');
-Route::get('/trades', 'TradesController@index');
+Route::get('/trades', 'TradeController@index');
+Route::post('/trades', 'TradeController@store');
 
 Auth::routes();
 

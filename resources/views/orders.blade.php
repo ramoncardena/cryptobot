@@ -29,7 +29,7 @@
 	        <div class="cell text-center portfolio form-container">
                 <div class="orders-area">
                     <ul class="accordion" data-accordion data-multi-expand="true" data-allow-all-closed="true">
-                        <li class="accordion-item" data-accordion-item>
+                        <li class="accordion-item is-active" data-accordion-item>
                             <a href="#" class="accordion-title">Open Orders</a>
                             <div class="accordion-content" data-tab-content >
                             <?php $header = true ?>
