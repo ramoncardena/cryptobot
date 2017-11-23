@@ -1,16 +1,6 @@
 .trade {
-	font-size: 0.8rem;
+	font-size: 1rem;
 	color: $dark-gray;
-
-	.cell {
-		border: 0px solid #000;
-	}
-
-	.header {
-		.cell {
-			color: get-color(primary);
-		}
-	}
 
 	.col-coin {
 		.coin-logo {
@@ -18,9 +8,11 @@
 			margin: 2px;
 		}
 	}
-	hr {
-		margin: 0;
+	.dataTable {
+	    margin-top: 2rem;
+	    margin-bottom: 1rem;
 	}
+
 	.coin-logo {
 		height: 35px;
 		padding: 2px;
@@ -30,8 +22,10 @@
 	}
 	.trade-title {
 		color: get-color(primary);
-		font-size: 0.8rem;
+		font-weight: normal;
+		font-size: 1rem;
 		font-style: italic;
+		text-align: center;
 	}
 	.trade-status{
 		color: get-color(success);
@@ -60,7 +54,5 @@
 		font-size: 1rem;
 		color: get-color(alert);
 	}
-	.icons-area {
 
-	}
 }

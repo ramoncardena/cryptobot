@@ -15,11 +15,10 @@ class CreateExchangesTable extends Migration
     {
         Schema::create('exchanges', function (Blueprint $table) {
             $table->increments('id');
-            $table->text('name');
-            $table->text('url');
-            $table->text('key');
-            $table->text('secret');
             $table->timestamps();
+            $table->string('name');
+            $table->string('url');
+            $table->decimal('fee', 3,2);
         });
     }
 

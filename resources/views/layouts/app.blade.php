@@ -13,6 +13,7 @@
     <!-- Styles -->
     <link href="node_modules/open-iconic/font/css/open-iconic-foundation.css" rel="stylesheet">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/datatables.css') }}" rel="stylesheet">
 </head>
 <body>
     <div class="loader"></div>

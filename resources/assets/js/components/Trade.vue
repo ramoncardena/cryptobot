@@ -34,7 +34,7 @@
 
                 <div class="small-6 medium-auto cell">
                     <div class="trade-reamining">
-                        {{ ammount }}
+                        {{ amount }}
                     </div>
                 </div>
 
@@ -97,7 +97,7 @@
     'position', 
     'pair', 
     'price', 
-    'ammount', 
+    'amount', 
     'total', 
     'stop-loss',
     'take-profit',

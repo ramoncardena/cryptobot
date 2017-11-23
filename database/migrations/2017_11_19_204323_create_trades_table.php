@@ -25,12 +25,11 @@ class CreateTradesTable extends Migration
             $table->string('exchange');
             $table->string('pair');
             $table->decimal('price', 20, 10);
-            $table->decimal('ammount', 20, 10);
+            $table->decimal('amount', 20, 10);
             $table->decimal('total', 20, 10);
             $table->decimal('profit', 20, 10);
             $table->decimal('stop_loss', 20, 10);
             $table->decimal('take_profit', 20, 10);
-
         });
     }
 

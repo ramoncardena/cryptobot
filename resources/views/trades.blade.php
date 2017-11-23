@@ -25,7 +25,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Trade Panel, Active Trades and History -->
             <div class="small-12 cell text-center portfolio form-container">
                     <div class="trades-area">
@@ -39,7 +39,7 @@
                             <li class="accordion-item is-active" data-accordion-item>
                                 <a href="#" class="accordion-title">Active Trades</a>
                                 <div class="accordion-content" data-tab-content >
-                                    <tradelist type="opened" :trades="{{ $tradesOpened }}"></tradelist>
+                                    <tradelist2 type="opened" :trades="{{ $tradesOpened }}"></tradelist2>
                                 </div>
                             </li>
                             <li class="accordion-item" data-accordion-item>
@@ -53,5 +53,4 @@
                 </div>
         </div>
     </section>
-
     @endsection

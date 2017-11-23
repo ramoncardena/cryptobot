@@ -70,7 +70,7 @@
                     :position = "trade.position"
                     :pair = "trade.pair"
                     :price = "trade.price"
-                    :ammount = "trade.ammount"
+                    :amount = "trade.amount"
                     :total = "trade.total"
                     :stop-loss = "trade.stop_loss"
                     :take-profit = "trade.take_profit"

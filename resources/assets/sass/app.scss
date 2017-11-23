@@ -1,7 +1,6 @@
 
 // Fonts
 @import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);
-
 @import "node_modules/font-awesome/scss/font-awesome";
 
 // Variables
@@ -15,6 +14,7 @@
 @import "modules/offcanvas";
 @import "modules/global";
 @import "modules/nav";
+@import "modules/datatable";
 
 // Partials
 @import "partials/home";

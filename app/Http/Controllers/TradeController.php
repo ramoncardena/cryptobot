@@ -91,13 +91,14 @@ class TradeController extends Controller
             $this->trade->exchange = $request->exchange;
             $this->trade->pair = $request->pair;
             $this->trade->price = $request->price;
-            $this->trade->ammount = floatval($request->ammount);
+            $this->trade->amount = floatval($request->amount);
             $this->trade->total = $request->total;
             $this->trade->stop_loss = $request->stop_loss;
             $this->trade->take_profit = $request->take_profit;
+            $this->trade->profit = 0;
             $this->trade->save();
 
-            $order = $this->newOrder($request->exchange, $request->pair, $request->price,$request->ammount, $request->position);
+            $order = $this->newOrder($request->exchange, $request->pair, $request->price,$request->amount, $request->position);
             
             $this->trade->order_id = $order['order_id'];
             $this->trade->stop_id = $order['stop_id'];
@@ -157,7 +158,7 @@ class TradeController extends Controller
         //
     }
 
-    private function newOrder($exchange, $pair, $price, $ammount, $position) 
+    private function newOrder($exchange, $pair, $price, $amount, $position) 
     {
         $stop = new Stop;
         $profit = new Profit;
@@ -171,7 +172,7 @@ class TradeController extends Controller
         $stop->exchange = $exchange;
         $stop->pair = $pair;
         $stop->price = $price;
-        $stop->ammount = $ammount;
+        $stop->amount = $amount;
         if ($position = 'long') {
             $stop->type = 'sell';
         }
@@ -186,7 +187,7 @@ class TradeController extends Controller
         $profit->exchange = $exchange;
         $profit->pair = $pair;
         $profit->price = $price;
-        $profit->ammount = $ammount;
+        $profit->amount = $amount;
         if ($position = 'long') {
             $profit->type = 'sell';
         }

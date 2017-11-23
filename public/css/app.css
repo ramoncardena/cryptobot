@@ -14020,6 +14020,61 @@ a.thumbnail image {
   margin-left: 15px;
 }
 
+.dataTable {
+  margin-bottom: 2rem !important;
+  margin-top: 1rem !important;
+}
+
+div.dataTables_wrapper {
+  margin-bottom: 2rem !important;
+}
+
+.dataTable-header {
+  text-align: center;
+}
+
+div.dataTables_length {
+  float: left;
+}
+
+div.dataTables_filter {
+  float: right;
+}
+
+div.dataTables_info {
+  float: left;
+}
+
+/* Header cells */
+
+table.trade thead th {
+  text-align: center;
+  font-weight: 200;
+}
+
+/* Table style */
+
+table.trade {
+  width: 100%;
+  clear: both;
+  margin-bottom: 2rem;
+  margin-top: 1rem;
+}
+
+table.trade td,
+table.trade th {
+  padding: 5px;
+  border: 1px solid #fff;
+}
+
+.icons-area {
+  width: 3rem;
+}
+
+.icons-area .fa-cog {
+  font-size: 0.8rem;
+}
+
 section#home html,
 section#home body {
   height: 100vh;
@@ -14394,16 +14449,8 @@ section#trades .trades-area {
 }
 
 .trade {
-  font-size: 0.8rem;
+  font-size: 1rem;
   color: #8a8a8a;
-}
-
-.trade .cell {
-  border: 0px solid #000;
-}
-
-.trade .header .cell {
-  color: #009ACE;
 }
 
 .trade .col-coin .coin-logo {
@@ -14411,8 +14458,9 @@ section#trades .trades-area {
   margin: 2px;
 }
 
-.trade hr {
-  margin: 0;
+.trade .dataTable {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
 }
 
 .trade .coin-logo {
@@ -14426,8 +14474,10 @@ section#trades .trades-area {
 
 .trade .trade-title {
   color: #009ACE;
-  font-size: 0.8rem;
+  font-weight: normal;
+  font-size: 1rem;
   font-style: italic;
+  text-align: center;
 }
 
 .trade .trade-status {

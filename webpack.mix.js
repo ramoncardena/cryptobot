@@ -13,6 +13,10 @@ let mix = require('laravel-mix');
 
 
  mix.sass('resources/assets/sass/app.scss', 'public/css')
+ .styles([
+    'node_modules/datatables.net-zf/css/dataTables.foundation.css',
+    'node_modules/datatables.net-responsive-zf/css/responsive.foundation.css'
+], 'public/css/datatables.css')
  .js('resources/assets/js/app.js', 'public/js')
  .browserSync({
  	proxy: 'cryptobot.app',

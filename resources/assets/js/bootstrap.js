@@ -11,8 +11,15 @@ try {
     window.$ = window.jQuery = require('jquery');
 
     require('foundation-sites/dist/js/foundation'); // 'foundation.min' can also be used if you like
+    require( 'datatables.net/js/jquery.dataTables' );
+    require( 'datatables.net-zf/js/dataTables.foundation' );
+    require( 'datatables.net-responsive/js/dataTables.responsive' );
+    require( 'datatables.net-responsive-zf/js/responsive.foundation' );
+    //require('footable/dist/footable');
 
 } catch (e) {}
+
+
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests

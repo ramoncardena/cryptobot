@@ -21,7 +21,7 @@ class CreateStopsTable extends Migration
             $table->string('exchange');
             $table->string('pair');
             $table->decimal('price', 20, 10);
-            $table->decimal('ammount', 20, 10);
+            $table->decimal('amount', 20, 10);
             $table->string('type');
         });
     }

@@ -40,11 +40,11 @@
                           
                     </div>
                 </div>
-                <!-- Ammount -->
+                <!-- Amount -->
                 <div class="large-6 cell">
                     <div class="input-group">
-                        <span class="input-group-label">Ammount</span>
-                        <input v-model="ammount" class="input-group-field" type="number">
+                        <span class="input-group-label">Amount</span>
+                        <input v-model="amount" class="input-group-field" type="number">
                     </div>
                 </div>
                 <!-- Total -->
@@ -146,8 +146,11 @@ export default {
     data() {
         return {
             autofilled: false,
-            filledByAmmount: false,
+            stopAtTotal: false,
+            stopAtAmount: false,
+            filledByAmount: false,
             filledByTotal: false,
+            filledByPrice: false,
             loadingpairs: false,
             loadingprice: false,
             marketLoaded: false,
@@ -161,17 +164,18 @@ export default {
             basecurrency: "",
             coinname: { 'long':'','short':''},
             coinlogo: "",
-            volume: 0,
-            price: 0,
-            last: 0,
-            bid: 0,
-            ask: 0,
-            high: 0,
-            low: 0,
+            volume: 0.0000,
+            price: 0.00000000,
+            last: 0.00000000,
+            bid: 0.00000000,
+            ask: 0.00000000,
+            high: 0.00000000,
+            low: 0.00000000,
             tppercent: 0,
             slpercent: 0,
-            ammount: 0,
-            total: 0
+            amount: 0.00000000,
+            total: 0.00000000,
+            fee: 0.00
         }
     },
     mounted() {
@@ -179,10 +183,10 @@ export default {
     },
     computed: {
         highC: function() {
-            return this.high.toFixed(8).toString();
+            return this.high.toFixed(8);
         },
         lowC: function() {
-            return this.low.toFixed(8) ;
+            return this.low.toFixed(8);
         },
         bidC: function() {
             return this.bid.toFixed(8);
@@ -197,52 +201,122 @@ export default {
             return this.volume.toFixed(4);
         },
         stoploss: function() {
-            let sl = this.price - (this.price * (this.slpercent / 100));
-            return sl;
+            let sl = parseFloat(this.price) - (parseFloat(this.price) * (parseFloat(this.slpercent) / 100));
+            return sl.toFixed(8);
         },
         takeprofit: function() {
-            let tp = this.price + (this.price * (this.tppercent / 100));
-            return tp;
+            let tp = parseFloat(this.price) + (parseFloat(this.price) * (parseFloat(this.tppercent) / 100));
+            return tp.toFixed(8);
         }
     },
     watch: {
-        ammount: function () {
-            if (!this.filledByTotal) {
+        amount: function () {
+            console.log("Watch amount fired! (amount=" + this.amount + ")");
+            if (this.stopAtAmount == false) {
+                this.stopAtTotal = true;
                 this.updateTotal();
             }
             else {
-                this.filledByTotal = false;
+                this.stopAtAmount = false;
             }
         },
         total: function() {
-            if (!this.filledByAmmount) {
-                this.updateAmmount();
+            console.log("Watch total fired! (total=" + this.total + ")");
+            if (this.stopAtTotal == false) {
+                this.stopAtAmount = true;
+                this.updateAmount();
              }
             else {
-                this.filledByAmmount = false;
+                this.stopAtTotal = false;
             }
         },
         price: function() {
+            this.stopAtTotal = true;
             this.updateTotal();
         }
     },
     methods: {
+        updateAmount: (function () {
+            let amount = ( parseFloat(this.total) - (parseFloat(this.total) * parseFloat(this.fee) / 100) )/parseFloat(this.price);
+            console.log("Amount:" + parseFloat(amount));
+            return this.amount = parseFloat(amount).toFixed(8);
+        }),
+        updateTotal: (function () {
+            let total = (parseFloat(this.amount) * parseFloat(this.price));
+            total = total + (total * parseFloat(this.fee) / 100);
+            console.log("Total: " + parseFloat(total));
+            return this.total = parseFloat(total).toFixed(8);
+        }),
+
+        updateprice(exchange, pair, pricetype) {
+            this.loadingprice = true;
+            
+            if (exchange.toLowerCase() == 'bittrex') {
+                let uri = '/api/bittrexapi/getmarketsummary/' + pair;
+                axios(uri, {
+                    method: 'GET',
+                })
+                .then(response => {
+                    this.marketsummary=response.data[0];  
+                    this.last = parseFloat(this.marketsummary.Last);
+                    this.bid = parseFloat(this.marketsummary.Bid);
+                    this.ask = parseFloat(this.marketsummary.Ask);
+                    this.volume = parseFloat(this.marketsummary.BaseVolume);
+
+                    if (pricetype.toLowerCase() == "last") {
+                        this.price =  parseFloat(this.last);
+                    }
+                    else if (pricetype.toLowerCase() == "bid") {
+                        this.price =  parseFloat(this.bid);
+                    }
+                    else if (pricetype.toLowerCase() == "ask") {
+                        this.price =  parseFloat(this.ask);
+                    }
+                    this.loadingprice = false;
+                })
+                .catch(e => {
+                    this.errors.push(e);
+                    this.loadingprice = false;
+                    console.log("Error: " + e.message);
+                })
+            }
+            else {
+                this.loadingprice = false;
+            }
+        },
         getpairs(exchange) {
             this.loadingpairs = true;
+
+            //Bittrex
             if (exchange.toLowerCase() == 'bittrex') {
                 axios('/api/bittrexapi/getpairs', {
                     method: 'GET',
                 })
                 .then(response => {
                     this.bittrexpairs=response.data;  
-                    this.loadingpairs = false;
                     console.log("Success: " + exchange + " pairs!");
+
+                    // Get fee fot the exchange
+                    axios('/api/exchange/' + exchange.toLowerCase() + '/fee', {
+                        method: 'GET',
+                    })
+                    .then(response => {
+                        this.fee = parseFloat(response.data);
+                        console.log("Success: " + exchange + " fee! (" + this.fee + ")");
+                        this.loadingpairs = false;
+                    })
+                    .catch(e => {
+                        this.errors.push(e);
+                        this.loadingpairs = false;
+                        console.log("Error: " +  e.message);
+                    });
+
                 })
                 .catch(e => {
                     this.errors.push(e);
                     this.loadingpairs = false;
-                    console.log("Error: " + this.errors.push(e));
-                })
+                    console.log("Error: " +  e.message);
+                });
             }
         },
         getmarketsummary(exchange, pair) {
@@ -254,15 +328,16 @@ export default {
                 })
                 .then(response => {
                     this.marketsummary=response.data[0];  
-                    this.last = this.marketsummary.Last;
-                    this.bid = this.marketsummary.Bid;
-                    this.ask = this.marketsummary.Ask;
-                    this.high = this.marketsummary.High;
-                    this.low = this.marketsummary.Low;
-                    this.volume = this.marketsummary.BaseVolume;
+                    this.last =  parseFloat(this.marketsummary.Last);
+                    this.bid =  parseFloat(this.marketsummary.Bid);
+                    this.ask =  parseFloat(this.marketsummary.Ask);
+                    this.high =  parseFloat(this.marketsummary.High);
+                    this.low =  parseFloat(this.marketsummary.Low);
+                    this.volume =  parseFloat(this.marketsummary.BaseVolume);
 
                     // Set price for current pair to 0
-                    this.price = 0;
+                    this.stopAtTotal = true;
+                    this.price = parseFloat(0.00000000);
 
                     // Get coin info from api call getmarkets
                     this.getmarkets(exchange, pair);
@@ -303,55 +378,8 @@ export default {
                 })
             }
         },
-
-        updateprice(exchange, pair, pricetype) {
-            this.loadingprice = true;
-            
-            if (exchange.toLowerCase() == 'bittrex') {
-                let uri = '/api/bittrexapi/getmarketsummary/' + pair;
-                axios(uri, {
-                    method: 'GET',
-                })
-                .then(response => {
-                    this.marketsummary=response.data[0];  
-                    this.last = this.marketsummary.Last;
-                    this.bid = this.marketsummary.Bid;
-                    this.ask = this.marketsummary.Ask;
-                    this.volume = this.marketsummary.BaseVolume;
-
-                    if (pricetype.toLowerCase() == "last") {
-                        this.price =  this.last;
-                    }
-                    else if (pricetype.toLowerCase() == "bid") {
-                        this.price =  this.bid;
-                    }
-                    else if (pricetype.toLowerCase() == "ask") {
-                        this.price =  this.ask;
-                    }
-                    this.loadingprice = false;
-                })
-                .catch(e => {
-                    this.errors.push(e);
-                    this.loadingprice = false;
-                    console.log("Error: " + e.message);
-                })
-            }
-            else {
-                this.loadingprice = false;
-            }
-        },
-        updateAmmount: (function () {
-            console.log("Updating ammount...");
-            this.filledByAmmount = true;
-            return this.ammount = this.total/this.price;
-        }),
-        updateTotal: (function () {
-            console.log("Updating total...");
-            this.filledByTotal = true;
-            return this.total = this.ammount * this.price;
-        }),
         openLong () {
-            let uri = 'status=opened&position=long' + '&exchange=' + this.exchange + '&pair=' + this.pairselected + '&price=' + this.price + '&ammount=' + this.ammount + '&total=' + this.total + '&stop_loss=' + this.stoploss + '&take_profit=' + this.takeprofit;
+            let uri = 'status=opened&position=long' + '&exchange=' + this.exchange + '&pair=' + this.pairselected + '&price=' + this.price + '&amount=' + this.amount + '&total=' + this.total + '&stop_loss=' + this.stoploss + '&take_profit=' + this.takeprofit;
             axios.post('/trades', uri).then(function (response) {
                 console.log(response);
                  window.location.href = '/trades';

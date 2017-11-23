@@ -21,3 +21,6 @@ Route::get('bittrexapi/getpairs', 'BittrexApiController@getpairs');
 Route::get('bittrexapi/getmarketsummary/{pair}', 'BittrexApiController@getmarketsummary');
 Route::get('bittrexapi/getmarkets/{coin}', 'BittrexApiController@getmarkets');
 
+
+Route::get('exchange/{name}/fee', 'ExchangeController@getfee');
+

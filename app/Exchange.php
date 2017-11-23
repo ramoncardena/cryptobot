@@ -6,5 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Exchange extends Model
 {
-    // Comment
+     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'name', 'url', 'fee'
+    ];
 }
