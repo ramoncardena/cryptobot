@@ -96,6 +96,9 @@
 
         <!-- Information panel -->
         <div class="cell large-5 small-order-1 large-order-2">
+            <div v-show="marketLoaded == false" class="title-image">
+                <img src="/storage/cryptobot-logo-300px.png" alt="">
+            </div>
             <div v-show="marketLoaded" class="grid-x grid-margin-x">
                 <!-- Blank up left corner -->
                 <div class="cell small-2 text-center">

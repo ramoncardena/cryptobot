@@ -4,11 +4,12 @@
             <td>
                 <div v-show="opened" class="trade-cancel icons-area">
                     <i v-show="updating" class="fa fa-cog fa-spin fa-fw"></i> 
-                    <i v-show="!updating" class="fa fa-times cancel-icon" aria-hidden="true"></i>
-                    <i v-on:click="update(exchange, pair, price)" class="fa fa-refresh refresh-icon" aria-hidden="true"></i>
+                    <i v-show="!updating" class="fa fa-times cancel-icon"></i>
+                    <i v-on:click="update(exchange, pair, price)" class="fa fa-refresh refresh-icon"></i>
                 </div>
             </td>
             <td v-model="profit">{{profit}}</td>
+            <td v-if="profit < 0" :class="alert" v-model="profit">{{profit}}</td>
             <td>{{pair}}</td>
             <td class="sorting_1  trade-status">{{ status }}</td>
             <td>{{exchange}}</td>
