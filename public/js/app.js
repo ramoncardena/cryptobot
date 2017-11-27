@@ -69397,7 +69397,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'trade2',
@@ -69513,36 +69512,7 @@ var render = function() {
       )
     ]),
     _vm._v(" "),
-    _c(
-      "td",
-      {
-        model: {
-          value: _vm.profit,
-          callback: function($$v) {
-            _vm.profit = $$v
-          },
-          expression: "profit"
-        }
-      },
-      [_vm._v(_vm._s(_vm.profit))]
-    ),
-    _vm._v(" "),
-    _vm.profit < 0
-      ? _c(
-          "td",
-          {
-            class: _vm.alert,
-            model: {
-              value: _vm.profit,
-              callback: function($$v) {
-                _vm.profit = $$v
-              },
-              expression: "profit"
-            }
-          },
-          [_vm._v(_vm._s(_vm.profit))]
-        )
-      : _vm._e(),
+    _c("td", [_vm._v(_vm._s(_vm.profit))]),
     _vm._v(" "),
     _c("td", [_vm._v(_vm._s(_vm.pair))]),
     _vm._v(" "),
@@ -69562,7 +69532,9 @@ var render = function() {
     _vm._v(" "),
     _c("td", [_vm._v(_vm._s(_vm.stopLoss))]),
     _vm._v(" "),
-    _c("td", [_vm._v(_vm._s(_vm.takeProfit))])
+    _c("td", [_vm._v(_vm._s(_vm.takeProfit))]),
+    _vm._v(" "),
+    _c("td", [_vm._v(_vm._s(_vm.last.toFixed(8)))])
   ])
 }
 var staticRenderFns = []
@@ -69950,6 +69922,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'tradelist2',
@@ -70118,6 +70091,15 @@ var staticRenderFns = [
               attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
             },
             [_vm._v("Amount")]
+          ),
+          _vm._v(" "),
+          _c(
+            "th",
+            {
+              staticClass: "sorting",
+              attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
+            },
+            [_vm._v("Total")]
           ),
           _vm._v(" "),
           _c(

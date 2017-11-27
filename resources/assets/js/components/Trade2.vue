@@ -8,8 +8,7 @@
                     <i v-on:click="update(exchange, pair, price)" class="fa fa-refresh refresh-icon"></i>
                 </div>
             </td>
-            <td v-model="profit">{{profit}}</td>
-            <td v-if="profit < 0" :class="alert" v-model="profit">{{profit}}</td>
+            <td >{{profit}}</td>
             <td>{{pair}}</td>
             <td class="sorting_1  trade-status">{{ status }}</td>
             <td>{{exchange}}</td>
@@ -19,7 +18,7 @@
             <td>{{total}}</td>
             <td>{{stopLoss}}</td>
             <td>{{takeProfit}}</td>
-            
+            <td>{{last.toFixed(8)}}</td>
         </tr>
 
 </template>

@@ -33,7 +33,7 @@
                             Ammount
                         </div>
                     </div>
-                    <div  class="small-6 medium-auto cell">
+                    <div class="small-6 medium-auto cell">
                         <div class="trade-title">
                             Total
                         </div>

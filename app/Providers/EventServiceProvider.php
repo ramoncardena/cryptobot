@@ -13,10 +13,19 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'App\Events\Event' => [
-            'App\Listeners\EventListener',
+        'App\Events\TradeOpened' => [
+            'App\Listeners\TrackStopLoss',
+            'App\Listeners\TrackTakeProfit',
+            'App\Listeners\TrackOpenPrice',
+        ],
+        'App\Events\StopLossReached' => [
+            'App\Listeners\ExecuteStopLoss',
+        ],
+        'App\Events\TakeProfitReached' => [
+            'App\Listeners\ExecuteTakeProfit',
         ],
     ];
+
 
     /**
      * Register any events for your application.
