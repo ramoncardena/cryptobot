@@ -2,11 +2,11 @@
 
 namespace App\Listeners;
 
-use App\Events\TradeOpened;
+use App\Events\TradeClosed;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class TrackOpenPrice
+class EmailTradeClosed
 {
     /**
      * Create the event listener.
@@ -21,11 +21,11 @@ class TrackOpenPrice
     /**
      * Handle the event.
      *
-     * @param  TradeOpened  $event
+     * @param  TradeClosed  $event
      * @return void
      */
-    public function handle(TradeOpened $event)
+    public function handle(TradeClosed $event)
     {
-        var_dump($event->trade['name']);
+        //
     }
 }

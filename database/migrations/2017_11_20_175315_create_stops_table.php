@@ -18,6 +18,7 @@ class CreateStopsTable extends Migration
             $table->timestamps();
             $table->string('trade_id');
             $table->string('order_id');
+            $table->string('status');
             $table->string('exchange');
             $table->string('pair');
             $table->decimal('price', 20, 10);

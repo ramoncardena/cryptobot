@@ -11,11 +11,11 @@
                     <th class="sorting" tabindex="0" rowspan="1" colspan="1">Exchange</th>
                     <th class="sorting" tabindex="0" rowspan="1" colspan="1">Position</th>
                     <th class="sorting" tabindex="0" rowspan="1" colspan="1">Price</th>
+                    <th class="sorting" tabindex="0" rowspan="1" colspan="1">Last</th>
                     <th class="sorting" tabindex="0" rowspan="1" colspan="1">Amount</th>
                     <th class="sorting" tabindex="0" rowspan="1" colspan="1">Total</th>
                     <th class="sorting" tabindex="0" rowspan="1" colspan="1">Stop-Loss</th>
                     <th class="sorting" tabindex="0" rowspan="1" colspan="1">Take-Profit</th>
-                    <th class="sorting" tabindex="0" rowspan="1" colspan="1">Last</th>
 
                 </tr>
             </thead>

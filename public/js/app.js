@@ -69526,15 +69526,15 @@ var render = function() {
     _vm._v(" "),
     _c("td", [_vm._v(_vm._s(_vm.price))]),
     _vm._v(" "),
+    _c("td", [_vm._v(_vm._s(_vm.last.toFixed(8)))]),
+    _vm._v(" "),
     _c("td", [_vm._v(_vm._s(_vm.amount))]),
     _vm._v(" "),
     _c("td", [_vm._v(_vm._s(_vm.total))]),
     _vm._v(" "),
     _c("td", [_vm._v(_vm._s(_vm.stopLoss))]),
     _vm._v(" "),
-    _c("td", [_vm._v(_vm._s(_vm.takeProfit))]),
-    _vm._v(" "),
-    _c("td", [_vm._v(_vm._s(_vm.last.toFixed(8)))])
+    _c("td", [_vm._v(_vm._s(_vm.takeProfit))])
   ])
 }
 var staticRenderFns = []
@@ -70090,6 +70090,15 @@ var staticRenderFns = [
               staticClass: "sorting",
               attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
             },
+            [_vm._v("Last")]
+          ),
+          _vm._v(" "),
+          _c(
+            "th",
+            {
+              staticClass: "sorting",
+              attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
+            },
             [_vm._v("Amount")]
           ),
           _vm._v(" "),
@@ -70118,15 +70127,6 @@ var staticRenderFns = [
               attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
             },
             [_vm._v("Take-Profit")]
-          ),
-          _vm._v(" "),
-          _c(
-            "th",
-            {
-              staticClass: "sorting",
-              attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
-            },
-            [_vm._v("Last")]
           )
         ]
       )

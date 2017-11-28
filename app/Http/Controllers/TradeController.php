@@ -35,14 +35,10 @@ class TradeController extends Controller
 
         if (Auth::check()) 
         {
+            // Get current authenticated user
             $this->user = Auth::user();
 
-            Bittrex::setAPI($this->user->settings()->get('bittrex_key'), $this->user->settings()->get('bittrex_secret'));
-
-            $bittrexMarkets = collect(Bittrex::getmarkets()->result);
-
-            $bittrexPairs = $bittrexMarkets->pluck('MarketName');
-
+            // Retrieve trade history
             $tradesHistory = Trade::where('user_id',  Auth::id())
                 ->orderBy('updated_at', 'desc')
                 ->get();
@@ -50,17 +46,18 @@ class TradeController extends Controller
                 return $trade->status == 'Opened';
             });
 
+            // Retrieve open trades
             $tradesOpened = Trade::where('user_id',  Auth::id())
                ->where('status', 'Opened')
                ->orderBy('updated_at', 'desc')
                ->get();
 
-
+            // Return 'trades' view passing trade history and open trades objects
             return view('trades', ['tradesHistory' => $tradesHistory, 'tradesOpened' => $tradesOpened]);
         }
     }
 
-        /**
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
@@ -98,15 +95,13 @@ class TradeController extends Controller
             $this->trade->profit = 0;
             $this->trade->save();
 
-            $order = $this->newOrder($request->exchange, $request->pair, $request->price,$request->amount, $request->position);
+            $order = $this->newOrder($request->exchange, $request->pair, $request->price,$request->amount, $request->stop_loss, $request->take_profit, $request->position);
             
             $this->trade->order_id = $order['order_id'];
             $this->trade->stop_id = $order['stop_id'];
             $this->trade->profit_id = $order['profit_id'];
             $this->trade->status = "Opened";
             $this->trade->save();
-
-
         }
         
         return redirect('/trades')->with('status', 'Trade opened!');
@@ -158,44 +153,47 @@ class TradeController extends Controller
         //
     }
 
-    private function newOrder($exchange, $pair, $price, $amount, $position) 
+    private function newOrder($exchange, $pair, $price, $amount, $stop, $profit, $position) 
     {
-        $stop = new Stop;
-        $profit = new Profit;
+        $stopLoss = new Stop;
+        $takeProfit = new Profit;
 
         $order_id = "-";
         // MISSING: Create new order and get order ID, then set stop-loss and take-profit
 
+        // If order executed:
         // Stop-Loss
-        $stop->trade_id = $this->trade->id;
-        $stop->order_id = $order_id;
-        $stop->exchange = $exchange;
-        $stop->pair = $pair;
-        $stop->price = $price;
-        $stop->amount = $amount;
+        $stopLoss->trade_id = $this->trade->id;
+        $stopLoss->order_id = $order_id;
+        $stopLoss->status = "Opened";
+        $stopLoss->exchange = $exchange;
+        $stopLoss->pair = $pair;
+        $stopLoss->price = $stop;
+        $stopLoss->amount = $amount;
         if ($position = 'long') {
-            $stop->type = 'sell';
+            $stopLoss->type = 'sell';
         }
         else if ($position = 'short') {
-            $stop->type = 'buy';
+            $stopLoss->type = 'buy';
         }
-        $stop->save();
+        $stopLoss->save();
 
         // Take-Profit
-        $profit->trade_id = $this->trade->id;
-        $profit->order_id = $order_id;
-        $profit->exchange = $exchange;
-        $profit->pair = $pair;
-        $profit->price = $price;
-        $profit->amount = $amount;
+        $takeProfit->trade_id = $this->trade->id;
+        $takeProfit->order_id = $order_id;
+        $takeProfit->status = "Opened";
+        $takeProfit->exchange = $exchange;
+        $takeProfit->pair = $pair;
+        $takeProfit->price = $profit;
+        $takeProfit->amount = $amount;
         if ($position = 'long') {
-            $profit->type = 'sell';
+            $takeProfit->type = 'sell';
         }
         else if ($position = 'short') {
-           $profit->type = 'buy';
+           $takeProfit->type = 'buy';
         }
-        $profit->save();
+        $takeProfit->save();
 
-        return ['order_id' => $order_id, 'stop_id' => $stop->id, 'profit_id' => $profit->id];
+        return ['order_id' => $order_id, 'stop_id' => $stopLoss->id, 'profit_id' => $takeProfit->id];
     }
 }

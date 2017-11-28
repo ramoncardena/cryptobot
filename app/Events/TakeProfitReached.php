@@ -15,10 +15,9 @@ class TakeProfitReached
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $takeProfit;
+    
     /**
-     * Create a new event instance.
-     *
-     * @return void
+     * @param profit
      */
     public function __construct($profit)
     {

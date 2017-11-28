@@ -14,11 +14,11 @@
             <td>{{exchange}}</td>
             <td>{{position}}</td>
             <td>{{price}}</td>
+            <td>{{last.toFixed(8)}}</td>
             <td>{{amount}}</td>
             <td>{{total}}</td>
             <td>{{stopLoss}}</td>
             <td>{{takeProfit}}</td>
-            <td>{{last.toFixed(8)}}</td>
         </tr>
 
 </template>

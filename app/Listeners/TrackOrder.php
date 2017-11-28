@@ -2,11 +2,13 @@
 
 namespace App\Listeners;
 
-use App\Events\TakeProfitReached;
+use App\Events\OrderLaunched;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class ExecuteTakeProfit
+use App\Trade;
+
+class TrackOrder
 {
     /**
      * Create the event listener.
@@ -21,12 +23,16 @@ class ExecuteTakeProfit
     /**
      * Handle the event.
      *
-     * @param  TakeProfitReached  $event
+     * @param  OrderLaunched  $event
      * @return void
      */
-    public function handle(TakeProfitReached $event)
+    public function handle(OrderLaunched $event)
     {
+        try {
+            var_dump("Tracking order: " . $event->order . " at " . $event->trade['exchange']);
+        } catch (\Exception $e) {
+               var_dump( $e->getMessage());
+        }
         
-       var_dump("Take-Profit on trade #" . $event->takeProfit->trade_id);
     }
 }

@@ -6,7 +6,7 @@ use App\Events\TradeOpened;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class TrackStopLoss
+class EmailTradeOpened
 {
     /**
      * Create the event listener.
@@ -26,6 +26,6 @@ class TrackStopLoss
      */
     public function handle(TradeOpened $event)
     {
-        var_dump($event->trade['name']);
+        //
     }
 }

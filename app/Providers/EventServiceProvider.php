@@ -14,15 +14,22 @@ class EventServiceProvider extends ServiceProvider
      */
     protected $listen = [
         'App\Events\TradeOpened' => [
-            'App\Listeners\TrackStopLoss',
-            'App\Listeners\TrackTakeProfit',
-            'App\Listeners\TrackOpenPrice',
+            'App\Listeners\EmailTradeOpened',
+        ],
+        'App\Events\TradeClosed' => [
+            'App\Listeners\EmailTradeClosed',
         ],
         'App\Events\StopLossReached' => [
             'App\Listeners\ExecuteStopLoss',
         ],
         'App\Events\TakeProfitReached' => [
             'App\Listeners\ExecuteTakeProfit',
+        ],
+        'App\Events\OrderLaunched' => [
+            'App\Listeners\TrackOrder',
+        ],
+        'App\Events\OrderCompleted' => [
+            'App\Listeners\CloseTrade',
         ],
     ];
 
