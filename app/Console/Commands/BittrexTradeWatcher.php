@@ -3,7 +3,6 @@
 namespace App\Console\Commands;
 
 use App\Library\Console;
-use App\Library\Services\Facades\Bittrex;
 use Illuminate\Console\Command;
 use Exception;
 
@@ -11,6 +10,7 @@ use App\Stop;
 use App\Profit;
 use App\Events\StopLossReached;
 use App\Events\TakeProfitReached;
+use App\Library\Services\Facades\Bittrex;
 
 class BittrexTradeWatcher extends Command {
 	/**
@@ -72,11 +72,13 @@ class BittrexTradeWatcher extends Command {
 				$stopPairs = $stops->pluck('pair');
 
 				// Get pairs to watch for stop-loss
-				$profits = Profit::where('exchange', 'bittrex')->get();
-				$profitPairs =  $stops->pluck('pair');
+				$profits = Profit::where('exchange', 'bittrex')
+						->where('status', 'Opened')
+						->get();
+				$profitPairs =  $profits->pluck('pair');
 
 				// Merge stops and profits arrays into pairs array
-				$pairs = $stopPairs->merge($profitPairs);
+				$pairs = $profitPairs->merge($stopPairs);
 
 				// Set instruments with pairs form stops and profits
 				$this->instruments = array_unique($pairs->all());
@@ -97,10 +99,10 @@ class BittrexTradeWatcher extends Command {
 					}
 
 					// Check last price with take-profit for this pair
-					$profitsToCheck = $profits->whereIn('MarketName', $market);
+					$profitsToCheck = $profits->whereIn('pair', $market);
 					foreach ($profitsToCheck as $profit) {
 						if ( floatval($ticker->Last) >= floatval($profit->price)) {
-							event(new TakeProfitReached($profit));
+							event(new TakeProfitReached($profit, $ticker->Last));
 							//print_r("Trade #" . $profit->trade_id . " -> Take-Profit at " . $ticker->Last ."\n");
 						}
 					}
@@ -111,7 +113,7 @@ class BittrexTradeWatcher extends Command {
 				sleep(1);
 				continue;
 			}
-			sleep(55);
+			sleep(10);
 		}
 	}
 }

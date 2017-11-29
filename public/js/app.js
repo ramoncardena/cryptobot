@@ -70571,8 +70571,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         openLong: function openLong() {
             var uri = 'status=opened&position=long' + '&exchange=' + this.exchange + '&pair=' + this.pairselected + '&price=' + this.price + '&amount=' + this.amount + '&total=' + this.total + '&stop_loss=' + this.stoploss + '&take_profit=' + this.takeprofit;
             axios.post('/trades', uri).then(function (response) {
-                console.log(response);
+                console.log("Trade opened!");
                 window.location.href = '/trades';
+            }).catch(function (error) {
+                console.log(error.response.data);
             });
         }
     }

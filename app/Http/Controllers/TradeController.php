@@ -8,6 +8,7 @@ use App\Library\Services\Facades\Bittrex;
 use App\Trade;
 use App\Stop;
 use App\Profit;
+use App\User;
 
 class TradeController extends Controller
 {
@@ -32,7 +33,6 @@ class TradeController extends Controller
      */
     public function index()
     {
-
         if (Auth::check()) 
         {
             // Get current authenticated user
@@ -75,10 +75,13 @@ class TradeController extends Controller
      */
     public function store(Request $request)
     {   
+        // Double check for user to be authenticated
         if (Auth::check()) 
         {
+            // Create new Trade model
             $this->trade = new Trade;
 
+            // Fill the new Trade model 
             $this->trade->order_id = "-";
             $this->trade->stop_id = "-";
             $this->trade->profit_id = "-";
@@ -95,17 +98,31 @@ class TradeController extends Controller
             $this->trade->profit = 0;
             $this->trade->save();
 
+            // Launch order to the exchange to get the order uuid
             $order = $this->newOrder($request->exchange, $request->pair, $request->price,$request->amount, $request->stop_loss, $request->take_profit, $request->position);
-            
-            $this->trade->order_id = $order['order_id'];
-            $this->trade->stop_id = $order['stop_id'];
-            $this->trade->profit_id = $order['profit_id'];
-            $this->trade->status = "Opened";
-            $this->trade->save();
+
+            if ($order['status'] == 'success') {
+
+                // If order succeeds fill the order id, stop id and profit id in the trade
+                // and set status as 'Opened'
+                $this->trade->order_id = $order['order_id'];
+                $this->trade->stop_id = $order['stop_id'];
+                $this->trade->profit_id = $order['profit_id'];
+                $this->trade->status = "Opened";
+                $this->trade->save();
+
+                return response('OK', 200)->header('Content-Type', 'text/plain');
+           
+            } else if ($order['status'] == 'fail') {
+
+                // If order fails set trade status as 'Aborted'
+                $this->trade->status = "Aborted";
+                $this->trade->save();
+
+                return response($order['message'], 500)->header('Content-Type', 'text/plain');
+            }
         }
-        
-        return redirect('/trades')->with('status', 'Trade opened!');
-        //return response('OK', 200)->header('Content-Type', 'text/plain');
+        // return redirect('/trades')->with('status', 'Trade opened!');
     }
 
     /**
@@ -142,8 +159,9 @@ class TradeController extends Controller
 
     }
 
+    
     /**
-     * Remove the specified resource from storage.
+     * /Remove the specified resource from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -153,47 +171,94 @@ class TradeController extends Controller
         //
     }
 
+    /**
+     * Launch new order 
+     * @param  string $exchange
+     * @param  string $pair    
+     * @param  float $price   
+     * @param  float $amount  
+     * @param  float $stop    
+     * @param  float $profit  
+     * @param  string $position
+     * @return array         
+     */
     private function newOrder($exchange, $pair, $price, $amount, $stop, $profit, $position) 
     {
         $stopLoss = new Stop;
         $takeProfit = new Profit;
 
+        // Get the current user
+        $user = User::find(Auth::id());
+
         $order_id = "-";
-        // MISSING: Create new order and get order ID, then set stop-loss and take-profit
 
-        // If order executed:
-        // Stop-Loss
-        $stopLoss->trade_id = $this->trade->id;
-        $stopLoss->order_id = $order_id;
-        $stopLoss->status = "Opened";
-        $stopLoss->exchange = $exchange;
-        $stopLoss->pair = $pair;
-        $stopLoss->price = $stop;
-        $stopLoss->amount = $amount;
-        if ($position = 'long') {
-            $stopLoss->type = 'sell';
-        }
-        else if ($position = 'short') {
-            $stopLoss->type = 'buy';
-        }
-        $stopLoss->save();
+        switch ($exchange) {
+            case 'bittrex':
+                // Initialize Bittrex with user info
+                Bittrex::setAPI($user->settings()->get('bittrex_key'), $user->settings()->get('bittrex_secret'));
 
-        // Take-Profit
-        $takeProfit->trade_id = $this->trade->id;
-        $takeProfit->order_id = $order_id;
-        $takeProfit->status = "Opened";
-        $takeProfit->exchange = $exchange;
-        $takeProfit->pair = $pair;
-        $takeProfit->price = $profit;
-        $takeProfit->amount = $amount;
-        if ($position = 'long') {
-            $takeProfit->type = 'sell';
-        }
-        else if ($position = 'short') {
-           $takeProfit->type = 'buy';
-        }
-        $takeProfit->save();
+                // Launch Bittrex sell order with Pair, Amount and Price as parameters
+                // $order = Bittrex::buyLimit($pair, $amount, $price);
+             
+                // TESTING SUCCESS
+                $order = new \stdClass();
+                $order->success=true;
+                $order->message="";
+                $order->result = new \stdClass();
+                $order->result->uuid = "7c6db929-6c4f-4711-b99b-01c9697330ce";
 
-        return ['order_id' => $order_id, 'stop_id' => $stopLoss->id, 'profit_id' => $takeProfit->id];
+                // TESTING FAIL
+                // $order = new \stdClass();
+                // $order->success=false;
+                // $order->message="Invalid API credentials";
+                // $order->result = new \stdClass();
+                // $order->result->uuid = "";
+
+                // Check for order success
+                if ($order->success == true) {
+
+                    // Get order UUID
+                    $order_id = $order->result->uuid;
+
+                    // Create a new Stop-Loss instance in the DB
+                    $stopLoss->trade_id = $this->trade->id;
+                    $stopLoss->order_id = $order_id;
+                    $stopLoss->status = "Opened";
+                    $stopLoss->exchange = $exchange;
+                    $stopLoss->pair = $pair;
+                    $stopLoss->price = $stop;
+                    $stopLoss->amount = $amount;
+                    if ($position = 'long') {
+                        $stopLoss->type = 'sell';
+                    }
+                    else if ($position = 'short') {
+                        $stopLoss->type = 'buy';
+                    }
+                    $stopLoss->save();
+
+                    // Creat a new Take-Profit instance in the DB
+                    $takeProfit->trade_id = $this->trade->id;
+                    $takeProfit->order_id = $order_id;
+                    $takeProfit->status = "Opened";
+                    $takeProfit->exchange = $exchange;
+                    $takeProfit->pair = $pair;
+                    $takeProfit->price = $profit;
+                    $takeProfit->amount = $amount;
+                    if ($position = 'long') {
+                        $takeProfit->type = 'sell';
+                    }
+                    else if ($position = 'short') {
+                       $takeProfit->type = 'buy';
+                    }
+                    $takeProfit->save();
+
+                    return ['status' => 'success', 'order_id' => $order_id, 'stop_id' => $stopLoss->id, 'profit_id' => $takeProfit->id];
+                }
+                else {
+                    return ['status' => 'fail', 'message' => $order->message];
+                }
+
+                break;
+        }
     }
 }

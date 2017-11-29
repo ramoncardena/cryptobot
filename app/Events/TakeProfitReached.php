@@ -15,13 +15,16 @@ class TakeProfitReached
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $takeProfit;
+
+    public $last;
     
     /**
      * @param profit
      */
-    public function __construct($profit)
+    public function __construct($profit, $last)
     {
         $this->takeProfit = $profit;
+        $this->last = $last;
     }
 
     /**

@@ -29,7 +29,7 @@ class TrackOrder
     public function handle(OrderLaunched $event)
     {
         try {
-            var_dump("Tracking order: " . $event->order . " at " . $event->trade['exchange']);
+            var_dump("Tracking order: " . $event->order['order_id'] . " at " . $event->trade['exchange']);
         } catch (\Exception $e) {
                var_dump( $e->getMessage());
         }

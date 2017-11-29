@@ -3,7 +3,6 @@
 namespace App\Console\Commands;
 
 use App\Library\Console;
-use App\Library\Services\Facades\Bittrex;
 use Illuminate\Console\Command;
 use Exception;
 
@@ -59,30 +58,28 @@ class BittrexOrderWatcher extends Command {
 				// Iterate through all pairs to check last price
 				foreach ($orders as $order) {
 					// Get user
-					$user = User::find($order->trade_id);
+					$user = User::find($order->user_id);
 
 					// Initialize Bittrex API
 					Bittrex::setAPI($user->settings()->get('bittrex_key'), $user->settings()->get('bittrex_secret'));
 
 					// Get order from Bittrex
-					$onlineOrder = Bittrex::getOrder($order->order_id);
-
-					// Check order status
-					//$onlineOrderStatus = 
+					$onlineOrder = Bittrex::getOrder($order->order_id)->result;
 
 					// If order is closed then close trade
-					if ($order->Status == 'closed') {
-						event(new OrderCompleted($order));
+					if ($onlineOrder->Closed != null) {
+						event(new OrderCompleted($order, $onlineOrder->Price));
 					}
 					
-					print_r("Order #" . $order->orde_id ." checked!\n");
 				}
+				print_r(".");
 
 			} catch(\Exception $e) {
+				var_dump( $e->getMessage());
 				sleep(1);
 				continue;
 			}
-			sleep(55);
+			sleep(10);
 		}
 	}
 }
