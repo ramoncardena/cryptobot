@@ -33,6 +33,7 @@ class TradeController extends Controller
      */
     public function index()
     {
+        // Double check for user to be authenticated
         if (Auth::check()) 
         {
             // Get current authenticated user
@@ -111,7 +112,9 @@ class TradeController extends Controller
                 $this->trade->status = "Opened";
                 $this->trade->save();
 
-                return response('OK', 200)->header('Content-Type', 'text/plain');
+                $res = '#' . $this->trade->id . ' Trade Opened.' . 'Exchange: ' . $this->trade->exchange . ' Pair: ' . $this->trade->pair . ' Price: ' . $this->trade->price . ' Amount: ' . $this->trade->amount . ' Total: ' . $this->trade->total .' Stop-Loss: ' . $this->trade->stop . ' Tale-Profit: ' . $this->trade->profit;
+
+                return response($res , 200)->header('Content-Type', 'text/plain');
            
             } else if ($order['status'] == 'fail') {
 

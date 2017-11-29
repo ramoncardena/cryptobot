@@ -59,12 +59,12 @@
 
                                 <div class="input-group">
                                     <span class="input-group-label">Bittrex Key</span>
-                                    <input class="input-group-field" type="text" name="bittrex_key" value="{{$settings['bittrex_key']}}">
+                                    <input class="input-group-field" type="text" name="bittrex_key" value="{{$decrypt_bittrex_key}}">
                                 </div>
 
                                 <div class="input-group">
                                     <span class="input-group-label">Bittrex Secret</span>
-                                    <input class="input-group-field" type="text" name="bittrex_secret" value="{{$settings['bittrex_secret']}}">
+                                    <input class="input-group-field" type="text" name="bittrex_secret" value="{{$decrypt_bittrex_secret}}">
                                 </div>
 
                             </div>

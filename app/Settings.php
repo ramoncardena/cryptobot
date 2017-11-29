@@ -13,14 +13,35 @@ class Settings
 	public function get($key)
 	{
 
-		return array_get($this->settings, $key);
+		$value = array_get($this->settings, $key);
 
+		if ( $key == 'bittrex_key' || $key == 'bittrex_secret') {
+
+			if ( $value == "" ) {
+            		return array_get($this->settings, $key);
+            	}
+            	else {
+                	return decrypt(array_get($this->settings, $key));
+                }
+		}
+		else {
+			return array_get($this->settings, $key);
+		}
 	}
 
 	public function set($key, $value)
 	{
-
-		$this->settings[$key] = $value;
+		if ($key == 'bittrex_key' || $key == 'bittrex_secret') {
+			if ( $value == "" ) {
+				$this->settings[$key] = $value;
+			}
+			else {
+				$this->settings[$key] = encrypt($value);
+			}
+		}
+		else {
+			$this->settings[$key] = $value;
+		}
 
 		$this->persist();
 
@@ -68,11 +89,9 @@ class Settings
 
 	public function __get($key)
 	{
-
 		if ($this->has($key)) {
 			return $this->get($key);
-		}
-
+	    }
 		throw new Exception ("The {$key} setting doesn't exist.");
 	}
 
