@@ -12,23 +12,20 @@ class Settings
 
 	public function get($key)
 	{
-		try {
-			$value = array_get($this->settings, $key);
 
-			if ( $key == 'bittrex_key' || $key == 'bittrex_secret') {
-	
-				if ( $value == "" ) {
-	            		return array_get($this->settings, $key);
-	            	}
-	            	else {
-	                	return decrypt(array_get($this->settings, $key));
-	                }
-			}
-			else {
-				return array_get($this->settings, $key);
-			}
-		} catch(\Exception $e) {
-				var_dump( $e->getMessage());
+		$value = array_get($this->settings, $key);
+
+		if ( $key == 'bittrex_key' || $key == 'bittrex_secret') {
+
+			if ( $value == "" ) {
+            		return array_get($this->settings, $key);
+            	}
+            	else {
+                	return decrypt(array_get($this->settings, $key));
+                }
+		}
+		else {
+			return array_get($this->settings, $key);
 		}
 	}
 
