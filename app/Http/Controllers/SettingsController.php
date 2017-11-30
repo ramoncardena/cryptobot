@@ -26,13 +26,13 @@ class SettingsController extends Controller
     public function index()
     {
         $settings = settings();
-        dd($settings);
          // $settings->set('bittrex_key','a8sd98as8ajlk3lkj4h88snal');
          // $settings->set('bittrex_secret','k90welf90af455wgfm_a3kng9');
 
         if ($settings->get('bittrex_key')!="") {
             $bittrex_key = $settings->get('bittrex_key');
         }
+        dd($bittrex_key);
         if ($settings->get('bittrex_secret')!="") {
             $bittrex_secret =$settings->get('bittrex_secret');
         }
