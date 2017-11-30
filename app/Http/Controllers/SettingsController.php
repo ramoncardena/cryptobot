@@ -32,7 +32,7 @@ class SettingsController extends Controller
         if ($settings->get('bittrex_key')!="") {
             $bittrex_key = $settings->get('bittrex_key');
         }
-        dd($bittrex_key);
+        
         if ($settings->get('bittrex_secret')!="") {
             $bittrex_secret =$settings->get('bittrex_secret');
         }

@@ -16,7 +16,7 @@ class Settings
 		$value = array_get($this->settings, $key);
 
 		if ( $key == 'bittrex_key' || $key == 'bittrex_secret') {
-
+			dd("Value: " . $value);
 			if ( $value == "" ) {
             		return array_get($this->settings, $key);
             	}
