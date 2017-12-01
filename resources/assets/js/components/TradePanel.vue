@@ -1,5 +1,5 @@
 <template>
-    <div class="grid-x grid-padding-x">
+    <div class="grid-x grid-padding-x tradepanel">
         <!-- Trade form -->
         <div class="cell large-7 small-order-2 large-order-1">
             <div class="grid-x grid-padding-x align-top">
@@ -38,6 +38,18 @@
                             <option value="ask">Ask</option>
                         </select>
                           
+                    </div>
+                </div>
+                <!-- Condition -->
+                <div class="small-12 cell">
+                    <div class="input-group">
+                        <select  v-model="conditionselected" id="condition-select">
+                            <option disabled value="">Condition</option>
+                            <option value="now">Open now</option>
+                            <option value="greater">When price >= </option>
+                            <option value="less">When price <= </option>
+                        </select>
+                        <input v-model="conditionprice" class="input-group-field" type="number">
                     </div>
                 </div>
                 <!-- Amount -->
@@ -163,6 +175,8 @@ export default {
             bittrexpairs: [],
             bittrexcoin: [],
             marketsummary: [],
+            conditionselected: "now",
+            conditionprice: 0.00000000,
             errors: [],
             basecurrency: "",
             coinname: { 'long':'','short':''},
@@ -382,7 +396,7 @@ export default {
             }
         },
         openLong () {
-            let uri = 'status=opened&position=long' + '&exchange=' + this.exchange + '&pair=' + this.pairselected + '&price=' + this.price + '&amount=' + this.amount + '&total=' + this.total + '&stop_loss=' + this.stoploss + '&take_profit=' + this.takeprofit;
+            let uri = 'status=opened&position=long' + '&exchange=' + this.exchange + '&pair=' + this.pairselected + '&price=' + this.price + '&amount=' + this.amount + '&total=' + this.total + '&stop_loss=' + this.stoploss + '&take_profit=' + this.takeprofit + "&condition=" + this.conditionselected + "&condition_price=" + this.conditionprice;
             axios.post('/trades', uri)
             .then(response => {
                 console.log("Trade opened!");

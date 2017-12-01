@@ -8,49 +8,7 @@ section#trades{
 			color: get-color(secondary);
 		}	
 	}
-
-	.input-group {
-		#price-select {
-			width: 5rem;
-			margin: 0;
-			height: auto;
-			min-width: 0;
-			color: get-color(secondary);
-		}
-		input[type=number] {
-			text-align: right;
-		}
-	}
-	.input-group-label {
-		color: get-color(secondary);
-		background-color: transparent;
-	}
-	#cryptologo {
-		width: 3rem;
-	}
-	.high-low, .ask, .bid, .last, .volume {
-		font-weight: bold;
-	}
-
-	.ask {
-		color: get-color(alert);
-		background-color: #F7F8FB;
-		padding-top: 0.2rem;
-		margin-top: 0.5rem;
-		margin-bottom: 0.5rem;
-
-	}
-	.bid {
-		color: get-color(success);
-		background-color: #F7F8FB;
-		padding-top: 0.2rem;
-		margin-top: 0.5rem;
-		margin-bottom: 0.5rem;
-	}
-	.last, .volume {
-		margin-bottom: 1rem;
-	}
-
+	
 	.trades-area {
 		margin-top: 2rem;
 	}

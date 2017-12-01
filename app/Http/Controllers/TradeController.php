@@ -86,6 +86,7 @@ class TradeController extends Controller
             $this->trade->order_id = "-";
             $this->trade->stop_id = "-";
             $this->trade->profit_id = "-";
+            $this->trade->condition_id = "-";
             $this->trade->user_id = Auth::id();
             $this->trade->status = "Opening";
             $this->trade->position = $request->position;
@@ -96,33 +97,45 @@ class TradeController extends Controller
             $this->trade->total = $request->total;
             $this->trade->stop_loss = $request->stop_loss;
             $this->trade->take_profit = $request->take_profit;
-            $this->trade->profit = 0;
+            $this->trade->condition = $request->condition;
+            $this->trade->condition_price = $request->condition_price;
+            $this->trade->profit = 0.00000000;
+            $this->trade->closing_price = 0.00000000;
             $this->trade->save();
 
-            // Launch order to the exchange to get the order uuid
-            $order = $this->newOrder($request->exchange, $request->pair, $request->price,$request->amount, $request->stop_loss, $request->take_profit, $request->position);
+            if ($this->trade->condition == "now") {
+                // No conditional order
+                // Launch order to the exchange to get the order uuid
+                $order = $this->newOrder($request->exchange, $request->pair, $request->price,$request->amount, $request->stop_loss, $request->take_profit, $request->position);
 
-            if ($order['status'] == 'success') {
+                if ($order['status'] == 'success') {
 
-                // If order succeeds fill the order id, stop id and profit id in the trade
-                // and set status as 'Opened'
-                $this->trade->order_id = $order['order_id'];
-                $this->trade->stop_id = $order['stop_id'];
-                $this->trade->profit_id = $order['profit_id'];
-                $this->trade->status = "Opened";
+                    // If order succeeds fill the order id, stop id and profit id in the trade
+                    // and set status as 'Opened'
+                    $this->trade->order_id = $order['order_id'];
+                    $this->trade->stop_id = $order['stop_id'];
+                    $this->trade->profit_id = $order['profit_id'];
+                    $this->trade->status = "Opened";
+                    $this->trade->save();
+
+                    $res = '#' . $this->trade->id . ' Trade Opened.' . 'Exchange: ' . $this->trade->exchange . ' Pair: ' . $this->trade->pair . ' Price: ' . $this->trade->price . ' Amount: ' . $this->trade->amount . ' Total: ' . $this->trade->total .' Stop-Loss: ' . $this->trade->stop . ' Tale-Profit: ' . $this->trade->profit;
+
+                    return response($res , 200)->header('Content-Type', 'text/plain');
+               
+                } else if ($order['status'] == 'fail') {
+
+                    // If order fails set trade status as 'Aborted'
+                    $this->trade->status = "Aborted";
+                    $this->trade->save();
+
+                    return response($order['message'], 500)->header('Content-Type', 'text/plain');
+                }
+            }
+            else {
+                // Conditional order
+                // Create a condition to be watched and lauched when fullfiled
+                $this->trade->status = "Waiting";
                 $this->trade->save();
-
-                $res = '#' . $this->trade->id . ' Trade Opened.' . 'Exchange: ' . $this->trade->exchange . ' Pair: ' . $this->trade->pair . ' Price: ' . $this->trade->price . ' Amount: ' . $this->trade->amount . ' Total: ' . $this->trade->total .' Stop-Loss: ' . $this->trade->stop . ' Tale-Profit: ' . $this->trade->profit;
-
-                return response($res , 200)->header('Content-Type', 'text/plain');
-           
-            } else if ($order['status'] == 'fail') {
-
-                // If order fails set trade status as 'Aborted'
-                $this->trade->status = "Aborted";
-                $this->trade->save();
-
-                return response($order['message'], 500)->header('Content-Type', 'text/plain');
             }
         }
         // return redirect('/trades')->with('status', 'Trade opened!');

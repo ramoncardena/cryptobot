@@ -13,6 +13,6 @@ class Trade extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id', 'order_id', 'stop_id', 'profit_id', 'status', 'exchange', 'pair', 'price', 'ammount', 'total', 'stop_loss', 'take_profit'
+        'user_id', 'order_id', 'stop_id', 'profit_id', 'status', 'exchange', 'pair', 'price', 'ammount', 'total', 'stop_loss', 'take_profit', 'closing_price', 'condition_id', 'condition', 'condition_price'
     ];
 }

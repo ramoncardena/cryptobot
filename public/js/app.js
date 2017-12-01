@@ -70338,6 +70338,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'tradepanel',
@@ -70359,6 +70371,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             bittrexpairs: [],
             bittrexcoin: [],
             marketsummary: [],
+            conditionselected: "now",
+            conditionprice: 0.00000000,
             errors: [],
             basecurrency: "",
             coinname: { 'long': '', 'short': '' },
@@ -70569,7 +70583,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
         },
         openLong: function openLong() {
-            var uri = 'status=opened&position=long' + '&exchange=' + this.exchange + '&pair=' + this.pairselected + '&price=' + this.price + '&amount=' + this.amount + '&total=' + this.total + '&stop_loss=' + this.stoploss + '&take_profit=' + this.takeprofit;
+            var uri = 'status=opened&position=long' + '&exchange=' + this.exchange + '&pair=' + this.pairselected + '&price=' + this.price + '&amount=' + this.amount + '&total=' + this.total + '&stop_loss=' + this.stoploss + '&take_profit=' + this.takeprofit + "&condition=" + this.conditionselected + "&condition_price=" + this.conditionprice;
             axios.post('/trades', uri).then(function (response) {
                 console.log("Trade opened!");
                 window.location.href = '/trades';
@@ -70588,7 +70602,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "grid-x grid-padding-x" }, [
+  return _c("div", { staticClass: "grid-x grid-padding-x tradepanel" }, [
     _c("div", { staticClass: "cell large-7 small-order-2 large-order-1" }, [
       _c("div", { staticClass: "grid-x grid-padding-x align-top" }, [
         _c("div", { staticClass: "cell large-6" }, [
@@ -70799,6 +70813,77 @@ var render = function() {
                 _c("option", { attrs: { value: "ask" } }, [_vm._v("Ask")])
               ]
             )
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "small-12 cell" }, [
+          _c("div", { staticClass: "input-group" }, [
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.conditionselected,
+                    expression: "conditionselected"
+                  }
+                ],
+                attrs: { id: "condition-select" },
+                on: {
+                  change: function($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function(o) {
+                        return o.selected
+                      })
+                      .map(function(o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return val
+                      })
+                    _vm.conditionselected = $event.target.multiple
+                      ? $$selectedVal
+                      : $$selectedVal[0]
+                  }
+                }
+              },
+              [
+                _c("option", { attrs: { disabled: "", value: "" } }, [
+                  _vm._v("Condition")
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "now" } }, [_vm._v("Open now")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "greater" } }, [
+                  _vm._v("When price >= ")
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "less" } }, [
+                  _vm._v("When price <= ")
+                ])
+              ]
+            ),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.conditionprice,
+                  expression: "conditionprice"
+                }
+              ],
+              staticClass: "input-group-field",
+              attrs: { type: "number" },
+              domProps: { value: _vm.conditionprice },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.conditionprice = $event.target.value
+                }
+              }
+            })
           ])
         ]),
         _vm._v(" "),

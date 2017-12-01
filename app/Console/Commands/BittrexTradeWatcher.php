@@ -113,7 +113,7 @@ class BittrexTradeWatcher extends Command {
 				sleep(1);
 				continue;
 			}
-			sleep(10);
+			sleep(5);
 		}
 	}
 }

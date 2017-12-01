@@ -30,6 +30,7 @@ class CreateTradesTable extends Migration
             $table->decimal('profit', 20, 10);
             $table->decimal('stop_loss', 20, 10);
             $table->decimal('take_profit', 20, 10);
+
         });
     }
 
