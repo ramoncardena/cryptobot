@@ -30,7 +30,7 @@ class BittrexTradeWatcher extends Command {
 	 /**
      * @var currency pairs
      */
-    protected $instrument;
+    protected $instruments;
 
 
 	/**

@@ -1,4 +1,10 @@
+#rwd-table {
+    @extend %responive-tables;
+    @include responive-tables('Heading Col 1', 'Heading Col 2', 'Heading Col 3');
+}
+
 .trade {
+
 	font-size: 1rem;
 	color: $dark-gray;
 

@@ -7806,7 +7806,7 @@ a.button:focus {
 
 .accordion-content {
   display: none;
-  padding: 1rem;
+  padding: 2.5rem;
   border: 1px solid #e6e6e6;
   border-bottom: 0;
   background-color: #fefefe;
@@ -14269,6 +14269,10 @@ section#trades .section-title {
 }
 
 section#trades .section-title h1 {
+  color: #FF7276;
+}
+
+section#trades .accordion-title {
   color: #FF7276;
 }
 

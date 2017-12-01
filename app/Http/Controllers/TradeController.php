@@ -8,6 +8,7 @@ use App\Library\Services\Facades\Bittrex;
 use App\Trade;
 use App\Stop;
 use App\Profit;
+use App\Conditional;
 use App\User;
 
 class TradeController extends Controller
@@ -46,6 +47,9 @@ class TradeController extends Controller
             $tradesHistory = $tradesHistory->reject(function ($trade) {
                 return $trade->status == 'Opened';
             });
+            $tradesHistory = $tradesHistory->reject(function ($trade) {
+                return $trade->status == 'Waiting';
+            });
 
             // Retrieve open trades
             $tradesOpened = Trade::where('user_id',  Auth::id())
@@ -53,8 +57,14 @@ class TradeController extends Controller
                ->orderBy('updated_at', 'desc')
                ->get();
 
+            // Retrieve waiting trades
+            $tradesWaiting = Trade::where('user_id',  Auth::id())
+               ->where('status', 'Waiting')
+               ->orderBy('updated_at', 'desc')
+               ->get();
+
             // Return 'trades' view passing trade history and open trades objects
-            return view('trades', ['tradesHistory' => $tradesHistory, 'tradesOpened' => $tradesOpened]);
+            return view('trades', ['tradesHistory' => $tradesHistory, 'tradesOpened' => $tradesOpened, 'tradesWaiting' => $tradesWaiting]);
         }
     }
 
@@ -103,7 +113,9 @@ class TradeController extends Controller
             $this->trade->closing_price = 0.00000000;
             $this->trade->save();
 
+            // Chech if conditional order
             if ($this->trade->condition == "now") {
+
                 // No conditional order
                 // Launch order to the exchange to get the order uuid
                 $order = $this->newOrder($request->exchange, $request->pair, $request->price,$request->amount, $request->stop_loss, $request->take_profit, $request->position);
@@ -118,7 +130,7 @@ class TradeController extends Controller
                     $this->trade->status = "Opened";
                     $this->trade->save();
 
-                    $res = '#' . $this->trade->id . ' Trade Opened.' . 'Exchange: ' . $this->trade->exchange . ' Pair: ' . $this->trade->pair . ' Price: ' . $this->trade->price . ' Amount: ' . $this->trade->amount . ' Total: ' . $this->trade->total .' Stop-Loss: ' . $this->trade->stop . ' Tale-Profit: ' . $this->trade->profit;
+                    $res = '#' . $this->trade->id . ' Trade Opened.' . 'Exchange: ' . $this->trade->exchange . ' Pair: ' . $this->trade->pair . ' Price: ' . $this->trade->price . ' Amount: ' . $this->trade->amount . ' Total: ' . $this->trade->total .' Stop-Loss: ' . $this->trade->stop . ' Take-Profit: ' . $this->trade->profit;
 
                     return response($res , 200)->header('Content-Type', 'text/plain');
                
@@ -133,12 +145,32 @@ class TradeController extends Controller
             }
             else {
                 // Conditional order
-                // Create a condition to be watched and lauched when fullfiled
-                $this->trade->status = "Waiting";
-                $this->trade->save();
+                
+                // Stores a conditional order in the database to watch
+                $conditional = $this->newConditional($request->exchange, $request->pair, $request->condition, $request->condition_price);
+
+                if ($conditional['status'] == 'success') {
+
+                    // Create a condition to be watched and lauched when reached
+                    $this->condition_id = $conditional['conditional_id'];
+                    $this->trade->status = "Waiting";
+                    $this->trade->save();
+
+                    $res = '#' . $this->trade->id . ' Conditional Trade Waiting.' . 'Exchange: ' . $this->trade->exchange . ' Pair: ' . $this->trade->pair . ' Price: ' . $this->trade->price . ' Amount: ' . $this->trade->amount . ' Total: ' . $this->trade->total .' Stop-Loss: ' . $this->trade->stop . ' Take-Profit: ' . $this->trade->profit . ' Condition: ' . $this->trade->condition . ' Condition Price: ' . $this->trade->condition_price;
+
+                    return response($res , 200)->header('Content-Type', 'text/plain');
+
+
+                } else if ($conditional['status'] == 'fail') {
+
+                    // If order fails set trade status as 'Aborted'
+                    $this->trade->status = "Aborted";
+                    $this->trade->save();
+
+                    return response($conditional['message'], 500)->header('Content-Type', 'text/plain');
+                }
             }
         }
-        // return redirect('/trades')->with('status', 'Trade opened!');
     }
 
     /**
@@ -188,7 +220,7 @@ class TradeController extends Controller
     }
 
     /**
-     * Launch new order 
+     * /Launch new order 
      * @param  string $exchange
      * @param  string $pair    
      * @param  float $price   
@@ -276,5 +308,32 @@ class TradeController extends Controller
 
                 break;
         }
+    }
+
+    /**
+     * Stores a new Conditional order in conditionals table
+     * @param  string $exchange 
+     * @param  string $pair   
+     * @param  string $condition 
+     * @param  float $conditionprice  
+     * @return array        
+     */
+    private function newConditional($exchange, $pair, $condition, $conditionprice) 
+    {   
+        $conditional = new Conditional;
+
+        $conditional->user_id = Auth::id();
+        $conditional->trade_id = $this->trade->id;
+        $conditional->exchange = $exchange;
+        $conditional->pair = $pair;
+        $conditional->condition = $condition;
+        $conditional->condition_price = $conditionprice;
+        if ($conditional->save()) {
+             return ["status"=>"success", "conditional_id"=>$conditional->id];
+        }
+        else {
+             return ["status"=>"fail", "message"=>"Error creating conditional trade."];
+        }
+       
     }
 }

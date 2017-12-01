@@ -9,6 +9,10 @@ section#trades{
 		}	
 	}
 	
+	.accordion-title {
+		color: get-color(secondary);
+	}
+
 	.trades-area {
 		margin-top: 2rem;
 	}

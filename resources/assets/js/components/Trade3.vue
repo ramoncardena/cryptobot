@@ -1,6 +1,5 @@
 <template>
-        <tr class="mytr">
-            <td></td>
+        <tr role="row">
             <td>
                 <div v-show="opened || waiting" class="trade-cancel icons-area">
                     <i v-show="updating && !waiting" class="fa fa-cog fa-spin fa-fw"></i> 
@@ -24,7 +23,7 @@
 
    <script>
    export default {
-    name: 'trade2',
+    name: 'trade3',
     data: () => {
         return {
             updating: false,

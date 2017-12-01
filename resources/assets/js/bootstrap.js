@@ -11,10 +11,10 @@ try {
     window.$ = window.jQuery = require('jquery');
 
     require('foundation-sites/dist/js/foundation'); // 'foundation.min' can also be used if you like
-    require( 'datatables.net/js/jquery.dataTables' );
-    require( 'datatables.net-zf/js/dataTables.foundation' );
-    require( 'datatables.net-responsive/js/dataTables.responsive' );
-    require( 'datatables.net-responsive-zf/js/responsive.foundation' );
+    // require( 'datatables.net/js/jquery.dataTables' );
+    require( 'datatables.net-zf' );
+    // require( 'datatables.net-responsive/js/dataTables.responsive' );
+    require( 'datatables.net-responsive-zf' );
     //require('footable/dist/footable');
 
 } catch (e) {}

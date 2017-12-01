@@ -1,27 +1,26 @@
 <template>
     <div class="trade-list">
-
-    <table class="display compact dataTable trade myTable" cellspacing="0" width="100%" role="grid">
-            <thead class="dataTable-header">
-                <tr role="row" class="trade-title text-center mytr">
-                    <th class="sorting" tabindex="0" rowspan="1" colspan="1"> </th>
-                    <th class="sorting" tabindex="0" rowspan="1" colspan="1"></th>
-                    <th v-if="opened==true" class="sorting" tabindex="0" rowspan="1" colspan="1">P/L (%)</th>
-                    <th class="sorting" tabindex="0" rowspan="1" colspan="1">Pair</th>
-                    <th class="sorting_asc" tabindex="0" rowspan="1" colspan="1" >Status</th>
-                    <th class="sorting" tabindex="0" rowspan="1" colspan="1">Exchange</th>
-                    <th class="sorting" tabindex="0" rowspan="1" colspan="1">Position</th>
-                    <th class="sorting" tabindex="0" rowspan="1" colspan="1">Price</th>
-                    <th class="sorting" tabindex="0" rowspan="1" colspan="1">Last</th>
-                    <th class="sorting" tabindex="0" rowspan="1" colspan="1">Amount</th>
-                    <th class="sorting" tabindex="0" rowspan="1" colspan="1">Total</th>
-                    <th class="sorting" tabindex="0" rowspan="1" colspan="1">Stop-Loss</th>
-                    <th class="sorting" tabindex="0" rowspan="1" colspan="1">Take-Profit</th>
+        
+        <table class="trade" id="rwd-table" width="100%">
+            <thead>
+                <tr role="row" class="trade-title text-center">
+                    <th> Actions</th>
+                    <th v-if="opened==true">P/L (%)</th>
+                    <th>Pair</th>
+                    <th>Status</th>
+                    <th>Exchange</th>
+                    <th>Position</th>
+                    <th>Price</th>
+                    <th>Last</th>
+                    <th>Amount</th>
+                    <th>Total</th>
+                    <th>Stop-Loss</th>
+                    <th>Take-Profit</th>
 
                 </tr>
             </thead>
             <tbody>
-                <trade2 v-for="trade in trades"
+                <trade3 v-for="trade in trades"
                             :status = "trade.status"
                             :exchange = "trade.exchange"
                             :position = "trade.position"
@@ -33,7 +32,7 @@
                             :take-profit = "trade.take_profit"
                             :key="trade.id"
                         >
-                </trade2>
+                </trade3>
             </tbody>
         </table>
     </div>
@@ -41,7 +40,7 @@
 
    <script>
    export default {
-    name: 'tradelist2',
+    name: 'tradelist3',
     props: [
     'type',
     'trades'

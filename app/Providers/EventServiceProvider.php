@@ -31,6 +31,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\OrderCompleted' => [
             'App\Listeners\CloseTrade',
         ],
+        'App\Events\ConditionReached' => [
+            'App\Listeners\ExecuteOrder',
+        ],
     ];
 
 

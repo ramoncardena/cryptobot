@@ -9,6 +9,7 @@ require('./bootstrap');
 
 
 
+
 window.Vue = require('vue');
 
 /**
@@ -21,8 +22,10 @@ Vue.component('balance', require('./components/Balance.vue'));
 Vue.component('order', require('./components/Order.vue'));
 Vue.component('trade', require('./components/Trade.vue'));
 Vue.component('trade2', require('./components/Trade2.vue'));
+Vue.component('trade3', require('./components/Trade3.vue'));
 Vue.component('tradelist', require('./components/TradeList.vue'));
 Vue.component('tradelist2', require('./components/TradeList2.vue'));
+Vue.component('tradelist3', require('./components/TradeList3.vue'));
 Vue.component('tradepanel', require('./components/TradePanel.vue'));
 
 const app = new Vue({
@@ -30,11 +33,9 @@ const app = new Vue({
 });
 
 $(document).ready(function () {
-	//        	let res = $('.footable').footable();
-	//        	console.log(res);
 	$.extend( $.fn.dataTable.defaults, {
 	    responsive: true
 	} );
 	$('#myTable').DataTable();
-	$('#myTable2').DataTable();
+	$('.myTable').DataTable();
 });

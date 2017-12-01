@@ -37,15 +37,22 @@
                                 </div>
                             </li>
                             <li class="accordion-item is-active" data-accordion-item>
-                                <a href="#" class="accordion-title">Active Trades</a>
+                                <a href="#" class="accordion-title">Opened Trades</a>
                                 <div class="accordion-content" data-tab-content >
-                                    <tradelist2 type="opened" :trades="{{ $tradesOpened }}"></tradelist2>
+                                    <tradelist3 type="opened" :trades="{{ $tradesOpened }}"></tradelist3>
                                 </div>
                             </li>
+                            <li class="accordion-item is-active" data-accordion-item>
+                                <a href="#" class="accordion-title">Conditional Trades</a>
+                                <div class="accordion-content" data-tab-content >
+                                    <tradelist2 type="waiting" :trades="{{ $tradesWaiting }}"></tradelist2>
+                                </div>
+                            </li>
+
                             <li class="accordion-item" data-accordion-item>
                                 <a href="#" class="accordion-title">Trade History</a>
                                 <div class="accordion-content" data-tab-content >
-                                    <tradelist type="history" :trades="{{ $tradesHistory }}"></tradelist>
+                                    <tradelist2 type="history" :trades="{{ $tradesHistory }}"></tradelist2>
                                 </div>
                             </li>
                         </ul>

@@ -16,7 +16,9 @@ class Kernel extends ConsoleKernel
         Commands\BitfinexWebsocketCommand::class,
         Commands\CoincapWebsocketCommand::class,
         Commands\CryptocompareWebsocketCommand::class,
-        Commands\BittrexStreamCommand::class
+        Commands\BittrexStreamCommand::class,
+        Commands\BittrexOrderWatcher::class,
+        Commands\BittrexTradeWatcher::class
     ];
 
     /**
