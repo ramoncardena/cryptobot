@@ -39,7 +39,7 @@
                             <li class="accordion-item is-active" data-accordion-item>
                                 <a href="#" class="accordion-title">Opened Trades</a>
                                 <div class="accordion-content" data-tab-content >
-                                    <tradelist3 type="opened" :trades="{{ $tradesOpened }}"></tradelist3>
+                                    <tradelist2 type="opened" :trades="{{ $tradesOpened }}"></tradelist2>
                                 </div>
                             </li>
                             <li class="accordion-item is-active" data-accordion-item>

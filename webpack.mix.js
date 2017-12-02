@@ -22,8 +22,7 @@ let mix = require('laravel-mix');
  // 	], 'public/css/vendor.css')
  .js('resources/assets/js/app.js', 'public/js')
  .browserSync({
- 	proxy: 'cryptobot.app',
- 	open: false,
+ 	proxy: 'cryptobot.dev',
  	files: [
  	'app/**/*.php',
  	'resources/views/**/*.php',
