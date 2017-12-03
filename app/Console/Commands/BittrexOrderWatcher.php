@@ -1,8 +1,6 @@
 <?php
 
-
 use Illuminate\Console\Command;
-use Exception;
 
 use App\User;
 use App\Order;
