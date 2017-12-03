@@ -67,9 +67,6 @@ class BittrexConditionalWatcher extends Command {
 				$conditionals = Conditional::where('exchange', 'bittrex')
 						->get();
 
-				// Log INFO: BitttrexTradeWatcher launched
-				Log::info("Bittrex Conditional Watcher: " . $conditionals);
-
 				// Get pairs
 				$pairs = $conditionals->pluck('pair');
 
@@ -93,14 +90,12 @@ class BittrexConditionalWatcher extends Command {
 						
 						$ticker= $ticker->result;
 
-						Log::info("Conditional Last: " . $ticker->Last);
-
 						// Check last price with stop-loss for this pair
 						$conditionalsToCheck = $conditionals->whereIn('pair', $market);
 
 						foreach ($conditionalsToCheck as $conditional) {
 
-							print_r(".");
+							//print_r(".");
 
 							// Check the condition type: greater or less
 							switch ($conditional->condition) {

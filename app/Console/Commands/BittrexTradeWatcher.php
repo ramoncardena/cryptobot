@@ -55,6 +55,8 @@ class BittrexTradeWatcher extends Command {
 		// Initialize Bittrez API
 		Bittrex::setAPI('','');
 
+		stream_set_blocking(STDIN, 0);
+
 		while(1) {
 			if(ord(fgetc(STDIN)) == 113) {
 
@@ -131,7 +133,7 @@ class BittrexTradeWatcher extends Command {
 					}
 				}
 
-			} catch(\Exception $e) {
+			} catch(Exception $e) {
 
 				// Log CRITICAL: Exception
 				Log::critical("BittrexTradeWatcher Exception: " . $e->getMessage());
