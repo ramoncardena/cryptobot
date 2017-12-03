@@ -4,6 +4,7 @@ namespace App\Listeners;
 
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Log;
 
 use App\Events\OrderLaunched;
 use App\Events\StopLossReached;
@@ -15,13 +16,28 @@ use App\Order;
 
 class ExecuteStopLoss
 {
-
+    /**
+     * Trade associated to the stop-loss
+     * @var Trade
+     */
     protected $trade;
 
+    /**
+     * Last price for the active pair
+     * @var float
+     */
     protected $last;
 
+    /**
+     * Stop-loss object
+     * @var Stop
+     */
     protected $stop;
     
+    /**
+     * Order launched by the stop-loss
+     * @var Order
+     */
     protected $order;
 
     /**
@@ -42,7 +58,9 @@ class ExecuteStopLoss
      */
     public function handle(StopLossReached $event)
     {
+        
         try {
+
             // Update stop-profit status
             $event->stopLoss->status = "Closing";
             $event->stopLoss->save();
@@ -69,7 +87,6 @@ class ExecuteStopLoss
                 
                     // Launch Bittrex sell order with Pair, Amount and Price as parameters
                     // $order = Bittrex::sellLimit($this->trade['pair'], $this->trade['amount'], $this->last);
-                    // 
                 
                     // TESTING SUCCESS
                     $order = new \stdClass();
@@ -87,6 +104,7 @@ class ExecuteStopLoss
                     
                     // Check for order success
                     if ($order->success == true) {
+
                         // If we get a success response we create an Order in our database to track
                         $this->order = new Order;
                         $this->order->user_id = $this->trade['user_id'];
@@ -94,23 +112,36 @@ class ExecuteStopLoss
                         $this->order->exchange = 'bittrex';
                         $this->order->order_id = $order->result->uuid;
                         $this->order->save();
+
                     }
                     else {
-                        // Error: On submiting order to Bittrex.
+
+                        // Log ERROR: Bittrex API returned error
+                        Log::error("Bittrex API: " . $order->message);
+
                     }
+
+                    // Event: OrderLaunched
+                    event(new OrderLaunched($this->order, $this->trade));
+
+                    // Log NOTICE: Order Launched
+                    Log::notice("Order Launched: Stop-loss launched a SELL order (#" . $order->id .") at " . $this->last  . " for trade #" . $this->trade['id'] . " for the pair " . $this->trade['pair'] . " at " . $this->trade['exchange']);
+               
                 }
                 else if ($event->stopLoss->type == "buy") {
-                    // TODO next ver.
-                }
-                
-                // Event: OrderLaunched
-                event(new OrderLaunched($this->order, $this->trade));
 
-                var_dump("Pair:" . $this->trade->pair . " Amount: " . $this->trade->amount . " Price: " . $this->last);
+                    // TODO next ver.
+                    // 
+                }
             }
             
         } catch(\Exception $e) {
-               var_dump( $e->getMessage());
+
+            // Log CRITICAL: Exception
+            Log::critical("BittrexTradeWatcher Exception: " . $e->getMessage());
+
         }
+
     }
+
 }

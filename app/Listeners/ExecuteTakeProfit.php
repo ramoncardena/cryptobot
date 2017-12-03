@@ -4,6 +4,7 @@ namespace App\Listeners;
 
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Log;
 
 use App\Events\OrderLaunched;
 use App\Events\TakeProfitReached;
@@ -15,13 +16,28 @@ use App\Order;
 
 class ExecuteTakeProfit
 {
-
+    /**
+     * Trade associated to the stop-loss
+     * @var App\Trade
+     */
     protected $trade;
 
+    /**
+     * Last price for the active pair
+     * @var float
+     */
     protected $last;
 
+    /**
+     * Take-profit object
+     * @var App\Profit
+     */
     protected $profit;
     
+    /**
+     * Order launched by the take-profit
+     * @var App\Order
+     */
     protected $order;
 
     /**
@@ -68,8 +84,7 @@ class ExecuteTakeProfit
                 if ($event->takeProfit->type == "sell") {
                 
                     // Launch Bittrex sell order with Pair, Amount and Price as parameters
-                    // $order = Bittrex::sellLimit($this->trade['pair'], $this->trade['amount'], $this->last);
-                    // 
+                    // $order = Bittrex::sellLimit($this->trade['pair'], $this->trade['amount'], $this->last); 
                 
                     // TESTING SUCCESS
                     $order = new \stdClass();
@@ -87,6 +102,7 @@ class ExecuteTakeProfit
                     
                     // Check for order success
                     if ($order->success == true) {
+
                         // If we get a success response we create an Order in our database to track
                         $this->order = new Order;
                         $this->order->user_id = $this->trade['user_id'];
@@ -94,25 +110,36 @@ class ExecuteTakeProfit
                         $this->order->exchange = 'bittrex';
                         $this->order->order_id = $order->result->uuid;
                         $this->order->save();
+
                     }
                     else {
+
                         // Error: On submiting order to Bittrex.
+                        // Log ERROR: Bittrex API returned error
+                        Log::error("Bittrex API: " . $order->message);
+
                     }
+
+                    // Event: OrderLaunched
+                    event(new OrderLaunched($this->order, $this->trade));
+
+                    // Log NOTICE: Order Launched
+                    Log::notice("Order Launched: Take Profit launched a SELL order (#" . $order->id .") at " . $this->last  . " for trade #" . $this->trade['id'] . " for the pair " . $this->trade['pair'] . " at " . $this->trade['exchange']);
+
                 }
                 else if ($event->takeProfit->type == "buy") {
                     // TODO next ver.
                 }
                 
-
-                // Event: OrderLaunched
-                event(new OrderLaunched($this->order, $this->trade));
-
-                var_dump("Pair:" . $this->trade->pair . " Amount: " . $this->trade->amount . " Price: " . $this->last);
-                
             }
             
         } catch(\Exception $e) {
-               var_dump( $e->getMessage());
+              
+            // Log CRITICAL: Exception
+            Log::critical("BittrexTradeWatcher Exception: " . $e->getMessage());
+
         }
+
     }
+
 }

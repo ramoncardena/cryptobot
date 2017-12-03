@@ -5,6 +5,7 @@ namespace App\Listeners;
 use App\Events\OrderLaunched;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Log;
 
 use App\Trade;
 
@@ -29,9 +30,14 @@ class TrackOrder
     public function handle(OrderLaunched $event)
     {
         try {
-            var_dump("Tracking order: " . $event->order['order_id'] . " at " . $event->trade['exchange']);
+
+            Log::info("Tracking order: " . $event->order['order_id'] . " at " . $event->trade['exchange']);
+
         } catch (\Exception $e) {
-               var_dump( $e->getMessage());
+
+            // Log CRITICAL: Exception
+            Log::critical("BittrexTradeWatcher Exception: " . $e->getMessage());
+            
         }
         
     }

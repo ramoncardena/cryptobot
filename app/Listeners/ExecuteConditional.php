@@ -5,6 +5,7 @@ namespace App\Listeners;
 use App\Events\ConditionReached;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Log;
 
 use App\User;
 use App\Conditional;
@@ -15,8 +16,16 @@ use App\Library\Services\Facades\Bittrex;
 
 class ExecuteConditional
 {
+    /**
+     * Conditional order object
+     * @var App\Conditional
+     */
     protected $conditional;
 
+    /**
+     * Trade associated to the stop-loss
+     * @var App\Trade
+     */
     protected $trade;
 
     /**
@@ -46,7 +55,7 @@ class ExecuteConditional
         // Get trade linked to the conditional
         $this->trade = Trade::find($event->conditional->trade_id);
 
-        // Destroy stop-loss and take-profit linked to the trade
+        // Destroy Conditional linked to the trade
         Conditional::destroy($event->conditional->id);
 
         // Launch a new order to the exchange according to the trade iformation
@@ -62,10 +71,10 @@ class ExecuteConditional
             $this->trade->status = "Opened";
             $this->trade->save();
 
+            Log::notice('New Trade: Trade #' . $this->trade->id . ' opened at ' . $this->trade->exchange . ' for ' . $this->trade->pair . ' at ' . $this->trade->price . ' an amount of ' . $this->trade->amount . ' units for a total of ' . $this->trade->total .' with Stop-Loss at ' . $this->trade->stop_loss . ' and Take-Profit at ' . $this->trade->take_profit);
+
             $res = '#' . $this->trade->id . ' Trade Opened.' . 'Exchange: ' . $this->trade->exchange . ' Pair: ' . $this->trade->pair . ' Price: ' . $this->trade->price . ' Amount: ' . $this->trade->amount . ' Total: ' . $this->trade->total .' Stop-Loss: ' . $this->trade->stop_loss . ' Take-Profit: ' . $this->trade->take_profit;
             
-           
-
             return response($res , 200)->header('Content-Type', 'text/plain');
        
         } else if ($order['status'] == 'fail') {
@@ -73,6 +82,9 @@ class ExecuteConditional
             // If order fails set trade status as 'Aborted'
             $this->trade->status = "Aborted";
             $this->trade->save();
+
+            // Log ERROR: The trade couldn't be launched
+            Log::error('New Trade: Trade #' . $this->trade->id . ' aborted due to ' . $order['message']);
 
             return response($order['message'], 500)->header('Content-Type', 'text/plain');
         }
@@ -136,12 +148,19 @@ class ExecuteConditional
                     $stopLoss->pair = $pair;
                     $stopLoss->price = $stop;
                     $stopLoss->amount = $amount;
+
                     if ($position = 'long') {
+
                         $stopLoss->type = 'sell';
+
                     }
                     else if ($position = 'short') {
+
                         $stopLoss->type = 'buy';
+
                     }
+
+                    // Save new Stop-Loss
                     $stopLoss->save();
 
                     // Creat a new Take-Profit instance in the DB
@@ -152,18 +171,28 @@ class ExecuteConditional
                     $takeProfit->pair = $pair;
                     $takeProfit->price = $profit;
                     $takeProfit->amount = $amount;
+
                     if ($position = 'long') {
+
                         $takeProfit->type = 'sell';
+
                     }
                     else if ($position = 'short') {
+
                        $takeProfit->type = 'buy';
+
                     }
+
+                    // Save new Take-Profit
                     $takeProfit->save();
 
                     return ['status' => 'success', 'order_id' => $order_id, 'stop_id' => $stopLoss->id, 'profit_id' => $takeProfit->id];
+
                 }
                 else {
+
                     return ['status' => 'fail', 'message' => $order->message];
+
                 }
 
                 break;

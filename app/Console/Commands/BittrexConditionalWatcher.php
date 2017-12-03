@@ -10,8 +10,10 @@ use App\User;
 use App\Conditional;
 use App\Events\ConditionReached;
 use App\Library\Services\Facades\Bittrex;
+use Illuminate\Support\Facades\Log;
 
 class BittrexConditionalWatcher extends Command {
+
 	/**
 	 * The name and signature of the console command.
 	 *
@@ -48,14 +50,23 @@ class BittrexConditionalWatcher extends Command {
 	public function handle() {
 		$this->console = $util = new Console();
 
+		// Log INFO: BitttrexTradeWatcher launched
+		Log::info("Bittrex Conditional Watcher launched.");
+
 		stream_set_blocking(STDIN, 0);
+
 		while(1) {
+
 			if(ord(fgetc(STDIN)) == 113) {
-				echo "QUIT detected...";
+
+				// Log INFO: BitttrexTradeWatcher stopped
+				Log::info("Bittrex Conditional Watcher halted by user (CTRL+C).");
 				return null;
+
 			}
 
 			try {
+
 				// Get conditional orders to check if condition is reached
 				$conditionals = Conditional::where('exchange', 'bittrex')
 						->get();
@@ -70,41 +81,76 @@ class BittrexConditionalWatcher extends Command {
 				foreach ($this->instruments as $market) {
 
 					// Call to Bittrex API to get market ticker (last price)
-					$ticker = Bittrex::getTicker($market)->result;
+					$ticker = Bittrex::getTicker($market);
 
-					// Check last price with stop-loss for this pair
-					$conditionalsToCheck = $conditionals->whereIn('pair', $market);
+					// Check for success on API call
+					if (! $ticker->success) {
 
-					foreach ($conditionalsToCheck as $conditional) {
+						// Log ERROR: Bittrex API returned error
+						Log::error("Bittrex API: " . $ticker->message);
 
-						// Check the condition type: greater or less
-						switch ($conditional->condition) {
-							case 'greater':
-								if ( floatval($ticker->Last) >= floatval($conditional->condition_price) ) {
-									var_dump($ticker->Last . " >= " . $conditional->condition_price);
-									event(new ConditionReached($conditional, $ticker->Last));
-									//print_r("Trade #" . $stop->trade_id . " -> Stop-Loss at " . $ticker->Last ."\n");
-								}
-								break;
-							case 'less':
-								if ( floatval($ticker->Last) <= floatval($conditional->condition_price) ) {
-									var_dump($ticker->Last . " <= " . $conditional->condition_price);
-									event(new ConditionReached($conditional, $ticker->Last));
-									//print_r("Trade #" . $stop->trade_id . " -> Stop-Loss at " . $ticker->Last ."\n");
-								}
-								break;
-						}
 					}
+					else {
+						
+						$ticker= $ticker->result;
+
+						// Check last price with stop-loss for this pair
+						$conditionalsToCheck = $conditionals->whereIn('pair', $market);
+
+						foreach ($conditionalsToCheck as $conditional) {
+
+							// Check the condition type: greater or less
+							switch ($conditional->condition) {
+								case 'greater':
+
+									if ( floatval($ticker->Last) >= floatval($conditional->condition_price) ) {
+
+										// Event ConditionReached
+										event(new ConditionReached($conditional, $ticker->Last));
+
+										// Log NOTICE: Condition reached in a conditional order
+							    		Log::notice("Conditional Order: Trade #" . $conditional->trade_id . " reached its condition, current price (" . $ticker->Last . ") for " . $conditional->pair . " at " . $conditional->exchange .  " is " . $conditional->condition . " than " . $conditional->condition_price);
+										
+									}
+
+									break;
+
+								case 'less':
+
+									if ( floatval($ticker->Last) <= floatval($conditional->condition_price) ) {
+										
+										// Event ConditionReached
+										event(new ConditionReached($conditional, $ticker->Last));
+
+										// Log NOTICE: Condition reached in a conditional order
+							    		Log::notice("Conditional Order: Trade #" . $conditional->trade_id . " reached its condition, current price (" . $ticker->Last . ") for " . $conditional->pair . " at " . $conditional->exchange .  " is " . $conditional->condition . " than " . $conditional->condition_price);
+										
+									}
+
+									break;
+
+							}
+
+						}
+
+					}
+
 				}
 
-				print_r(".");
-
 			} catch(\Exception $e) {
-				var_dump( $e->getMessage());
+
+				// Log CRITICAL: Exception
+				Log::critical("BittrexConditionalWatcher Exception: " . $e->getMessage());
+
 				sleep(1);
 				continue;
+
 			}
+
 			sleep(10);
+
 		}
+
 	}
+
 }

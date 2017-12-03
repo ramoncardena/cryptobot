@@ -11,6 +11,7 @@ use App\Profit;
 use App\Events\StopLossReached;
 use App\Events\TakeProfitReached;
 use App\Library\Services\Facades\Bittrex;
+use Illuminate\Support\Facades\Log;
 
 class BittrexTradeWatcher extends Command {
 	/**
@@ -52,16 +53,21 @@ class BittrexTradeWatcher extends Command {
 
 		$this->instruments = [];
 
-		Bittrex::setAPI('','');
-		
+		// Log INFO: BitttrexTradeWatcher launched
+		Log::info("Bittrex Trade Watcher launched.");
 
-		// $krakenApi = new KrakenAPI($key, $secret, $url, $version, $sslVerify);
+		// Initialize Bittrez API
+		Bittrex::setAPI('','');
 
 		stream_set_blocking(STDIN, 0);
+
 		while(1) {
 			if(ord(fgetc(STDIN)) == 113) {
-				echo "QUIT detected...";
+
+				// Log INFO: BitttrexTradeWatcher stopped
+				Log::info("Bittrex Trade Watcher halted by user (CTRL+C).");
 				return null;
+
 			}
 
 			try {
@@ -87,31 +93,58 @@ class BittrexTradeWatcher extends Command {
 				foreach ($this->instruments as $market) {
 
 					// Call to Bittrex API to get market ticker (last price)
-					$ticker = Bittrex::getTicker($market)->result;
+					$ticker = Bittrex::getTicker($market);
 
-					// Check last price with stop-loss for this pair
-					$stopsToCheck = $stops->whereIn('pair', $market);
-					foreach ($stopsToCheck as $stop) {
-						if (floatval($ticker->Last) <= floatval($stop->price)) {
-							event(new StopLossReached($stop, $ticker->Last));
-							//print_r("Trade #" . $stop->trade_id . " -> Stop-Loss at " . $ticker->Last ."\n");
+					// Check for success on API call
+					if (! $ticker->success) {
+
+						// Log ERROR: Bittrex API returned error
+						Log::error("Bittrex API: " . $ticker->message);
+
+					}
+					else {
+						$ticker= $ticker->result;
+
+						// Check last price with stop-loss for this pair
+						$stopsToCheck = $stops->whereIn('pair', $market);
+
+						foreach ($stopsToCheck as $stop) {
+
+							if (floatval($ticker->Last) <= floatval($stop->price)) {
+
+								event(new StopLossReached($stop, $ticker->Last));
+
+								// Log NOTICE: Stop-Loss reached
+							    Log::notice("Stop-Loss: Trade #" . $stop->trade_id . " reached its stop-loss at " . $stop->price . " for the pair " . $stop->pair . " at " . $stop->exchange);
+
+							}
+
+						}
+
+						// Check last price with take-profit for this pair
+						$profitsToCheck = $profits->whereIn('pair', $market);
+
+						foreach ($profitsToCheck as $profit) {
+							if ( floatval($ticker->Last) >= floatval($profit->price)) {
+
+								event(new TakeProfitReached($profit, $ticker->Last));
+
+								// Log NOTICE: Take-Profit reached
+								Log::notice("Take-Profit: Trade #" . $profit->trade_id . " reached its take-profit at " . $profit->price . " for the pair " . $profit->pair . " at " . $profit->exchange);
+
+							}
 						}
 					}
-
-					// Check last price with take-profit for this pair
-					$profitsToCheck = $profits->whereIn('pair', $market);
-					foreach ($profitsToCheck as $profit) {
-						if ( floatval($ticker->Last) >= floatval($profit->price)) {
-							event(new TakeProfitReached($profit, $ticker->Last));
-							//print_r("Trade #" . $profit->trade_id . " -> Take-Profit at " . $ticker->Last ."\n");
-						}
-					}
-					print_r($market . " -> " . $ticker->Last ."\n");
 				}
 
 			} catch(\Exception $e) {
+
+				// Log CRITICAL: Exception
+				Log::critical("BittrexTradeWatcher Exception: " . $e->getMessage());
+
 				sleep(1);
 				continue;
+
 			}
 			sleep(10);
 		}

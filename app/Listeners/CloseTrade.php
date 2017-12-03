@@ -5,6 +5,7 @@ namespace App\Listeners;
 use App\Events\OrderCompleted;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Log;
 
 use App\Events\TradeClosed;
 use App\Trade;
@@ -15,6 +16,10 @@ use App\Order;
 
 class CloseTrade
 {
+    /**
+     * Trade associated to the order
+     * @var Trade
+     */
     protected $trade;
 
     /**
@@ -36,6 +41,7 @@ class CloseTrade
     public function handle(OrderCompleted $event)
     {
         try {
+
             // Get trade linked to the order
             $this->trade = Trade::find($event->order->trade_id);
 
@@ -49,19 +55,25 @@ class CloseTrade
             // Get actual final price of the order to calculate profit
             $price = $event->price;
             $this->trade->closing_price = $price;
+
+            // Calculate profit
             $decreaseValue = $price - $this->trade->price;
             $this->trade->profit = ($decreaseValue / $this->trade->price) * 100;
-                    
-            $profit = decreaseValue.toFixed(2) + "%";
-
+    
             $this->trade->status = "Closed";
             $this->trade->save();
 
             // Event: OrderLaunched
             event(new TradeClosed($this->trade));
 
+            // Log NOTICE: Trade close
+            Log::notice("Trade #" . $this->trade->id . " at " . $this->trade->exchange . " for " . $this->trade->pair . " was closed at " . $this->trade->closing_price ." with a profit of " . $this->trade->profit . "%");
+
         } catch(\Exception $e) {
-               var_dump( $e->getMessage());
+
+            // Log CRITICAL: Exception
+            Log::critical("BittrexTradeWatcher Exception: " . $e->getMessage());
+
         }
 
 

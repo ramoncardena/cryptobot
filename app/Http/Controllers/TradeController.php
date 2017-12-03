@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use App\Library\Services\Facades\Bittrex;
 use App\Trade;
 use App\Stop;
@@ -34,38 +35,45 @@ class TradeController extends Controller
      */
     public function index()
     {
-        // Double check for user to be authenticated
-        if (Auth::check()) 
-        {
-            // Get current authenticated user
-            $this->user = Auth::user();
+        try {
+            // Double check for user to be authenticated
+            if (Auth::check()) 
+            {
+                // Get current authenticated user
+                $this->user = Auth::user();
 
-            // Retrieve trade history
-            $tradesHistory = Trade::where('user_id',  Auth::id())
-                ->orderBy('updated_at', 'desc')
-                ->get();
-            $tradesHistory = $tradesHistory->reject(function ($trade) {
-                return $trade->status == 'Opened';
-            });
-            $tradesHistory = $tradesHistory->reject(function ($trade) {
-                return $trade->status == 'Waiting';
-            });
+                // Retrieve trade history
+                $tradesHistory = Trade::where('user_id',  Auth::id())
+                    ->orderBy('updated_at', 'desc')
+                    ->get();
+                $tradesHistory = $tradesHistory->reject(function ($trade) {
+                    return $trade->status == 'Opened';
+                });
+                $tradesHistory = $tradesHistory->reject(function ($trade) {
+                    return $trade->status == 'Waiting';
+                });
 
-            // Retrieve open trades
-            $tradesOpened = Trade::where('user_id',  Auth::id())
-               ->where('status', 'Opened')
-               ->orderBy('updated_at', 'desc')
-               ->get();
+                // Retrieve open trades
+                $tradesOpened = Trade::where('user_id',  Auth::id())
+                   ->where('status', 'Opened')
+                   ->orderBy('updated_at', 'desc')
+                   ->get();
 
-            // Retrieve waiting trades
-            $tradesWaiting = Trade::where('user_id',  Auth::id())
-               ->where('status', 'Waiting')
-               ->orderBy('updated_at', 'desc')
-               ->get();
+                // Retrieve waiting trades
+                $tradesWaiting = Trade::where('user_id',  Auth::id())
+                   ->where('status', 'Waiting')
+                   ->orderBy('updated_at', 'desc')
+                   ->get();
 
-            // Return 'trades' view passing trade history and open trades objects
-            return view('trades', ['tradesHistory' => $tradesHistory, 'tradesOpened' => $tradesOpened, 'tradesWaiting' => $tradesWaiting]);
-        }
+                // Return 'trades' view passing trade history and open trades objects
+                return view('trades', ['tradesHistory' => $tradesHistory, 'tradesOpened' => $tradesOpened, 'tradesWaiting' => $tradesWaiting]);
+            }
+            else {
+                Log::error("User not authorized trying to retieve trades.");
+            }
+        }catch(\Exception $e) {
+                Log::critical("Exception: " . $e->getMessage());
+            }
     }
 
     /**
