@@ -48,6 +48,11 @@ class CloseTrade
 
             // Get actual final price of the order to calculate profit
             $price = $event->price;
+            $this->trade->closing_price = $price;
+            $decreaseValue = $price - $this->trade->price;
+            $this->trade->profit = ($decreaseValue / $this->trade->price) * 100;
+                    
+            $profit = decreaseValue.toFixed(2) + "%";
 
             $this->trade->status = "Closed";
             $this->trade->save();

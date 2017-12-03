@@ -8,13 +8,14 @@
                     <i v-if="(opened == true || waiting==true)" v-on:click="update(exchange, pair, price)" class="fa fa-refresh refresh-icon"></i>
                 </div>
             </td>
-            <td v-if="(opened == true)">{{ profit }}</td>
+            <td v-if="(opened == true || history==true)">{{ (history==true) ? parseFloat(finalProfit).toFixed(2) + '%' : profit }}</td>
             <td>{{ pair }}</td>
             <td class="sorting_1  trade-status">{{ status }}</td>
             <td>{{ exchange }}</td>
             <td>{{ position }}</td>
             <td>{{ parseFloat(price).toFixed(8) }}</td>
-            <td>{{ last.toFixed(8) }}</td>
+            <td v-if="history == false">{{ last.toFixed(8) }}</td>
+            <td v-if="history == true">{{ parseFloat(closingPrice).toFixed(8) }}</td>
             <td>{{ parseFloat(amount).toFixed(8) }}</td>
             <td>{{ parseFloat(total).toFixed(8) }}</td>
             <td>{{ parseFloat(stopLoss).toFixed(8) }}</td>
@@ -45,7 +46,10 @@
     'stop-loss',
     'take-profit',
     'condition',
-    'condition-price'
+    'condition-price',
+    "final-profit",
+    "type",
+    "closing-price"
     ],
     computed: {
         opened: function() {
@@ -58,6 +62,14 @@
         },
         waiting: function() {
             if (this.status == "Waiting") {
+                return true;
+            }
+            else {
+                return false;
+            }
+        },
+        history: function() {
+            if (this.type == "history") {
                 return true;
             }
             else {

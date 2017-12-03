@@ -68,7 +68,7 @@ class BittrexOrderWatcher extends Command {
 
 					// If order is closed then close trade
 					if ($onlineOrder->Closed != null) {
-						event(new OrderCompleted($order, $onlineOrder->Price));
+						event(new OrderCompleted($order, $onlineOrder->PricePerUnit));
 					}
 					
 				}

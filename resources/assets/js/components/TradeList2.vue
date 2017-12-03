@@ -6,13 +6,14 @@
                 <tr role="row" class="trade-title text-center mytr">
                     <th class="sorting" tabindex="0" rowspan="1" colspan="1"> </th>
                     <th class="sorting" tabindex="0" rowspan="1" colspan="1"></th>
-                    <th v-if="opened==true" class="sorting" tabindex="0" rowspan="1" colspan="1">P/L (%)</th>
+                    <th v-if="opened==true || history==true" class="sorting" tabindex="0" rowspan="1" colspan="1">P/L (%)</th>
                     <th class="sorting" tabindex="0" rowspan="1" colspan="1">Pair</th>
                     <th class="sorting_asc" tabindex="0" rowspan="1" colspan="1" >Status</th>
                     <th class="sorting" tabindex="0" rowspan="1" colspan="1">Exchange</th>
                     <th class="sorting" tabindex="0" rowspan="1" colspan="1">Position</th>
                     <th class="sorting" tabindex="0" rowspan="1" colspan="1">Price</th>
-                    <th class="sorting" tabindex="0" rowspan="1" colspan="1">Last</th>
+                    <th v-if="history == false" class="sorting" tabindex="0" rowspan="1" colspan="1">Last</th>
+                    <th v-if="history == true" class="sorting" tabindex="0" rowspan="1" colspan="1">Final Price</th>
                     <th class="sorting" tabindex="0" rowspan="1" colspan="1">Amount</th>
                     <th class="sorting" tabindex="0" rowspan="1" colspan="1">Total</th>
                     <th class="sorting" tabindex="0" rowspan="1" colspan="1">Stop-Loss</th>
@@ -35,6 +36,9 @@
                             :take-profit = "trade.take_profit"
                             :condition =  "trade.condition"
                             :condition-price = "trade.condition_price"
+                            :final-profit = "trade.profit"
+                            :closing-price ="trade.closing_price"
+                            :type = "type"
                             :key="trade.id"
                         >
                 </trade2>

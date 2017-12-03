@@ -70199,6 +70199,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'trade2',
@@ -70209,7 +70210,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             last: 0
         };
     },
-    props: ['status', 'exchange', 'position', 'pair', 'price', 'amount', 'total', 'stop-loss', 'take-profit', 'condition', 'condition-price'],
+    props: ['status', 'exchange', 'position', 'pair', 'price', 'amount', 'total', 'stop-loss', 'take-profit', 'condition', 'condition-price', "final-profit", "type", "closing-price"],
     computed: {
         opened: function opened() {
             if (this.status == "Opened") {
@@ -70220,6 +70221,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         waiting: function waiting() {
             if (this.status == "Waiting") {
+                return true;
+            } else {
+                return false;
+            }
+        },
+        history: function history() {
+            if (this.type == "history") {
                 return true;
             } else {
                 return false;
@@ -70325,7 +70333,17 @@ var render = function() {
       )
     ]),
     _vm._v(" "),
-    _vm.opened == true ? _c("td", [_vm._v(_vm._s(_vm.profit))]) : _vm._e(),
+    _vm.opened == true || _vm.history == true
+      ? _c("td", [
+          _vm._v(
+            _vm._s(
+              _vm.history == true
+                ? parseFloat(_vm.finalProfit).toFixed(2) + "%"
+                : _vm.profit
+            )
+          )
+        ])
+      : _vm._e(),
     _vm._v(" "),
     _c("td", [_vm._v(_vm._s(_vm.pair))]),
     _vm._v(" "),
@@ -70339,7 +70357,13 @@ var render = function() {
     _vm._v(" "),
     _c("td", [_vm._v(_vm._s(parseFloat(_vm.price).toFixed(8)))]),
     _vm._v(" "),
-    _c("td", [_vm._v(_vm._s(_vm.last.toFixed(8)))]),
+    _vm.history == false
+      ? _c("td", [_vm._v(_vm._s(_vm.last.toFixed(8)))])
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.history == true
+      ? _c("td", [_vm._v(_vm._s(parseFloat(_vm.closingPrice).toFixed(8)))])
+      : _vm._e(),
     _vm._v(" "),
     _c("td", [_vm._v(_vm._s(parseFloat(_vm.amount).toFixed(8)))]),
     _vm._v(" "),
@@ -70989,6 +71013,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'tradelist2',
@@ -71088,7 +71116,7 @@ var render = function() {
                 attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
               }),
               _vm._v(" "),
-              _vm.opened == true
+              _vm.opened == true || _vm.history == true
                 ? _c(
                     "th",
                     {
@@ -71144,14 +71172,27 @@ var render = function() {
                 [_vm._v("Price")]
               ),
               _vm._v(" "),
-              _c(
-                "th",
-                {
-                  staticClass: "sorting",
-                  attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
-                },
-                [_vm._v("Last")]
-              ),
+              _vm.history == false
+                ? _c(
+                    "th",
+                    {
+                      staticClass: "sorting",
+                      attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
+                    },
+                    [_vm._v("Last")]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.history == true
+                ? _c(
+                    "th",
+                    {
+                      staticClass: "sorting",
+                      attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
+                    },
+                    [_vm._v("Final Price")]
+                  )
+                : _vm._e(),
               _vm._v(" "),
               _c(
                 "th",
@@ -71226,7 +71267,10 @@ var render = function() {
                 "stop-loss": trade.stop_loss,
                 "take-profit": trade.take_profit,
                 condition: trade.condition,
-                "condition-price": trade.condition_price
+                "condition-price": trade.condition_price,
+                "final-profit": trade.profit,
+                "closing-price": trade.closing_price,
+                type: _vm.type
               }
             })
           })
