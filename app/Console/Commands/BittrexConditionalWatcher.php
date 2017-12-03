@@ -49,6 +49,8 @@ class BittrexConditionalWatcher extends Command {
 		// Log INFO: BitttrexTradeWatcher launched
 		Log::info("Bittrex Conditional Watcher launched.");
 
+		stream_set_blocking(STDIN, 0);
+
 		while(1) {
 
 			if(ord(fgetc(STDIN)) == 113) {
@@ -98,7 +100,7 @@ class BittrexConditionalWatcher extends Command {
 
 						foreach ($conditionalsToCheck as $conditional) {
 
-							var_dump($conditional->pair . "/n");
+							print_r(".");
 
 							// Check the condition type: greater or less
 							switch ($conditional->condition) {
@@ -131,7 +133,7 @@ class BittrexConditionalWatcher extends Command {
 									break;
 
 							}
-							print_r(".");
+							
 						}
 
 					}
