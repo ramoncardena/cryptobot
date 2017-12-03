@@ -1,8 +1,6 @@
 <?php
 
-namespace App\Console\Commands;
 
-use App\Library\Console;
 use Illuminate\Console\Command;
 use Exception;
 
@@ -43,12 +41,9 @@ class BittrexOrderWatcher extends Command {
 	 */
 	public function handle() {
 
-		$this->console = $util = new Console();
-
 		// Log INFO: BitttrexOrderWatcher launched
 		Log::info("Bittrex Order Watcher launched.");
 
-		stream_set_blocking(STDIN, 0);
 
 		while(1) {
 
