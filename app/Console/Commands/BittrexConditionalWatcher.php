@@ -138,7 +138,7 @@ class BittrexConditionalWatcher extends Command {
 
 				}
 
-			} catch(\Exception $e) {
+			} catch(Exception $e) {
 
 				// Log CRITICAL: Exception
 				Log::critical("BittrexConditionalWatcher Exception: " . $e->getMessage());
