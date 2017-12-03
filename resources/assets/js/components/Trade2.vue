@@ -3,9 +3,9 @@
             <td></td>
             <td>
                 <div v-show="opened || waiting" class="trade-cancel icons-area">
-                    <i v-show="updating && !waiting" class="fa fa-cog fa-spin fa-fw"></i> 
+                    <i v-show="updating" class="fa fa-cog fa-spin fa-fw"></i> 
                     <i v-show="!updating" class="fa fa-times cancel-icon"></i>
-                    <i v-if="(opened == true)" v-on:click="update(exchange, pair, price)" class="fa fa-refresh refresh-icon"></i>
+                    <i v-if="(opened == true || waiting==true)" v-on:click="update(exchange, pair, price)" class="fa fa-refresh refresh-icon"></i>
                 </div>
             </td>
             <td v-if="(opened == true)">{{ profit }}</td>
@@ -13,12 +13,14 @@
             <td class="sorting_1  trade-status">{{ status }}</td>
             <td>{{ exchange }}</td>
             <td>{{ position }}</td>
-            <td>{{ price }}</td>
+            <td>{{ parseFloat(price).toFixed(8) }}</td>
             <td>{{ last.toFixed(8) }}</td>
-            <td>{{ amount }}</td>
-            <td>{{ total }}</td>
-            <td>{{ stopLoss }}</td>
-            <td>{{ takeProfit }}</td>
+            <td>{{ parseFloat(amount).toFixed(8) }}</td>
+            <td>{{ parseFloat(total).toFixed(8) }}</td>
+            <td>{{ parseFloat(stopLoss).toFixed(8) }}</td>
+            <td>{{ parseFloat(takeProfit).toFixed(8) }}</td>
+            <td>{{ (condition == 'now') ? 'none' : condition + ' than' }} </td>
+            <td> {{ parseFloat(conditionPrice).toFixed(8) }}</td>
         </tr>
 </template>
 
@@ -42,6 +44,8 @@
     'total', 
     'stop-loss',
     'take-profit',
+    'condition',
+    'condition-price'
     ],
     computed: {
         opened: function() {
@@ -81,7 +85,7 @@
                     // Calculate percentual diference
                     let decreaseValue = this.last - price;
                     decreaseValue = (decreaseValue / price) * 100;
-                    this.profit = decreaseValue.toFixed(2).toString() + "%";
+                    this.profit = decreaseValue.toFixed(2) + "%";
 
                     this.updating = false;
                     //console.log("Last: " + this.last + " - " + (decreaseValue / price) * 100);

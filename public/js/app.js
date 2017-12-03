@@ -70197,6 +70197,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'trade2',
@@ -70207,7 +70209,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             last: 0
         };
     },
-    props: ['status', 'exchange', 'position', 'pair', 'price', 'amount', 'total', 'stop-loss', 'take-profit'],
+    props: ['status', 'exchange', 'position', 'pair', 'price', 'amount', 'total', 'stop-loss', 'take-profit', 'condition', 'condition-price'],
     computed: {
         opened: function opened() {
             if (this.status == "Opened") {
@@ -70246,7 +70248,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     // Calculate percentual diference
                     var decreaseValue = _this.last - price;
                     decreaseValue = decreaseValue / price * 100;
-                    _this.profit = decreaseValue.toFixed(2).toString() + "%";
+                    _this.profit = decreaseValue.toFixed(2) + "%";
 
                     _this.updating = false;
                     //console.log("Last: " + this.last + " - " + (decreaseValue / price) * 100);
@@ -70290,8 +70292,8 @@ var render = function() {
               {
                 name: "show",
                 rawName: "v-show",
-                value: _vm.updating && !_vm.waiting,
-                expression: "updating && !waiting"
+                value: _vm.updating,
+                expression: "updating"
               }
             ],
             staticClass: "fa fa-cog fa-spin fa-fw"
@@ -70309,7 +70311,7 @@ var render = function() {
             staticClass: "fa fa-times cancel-icon"
           }),
           _vm._v(" "),
-          _vm.opened == true
+          _vm.opened == true || _vm.waiting == true
             ? _c("i", {
                 staticClass: "fa fa-refresh refresh-icon",
                 on: {
@@ -70335,17 +70337,25 @@ var render = function() {
     _vm._v(" "),
     _c("td", [_vm._v(_vm._s(_vm.position))]),
     _vm._v(" "),
-    _c("td", [_vm._v(_vm._s(_vm.price))]),
+    _c("td", [_vm._v(_vm._s(parseFloat(_vm.price).toFixed(8)))]),
     _vm._v(" "),
     _c("td", [_vm._v(_vm._s(_vm.last.toFixed(8)))]),
     _vm._v(" "),
-    _c("td", [_vm._v(_vm._s(_vm.amount))]),
+    _c("td", [_vm._v(_vm._s(parseFloat(_vm.amount).toFixed(8)))]),
     _vm._v(" "),
-    _c("td", [_vm._v(_vm._s(_vm.total))]),
+    _c("td", [_vm._v(_vm._s(parseFloat(_vm.total).toFixed(8)))]),
     _vm._v(" "),
-    _c("td", [_vm._v(_vm._s(_vm.stopLoss))]),
+    _c("td", [_vm._v(_vm._s(parseFloat(_vm.stopLoss).toFixed(8)))]),
     _vm._v(" "),
-    _c("td", [_vm._v(_vm._s(_vm.takeProfit))])
+    _c("td", [_vm._v(_vm._s(parseFloat(_vm.takeProfit).toFixed(8)))]),
+    _vm._v(" "),
+    _c("td", [
+      _vm._v(
+        _vm._s(_vm.condition == "now" ? "none" : _vm.condition + " than") + " "
+      )
+    ]),
+    _vm._v(" "),
+    _c("td", [_vm._v(" " + _vm._s(parseFloat(_vm.conditionPrice).toFixed(8)))])
   ])
 }
 var staticRenderFns = []
@@ -70975,6 +70985,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'tradelist2',
@@ -71173,6 +71187,24 @@ var render = function() {
                   attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
                 },
                 [_vm._v("Take-Profit")]
+              ),
+              _vm._v(" "),
+              _c(
+                "th",
+                {
+                  staticClass: "sorting",
+                  attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
+                },
+                [_vm._v("Condition")]
+              ),
+              _vm._v(" "),
+              _c(
+                "th",
+                {
+                  staticClass: "sorting",
+                  attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
+                },
+                [_vm._v("Cond. Price")]
               )
             ]
           )
@@ -71192,7 +71224,9 @@ var render = function() {
                 amount: trade.amount,
                 total: trade.total,
                 "stop-loss": trade.stop_loss,
-                "take-profit": trade.take_profit
+                "take-profit": trade.take_profit,
+                condition: trade.condition,
+                "condition-price": trade.condition_price
               }
             })
           })

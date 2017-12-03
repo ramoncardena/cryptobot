@@ -80,13 +80,15 @@ class BittrexConditionalWatcher extends Command {
 						// Check the condition type: greater or less
 						switch ($conditional->condition) {
 							case 'greater':
-								if ( floatval($conditional->condition_price) >= floatval($ticker->Last) ) {
+								if ( floatval($ticker->Last) >= floatval($conditional->condition_price) ) {
+									var_dump($ticker->Last . " >= " . $conditional->condition_price);
 									event(new ConditionReached($conditional, $ticker->Last));
 									//print_r("Trade #" . $stop->trade_id . " -> Stop-Loss at " . $ticker->Last ."\n");
 								}
 								break;
 							case 'less':
-								if ( floatval($conditional->condition_price) <= floatval($ticker->Last) ) {
+								if ( floatval($ticker->Last) <= floatval($conditional->condition_price) ) {
+									var_dump($ticker->Last . " <= " . $conditional->condition_price);
 									event(new ConditionReached($conditional, $ticker->Last));
 									//print_r("Trade #" . $stop->trade_id . " -> Stop-Loss at " . $ticker->Last ."\n");
 								}

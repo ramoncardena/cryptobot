@@ -17,6 +17,8 @@
                     <th class="sorting" tabindex="0" rowspan="1" colspan="1">Total</th>
                     <th class="sorting" tabindex="0" rowspan="1" colspan="1">Stop-Loss</th>
                     <th class="sorting" tabindex="0" rowspan="1" colspan="1">Take-Profit</th>
+                    <th class="sorting" tabindex="0" rowspan="1" colspan="1">Condition</th>
+                    <th class="sorting" tabindex="0" rowspan="1" colspan="1">Cond. Price</th>
 
                 </tr>
             </thead>
@@ -31,6 +33,8 @@
                             :total = "trade.total"
                             :stop-loss = "trade.stop_loss"
                             :take-profit = "trade.take_profit"
+                            :condition =  "trade.condition"
+                            :condition-price = "trade.condition_price"
                             :key="trade.id"
                         >
                 </trade2>

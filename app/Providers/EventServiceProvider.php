@@ -32,7 +32,7 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\CloseTrade',
         ],
         'App\Events\ConditionReached' => [
-            'App\Listeners\ExecuteOrder',
+            'App\Listeners\ExecuteConditional',
         ],
     ];
 
