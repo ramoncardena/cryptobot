@@ -88,6 +88,8 @@ class BittrexConditionalWatcher extends Command {
 						
 						$ticker= $ticker->result;
 
+						Log::info("Conditional Last: " . $ticker->Last);
+
 						// Check last price with stop-loss for this pair
 						$conditionalsToCheck = $conditionals->whereIn('pair', $market);
 
