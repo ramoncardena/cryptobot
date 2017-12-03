@@ -70,6 +70,7 @@ class BittrexConditionalWatcher extends Command {
 
 				// Set instruments with pairs form stops and profits
 				$this->instruments = array_unique($pairs->all());
+				Log::info("Conditional Instruments: " . $this->instruments);
 
 				// Iterate through all pairs to check last price
 				foreach ($this->instruments as $market) {
