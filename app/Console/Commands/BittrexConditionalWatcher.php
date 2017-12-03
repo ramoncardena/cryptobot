@@ -2,10 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Library\Console;
 use Illuminate\Console\Command;
-use Exception;
-
 use App\User;
 use App\Conditional;
 use App\Events\ConditionReached;
@@ -48,12 +45,9 @@ class BittrexConditionalWatcher extends Command {
 	 * @return mixed
 	 */
 	public function handle() {
-		$this->console = $util = new Console();
 
 		// Log INFO: BitttrexTradeWatcher launched
 		Log::info("Bittrex Conditional Watcher launched.");
-
-		stream_set_blocking(STDIN, 0);
 
 		while(1) {
 

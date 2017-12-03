@@ -2,10 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Library\Console;
 use Illuminate\Console\Command;
-use Exception;
-
 use App\Stop;
 use App\Profit;
 use App\Events\StopLossReached;
@@ -49,7 +46,6 @@ class BittrexTradeWatcher extends Command {
 	 * @return mixed
 	 */
 	public function handle() {
-		$this->console = $util = new Console();
 
 		$this->instruments = [];
 
@@ -58,8 +54,6 @@ class BittrexTradeWatcher extends Command {
 
 		// Initialize Bittrez API
 		Bittrex::setAPI('','');
-
-		stream_set_blocking(STDIN, 0);
 
 		while(1) {
 			if(ord(fgetc(STDIN)) == 113) {

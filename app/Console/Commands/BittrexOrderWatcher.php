@@ -2,7 +2,6 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-
 use App\User;
 use App\Order;
 use App\Events\OrderCompleted;
@@ -43,7 +42,6 @@ class BittrexOrderWatcher extends Command {
 
 		// Log INFO: BitttrexOrderWatcher launched
 		Log::info("Bittrex Order Watcher launched.");
-
 
 		while(1) {
 
