@@ -97,7 +97,7 @@ class BittrexConditionalWatcher extends Command {
 						$conditionalsToCheck = $conditionals->whereIn('pair', $market);
 
 						foreach ($conditionalsToCheck as $conditional) {
-							
+
 							var_dump($conditional->pair . "/n");
 
 							// Check the condition type: greater or less
@@ -131,7 +131,7 @@ class BittrexConditionalWatcher extends Command {
 									break;
 
 							}
-
+							print_r(".");
 						}
 
 					}
