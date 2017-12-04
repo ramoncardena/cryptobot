@@ -15,7 +15,9 @@ use App\User;
 class TradeController extends Controller
 {
     protected $user;
+  
     protected $trade;
+  
     protected $order_id;
 
     /**
@@ -224,7 +226,9 @@ class TradeController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $this->trade = Trade::find($id);
+
+        return response("Trade " . $id . " closed." , 200)->header('Content-Type', 'text/plain');
     }
 
     /**

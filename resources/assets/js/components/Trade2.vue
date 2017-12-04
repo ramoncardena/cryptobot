@@ -4,7 +4,7 @@
             <td>
                 <div v-show="opened || waiting" class="trade-cancel icons-area">
                     <i v-show="updating" class="fa fa-cog fa-spin fa-fw"></i> 
-                    <i v-show="!updating" class="fa fa-times cancel-icon"></i>
+                    <button class="clear button" :data-open="'closeTrade' + id"><i v-show="!updating" class="fa fa-times cancel-icon"></i></button>
                     <i v-if="(opened == true || waiting==true)" v-on:click="update(exchange, pair, price)" class="fa fa-refresh refresh-icon"></i>
                 </div>
             </td>
@@ -23,6 +23,7 @@
             <td>{{ (condition == 'now') ? 'none' : condition + ' than' }} </td>
             <td> {{ parseFloat(conditionPrice).toFixed(8) }}</td>
         </tr>
+        
 </template>
 
    <script>
@@ -49,7 +50,8 @@
     'condition-price',
     "final-profit",
     "type",
-    "closing-price"
+    "closing-price",
+    "id"
     ],
     computed: {
         opened: function() {
@@ -107,7 +109,20 @@
                     console.log("Error: " +  e.message);
                 })
             }
+        },
+        closeTrade(id) {
+            let uri = '';
+            axios.delete('/trades/' + this.id)
+            .then(response => {
+                console.log("Trade closed!");
+                console.log(response.data);
+                window.location.href = '/trades';
+            })
+            .catch(error => {
+                console.log(error.response.data); 
+            });
         }
+
     }
 }
 </script>

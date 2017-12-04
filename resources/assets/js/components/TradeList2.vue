@@ -1,7 +1,8 @@
 <template>
     <div class="trade-list">
 
-    <table class="display compact dataTable trade myTable" cellspacing="0" width="100%" role="grid">
+        <table class="display compact dataTable trade myTable" cellspacing="0" width="100%" role="grid">
+
             <thead class="dataTable-header">
                 <tr role="row" class="trade-title text-center mytr">
                     <th class="sorting" tabindex="0" rowspan="1" colspan="1"> </th>
@@ -39,9 +40,38 @@
                             :final-profit = "trade.profit"
                             :closing-price ="trade.closing_price"
                             :type = "type"
+                            :id = "trade.id"
                             :key="trade.id"
                         >
                 </trade2>
+
+                <!--MODAL: Close Trade -->
+                <div v-for="trade in trades" class="reveal trade-modal" :id="'closeTrade' + trade.id" data-reveal>
+                    <h1>Closing Trade</h1>
+                    <p class="lead">{{ trade.pair }} at {{ trade.exchange.toUpperCase() }}</p>
+                    <div class="input-group">
+                        <span class="input-group-label">
+                            <i v-show="loadingprice" class="fa fa-cog fa-spin fa-fw"></i> 
+                            <i v-show="!loadingprice && closingprice!=0" class="fa fa-refresh fa-fw" v-on:click="updateprice(trade.exchange, trade.pair, priceselected)"></i>
+                            Price
+                        </span>
+                        <input v-model="closingprice" class="input-group-field price" type="number">
+                        <select v-model="priceselected" id="close-price-select"  v-on:change="updateprice(trade.exchange, trade.pair, priceselected)">
+                            <option disabled value="">Autofill</option>
+                            <option value="last">Last</option>
+                            <option value="bid">Bid</option>
+                            <option value="ask">Ask</option>
+                        </select>
+                          
+                    </div>
+                    <button class="hollow button" href="#">
+                           Close Trade
+                        </button>
+                    <button class="close-button" data-close aria-label="Close modal" type="button" v-on:click="closingprice=0.00000000; priceselected='';">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
             </tbody>
         </table>
     </div>
@@ -56,8 +86,16 @@
     ],
     data: () => {
         return {
+            loadingprice: false,
             updating: false,
-            profit: 0
+            profit: 0,
+            marketsummary: [],
+            exchange: "",
+            priceselected: "",
+            closingprice: 0.0000000,
+            last: 0.00000000,
+            bid: 0.00000000,
+            ask: 0.00000000,
         }
     },
     computed: {
@@ -90,9 +128,9 @@
         console.log('Component TradeList mounted.');
     },
     methods: {
-        update(exchange, pair, price) {
-
-            this.updating = true;
+        updateprice(exchange, pair, pricetype) {
+            this.loadingprice = true;
+            
             if (exchange.toLowerCase() == 'bittrex') {
                 let uri = '/api/bittrexapi/getmarketsummary/' + pair;
                 axios(uri, {
@@ -100,21 +138,29 @@
                 })
                 .then(response => {
                     this.marketsummary=response.data[0];  
-                    
-                    // Calculate percentual diference
-                    let decreaseValue = parseFloat(this.marketsummary.Last) - parseFloat(price);
-                    decreaseValue = (parseFloat(decreaseValue) / parseFloat(price) * parseFloat(100));
-                    this.profit = parseFloat(decreaseValue).toFixed(2) + "%";
+                    this.last = parseFloat(this.marketsummary.Last);
+                    this.bid = parseFloat(this.marketsummary.Bid);
+                    this.ask = parseFloat(this.marketsummary.Ask);
 
-                    this.updating = false;
-                      console.log("Last: " + last + " - " + this.profit);
-            
-                  
+                    if (pricetype.toLowerCase() == "last") {
+                        this.closingprice =  parseFloat(this.last);
+                    }
+                    else if (pricetype.toLowerCase() == "bid") {
+                        this.closingprice =  parseFloat(this.bid);
+                    }
+                    else if (pricetype.toLowerCase() == "ask") {
+                        this.closingprice =  parseFloat(this.ask);
+                    }
+                    this.loadingprice = false;
                 })
                 .catch(e => {
-                    this.updating = false;
-                    console.log("Error: " +  e.message);
+                    this.errors.push(e);
+                    this.loadingprice = false;
+                    console.log("Error: " + e.message);
                 })
+            }
+            else {
+                this.loadingprice = false;
             }
         }
     }

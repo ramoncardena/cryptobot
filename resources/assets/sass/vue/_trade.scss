@@ -2,9 +2,24 @@ div.dataTables_wrapper div.dataTables_length select {
     width: 75px;
     margin-bottom: 1rem !important;
 }
-.trade {
+.trade-modal {
+	.input-group-label {
+		color: get-color(primary);
+		background-color: transparent;
+	}
+	#close-price-select {
+			width: 5rem;
+			margin: 0;
+			height: auto;
+			min-width: 0;
+			color: get-color(primary);
+	}
+	input[type=number] {
+		text-align: right;
+	}
+}
 
-
+.trade{
 	font-size: 1rem;
 	color: $dark-gray;
 

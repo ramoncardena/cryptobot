@@ -14383,6 +14383,23 @@ div.dataTables_wrapper div.dataTables_length select {
   margin-bottom: 1rem !important;
 }
 
+.trade-modal .input-group-label {
+  color: #009ACE;
+  background-color: transparent;
+}
+
+.trade-modal #close-price-select {
+  width: 5rem;
+  margin: 0;
+  height: auto;
+  min-width: 0;
+  color: #009ACE;
+}
+
+.trade-modal input[type=number] {
+  text-align: right;
+}
+
 .trade {
   font-size: 1rem;
   color: #8a8a8a;
