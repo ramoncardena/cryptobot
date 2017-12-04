@@ -261,14 +261,14 @@ class TradeController extends Controller
                 Log::notice($request);
 
                 // Launch Bittrex sell order with Pair, Amount and Price as parameters
-                 $remoteOrder = Bittrex::sellLimit($this->trade->pair, $this->trade->amount, $request->closingprice);
+                // $remoteOrder = Bittrex::sellLimit($this->trade->pair, $this->trade->amount, $request->closingprice);
             
                 // TESTING SUCCESS
-                // $remoteOrder = new \stdClass();
-                // $remoteOrder->success=true;
-                // $remoteOrder->message="";
-                // $remoteOrder->result = new \stdClass();
-                // $remoteOrder->result->uuid = "7c6db929-6c4f-4711-b99b-01c9697330ce";
+                $remoteOrder = new \stdClass();
+                $remoteOrder->success=true;
+                $remoteOrder->message="";
+                $remoteOrder->result = new \stdClass();
+                $remoteOrder->result->uuid = "7c6db929-6c4f-4711-b99b-01c9697330ce";
 
                 // TESTING FAIL
                 // $remoteOrder = new \stdClass();
@@ -338,14 +338,14 @@ class TradeController extends Controller
                 Bittrex::setAPI($user->settings()->get('bittrex_key'), $user->settings()->get('bittrex_secret'));
 
                 // Launch Bittrex sell order with Pair, Amount and Price as parameters
-                $order = Bittrex::buyLimit($pair, $amount, $price);
+                // $order = Bittrex::buyLimit($pair, $amount, $price);
              
                 // TESTING SUCCESS
-                // $order = new \stdClass();
-                // $order->success=true;
-                // $order->message="";
-                // $order->result = new \stdClass();
-                // $order->result->uuid = "7c6db929-6c4f-4711-b99b-01c9697330ce";
+                $order = new \stdClass();
+                $order->success=true;
+                $order->message="";
+                $order->result = new \stdClass();
+                $order->result->uuid = "7c6db929-6c4f-4711-b99b-01c9697330ce";
 
                 // TESTING FAIL
                 // $order = new \stdClass();
