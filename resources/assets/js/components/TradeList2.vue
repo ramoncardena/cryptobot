@@ -79,7 +79,7 @@
                                 </div>
                             </div>
                             <div class="small-12 cell form-container">
-                                <button class="hollow button" href="#">
+                                <button class="hollow button" href="#" v-on:click="closeTrade(trade.id)">
                                    Close Trade
                                 </button>
                             </div>
@@ -211,6 +211,18 @@
             else {
                 this.loadingprice = false;
             }
+        },
+        closeTrade(id) {
+            let uri = 'closingprice=' + this.closingprice;
+            axios.delete('/trades/' + id)
+            .then(response => {
+                console.log("Trade closed!");
+                console.log(response.data);
+                window.location.href = '/trades';
+            })
+            .catch(error => {
+                console.log(error.response.data); 
+            });
         }
     }
 }

@@ -70266,16 +70266,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     console.log("Error: " + e.message);
                 });
             }
-        },
-        closeTrade: function closeTrade(id) {
-            var uri = '';
-            axios.delete('/trades/' + this.id).then(function (response) {
-                console.log("Trade closed!");
-                console.log(response.data);
-                window.location.href = '/trades';
-            }).catch(function (error) {
-                console.log(error.response.data);
-            });
         }
     }
 });
@@ -70385,7 +70375,7 @@ var render = function() {
       ? _c("td", [_vm._v(_vm._s(parseFloat(_vm.closingPrice).toFixed(8)))])
       : _vm._e(),
     _vm._v(" "),
-    _c("td", [_vm._v(_vm._s(parseFloat(_vm.amount).toFixed(8)))]),
+    _c("td", [_vm._v(_vm._s(parseFloat(_vm.amount).toFixed(4)))]),
     _vm._v(" "),
     _c("td", [_vm._v(_vm._s(parseFloat(_vm.total).toFixed(8)))]),
     _vm._v(" "),
@@ -71192,6 +71182,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             } else {
                 this.loadingprice = false;
             }
+        },
+        closeTrade: function closeTrade(id) {
+            var uri = 'closingprice=' + this.closingprice;
+            axios.delete('/trades/' + id).then(function (response) {
+                console.log("Trade closed!");
+                console.log(response.data);
+                window.location.href = '/trades';
+            }).catch(function (error) {
+                console.log(error.response.data);
+            });
         }
     }
 });
@@ -71659,7 +71659,29 @@ var render = function() {
                         ]
                       ),
                       _vm._v(" "),
-                      _vm._m(0, true, false)
+                      _c(
+                        "div",
+                        { staticClass: "small-12 cell form-container" },
+                        [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "hollow button",
+                              attrs: { href: "#" },
+                              on: {
+                                click: function($event) {
+                                  _vm.closeTrade(trade.id)
+                                }
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n                               Close Trade\n                            "
+                              )
+                            ]
+                          )
+                        ]
+                      )
                     ])
                   ]),
                   _vm._v(" "),
@@ -71700,20 +71722,7 @@ var render = function() {
     )
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "small-12 cell form-container" }, [
-      _c("button", { staticClass: "hollow button", attrs: { href: "#" } }, [
-        _vm._v(
-          "\n                               Close Trade\n                            "
-        )
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {

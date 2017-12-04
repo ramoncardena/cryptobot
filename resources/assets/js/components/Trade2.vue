@@ -16,7 +16,7 @@
             <td>{{ parseFloat(price).toFixed(8) }}</td>
             <td v-if="history == false">{{ last.toFixed(8) }}</td>
             <td v-if="history == true">{{ parseFloat(closingPrice).toFixed(8) }}</td>
-            <td>{{ parseFloat(amount).toFixed(8) }}</td>
+            <td>{{ parseFloat(amount).toFixed(4) }}</td>
             <td>{{ parseFloat(total).toFixed(8) }}</td>
             <td>{{ parseFloat(stopLoss).toFixed(8) }}</td>
             <td>{{ parseFloat(takeProfit).toFixed(8) }}</td>
@@ -109,18 +109,6 @@
                     console.log("Error: " +  e.message);
                 })
             }
-        },
-        closeTrade(id) {
-            let uri = '';
-            axios.delete('/trades/' + this.id)
-            .then(response => {
-                console.log("Trade closed!");
-                console.log(response.data);
-                window.location.href = '/trades';
-            })
-            .catch(error => {
-                console.log(error.response.data); 
-            });
         }
 
     }
