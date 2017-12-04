@@ -16,6 +16,7 @@ class HomeController extends Controller
      *
      * @return void
      */
+    
     public function __construct()
     {
         $this->middleware('auth');
@@ -50,10 +51,19 @@ class HomeController extends Controller
             throw new Exception ("You must be authenticated to get your settings");
         }
     }
+
+    protected function ParseFloat($floatString){
+        $LocaleInfo = localeconv();
+        $floatString = str_replace($LocaleInfo["mon_thousands_sep"] , "", $floatString);
+        $floatString = str_replace($LocaleInfo["mon_decimal_point"] , ".", $floatString);
+        return floatval($floatString);
+    } 
     
     protected function getCoinLogo( $coin ) {
 
         if ( $coin != 'BTC') {
+
+            $moneda = $coin;
 
             $market = Bittrex::getMarkets();
 
@@ -75,7 +85,23 @@ class HomeController extends Controller
 
     protected function getTotals ( $coins ) {
 
-        $totals = ['BTC' => $coins->pluck('BTC-Value')->sum(), 'USD' => $coins->pluck('USD-Value')->sum(), 'EUR' => $coins->pluck('EUR-Value')->sum()];
+        $eur = $coins->pluck('EUR-Value');
+        $usd = $coins->pluck('USD-Value');
+        $btc = $coins->pluck('BTC-Value');
+
+        $eur = $eur->map(function ($item, $key) {
+            return floatval(str_replace(',', '', $item));
+        });
+        $usd = $usd->map(function ($item, $key) {
+            return floatval(str_replace(',', '', $item));
+        });
+        $btc = $btc->map(function ($item, $key) {
+            return floatval(str_replace(',', '', $item));
+        });
+
+
+
+        $totals = ['BTC' => $btc->sum(), 'USD' => $usd->sum(), 'EUR' => $eur->sum()];
 
         return $totals;
     }
