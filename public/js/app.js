@@ -71067,6 +71067,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'tradelist2',
@@ -71082,7 +71100,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             closingprice: 0.0000000,
             last: 0.00000000,
             bid: 0.00000000,
-            ask: 0.00000000
+            ask: 0.00000000,
+            high: 0.00000000,
+            low: 0.00000000
         };
     },
     computed: {
@@ -71113,7 +71133,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     methods: {
-        updateprice: function updateprice(exchange, pair, pricetype) {
+        loadinfo: function loadinfo(exchange, pair) {
             var _this = this;
 
             this.loadingprice = true;
@@ -71127,18 +71147,46 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     _this.last = parseFloat(_this.marketsummary.Last);
                     _this.bid = parseFloat(_this.marketsummary.Bid);
                     _this.ask = parseFloat(_this.marketsummary.Ask);
-
-                    if (pricetype.toLowerCase() == "last") {
-                        _this.closingprice = parseFloat(_this.last);
-                    } else if (pricetype.toLowerCase() == "bid") {
-                        _this.closingprice = parseFloat(_this.bid);
-                    } else if (pricetype.toLowerCase() == "ask") {
-                        _this.closingprice = parseFloat(_this.ask);
-                    }
+                    _this.high = parseFloat(_this.marketsummary.High);
+                    _this.low = parseFloat(_this.marketsummary.Low);
                     _this.loadingprice = false;
                 }).catch(function (e) {
                     _this.errors.push(e);
                     _this.loadingprice = false;
+                    console.log("Error: " + e.message);
+                });
+            } else {
+                this.loadingprice = false;
+            }
+        },
+        updateprice: function updateprice(exchange, pair, pricetype) {
+            var _this2 = this;
+
+            this.loadingprice = true;
+
+            if (exchange.toLowerCase() == 'bittrex') {
+                var uri = '/api/bittrexapi/getmarketsummary/' + pair;
+                axios(uri, {
+                    method: 'GET'
+                }).then(function (response) {
+                    _this2.marketsummary = response.data[0];
+                    _this2.last = parseFloat(_this2.marketsummary.Last);
+                    _this2.bid = parseFloat(_this2.marketsummary.Bid);
+                    _this2.ask = parseFloat(_this2.marketsummary.Ask);
+                    _this2.high = parseFloat(_this2.marketsummary.High);
+                    _this2.low = parseFloat(_this2.marketsummary.Low);
+
+                    if (pricetype.toLowerCase() == "last") {
+                        _this2.closingprice = parseFloat(_this2.last);
+                    } else if (pricetype.toLowerCase() == "bid") {
+                        _this2.closingprice = parseFloat(_this2.bid);
+                    } else if (pricetype.toLowerCase() == "ask") {
+                        _this2.closingprice = parseFloat(_this2.ask);
+                    }
+                    _this2.loadingprice = false;
+                }).catch(function (e) {
+                    _this2.errors.push(e);
+                    _this2.loadingprice = false;
                     console.log("Error: " + e.message);
                 });
             } else {
@@ -71351,143 +71399,269 @@ var render = function() {
                   attrs: { id: "closeTrade" + trade.id, "data-reveal": "" }
                 },
                 [
-                  _c("h1", [_vm._v("Closing Trade")]),
-                  _vm._v(" "),
-                  _c("p", { staticClass: "lead" }, [
-                    _vm._v(
-                      _vm._s(trade.pair) +
-                        " at " +
-                        _vm._s(trade.exchange.toUpperCase())
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "input-group" }, [
-                    _c("span", { staticClass: "input-group-label" }, [
-                      _c("i", {
-                        directives: [
-                          {
-                            name: "show",
-                            rawName: "v-show",
-                            value: _vm.loadingprice,
-                            expression: "loadingprice"
-                          }
-                        ],
-                        staticClass: "fa fa-cog fa-spin fa-fw"
-                      }),
-                      _vm._v(" "),
-                      _c("i", {
-                        directives: [
-                          {
-                            name: "show",
-                            rawName: "v-show",
-                            value: !_vm.loadingprice && _vm.closingprice != 0,
-                            expression: "!loadingprice && closingprice!=0"
-                          }
-                        ],
-                        staticClass: "fa fa-refresh fa-fw",
-                        on: {
-                          click: function($event) {
-                            _vm.updateprice(
-                              trade.exchange,
-                              trade.pair,
-                              _vm.priceselected
-                            )
-                          }
-                        }
-                      }),
-                      _vm._v(
-                        "\n                        Price\n                    "
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.closingprice,
-                          expression: "closingprice"
-                        }
-                      ],
-                      staticClass: "input-group-field price",
-                      attrs: { type: "number" },
-                      domProps: { value: _vm.closingprice },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.closingprice = $event.target.value
-                        }
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c(
-                      "select",
-                      {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.priceselected,
-                            expression: "priceselected"
-                          }
-                        ],
-                        attrs: { id: "close-price-select" },
-                        on: {
-                          change: [
-                            function($event) {
-                              var $$selectedVal = Array.prototype.filter
-                                .call($event.target.options, function(o) {
-                                  return o.selected
-                                })
-                                .map(function(o) {
-                                  var val = "_value" in o ? o._value : o.value
-                                  return val
-                                })
-                              _vm.priceselected = $event.target.multiple
-                                ? $$selectedVal
-                                : $$selectedVal[0]
-                            },
-                            function($event) {
-                              _vm.updateprice(
-                                trade.exchange,
-                                trade.pair,
-                                _vm.priceselected
+                  _c("div", { staticClass: "grid-container fluid" }, [
+                    _c("div", { staticClass: "grid-x grid-padding-x" }, [
+                      _c(
+                        "div",
+                        { staticClass: "small-8 cell form-container" },
+                        [
+                          _c("p", { staticClass: "h1" }, [
+                            _vm._v("Closing Trade")
+                          ]),
+                          _vm._v(" "),
+                          _c("p", { staticClass: "lead" }, [
+                            _c("b", [
+                              _vm._v(
+                                _vm._s(trade.pair) +
+                                  " at " +
+                                  _vm._s(trade.exchange.toUpperCase())
                               )
-                            }
-                          ]
-                        }
-                      },
-                      [
-                        _c("option", { attrs: { disabled: "", value: "" } }, [
-                          _vm._v("Autofill")
-                        ]),
-                        _vm._v(" "),
-                        _c("option", { attrs: { value: "last" } }, [
-                          _vm._v("Last")
-                        ]),
-                        _vm._v(" "),
-                        _c("option", { attrs: { value: "bid" } }, [
-                          _vm._v("Bid")
-                        ]),
-                        _vm._v(" "),
-                        _c("option", { attrs: { value: "ask" } }, [
-                          _vm._v("Ask")
-                        ])
-                      ]
-                    )
+                            ])
+                          ])
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "small-4 cell form-container close-trade-info text-right"
+                        },
+                        [
+                          _c(
+                            "div",
+                            {
+                              on: {
+                                click: function($event) {
+                                  _vm.loadinfo(trade.exchange, trade.pair)
+                                }
+                              }
+                            },
+                            [_vm._v(" (refresh) ")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              model: {
+                                value: _vm.last,
+                                callback: function($$v) {
+                                  _vm.last = $$v
+                                },
+                                expression: "last"
+                              }
+                            },
+                            [
+                              _c("b", [_vm._v("Last:")]),
+                              _vm._v(" " + _vm._s(_vm.last.toFixed(8)) + " ")
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              model: {
+                                value: _vm.bid,
+                                callback: function($$v) {
+                                  _vm.bid = $$v
+                                },
+                                expression: "bid"
+                              }
+                            },
+                            [
+                              _c("b", [_vm._v("Bid:")]),
+                              _vm._v(" " + _vm._s(_vm.bid.toFixed(8)))
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              model: {
+                                value: _vm.ask,
+                                callback: function($$v) {
+                                  _vm.ask = $$v
+                                },
+                                expression: "ask"
+                              }
+                            },
+                            [
+                              _c("b", [_vm._v("Ask:")]),
+                              _vm._v(" " + _vm._s(_vm.ask.toFixed(8)))
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              model: {
+                                value: _vm.low,
+                                callback: function($$v) {
+                                  _vm.low = $$v
+                                },
+                                expression: "low"
+                              }
+                            },
+                            [
+                              _c("b", [_vm._v("Low:")]),
+                              _vm._v(" " + _vm._s(_vm.low.toFixed(8)))
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              model: {
+                                value: _vm.high,
+                                callback: function($$v) {
+                                  _vm.high = $$v
+                                },
+                                expression: "high"
+                              }
+                            },
+                            [
+                              _c("b", [_vm._v("High:")]),
+                              _vm._v(" " + _vm._s(_vm.high.toFixed(8)))
+                            ]
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "small-12 cell form-container" },
+                        [
+                          _c("div", { staticClass: "input-group" }, [
+                            _c("span", { staticClass: "input-group-label" }, [
+                              _c("i", {
+                                directives: [
+                                  {
+                                    name: "show",
+                                    rawName: "v-show",
+                                    value: _vm.loadingprice,
+                                    expression: "loadingprice"
+                                  }
+                                ],
+                                staticClass: "fa fa-cog fa-spin fa-fw"
+                              }),
+                              _vm._v(" "),
+                              _c("i", {
+                                directives: [
+                                  {
+                                    name: "show",
+                                    rawName: "v-show",
+                                    value:
+                                      !_vm.loadingprice &&
+                                      _vm.closingprice != 0,
+                                    expression:
+                                      "!loadingprice && closingprice!=0"
+                                  }
+                                ],
+                                staticClass: "fa fa-refresh fa-fw",
+                                on: {
+                                  click: function($event) {
+                                    _vm.updateprice(
+                                      trade.exchange,
+                                      trade.pair,
+                                      _vm.priceselected
+                                    )
+                                  }
+                                }
+                              }),
+                              _vm._v(
+                                "\n                                    Price\n                                "
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.closingprice,
+                                  expression: "closingprice"
+                                }
+                              ],
+                              staticClass: "input-group-field price",
+                              attrs: { type: "number" },
+                              domProps: { value: _vm.closingprice },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.closingprice = $event.target.value
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "select",
+                              {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.priceselected,
+                                    expression: "priceselected"
+                                  }
+                                ],
+                                attrs: { id: "close-price-select" },
+                                on: {
+                                  change: [
+                                    function($event) {
+                                      var $$selectedVal = Array.prototype.filter
+                                        .call($event.target.options, function(
+                                          o
+                                        ) {
+                                          return o.selected
+                                        })
+                                        .map(function(o) {
+                                          var val =
+                                            "_value" in o ? o._value : o.value
+                                          return val
+                                        })
+                                      _vm.priceselected = $event.target.multiple
+                                        ? $$selectedVal
+                                        : $$selectedVal[0]
+                                    },
+                                    function($event) {
+                                      _vm.updateprice(
+                                        trade.exchange,
+                                        trade.pair,
+                                        _vm.priceselected
+                                      )
+                                    }
+                                  ]
+                                }
+                              },
+                              [
+                                _c(
+                                  "option",
+                                  { attrs: { disabled: "", value: "" } },
+                                  [_vm._v("Autofill")]
+                                ),
+                                _vm._v(" "),
+                                _c("option", { attrs: { value: "last" } }, [
+                                  _vm._v("Last")
+                                ]),
+                                _vm._v(" "),
+                                _c("option", { attrs: { value: "bid" } }, [
+                                  _vm._v("Bid")
+                                ]),
+                                _vm._v(" "),
+                                _c("option", { attrs: { value: "ask" } }, [
+                                  _vm._v("Ask")
+                                ])
+                              ]
+                            )
+                          ])
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _vm._m(0, true, false)
+                    ])
                   ]),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    { staticClass: "hollow button", attrs: { href: "#" } },
-                    [
-                      _vm._v(
-                        "\n                       Close Trade\n                    "
-                      )
-                    ]
-                  ),
                   _vm._v(" "),
                   _c(
                     "button",
@@ -71500,6 +71674,11 @@ var render = function() {
                       },
                       on: {
                         click: function($event) {
+                          _vm.last = 0
+                          _vm.bid = 0
+                          _vm.ask = 0
+                          _vm.high = 0
+                          _vm.low = 0
                           _vm.closingprice = 0.0
                           _vm.priceselected = ""
                         }
@@ -71521,7 +71700,20 @@ var render = function() {
     )
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "small-12 cell form-container" }, [
+      _c("button", { staticClass: "hollow button", attrs: { href: "#" } }, [
+        _vm._v(
+          "\n                               Close Trade\n                            "
+        )
+      ])
+    ])
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {

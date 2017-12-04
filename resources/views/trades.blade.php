@@ -49,7 +49,7 @@
                                 </div>
                             </li>
 
-                            <li class="accordion-item" data-accordion-item>
+                            <li class="accordion-item is-active" data-accordion-item>
                                 <a href="#" class="accordion-title">Trade History</a>
                                 <div class="accordion-content" data-tab-content >
                                     <tradelist2 type="history" :trades="{{ $tradesHistory }}"></tradelist2>
