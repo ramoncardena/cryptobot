@@ -56,7 +56,13 @@
                         <li class="accordion-item" data-accordion-item>
                             <a href="#" class="accordion-title">Exchange APIs</a>
                             <div class="accordion-content" data-tab-content>
-
+                                <div class="switch small">
+                                    <input class="switch-input" id="yes-no" type="checkbox" name="exampleSwitch">
+                                    <label class="switch-paddle" for="yes-no">
+                                        <span class="switch-active" aria-hidden="true">Live</span>
+                                        <span class="switch-inactive" aria-hidden="true">Test</span>
+                                    </label>
+                                </div>
                                 <div class="input-group">
                                     <span class="input-group-label">Bittrex Key</span>
                                     <input class="input-group-field" type="text" name="bittrex_key" value="{{$decrypt_bittrex_key}}">

@@ -71185,7 +71185,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         closeTrade: function closeTrade(id) {
             var uri = 'closingprice=' + this.closingprice;
-            axios.delete('/trades/' + id).then(function (response) {
+            axios.delete('/trades/' + id + '?' + uri).then(function (response) {
                 console.log("Trade closed!");
                 console.log(response.data);
                 window.location.href = '/trades';

@@ -84,14 +84,14 @@ class ExecuteTakeProfit
                 if ($event->takeProfit->type == "sell") {
                 
                     // Launch Bittrex sell order with Pair, Amount and Price as parameters
-                    // $order = Bittrex::sellLimit($this->trade['pair'], $this->trade['amount'], $this->last); 
+                    $order = Bittrex::sellLimit($this->trade['pair'], $this->trade['amount'], $this->last); 
                 
                     // TESTING SUCCESS
-                    $order = new \stdClass();
-                    $order->success=true;
-                    $order->message="";
-                    $order->result = new \stdClass();
-                    $order->result->uuid = "7c6db929-6c4f-4711-b99b-01c9697330ce";
+                    // $order = new \stdClass();
+                    // $order->success=true;
+                    // $order->message="";
+                    // $order->result = new \stdClass();
+                    // $order->result->uuid = "7c6db929-6c4f-4711-b99b-01c9697330ce";
 
                     // TESTING FAIL
                     // $order = new \stdClass();

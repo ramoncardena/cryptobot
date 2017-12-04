@@ -214,7 +214,7 @@
         },
         closeTrade(id) {
             let uri = 'closingprice=' + this.closingprice;
-            axios.delete('/trades/' + id)
+            axios.delete('/trades/' + id + '?' + uri)
             .then(response => {
                 console.log("Trade closed!");
                 console.log(response.data);
