@@ -7,6 +7,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Log;
 
+use App\Notifications\TradeOpened;
 use App\Events\TradeClosed;
 use App\Trade;
 use App\Stop;
@@ -53,7 +54,7 @@ class UpdateTrade
                     event(new TradeClosed($this->trade));
 
                     // Log NOTICE: Order closed at Bittrex 
-                    Log::notice("Order Completed: Order " . $event->order->order_id . " at " . $event->order->exchange . " closed with closing price " . $event->price);
+                    Log::notice("Order Completed: Order " . $event->order->order_id . " at " . $event->order->exchange  . " for " . $this->trade->pair . " was CLOSED with closing price " . $event->price);
 
                     // Log NOTICE: Trade close
                     Log::notice("Trade #" . $this->trade->id . " at " . $this->trade->exchange . " for " . $this->trade->pair . " was closed at " . $this->trade->closing_price ." with a profit of " . $this->trade->profit . "%");
@@ -65,10 +66,13 @@ class UpdateTrade
                     $this->updateTrade($event->order->trade_id, $event->order->id, $event->price);
 
                      // Log NOTICE: Order opened at Bittrex 
-                    Log::notice("Order Completed: Order " . $event->order->order_id . " at " . $event->order->exchange . " closed with closing price " . $event->price);
+                    Log::notice("Order Completed: Order " . $event->order->order_id . " at " . $event->order->exchange . $event->order->exchange  . " for " . $this->trade->pair . " was OPENED with opening price " . $event->price);
 
                     // Log NOTICE: Trade opened
                     Log::notice("Trade #" . $this->trade->id . " at " . $this->trade->exchange . " for " . $this->trade->pair . " was opened at an actual price of " . $event->price . " per unit");
+
+
+                    User::find($this->trade->user_id)->notify(new TradeOpened($this->trade));
 
                     break;
             }
