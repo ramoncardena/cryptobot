@@ -94,7 +94,7 @@
                         </li>
 
                         <li>
-                            <a href="#"><i class="fa fa-bell-o" aria-hidden="true"></i><span class="badge alert">14</span></a>
+                            <a href="#" data-open="notificationsModal"><i class="fa fa-bell-o" aria-hidden="true"></i><span class="badge alert">14</span></a>
                         </li>
 
                         <li>
@@ -109,6 +109,8 @@
         </nav>
 
         @yield('content')
+
+        @include('partials.notifications')
 
     </div>
 
