@@ -12,6 +12,7 @@ use App\Conditional;
 use App\Trade;
 use App\Stop;
 use App\Profit;
+use App\Order;
 use App\Library\Services\Facades\Bittrex;
 
 class ExecuteConditional
@@ -66,8 +67,8 @@ class ExecuteConditional
             // If order succeeds fill the order id, stop id and profit id in the trade
             // and set status as 'Opened'
             $this->trade->order_id = $order['order_id'];
-            $this->trade->stop_id = $order['stop_id'];
-            $this->trade->profit_id = $order['profit_id'];
+            // $this->trade->stop_id = $order['stop_id'];
+            // $this->trade->profit_id = $order['profit_id'];
             $this->trade->status = "Opened";
             $this->trade->save();
 
@@ -137,56 +138,16 @@ class ExecuteConditional
                 // Check for order success
                 if ($order->success == true) {
 
-                    // Get order UUID
-                    $order_id = $order->result->uuid;
+                    // If we get a success response we create an Order in our database to track
+                    $orderToTrack = new Order;
+                    $orderToTrack->user_id = $this->trade->user_id;
+                    $orderToTrack->trade_id = $this->trade->id;
+                    $orderToTrack->exchange = 'bittrex';
+                    $orderToTrack->order_id = $order->result->uuid;
+                    $orderToTrack->type = 'open';
+                    $orderToTrack->save();
 
-                    // Create a new Stop-Loss instance in the DB
-                    $stopLoss->trade_id = $this->trade->id;
-                    $stopLoss->order_id = $order_id;
-                    $stopLoss->status = "Opened";
-                    $stopLoss->exchange = $exchange;
-                    $stopLoss->pair = $pair;
-                    $stopLoss->price = $stop;
-                    $stopLoss->amount = $amount;
-
-                    if ($position = 'long') {
-
-                        $stopLoss->type = 'sell';
-
-                    }
-                    else if ($position = 'short') {
-
-                        $stopLoss->type = 'buy';
-
-                    }
-
-                    // Save new Stop-Loss
-                    $stopLoss->save();
-
-                    // Creat a new Take-Profit instance in the DB
-                    $takeProfit->trade_id = $this->trade->id;
-                    $takeProfit->order_id = $order_id;
-                    $takeProfit->status = "Opened";
-                    $takeProfit->exchange = $exchange;
-                    $takeProfit->pair = $pair;
-                    $takeProfit->price = $profit;
-                    $takeProfit->amount = $amount;
-
-                    if ($position = 'long') {
-
-                        $takeProfit->type = 'sell';
-
-                    }
-                    else if ($position = 'short') {
-
-                       $takeProfit->type = 'buy';
-
-                    }
-
-                    // Save new Take-Profit
-                    $takeProfit->save();
-
-                    return ['status' => 'success', 'order_id' => $order_id, 'stop_id' => $stopLoss->id, 'profit_id' => $takeProfit->id];
+                    return ['status' => 'success', 'order_id' => $orderToTrack->order_id, 'stop_id' => $stopLoss->id, 'profit_id' => $takeProfit->id];
 
                 }
                 else {

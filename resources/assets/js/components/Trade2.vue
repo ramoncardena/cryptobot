@@ -5,10 +5,10 @@
                 <div v-show="opened || waiting" class="trade-cancel icons-area">
                     <i v-show="updating" class="fa fa-cog fa-spin fa-fw"></i> 
                     <button class="clear button" :data-open="'closeTrade' + id"><i v-show="!updating" class="fa fa-times cancel-icon"></i></button>
-                    <i v-if="(opened == true || waiting==true)" v-on:click="update(exchange, pair, price)" class="fa fa-refresh refresh-icon"></i>
+                    <i v-if="(opened == true || waiting==true || closing==true || opening==true)" v-on:click="update(exchange, pair, price)" class="fa fa-refresh refresh-icon"></i>
                 </div>
             </td>
-            <td v-if="(opened == true || history==true)">{{ (history==true) ? parseFloat(finalProfit).toFixed(2) + '%' : profit }}</td>
+            <td v-if="(opened == true || history==true || closing==true || opening==true)">{{ (history==true) ? parseFloat(finalProfit).toFixed(2) + '%' : profit }}</td>
             <td>{{ pair }}</td>
             <td class="sorting_1  trade-status">{{ status }}</td>
             <td>{{ exchange }}</td>
@@ -64,6 +64,22 @@
         },
         waiting: function() {
             if (this.status == "Waiting") {
+                return true;
+            }
+            else {
+                return false;
+            }
+        },
+        closing: function() {
+            if (this.status == "Closing") {
+                return true;
+            }
+            else {
+                return false;
+            }
+        },
+        opening: function() {
+            if (this.status == "Opening") {
                 return true;
             }
             else {

@@ -29,7 +29,7 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\TrackOrder',
         ],
         'App\Events\OrderCompleted' => [
-            'App\Listeners\CloseTrade',
+            'App\Listeners\UpdateTrade',
         ],
         'App\Events\ConditionReached' => [
             'App\Listeners\ExecuteConditional',

@@ -13,6 +13,6 @@ class Order extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id', 'order_id', 'trade_id', 'exchange'
+        'user_id', 'order_id', 'trade_id', 'exchange', 'type'
     ];
 }

@@ -18,15 +18,18 @@ class OrderCompleted
 
     public $price;
 
+    public $type;
+
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($order, $price)
+    public function __construct($order, $price, $type)
     {
         $this->order = $order;
         $this->price = $price;
+        $this->type = $type;
     }
 
     /**

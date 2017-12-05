@@ -7,7 +7,7 @@
                 <tr role="row" class="trade-title text-center mytr">
                     <th class="sorting" tabindex="0" rowspan="1" colspan="1"> </th>
                     <th class="sorting" tabindex="0" rowspan="1" colspan="1"></th>
-                    <th v-if="opened==true || history==true" class="sorting" tabindex="0" rowspan="1" colspan="1">P/L (%)</th>
+                    <th v-if="opened==true || history==true || closing==true || opening==true" class="sorting" tabindex="0" rowspan="1" colspan="1">P/L (%)</th>
                     <th class="sorting" tabindex="0" rowspan="1" colspan="1">Pair</th>
                     <th class="sorting_asc" tabindex="0" rowspan="1" colspan="1" >Status</th>
                     <th class="sorting" tabindex="0" rowspan="1" colspan="1">Exchange</th>
@@ -129,6 +129,22 @@
         },
         waiting: function() {
             if (this.type == "waiting") {
+                return true;
+            }
+            else {
+                return false;
+            }
+        },
+        opening: function() {
+            if (this.type == "opening") {
+                return true;
+            }
+            else {
+                return false;
+            }
+        },
+        closing: function() {
+            if (this.type == "closing") {
                 return true;
             }
             else {

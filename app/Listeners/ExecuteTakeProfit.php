@@ -109,6 +109,7 @@ class ExecuteTakeProfit
                         $this->order->trade_id = $this->trade['id'];
                         $this->order->exchange = 'bittrex';
                         $this->order->order_id = $order->result->uuid;
+                        $this->order->type = 'close';
                         $this->order->save();
 
                     }
@@ -136,7 +137,7 @@ class ExecuteTakeProfit
         } catch(\Exception $e) {
               
             // Log CRITICAL: Exception
-            Log::critical("BittrexTradeWatcher Exception: " . $e->getMessage());
+            Log::critical("ExecuteTakePRofit Exception: " . $e->getMessage());
 
         }
 

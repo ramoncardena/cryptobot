@@ -49,20 +49,23 @@ class TradeController extends Controller
 
                 // Retrieve trade history
                 $tradesHistory = Trade::where('user_id',  Auth::id())
+                    ->where('status', 'Closed')
                     ->orderBy('updated_at', 'desc')
                     ->get();
-                $tradesHistory = $tradesHistory->reject(function ($trade) {
-                    return $trade->status == 'Opened';
-                });
-                $tradesHistory = $tradesHistory->reject(function ($trade) {
-                    return $trade->status == 'Waiting';
-                });
+                
 
                 // Retrieve open trades
                 $tradesOpened = Trade::where('user_id',  Auth::id())
-                   ->where('status', 'Opened')
                    ->orderBy('updated_at', 'desc')
                    ->get();
+
+                $tradesOpened = $tradesOpened->reject(function ($trade) {
+                    return $trade->status == 'Closed';
+                });
+
+                $tradesOpened = $tradesOpened->reject(function ($trade) {
+                    return $trade->status == 'Waiting';
+                });
 
                 // Retrieve waiting trades
                 $tradesWaiting = Trade::where('user_id',  Auth::id())
@@ -138,12 +141,12 @@ class TradeController extends Controller
                     // If order succeeds fill the order id, stop id and profit id in the trade
                     // and set status as 'Opened'
                     $this->trade->order_id = $order['order_id'];
-                    $this->trade->stop_id = $order['stop_id'];
-                    $this->trade->profit_id = $order['profit_id'];
-                    $this->trade->status = "Opened";
+                    // $this->trade->stop_id = $order['stop_id'];
+                    // $this->trade->profit_id = $order['profit_id'];
+                    $this->trade->status = "Opening";
                     $this->trade->save();
 
-                    $res = '#' . $this->trade->id . ' Trade Opened.' . 'Exchange: ' . $this->trade->exchange . ' Pair: ' . $this->trade->pair . ' Price: ' . $this->trade->price . ' Amount: ' . $this->trade->amount . ' Total: ' . $this->trade->total .' Stop-Loss: ' . $this->trade->stop . ' Take-Profit: ' . $this->trade->profit;
+                    $res = '#' . $this->trade->id . ' Opening Trade.' . 'Exchange: ' . $this->trade->exchange . ' Pair: ' . $this->trade->pair . ' Price: ' . $this->trade->price . ' Amount: ' . $this->trade->amount . ' Total: ' . $this->trade->total .' Stop-Loss: ' . $this->trade->stop . ' Take-Profit: ' . $this->trade->profit;
 
                     return response($res , 200)->header('Content-Type', 'text/plain');
                
@@ -286,6 +289,7 @@ class TradeController extends Controller
                     $order->trade_id = $this->trade->id;
                     $order->exchange = 'bittrex';
                     $order->order_id = $remoteOrder->result->uuid;
+                    $order->type = 'close';
                     $order->save();
 
                     // Event: OrderLaunched
@@ -357,42 +361,17 @@ class TradeController extends Controller
                 // Check for order success
                 if ($order->success == true) {
 
-                    // Get order UUID
-                    $order_id = $order->result->uuid;
+                    $order_id = 
+                    // If we get a success response we create an Order in our database to track
+                    $orderToTrack = new Order;
+                    $orderToTrack->user_id = $this->trade->user_id;
+                    $orderToTrack->trade_id = $this->trade->id;
+                    $orderToTrack->exchange = 'bittrex';
+                    $orderToTrack->order_id = $order->result->uuid;
+                    $orderToTrack->type = 'open';
+                    $orderToTrack->save();
 
-                    // Create a new Stop-Loss instance in the DB
-                    $stopLoss->trade_id = $this->trade->id;
-                    $stopLoss->order_id = $order_id;
-                    $stopLoss->status = "Opened";
-                    $stopLoss->exchange = $exchange;
-                    $stopLoss->pair = $pair;
-                    $stopLoss->price = $stop;
-                    $stopLoss->amount = $amount;
-                    if ($position = 'long') {
-                        $stopLoss->type = 'sell';
-                    }
-                    else if ($position = 'short') {
-                        $stopLoss->type = 'buy';
-                    }
-                    $stopLoss->save();
-
-                    // Creat a new Take-Profit instance in the DB
-                    $takeProfit->trade_id = $this->trade->id;
-                    $takeProfit->order_id = $order_id;
-                    $takeProfit->status = "Opened";
-                    $takeProfit->exchange = $exchange;
-                    $takeProfit->pair = $pair;
-                    $takeProfit->price = $profit;
-                    $takeProfit->amount = $amount;
-                    if ($position = 'long') {
-                        $takeProfit->type = 'sell';
-                    }
-                    else if ($position = 'short') {
-                       $takeProfit->type = 'buy';
-                    }
-                    $takeProfit->save();
-
-                    return ['status' => 'success', 'order_id' => $order_id, 'stop_id' => $stopLoss->id, 'profit_id' => $takeProfit->id];
+                    return ['status' => 'success', 'order_id' => $orderToTrack->order_id, 'stop_id' => $stopLoss->id, 'profit_id' => $takeProfit->id];
                 }
                 else {
                     return ['status' => 'fail', 'message' => $order->message];

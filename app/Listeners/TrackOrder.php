@@ -36,7 +36,7 @@ class TrackOrder
         } catch (\Exception $e) {
 
             // Log CRITICAL: Exception
-            Log::critical("BittrexTradeWatcher Exception: " . $e->getMessage());
+            Log::critical("TrackOrder Exception: " . $e->getMessage());
             
         }
         

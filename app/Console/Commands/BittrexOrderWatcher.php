@@ -77,22 +77,20 @@ class BittrexOrderWatcher extends Command {
 					if (! $onlineOrder->success) {
 
 						// Log ERROR: Bittrex API returned error
-						Log::error("Bittrex API: " . $onlineOrder->message);
+						Log::error("BittrexOrderWatcher - Bittrex API: " . $onlineOrder->message);
 
 					}
 					else {
 
+						// If order is closed then update trade
 						$onlineOrder = $onlineOrder->result;
-
-						// If order is closed then close trade
-						if ($onlineOrder->Closed != null) {
+						if ( $onlineOrder->Closed != "" ) {
 
 							// Event: OrderCompleted
-							event(new OrderCompleted($order, $onlineOrder->PricePerUnit));
+							event(new OrderCompleted($order, $onlineOrder->PricePerUnit, $order->type));
 
-							// Log NOTICE: Order closed at Bittrex 
-							Log::notice("Order Completed: Order " . $order->order_id . " at " . $order->exchange . " closed with closing price " . $onlineOrder->PricePerUnit);
 						}
+
 					}
 					
 				}

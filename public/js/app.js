@@ -70227,6 +70227,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 return false;
             }
         },
+        closing: function closing() {
+            if (this.status == "Closing") {
+                return true;
+            } else {
+                return false;
+            }
+        },
+        opening: function opening() {
+            if (this.status == "Opening") {
+                return true;
+            } else {
+                return false;
+            }
+        },
         history: function history() {
             if (this.type == "history") {
                 return true;
@@ -70329,7 +70343,10 @@ var render = function() {
             ]
           ),
           _vm._v(" "),
-          _vm.opened == true || _vm.waiting == true
+          _vm.opened == true ||
+          _vm.waiting == true ||
+          _vm.closing == true ||
+          _vm.opening == true
             ? _c("i", {
                 staticClass: "fa fa-refresh refresh-icon",
                 on: {
@@ -70343,7 +70360,10 @@ var render = function() {
       )
     ]),
     _vm._v(" "),
-    _vm.opened == true || _vm.history == true
+    _vm.opened == true ||
+    _vm.history == true ||
+    _vm.closing == true ||
+    _vm.opening == true
       ? _c("td", [
           _vm._v(
             _vm._s(
@@ -71110,6 +71130,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 return false;
             }
         },
+        opening: function opening() {
+            if (this.type == "opening") {
+                return true;
+            } else {
+                return false;
+            }
+        },
+        closing: function closing() {
+            if (this.type == "closing") {
+                return true;
+            } else {
+                return false;
+            }
+        },
         history: function history() {
             if (this.type == "history") {
                 return true;
@@ -71230,7 +71264,10 @@ var render = function() {
                 attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
               }),
               _vm._v(" "),
-              _vm.opened == true || _vm.history == true
+              _vm.opened == true ||
+              _vm.history == true ||
+              _vm.closing == true ||
+              _vm.opening == true
                 ? _c(
                     "th",
                     {
