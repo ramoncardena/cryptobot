@@ -125,7 +125,7 @@ class ExecuteTakeProfit
                     event(new OrderLaunched($this->order, $this->trade));
 
                     // Log NOTICE: Order Launched
-                    Log::notice("Order Launched: Take Profit launched a SELL order (#" . $order->id .") at " . $this->last  . " for trade #" . $this->trade['id'] . " for the pair " . $this->trade['pair'] . " at " . $this->trade['exchange']);
+                    Log::notice("Order Launched: Take Profit launched a SELL order (#" . $this->order->id .") at " . $this->last  . " for trade #" . $this->trade['id'] . " for the pair " . $this->trade['pair'] . " at " . $this->trade['exchange']);
 
                 }
                 else if ($event->takeProfit->type == "buy") {
