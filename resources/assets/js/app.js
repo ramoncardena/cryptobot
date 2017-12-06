@@ -27,6 +27,7 @@ Vue.component('tradelist', require('./components/TradeList.vue'));
 Vue.component('tradelist2', require('./components/TradeList2.vue'));
 Vue.component('tradelist3', require('./components/TradeList3.vue'));
 Vue.component('tradepanel', require('./components/TradePanel.vue'));
+Vue.component('notification-list', require('./components/NotificationList.vue'));
 
 const app = new Vue({
     el: '#app'

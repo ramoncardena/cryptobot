@@ -1,0 +1,14 @@
+.notification-list {
+
+	font-size: 1rem;
+
+	.capitalize {
+		text-transform: capitalize;
+	}
+	.item-check {
+		color: $light-gray;
+	}
+	.item-new {
+		color: get-color(success);
+	}
+}

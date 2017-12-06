@@ -4,7 +4,7 @@
         <table class="display compact dataTable trade myTable" cellspacing="0" width="100%" role="grid">
 
             <thead class="dataTable-header">
-                <tr role="row" class="trade-title text-center mytr">
+                <tr role="row" class="trade-title text-center">
                     <th class="sorting" tabindex="0" rowspan="1" colspan="1"> </th>
                     <th class="sorting" tabindex="0" rowspan="1" colspan="1"></th>
                     <th v-if="opened==true || history==true || closing==true || opening==true" class="sorting" tabindex="0" rowspan="1" colspan="1">P/L (%)</th>

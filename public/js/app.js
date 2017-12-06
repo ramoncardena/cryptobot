@@ -26762,7 +26762,7 @@ module.exports = Cancel;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(14);
-module.exports = __webpack_require__(70);
+module.exports = __webpack_require__(73);
 
 
 /***/ }),
@@ -26795,6 +26795,7 @@ Vue.component('tradelist', __webpack_require__(58));
 Vue.component('tradelist2', __webpack_require__(61));
 Vue.component('tradelist3', __webpack_require__(64));
 Vue.component('tradepanel', __webpack_require__(67));
+Vue.component('notification-list', __webpack_require__(70));
 
 var app = new Vue({
   el: '#app'
@@ -71249,10 +71250,7 @@ var render = function() {
         _c("thead", { staticClass: "dataTable-header" }, [
           _c(
             "tr",
-            {
-              staticClass: "trade-title text-center mytr",
-              attrs: { role: "row" }
-            },
+            { staticClass: "trade-title text-center", attrs: { role: "row" } },
             [
               _c("th", {
                 staticClass: "sorting",
@@ -73214,6 +73212,199 @@ if (false) {
 
 /***/ }),
 /* 70 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(71)
+/* template */
+var __vue_template__ = __webpack_require__(72)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/NotificationList.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-5c336de0", Component.options)
+  } else {
+    hotAPI.reload("data-v-5c336de0", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 71 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: 'notification-list',
+    props: ['notifications'],
+    data: function data() {
+        return {};
+    },
+    computed: {},
+    mounted: function mounted() {
+        console.log('Component Notifications mounted.');
+    },
+
+    methods: {
+        parseType: function parseType(type) {
+            console.log(type.substr(type.lastIndexOf('\\') + 1));
+
+            return type.substr(type.lastIndexOf('\\') + 1);
+        }
+    }
+});
+
+/***/ }),
+/* 72 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "notification-list" }, [
+    _c(
+      "table",
+      { staticClass: "display dataTable myTable", attrs: { width: "100%" } },
+      [
+        _vm._m(0, false, false),
+        _vm._v(" "),
+        _c(
+          "tbody",
+          _vm._l(_vm.notifications, function(notification) {
+            return _c("tr", [
+              notification.read_at == null
+                ? _c("td", { attrs: { width: "10px" } }, [
+                    _c("i", {
+                      staticClass: "fa fa-check item-new",
+                      attrs: { "aria-hidden": "true" }
+                    })
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              notification.read_at != null
+                ? _c(
+                    "td",
+                    { staticClass: "warning", attrs: { width: "20px" } },
+                    [
+                      _c("i", {
+                        staticClass: "fa fa-check item-check",
+                        attrs: { "aria-hidden": "true" }
+                      })
+                    ]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _c("td", { attrs: { width: "20%" } }, [
+                _vm._v(_vm._s(notification.updated_at))
+              ]),
+              _vm._v(" "),
+              _c("td", [_vm._v(" " + _vm._s(notification.data.message))])
+            ])
+          })
+        )
+      ]
+    )
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", { staticClass: "dataTable-header" }, [
+      _c("tr", { attrs: { role: "row" } }, [
+        _c("th", {
+          staticClass: "sorting",
+          attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
+        }),
+        _vm._v(" "),
+        _c(
+          "th",
+          {
+            staticClass: "sorting",
+            attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
+          },
+          [_vm._v("Time")]
+        ),
+        _vm._v(" "),
+        _c(
+          "th",
+          {
+            staticClass: "sorting",
+            attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
+          },
+          [_vm._v("Message")]
+        )
+      ])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-5c336de0", module.exports)
+  }
+}
+
+/***/ }),
+/* 73 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

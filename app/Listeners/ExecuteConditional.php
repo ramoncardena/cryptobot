@@ -7,6 +7,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Log;
 
+use App\Notifications\ConditionalNotification;
 use App\User;
 use App\Conditional;
 use App\Trade;
@@ -67,14 +68,15 @@ class ExecuteConditional
             // If order succeeds fill the order id, stop id and profit id in the trade
             // and set status as 'Opened'
             $this->trade->order_id = $order['order_id'];
-            // $this->trade->stop_id = $order['stop_id'];
-            // $this->trade->profit_id = $order['profit_id'];
             $this->trade->status = "Opened";
             $this->trade->save();
 
             Log::notice('New Trade: Trade #' . $this->trade->id . ' opened at ' . $this->trade->exchange . ' for ' . $this->trade->pair . ' at ' . $this->trade->price . ' an amount of ' . $this->trade->amount . ' units for a total of ' . $this->trade->total .' with Stop-Loss at ' . $this->trade->stop_loss . ' and Take-Profit at ' . $this->trade->take_profit);
 
             $res = '#' . $this->trade->id . ' Trade Opened.' . 'Exchange: ' . $this->trade->exchange . ' Pair: ' . $this->trade->pair . ' Price: ' . $this->trade->price . ' Amount: ' . $this->trade->amount . ' Total: ' . $this->trade->total .' Stop-Loss: ' . $this->trade->stop_loss . ' Take-Profit: ' . $this->trade->take_profit;
+
+            // NOTIFY: Conditional launched
+            User::find($this->trade->user_id)->notify(new ConditionalNotification($this->trade));
             
             return response($res , 200)->header('Content-Type', 'text/plain');
        

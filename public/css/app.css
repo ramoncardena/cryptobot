@@ -14021,6 +14021,10 @@ a.thumbnail image {
   background: url("/storage/icons/loading.gif") 50% 50% no-repeat #f9f9f9;
 }
 
+.badge {
+  font-weight: bold;
+}
+
 .top-bar {
   border-bottom: 1px solid #009ACE;
 }
@@ -14527,5 +14531,21 @@ div.dataTables_wrapper div.dataTables_length select {
 .tradepanel .last,
 .tradepanel .volume {
   margin-bottom: 1rem;
+}
+
+.notification-list {
+  font-size: 1rem;
+}
+
+.notification-list .capitalize {
+  text-transform: capitalize;
+}
+
+.notification-list .item-check {
+  color: #e6e6e6;
+}
+
+.notification-list .item-new {
+  color: #3adb76;
 }
 

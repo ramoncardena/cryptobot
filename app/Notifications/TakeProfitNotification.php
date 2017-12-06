@@ -7,7 +7,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class TradeOpened extends Notification
+class TakeProfitNotification extends Notification
 {
     use Queueable;
 
@@ -60,9 +60,8 @@ class TradeOpened extends Notification
             'trade_id' => $this->trade->id,
             'exchange' => $this->trade->exchange,
             'pair' => $this->trade->pair,
-            'price' => $this->trade->price,
-            'stop' => $this->trade->stop,
-            'profit' => $this->trade->profit
+            'take_profit' => $this->trade->stop_loss,
+            'message' => 'TAKE-PROFIT reached for at ' . $this->trade->exchange . ' for pair ' . $this->trade->pair . ' at ' . $this->trade->take_profit
         ];
     }
 }
