@@ -30,7 +30,4 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/markasread', function(){
-	Auth::user()->notifications->markAsRead();
-});
 

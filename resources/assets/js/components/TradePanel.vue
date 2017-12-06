@@ -307,7 +307,7 @@ export default {
             //Bittrex
             if (exchange.toLowerCase() == 'bittrex') {
                 axios('/api/bittrexapi/getpairs', {
-                    method: 'GET',
+                    method: 'GET'
                 })
                 .then(response => {
                     this.bittrexpairs=response.data;  

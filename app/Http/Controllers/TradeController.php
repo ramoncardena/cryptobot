@@ -73,6 +73,8 @@ class TradeController extends Controller
                    ->orderBy('updated_at', 'desc')
                    ->get();
 
+            
+            
                 // Return 'trades' view passing trade history and open trades objects
                 return view('trades', ['tradesHistory' => $tradesHistory, 'tradesOpened' => $tradesOpened, 'tradesWaiting' => $tradesWaiting]);
             }

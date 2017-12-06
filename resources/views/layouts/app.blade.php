@@ -92,7 +92,7 @@
                         </li>
 
                         <li>
-                            <a href="#" data-open="notificationsModal"><i class="fa fa-bell-o" aria-hidden="true"></i><span class="badge alert">{{ count(Auth::user()->unreadNotifications) }}</span></a>
+                            <a href="#" data-open="notificationsModal"><i class="fa fa-bell-o" aria-hidden="true"></i><span class="badge alert">{{ count(Auth::user()->Notifications) }}</span></a>
                         </li>
 
                         <li>
@@ -107,8 +107,9 @@
         </nav>
 
         @yield('content')
-
-        @include('partials.notifications')
+        @if (Auth::check())
+             @include('partials.notifications')
+        @endif
 
     </div>
 
