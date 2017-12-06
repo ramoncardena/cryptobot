@@ -24,3 +24,6 @@ Route::middleware('auth:api')->get('bittrexapi/getmarkets/{coin}', 'BittrexApiCo
 
 Route::middleware('auth:api')->get('exchange/{name}/fee', 'ExchangeController@getfee');
 
+Route::middleware('auth:api')->get('/notifications/markasread', function(){
+	Auth::user()->notifications->markAsRead();
+});
