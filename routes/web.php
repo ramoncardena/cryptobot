@@ -1,4 +1,7 @@
 <?php
+
+use Illuminate\Support\Facades\Auth;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -26,4 +29,8 @@ Route::delete('/trades/{id}', 'TradeController@destroy');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/markasread', function(){
+	Auth::user()->notifications->markAsRead();
+});
 

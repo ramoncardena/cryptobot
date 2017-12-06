@@ -15,7 +15,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+       // View Composers
+        view()->composer(
+            'partials.notifications', 'App\Http\ViewComposers\NavbarViewComposer'
+        );
     }
 
     /**

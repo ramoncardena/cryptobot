@@ -64,7 +64,6 @@
                 <div class="top-bar-left">
                     <ul class="menu">
                         <li><img class="logo" src="<?php echo asset('storage/cryptobot-logo-40px.png') ?>"/></li>
-
                     </ul>
                 </div>
 
@@ -88,13 +87,12 @@
                         </li>
                        
 
-                        
                         <li>
                             <a href="/settings"><i class="fa fa-cog" aria-hidden="true"></i></a>
                         </li>
 
                         <li>
-                            <a href="#" data-open="notificationsModal"><i class="fa fa-bell-o" aria-hidden="true"></i><span class="badge alert">14</span></a>
+                            <a href="#" data-open="notificationsModal"><i class="fa fa-bell-o" aria-hidden="true"></i><span class="badge alert">{{ count(Auth::user()->unreadNotifications) }}</span></a>
                         </li>
 
                         <li>

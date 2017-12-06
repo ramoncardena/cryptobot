@@ -6,6 +6,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Log;
 
+use App\Notifications\StopLossNotification;
 use App\Events\OrderLaunched;
 use App\Events\StopLossReached;
 use App\Library\Services\Facades\Bittrex;
@@ -126,8 +127,11 @@ class ExecuteStopLoss
                     event(new OrderLaunched($this->order, $this->trade));
 
                     // Log NOTICE: Order Launched
-                    Log::notice("Order Launched: Stop-loss launched a SELL order (#" . $order->id .") at " . $this->last  . " for trade #" . $this->trade['id'] . " for the pair " . $this->trade['pair'] . " at " . $this->trade['exchange']);
-               
+                    Log::notice("Order Launched: Stop-loss launched a SELL order (#" . $this->order->id .") at " . $this->last  . " for trade #" . $this->trade['id'] . " for the pair " . $this->trade['pair'] . " at " . $this->trade['exchange']);
+
+                    // NOTIFY: StopLoss
+                    User::find($this->trade['user_id'])->notify(new StopLossNotification($this->trade));
+
                 }
                 else if ($event->stopLoss->type == "buy") {
 
