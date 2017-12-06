@@ -17,10 +17,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('bittrexapi/getpairs', 'BittrexApiController@getpairs');
-Route::get('bittrexapi/getmarketsummary/{pair}', 'BittrexApiController@getmarketsummary');
-Route::get('bittrexapi/getmarkets/{coin}', 'BittrexApiController@getmarkets');
+Route::middleware('auth:api')->get('bittrexapi/getpairs', 'BittrexApiController@getpairs');
+Route::middleware('auth:api')->get('bittrexapi/getmarketsummary/{pair}', 'BittrexApiController@getmarketsummary');
+Route::middleware('auth:api')->get('bittrexapi/getmarkets/{coin}', 'BittrexApiController@getmarkets');
 
 
-Route::get('exchange/{name}/fee', 'ExchangeController@getfee');
+Route::middleware('auth:api')->get('exchange/{name}/fee', 'ExchangeController@getfee');
 
