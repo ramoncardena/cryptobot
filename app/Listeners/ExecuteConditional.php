@@ -77,7 +77,7 @@ class ExecuteConditional
 
             // NOTIFY: Conditional launched
             User::find($this->trade->user_id)->notify(new ConditionalNotification($this->trade));
-            
+        
             return response($res , 200)->header('Content-Type', 'text/plain');
        
         } else if ($order['status'] == 'fail') {
