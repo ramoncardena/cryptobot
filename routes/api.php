@@ -21,9 +21,14 @@ Route::middleware('auth:api')->get('bittrexapi/getpairs', 'BittrexApiController@
 Route::middleware('auth:api')->get('bittrexapi/getmarketsummary/{pair}', 'BittrexApiController@getmarketsummary');
 Route::middleware('auth:api')->get('bittrexapi/getmarkets/{coin}', 'BittrexApiController@getmarkets');
 
-
 Route::middleware('auth:api')->get('exchange/{name}/fee', 'ExchangeController@getfee');
 
-Route::middleware('auth:api')->get('/notifications/markasread', function(){
-	Auth::user()->notifications->markAsRead();
-});
+Route::middleware('auth:api')->get('/notifications', 'NotificationsController@index');
+Route::middleware('auth:api')->get('/notifications/{id}', 'NotificationsController@show');
+Route::middleware('auth:api')->get('/notifications/markasread', 'NotificationsController@readall');
+Route::middleware('auth:api')->get('/notifications/{id}/markasread', 'NotificationsController@read');
+Route::middleware('auth:api')->delete('/notifications/{id}', 'NotificationsController@delete');
+Route::middleware('auth:api')->delete('/notifications', 'NotificationsController@deleteall');
+
+
+

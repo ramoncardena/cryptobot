@@ -7,8 +7,17 @@
 	}
 	.item-check {
 		color: $light-gray;
+		&:focus {
+			outline: 0;
+		}
 	}
 	.item-new {
 		color: get-color(success);
+		&:hover {
+			cursor: pointer;
+		}
+		&:focus {
+			outline: 0;
+		}
 	}
 }

@@ -27116,6 +27116,9 @@ var app = new Vue({
 });
 
 $(document).ready(function () {
+
+  __webpack_require__(100);
+
   $.extend($.fn.dataTable.defaults, {
     responsive: true
   });
@@ -27145,6 +27148,7 @@ try {
   // require( 'datatables.net-responsive/js/dataTables.responsive' );
   __webpack_require__(21);
   //require('footable/dist/footable');
+
 } catch (e) {}
 
 /**
@@ -75756,6 +75760,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'notification-list',
@@ -75769,10 +75775,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     methods: {
-        parseType: function parseType(type) {
-            console.log(type.substr(type.lastIndexOf('\\') + 1));
-
-            return type.substr(type.lastIndexOf('\\') + 1);
+        markAsRead: function markAsRead(id) {
+            axios('/api/notifications/' + id + '/markasread', {
+                method: 'GET'
+            }).then(function (response) {
+                $(window).trigger('resize');
+                console.log("Success: " + response);
+            }).catch(function (e) {
+                console.log("Error: " + e.message);
+            });
         }
     }
 });
@@ -75786,6 +75797,12 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "notification-list" }, [
+    _c("button", { staticClass: "hollow button" }, [
+      _vm._v(" Mark all as read")
+    ]),
+    _vm._v(" "),
+    _c("button", { staticClass: "hollow button" }, [_vm._v(" Delete all")]),
+    _vm._v(" "),
     _c(
       "table",
       { staticClass: "display dataTable myTable", attrs: { width: "100%" } },
@@ -75797,30 +75814,29 @@ var render = function() {
           _vm._l(_vm.notifications, function(notification) {
             return _c("tr", [
               notification.read_at == null
-                ? _c("td", { attrs: { width: "10px" } }, [
+                ? _c("td", [
                     _c("i", {
                       staticClass: "fa fa-check item-new",
-                      attrs: { "aria-hidden": "true" }
+                      attrs: { "aria-hidden": "true" },
+                      on: {
+                        click: function($event) {
+                          _vm.markAsRead(notification.id)
+                        }
+                      }
                     })
                   ])
                 : _vm._e(),
               _vm._v(" "),
               notification.read_at != null
-                ? _c(
-                    "td",
-                    { staticClass: "warning", attrs: { width: "20px" } },
-                    [
-                      _c("i", {
-                        staticClass: "fa fa-check item-check",
-                        attrs: { "aria-hidden": "true" }
-                      })
-                    ]
-                  )
+                ? _c("td", [
+                    _c("i", {
+                      staticClass: "fa fa-check item-check",
+                      attrs: { "aria-hidden": "true" }
+                    })
+                  ])
                 : _vm._e(),
               _vm._v(" "),
-              _c("td", { attrs: { width: "20%" } }, [
-                _vm._v(_vm._s(notification.updated_at))
-              ]),
+              _c("td", [_vm._v(_vm._s(notification.updated_at))]),
               _vm._v(" "),
               _c("td", [_vm._v(" " + _vm._s(notification.data.message))])
             ])
@@ -75877,6 +75893,30 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 92 */,
+/* 93 */,
+/* 94 */,
+/* 95 */,
+/* 96 */,
+/* 97 */,
+/* 98 */,
+/* 99 */,
+/* 100 */
+/***/ (function(module, exports) {
+
+//////////////////////////////////////////////////////////////////
+// Cases Carousel 
+$('.reveal').on('open.zf.reveal', function () {
+    console.log('Modal opened!');
+    // Resize window to fit content
+    $(window).trigger('resize');
+});
+
+$('#notificationsModal').on('closed.zf.reveal', function () {
+    console.log('Modal closed!');
+});
 
 /***/ })
 /******/ ]);

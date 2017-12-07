@@ -14545,7 +14545,19 @@ div.dataTables_wrapper div.dataTables_length select {
   color: #e6e6e6;
 }
 
+.notification-list .item-check:focus {
+  outline: 0;
+}
+
 .notification-list .item-new {
   color: #3adb76;
+}
+
+.notification-list .item-new:hover {
+  cursor: pointer;
+}
+
+.notification-list .item-new:focus {
+  outline: 0;
 }
 

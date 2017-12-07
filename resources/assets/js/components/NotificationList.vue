@@ -1,5 +1,7 @@
 <template>
     <div class="notification-list">
+        <button class="hollow button"> Mark all as read</button>
+        <button class="hollow button"> Delete all</button>
          <table class="display dataTable myTable" width="100%">
             <thead class="dataTable-header">
                 <tr role="row">
@@ -10,9 +12,9 @@
             </thead>
             <tbody>
                 <tr v-for="notification in notifications">
-                    <td width="10px"  v-if=" notification.read_at == null"> <i class="fa fa-check item-new" aria-hidden="true"></i></td>
-                    <td width="20px" class="warning" v-if="notification.read_at != null"> <i class="fa fa-check item-check" aria-hidden="true"></i> </td>
-                    <td width="20%">{{ notification.updated_at }}</td>
+                    <td v-if=" notification.read_at == null"> <i class="fa fa-check item-new" aria-hidden="true" v-on:click="markAsRead(notification.id)"></i></td>
+                    <td v-if="notification.read_at != null"> <i class="fa fa-check item-check" aria-hidden="true"></i> </td>
+                    <td>{{ notification.updated_at }}</td>
                     <td> {{ notification.data.message }}</td>
                 </tr>
             </tbody>
@@ -39,13 +41,19 @@
         console.log('Component Notifications mounted.');
     },
     methods: {
-        parseType(type) {
-            console.log(type.substr(type.lastIndexOf('\\') + 1));
+        markAsRead(id) {
+            axios('/api/notifications/' + id + '/markasread', {
+                method: 'GET',
+            })
+            .then(response => {
+                $(window).trigger('resize');
+                console.log("Success: " + response);
 
-            return  type.substr(type.lastIndexOf('\\') + 1);
-
-        }
-        
+            })
+            .catch(e => {
+                console.log("Error: " +  e.message);
+            });
+        }        
     }
 }
 </script>

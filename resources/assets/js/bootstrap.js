@@ -16,6 +16,7 @@ try {
     // require( 'datatables.net-responsive/js/dataTables.responsive' );
     require( 'datatables.net-responsive-zf' );
     //require('footable/dist/footable');
+    
 
 } catch (e) {}
 

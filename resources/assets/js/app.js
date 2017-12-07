@@ -52,9 +52,13 @@ const app = new Vue({
 });
 
 $(document).ready(function () {
+
+    require('./partials/notifications');
+    
 	$.extend( $.fn.dataTable.defaults, {
 	    responsive: true
 	} );
 	$('#myTable').DataTable();
 	$('.myTable').DataTable();
+
 });
