@@ -79680,6 +79680,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'tradepanel',
@@ -79691,23 +79700,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             tppChanged: false,
             slChanged: false,
             slpChanged: false,
-            updateTp: false,
-            updateTpp: false,
-            updateSl: false,
-            updateSlp: false,
             stopAtTotal: false,
             stopAtAmount: false,
-            filledByAmount: false,
-            filledByTotal: false,
-            filledByPrice: false,
             loadingpairs: false,
             loadingprice: false,
             marketLoaded: false,
             slSwitch: false,
             tpSwitch: false,
-            slpercent: 10,
+            slpercent: 0,
             stoploss: 0,
-            tppercent: 20,
+            tppercent: 0,
             takeprofit: 0,
             priceselected: "",
             exchange: "",
@@ -79717,6 +79719,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             marketsummary: [],
             conditionselected: "now",
             conditionprice: 0.00000000,
+            conditionalSwitch: false,
             errors: [],
             basecurrency: "",
             coinname: { 'long': '', 'short': '' },
@@ -79986,6 +79989,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
         },
         openLong: function openLong() {
+            if (this.conditionalSwitch == false) {
+                this.conditionselected = "now";
+                this.conditionprice = 0;
+            }
+            if (this.slSwitch == false) this.stoploss = 0;
+            if (this.tpSwitch == false) this.takeprofit = 0;
+
             var uri = 'status=opened&position=long' + '&exchange=' + this.exchange + '&pair=' + this.pairselected + '&price=' + this.price + '&amount=' + this.amount + '&total=' + this.total + '&stop_loss=' + this.stoploss + '&take_profit=' + this.takeprofit + "&condition=" + this.conditionselected + "&condition_price=" + this.conditionprice;
             axios.post('/trades', uri).then(function (response) {
                 console.log("Trade opened!");
@@ -80219,77 +80229,6 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "small-12 cell" }, [
-          _c("div", { staticClass: "input-group" }, [
-            _c(
-              "select",
-              {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.conditionselected,
-                    expression: "conditionselected"
-                  }
-                ],
-                attrs: { id: "condition-select" },
-                on: {
-                  change: function($event) {
-                    var $$selectedVal = Array.prototype.filter
-                      .call($event.target.options, function(o) {
-                        return o.selected
-                      })
-                      .map(function(o) {
-                        var val = "_value" in o ? o._value : o.value
-                        return val
-                      })
-                    _vm.conditionselected = $event.target.multiple
-                      ? $$selectedVal
-                      : $$selectedVal[0]
-                  }
-                }
-              },
-              [
-                _c("option", { attrs: { disabled: "", value: "" } }, [
-                  _vm._v("Condition")
-                ]),
-                _vm._v(" "),
-                _c("option", { attrs: { value: "now" } }, [_vm._v("Open now")]),
-                _vm._v(" "),
-                _c("option", { attrs: { value: "greater" } }, [
-                  _vm._v("When price >= ")
-                ]),
-                _vm._v(" "),
-                _c("option", { attrs: { value: "less" } }, [
-                  _vm._v("When price <= ")
-                ])
-              ]
-            ),
-            _vm._v(" "),
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.conditionprice,
-                  expression: "conditionprice"
-                }
-              ],
-              staticClass: "input-group-field",
-              attrs: { type: "number" },
-              domProps: { value: _vm.conditionprice },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.conditionprice = $event.target.value
-                }
-              }
-            })
-          ])
-        ]),
-        _vm._v(" "),
         _c("div", { staticClass: "large-6 cell" }, [
           _c("div", { staticClass: "input-group" }, [
             _c("span", { staticClass: "input-group-label" }, [
@@ -80355,6 +80294,124 @@ var render = function() {
                 {
                   name: "model",
                   rawName: "v-model",
+                  value: _vm.conditionalSwitch,
+                  expression: "conditionalSwitch"
+                }
+              ],
+              staticClass: "switch-input",
+              attrs: {
+                id: "conditionalSwitch",
+                type: "checkbox",
+                name: "stopLossSwitch"
+              },
+              domProps: {
+                checked: Array.isArray(_vm.conditionalSwitch)
+                  ? _vm._i(_vm.conditionalSwitch, null) > -1
+                  : _vm.conditionalSwitch
+              },
+              on: {
+                change: function($event) {
+                  var $$a = _vm.conditionalSwitch,
+                    $$el = $event.target,
+                    $$c = $$el.checked ? true : false
+                  if (Array.isArray($$a)) {
+                    var $$v = null,
+                      $$i = _vm._i($$a, $$v)
+                    if ($$el.checked) {
+                      $$i < 0 && (_vm.conditionalSwitch = $$a.concat([$$v]))
+                    } else {
+                      $$i > -1 &&
+                        (_vm.conditionalSwitch = $$a
+                          .slice(0, $$i)
+                          .concat($$a.slice($$i + 1)))
+                    }
+                  } else {
+                    _vm.conditionalSwitch = $$c
+                  }
+                }
+              }
+            }),
+            _vm._v(" "),
+            _vm._m(0, false, false)
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "small-10 cell" }, [
+          _c("div", { staticClass: "input-group" }, [
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.conditionselected,
+                    expression: "conditionselected"
+                  }
+                ],
+                attrs: { id: "condition-select" },
+                on: {
+                  change: function($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function(o) {
+                        return o.selected
+                      })
+                      .map(function(o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return val
+                      })
+                    _vm.conditionselected = $event.target.multiple
+                      ? $$selectedVal
+                      : $$selectedVal[0]
+                  }
+                }
+              },
+              [
+                _c("option", { attrs: { disabled: "", value: "now" } }, [
+                  _vm._v("Condition")
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "greater" } }, [
+                  _vm._v("When price >= ")
+                ]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "less" } }, [
+                  _vm._v("When price <= ")
+                ])
+              ]
+            ),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.conditionprice,
+                  expression: "conditionprice"
+                }
+              ],
+              staticClass: "input-group-field",
+              attrs: { type: "number" },
+              domProps: { value: _vm.conditionprice },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.conditionprice = $event.target.value
+                }
+              }
+            })
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "medium-2 cell" }, [
+          _c("div", { staticClass: "switch small" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
                   value: _vm.slSwitch,
                   expression: "slSwitch"
                 }
@@ -80393,7 +80450,7 @@ var render = function() {
               }
             }),
             _vm._v(" "),
-            _vm._m(0, false, false)
+            _vm._m(1, false, false)
           ])
         ]),
         _vm._v(" "),
@@ -80500,7 +80557,7 @@ var render = function() {
               }
             }),
             _vm._v(" "),
-            _vm._m(1, false, false)
+            _vm._m(2, false, false)
           ])
         ]),
         _vm._v(" "),
@@ -80838,6 +80895,28 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      { staticClass: "switch-paddle", attrs: { for: "conditionalSwitch" } },
+      [
+        _c(
+          "span",
+          { staticClass: "switch-active", attrs: { "aria-hidden": "true" } },
+          [_vm._v("On")]
+        ),
+        _vm._v(" "),
+        _c(
+          "span",
+          { staticClass: "switch-inactive", attrs: { "aria-hidden": "true" } },
+          [_vm._v("Off")]
+        )
+      ]
+    )
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement

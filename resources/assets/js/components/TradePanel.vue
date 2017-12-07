@@ -40,18 +40,7 @@
                           
                     </div>
                 </div>
-                <!-- Condition -->
-                <div class="small-12 cell">
-                    <div class="input-group">
-                        <select  v-model="conditionselected" id="condition-select">
-                            <option disabled value="">Condition</option>
-                            <option value="now">Open now</option>
-                            <option value="greater">When price >= </option>
-                            <option value="less">When price <= </option>
-                        </select>
-                        <input v-model="conditionprice" class="input-group-field" type="number">
-                    </div>
-                </div>
+
                 <!-- Amount -->
                 <div class="large-6 cell">
                     <div class="input-group">
@@ -67,6 +56,26 @@
                     </div>
                 </div>
 
+                <!-- Condition -->
+                <div class="medium-2 cell">
+                    <div class="switch small">
+                        <input v-model="conditionalSwitch" class="switch-input" id="conditionalSwitch" type="checkbox" name="stopLossSwitch">
+                        <label class="switch-paddle" for="conditionalSwitch">
+                            <span class="switch-active" aria-hidden="true">On</span>
+                            <span class="switch-inactive" aria-hidden="true">Off</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="small-10 cell">
+                    <div class="input-group">
+                        <select  v-model="conditionselected" id="condition-select">
+                            <option disabled value="now">Condition</option>
+                            <option value="greater">When price >= </option>
+                            <option value="less">When price <= </option>
+                        </select>
+                        <input v-model="conditionprice" class="input-group-field" type="number">
+                    </div>
+                </div>
                 <!-- Stop Loss -->
                 <div class="medium-2 cell">
                     <div class="switch small">
@@ -184,23 +193,16 @@ export default {
             tppChanged: false,
             slChanged: false,
             slpChanged: false,
-            updateTp: false,
-            updateTpp: false,
-            updateSl: false,
-            updateSlp: false,
             stopAtTotal: false,
             stopAtAmount: false,
-            filledByAmount: false,
-            filledByTotal: false,
-            filledByPrice: false,
             loadingpairs: false,
             loadingprice: false,
             marketLoaded: false,
             slSwitch: false,
             tpSwitch: false,
-            slpercent: 10,
+            slpercent: 0,
             stoploss: 0,
-            tppercent: 20,
+            tppercent: 0,
             takeprofit: 0,
             priceselected: "",
             exchange: "",
@@ -210,6 +212,7 @@ export default {
             marketsummary: [],
             conditionselected: "now",
             conditionprice: 0.00000000,
+            conditionalSwitch: false,
             errors: [],
             basecurrency: "",
             coinname: { 'long':'','short':''},
@@ -247,7 +250,7 @@ export default {
         },
         volumeC: function() {
             return this.volume.toFixed(4);
-        }
+        },
     },
     watch: {
         amount: function () {
@@ -500,6 +503,14 @@ export default {
             }
         },
         openLong () {
+            if (this.conditionalSwitch == false) {
+                this.conditionselected = "now";
+                this.conditionprice = 0;
+            }
+            if (this.slSwitch == false) this.stoploss = 0;
+            if (this.tpSwitch == false) this.takeprofit = 0;
+
+
             let uri = 'status=opened&position=long' + '&exchange=' + this.exchange + '&pair=' + this.pairselected + '&price=' + this.price + '&amount=' + this.amount + '&total=' + this.total + '&stop_loss=' + this.stoploss + '&take_profit=' + this.takeprofit + "&condition=" + this.conditionselected + "&condition_price=" + this.conditionprice;
             axios.post('/trades', uri)
             .then(response => {
