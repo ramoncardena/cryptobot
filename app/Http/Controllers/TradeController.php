@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
+use App\Notifications\TradeCancelledNotification;
 use App\Events\OrderLaunched;
 use App\Library\Services\Facades\Bittrex;
 use App\Trade;
@@ -49,7 +50,12 @@ class TradeController extends Controller
 
                 // Retrieve trade history
                 $tradesHistory = Trade::where('user_id',  Auth::id())
-                    ->where('status', 'Closed')
+                    ->where([
+                        ['status', '=', 'Closed'] 
+                    ])
+                    ->orWhere([
+                        ['status', '=', 'Cancelled']
+                    ])
                     ->orderBy('updated_at', 'desc')
                     ->get();
                 
@@ -65,6 +71,10 @@ class TradeController extends Controller
 
                 $tradesOpened = $tradesOpened->reject(function ($trade) {
                     return $trade->status == 'Waiting';
+                });
+                
+                $tradesOpened = $tradesOpened->reject(function ($trade) {
+                    return $trade->status == 'Cancelled';
                 });
 
                 // Retrieve waiting trades
@@ -237,85 +247,102 @@ class TradeController extends Controller
         // Get the trade to close
         $this->trade = Trade::find($id);
 
-        // Update trade status
-        $this->trade->status = "Closing";
-        $this->trade->save();
-        
-        // Update stop-loss status if it exists
-        $stop = Stop::find( $this->trade->stop_id);
-        if ($stop) {
-            $stop->status = "Closing";
-            $stop->save();
+        // If trade is waiting, we just cancel it and don't launch any order to the exchange
+        if ($this->trade->status == 'Waiting') {
+
+            // Update trade status
+            $this->trade->status = "Cancelled";
+            $this->trade->save();
+
+            // NOTIFY: Trade Cancelled
+            User::find($this->trade->user_id)->notify(new TradeCancelledNotification($this->trade));
+
+            return response("Trade " . $id . " cancelled." , 200)->header('Content-Type', 'text/plain');
+
         }
+        else {
 
-        // Update take-profit status if it exists
-        $profit = Profit::find( $this->trade->profit_id);
-        if ($profit) {
-            $profit->status = "Closing";
-            $profit->save();
-        }
-
-        // Get the user linked to the trade
-        $user = User::find(Auth::id());
-
-        // Check exchange
-        if ($this->trade->exchange == 'bittrex') {
-
-            // Initialize Bittrex with user info
-            Bittrex::setAPI($user->settings()->get('bittrex_key'), $user->settings()->get('bittrex_secret'));
+            // Update trade status
+            $this->trade->status = "Closing";
+            $this->trade->save();
             
-            // Check for order type
-            if ($this->trade->position == "long") {
-                Log::notice($request);
+            // Update stop-loss status if it exists
+            $stop = Stop::find( $this->trade->stop_id);
+            if ($stop) {
+                $stop->status = "Closing";
+                $stop->save();
+            }
 
-                // Launch Bittrex sell order with Pair, Amount and Price as parameters
-                // $remoteOrder = Bittrex::sellLimit($this->trade->pair, $this->trade->amount, $request->closingprice);
+            // Update take-profit status if it exists
+            $profit = Profit::find( $this->trade->profit_id);
+            if ($profit) {
+                $profit->status = "Closing";
+                $profit->save();
+            }
+
+            // Get the user linked to the trade
+            $user = User::find(Auth::id());
             
-                // TESTING SUCCESS
-                $remoteOrder = new \stdClass();
-                $remoteOrder->success=true;
-                $remoteOrder->message="";
-                $remoteOrder->result = new \stdClass();
-                $remoteOrder->result->uuid = "7c6db929-6c4f-4711-b99b-01c9697330ce";
+            // Check exchange
+            if ($this->trade->exchange == 'bittrex') {
 
-                // TESTING FAIL
-                // $remoteOrder = new \stdClass();
-                // $remoteOrder->success=false;
-                // $remoteOrder->message="Invalid API credentials";
-                // $remoteOrder->result = new \stdClass();
-                // $remoteOrder->result->uuid = "";
+                // Initialize Bittrex with user info
+                Bittrex::setAPI($user->settings()->get('bittrex_key'), $user->settings()->get('bittrex_secret'));
                 
-                // Check for remoteOrder success
-                if ($remoteOrder->success == true) {
+                // Check for order type
+                if ($this->trade->position == "long") {
+                    Log::notice($request);
 
-                    // If we get a success response we create an Order in our database to track
-                    $order = new Order;
-                    $order->user_id = $this->trade->user_id;
-                    $order->trade_id = $this->trade->id;
-                    $order->exchange = 'bittrex';
-                    $order->order_id = $remoteOrder->result->uuid;
-                    $order->type = 'close';
-                    $order->save();
+                    // Launch Bittrex sell order with Pair, Amount and Price as parameters
+                    // $remoteOrder = Bittrex::sellLimit($this->trade->pair, $this->trade->amount, $request->closingprice);
+                
+                    // TESTING SUCCESS
+                    $remoteOrder = new \stdClass();
+                    $remoteOrder->success=true;
+                    $remoteOrder->message="";
+                    $remoteOrder->result = new \stdClass();
+                    $remoteOrder->result->uuid = "7c6db929-6c4f-4711-b99b-01c9697330ce";
 
-                    // Event: OrderLaunched
-                    event(new OrderLaunched($order, $this->trade));
-
-                    // Log NOTICE: Order Launched
-                    Log::notice("Order Launched: User action closing trade launched a SELL order (#" . $order->id .") at " . $request->closingprice  . " for trade #" . $this->trade->id . " for the pair " . $this->trade->pair . " at " . $this->trade->exchange);
+                    // TESTING FAIL
+                    // $remoteOrder = new \stdClass();
+                    // $remoteOrder->success=false;
+                    // $remoteOrder->message="Invalid API credentials";
+                    // $remoteOrder->result = new \stdClass();
+                    // $remoteOrder->result->uuid = "";
                     
-                    return response("Trade " . $id . " closing." , 200)->header('Content-Type', 'text/plain');
+                    // Check for remoteOrder success
+                    if ($remoteOrder->success == true) {
 
-                }
-                else {
+                        // If we get a success response we create an Order in our database to track
+                        $order = new Order;
+                        $order->user_id = $this->trade->user_id;
+                        $order->trade_id = $this->trade->id;
+                        $order->exchange = 'bittrex';
+                        $order->order_id = $remoteOrder->result->uuid;
+                        $order->type = 'close';
+                        $order->save();
 
-                    // Log ERROR: Bittrex API returned error
-                    Log::error("Bittrex API: " . $remoteOrder->message);
-                    return response($remoteOrder->message, 500)->header('Content-Type', 'text/plain');
+                        // Event: OrderLaunched
+                        event(new OrderLaunched($order, $this->trade));
+
+                        // Log NOTICE: Order Launched
+                        Log::notice("Order Launched: User action closing trade launched a SELL order (#" . $order->id .") at " . $request->closingprice  . " for trade #" . $this->trade->id . " for the pair " . $this->trade->pair . " at " . $this->trade->exchange);
+                        
+                        return response("Trade " . $id . " closing." , 200)->header('Content-Type', 'text/plain');
+
+                    }
+                    else {
+
+                        // Log ERROR: Bittrex API returned error
+                        Log::error("Bittrex API: " . $remoteOrder->message);
+                        return response($remoteOrder->message, 500)->header('Content-Type', 'text/plain');
+
+                    }
 
                 }
 
             }
-
+        
         }
 
     }

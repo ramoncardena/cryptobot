@@ -45,7 +45,7 @@
                         >
                 </trade2>
 
-                <!--MODAL: Close Trade -->
+                <!-- MODAL: Close Trade -->
                 <div v-for="trade in trades" class="reveal trade-modal" :id="'closeTrade' + trade.id" data-reveal>
                     <div class="grid-container fluid">
                         <div class="grid-x grid-padding-x">
@@ -82,6 +82,46 @@
                                 <button class="hollow button" href="#" v-on:click="closeTrade(trade.id)">
                                    Close Trade
                                 </button>
+                                <button class="hollow button" data-close v-on:click="last=0; bid=0; ask=0; high=0; low=0; closingprice=0.00000000; priceselected='';">
+                                   Go Back
+                                </button>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <button class="close-button" data-close aria-label="Close modal" type="button" v-on:click="last=0; bid=0; ask=0; high=0; low=0; closingprice=0.00000000; priceselected='';">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <!-- MODAL: Close Waiting Trade -->
+                <div v-for="trade in trades" class="reveal trade-modal" :id="'closeWaitingTrade' + trade.id" data-reveal>
+                    <div class="grid-container fluid">
+                        <div class="grid-x grid-padding-x">
+                            <!-- Header -->
+                            <div class="small-8 cell form-container">
+                                <p class="h1">Closing Trade</p>
+                                <p class="lead"><b>{{ trade.pair }} at {{ trade.exchange.toUpperCase() }}</b></p>
+                            </div>
+                            <div class="small-4 cell form-container close-trade-info text-right">
+                                <div v-on:click="loadinfo(trade.exchange, trade.pair)"> (refresh) </div>  
+                                <div v-model="last"> <b>Last:</b> {{ last.toFixed(8) }} </div>  
+                                <div v-model="bid"> <b>Bid:</b> {{ bid.toFixed(8) }}</div>
+                                <div v-model="ask"> <b>Ask:</b> {{ ask.toFixed(8) }}</div>
+                                <div v-model="low"> <b>Low:</b> {{ low.toFixed(8) }}</div>
+                                <div v-model="high"> <b>High:</b> {{ high.toFixed(8) }}</div>
+                            </div>
+                            <div class="small-12 cell form-container">
+                                <p>You are going to close a waiting trade, if you proceed the trade will be canceled and no order will be launched. Are you sure?</p>
+                            </div>
+                            <div class="small-12 cell form-container">
+                                <button class="hollow button"  v-on:click="closeTrade(trade.id)">
+                                   Yes, cancel
+                                </button>
+                                <button class="hollow button" data-close v-on:click="last=0; bid=0; ask=0; high=0; low=0;">
+                                   No, thanks
+                                </button>
+
                             </div>
                             
                         </div>
@@ -239,7 +279,18 @@
             .catch(error => {
                 console.log(error.response.data); 
             });
+        },
+        closeWaitingTrade(id) {
+            axios.delete('/trades/' + id )
+            .then(response => {
+                console.log("Trade cancelled!");
+                window.location.href = '/trades';
+            })
+            .catch(error => {
+                console.log(error.response.data); 
+            });
         }
+
     }
 }
 </script>

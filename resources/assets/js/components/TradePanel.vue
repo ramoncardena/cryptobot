@@ -66,7 +66,7 @@
                         </label>
                     </div>
                 </div>
-                <div class="small-10 cell">
+                <div class="medium-10 cell">
                     <div class="input-group">
                         <select  v-model="conditionselected" id="condition-select">
                             <option disabled value="now">Condition</option>

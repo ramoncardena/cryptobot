@@ -4,7 +4,8 @@
             <td>
                 <div v-show="opened || waiting" class="trade-cancel icons-area">
                     <i v-show="updating" class="fa fa-cog fa-spin fa-fw"></i> 
-                    <button class="clear button" :data-open="'closeTrade' + id"><i v-show="!updating" class="fa fa-times cancel-icon"></i></button>
+                    <button v-show="opened" class="clear button" :data-open="'closeTrade' + id"><i v-show="!updating" class="fa fa-times cancel-icon"></i></button>
+                    <button v-show="waiting" class="clear button" :data-open="'closeWaitingTrade' + id"><i v-show="!updating" class="fa fa-times cancel-icon"></i></button>
                     <i v-if="(opened == true || waiting==true || closing==true || opening==true)" v-on:click="update(exchange, pair, price)" class="fa fa-refresh refresh-icon"></i>
                 </div>
             </td>
