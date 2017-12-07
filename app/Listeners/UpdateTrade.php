@@ -89,50 +89,72 @@ class UpdateTrade
 
     private function updateTrade($tradeId, $OrderId, $price) {
         try {
-            $stopLoss = new Stop;
-            $takeProfit = new Profit;
-
+            
             // Get trade linked to the order
             $this->trade = Trade::find($tradeId);
 
-            // Create a new Stop-Loss instance in the DB
-            $stopLoss->trade_id = $this->trade->id;
-            $stopLoss->order_id = $this->trade->order_id;
-            $stopLoss->status = "Opened";
-            $stopLoss->exchange = $this->trade->exchange;
-            $stopLoss->pair = $this->trade->pair;
-            $stopLoss->price = $this->trade->stop_loss;
-            $stopLoss->amount = $this->trade->amount;
-            if ($this->trade->position = 'long') {
-                $stopLoss->type = 'sell';
-            }
-            else if ($this->trade->position = 'short') {
-                $stopLoss->type = 'buy';
-            }
-            $stopLoss->save();
+            if ($this->trade->stop_loss > 0) {
 
-            // Creat a new Take-Profit instance in the DB
-            $takeProfit->trade_id = $this->trade->id;
-            $takeProfit->order_id = $this->trade->order_id;
-            $takeProfit->status = "Opened";
-            $takeProfit->exchange = $this->trade->exchange;
-            $takeProfit->pair = $this->trade->pair;
-            $takeProfit->price = $this->trade->take_profit;
-            $takeProfit->amount = $this->trade->amount;
-            if ($this->trade->position = 'long') {
-                $takeProfit->type = 'sell';
+                // Create a new Stop-Loss instance in the DB
+                $stopLoss = new Stop;
+
+                $stopLoss->trade_id = $this->trade->id;
+                $stopLoss->order_id = $this->trade->order_id;
+                $stopLoss->status = "Opened";
+                $stopLoss->exchange = $this->trade->exchange;
+                $stopLoss->pair = $this->trade->pair;
+                $stopLoss->price = $this->trade->stop_loss;
+                $stopLoss->amount = $this->trade->amount;
+
+                if ($this->trade->position = 'long') {
+
+                    $stopLoss->type = 'sell';
+
+                }
+                else if ($this->trade->position = 'short') {
+
+                    $stopLoss->type = 'buy';
+
+                }
+
+                $stopLoss->save();
+                $this->trade->stop_id = $stopLoss->id;
+
             }
-            else if ($this->trade->position = 'short') {
-               $takeProfit->type = 'buy';
+
+            if ($this->trade->take_profit > 0) {
+
+                // Creat a new Take-Profit instance in the DB
+                $takeProfit = new Profit;
+
+                $takeProfit->trade_id = $this->trade->id;
+                $takeProfit->order_id = $this->trade->order_id;
+                $takeProfit->status = "Opened";
+                $takeProfit->exchange = $this->trade->exchange;
+                $takeProfit->pair = $this->trade->pair;
+                $takeProfit->price = $this->trade->take_profit;
+                $takeProfit->amount = $this->trade->amount;
+
+                if ($this->trade->position = 'long') {
+
+                    $takeProfit->type = 'sell';
+
+                }
+                else if ($this->trade->position = 'short') {
+
+                   $takeProfit->type = 'buy';
+
+                }
+
+                $takeProfit->save();
+                $this->trade->profit_id = $takeProfit->id;
+
             }
-            $takeProfit->save();
 
             // Destroy order to stop tracking
             Order::destroy($OrderId);
-            
-            // Register stop_loss and take_profit ids in the trade and set state to opened
-            $this->trade->stop_id = $stopLoss->id;
-            $this->trade->profit_id = $takeProfit->id;
+
+            // Set the trade as Opened and save it
             $this->trade->status = "Opened";
             $this->trade->save();
 
@@ -154,8 +176,9 @@ class UpdateTrade
             $this->trade = Trade::find($tradeId);
 
             // Destroy stop-loss and take-profit linked to the trade
-            Stop::destroy($this->trade->stop_id);
-            Profit::destroy($this->trade->profit_id);
+            if ( $this->trade->stop_id != '-' ) Stop::destroy($this->trade->stop_id);
+            
+            if ( $this->trade->profit_id != '-' ) Profit::destroy($this->trade->profit_id);
 
             // Destroy order to stop tracking
             Order::destroy($OrderId);
