@@ -2,7 +2,7 @@
     <div class="grid-x grid-padding-x tradepanel">
         <!-- Trade form -->
         <div class="cell large-7 small-order-2 large-order-1">
-            <div class="grid-x grid-padding-x align-top">
+            <div class="grid-x grid-padding-x align-middle">
                 <!-- Exchange -->
                 <div class="cell large-6">
                     <div class="input-group">
@@ -66,22 +66,41 @@
                         <input v-model="total" class="input-group-field" type="number">
                     </div>
                 </div>
+
                 <!-- Stop Loss -->
-                <div class="medium-9 cell">
+                <div class="medium-2 cell">
+                    <div class="switch small">
+                        <input v-model="slSwitch" class="switch-input" id="stopLossSwitch" type="checkbox" name="stopLossSwitch">
+                        <label class="switch-paddle" for="stopLossSwitch">
+                            <span class="switch-active" aria-hidden="true">On</span>
+                            <span class="switch-inactive" aria-hidden="true">Off</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="medium-7 cell">
                     <div class="input-group">
                         <span class="input-group-label">Stop-Loss</span>
                         <input v-model="stoploss" class="input-group-field" type="number">
                     </div>
                 </div>
-                <!-- Stop Loss % -->
                 <div class="medium-3 cell">
                     <div class="input-group">
                         <span class="input-group-label">(-)%</span>
                         <input v-model="slpercent" class="input-group-field" type="number">
                     </div>
                 </div>
+
                 <!-- Take Profit -->
-                <div class="medium-9 cell">
+                <div class="medium-2 cell">
+                    <div class="switch small">
+                        <input  v-model="tpSwitch" class="switch-input" id="takeProfitSwitch" type="checkbox" name="takeProfitSwitch">
+                        <label class="switch-paddle" for="takeProfitSwitch">
+                            <span class="switch-active" aria-hidden="true">On</span>
+                            <span class="switch-inactive" aria-hidden="true">Off</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="medium-7 cell">
                     <div class="input-group">
                         <span class="input-group-label">Take-Profit</span>
                         <input v-model="takeprofit"class="input-group-field" type="number">
@@ -160,7 +179,15 @@ export default {
     props: [],
     data() {
         return {
-            autofilled: false,
+            pirceChanged: false,
+            tpChanged: false,
+            tppChanged: false,
+            slChanged: false,
+            slpChanged: false,
+            updateTp: false,
+            updateTpp: false,
+            updateSl: false,
+            updateSlp: false,
             stopAtTotal: false,
             stopAtAmount: false,
             filledByAmount: false,
@@ -169,6 +196,12 @@ export default {
             loadingpairs: false,
             loadingprice: false,
             marketLoaded: false,
+            slSwitch: false,
+            tpSwitch: false,
+            slpercent: 10,
+            stoploss: 0,
+            tppercent: 20,
+            takeprofit: 0,
             priceselected: "",
             exchange: "",
             pairselected: "",
@@ -188,8 +221,6 @@ export default {
             ask: 0.00000000,
             high: 0.00000000,
             low: 0.00000000,
-            tppercent: 0,
-            slpercent: 0,
             amount: 0.00000000,
             total: 0.00000000,
             fee: 0.00
@@ -216,14 +247,6 @@ export default {
         },
         volumeC: function() {
             return this.volume.toFixed(4);
-        },
-        stoploss: function() {
-            let sl = parseFloat(this.price) - (parseFloat(this.price) * (parseFloat(this.slpercent) / 100));
-            return sl.toFixed(8);
-        },
-        takeprofit: function() {
-            let tp = parseFloat(this.price) + (parseFloat(this.price) * (parseFloat(this.tppercent) / 100));
-            return tp.toFixed(8);
         }
     },
     watch: {
@@ -249,7 +272,72 @@ export default {
         },
         price: function() {
             this.stopAtTotal = true;
+            this.pirceChanged = true;
             this.updateTotal();
+        },
+        takeprofit: function() {
+            if ( this.tpSwitch ) {
+                
+                if (this.tppChanged) {
+                    this.tppChanged = false;
+                }
+                else{
+                    this.tpChanged = true;
+                    this.updateTpPercent();
+                }
+                
+            }
+            else {
+                return 0.00000000;
+            }
+        },
+        tppercent: function() {
+            if (this.tpSwitch) {
+
+                if (this.tpChanged) {
+                    this.tpChanged = false;
+                }
+                else {
+                    this.tppChanged = true;
+                    this.updateTakeProfit();
+                }
+    
+            }
+            else {
+                return 20;
+            }
+        },
+        stoploss: function() {
+            if ( this.slSwitch ) {
+                
+                if (this.slpChanged) {
+                    this.slpChanged = false;
+                }
+                else{
+                    this.slChanged = true;
+                    this.updateSlPercent();
+                }
+                
+            }
+            else {
+                return 0.00000000;
+            }
+        },
+        slpercent: function() {
+            if (this.slSwitch) {
+
+                if (this.slChanged) {
+                    this.slChanged = false;
+                }
+                else {
+                    this.slpChanged = true;
+                    this.updateStopLoss();
+                }
+    
+            }
+            else {
+                return 20;
+            }
         }
     },
     methods: {
@@ -263,6 +351,22 @@ export default {
             total = total + (total * parseFloat(this.fee) / 100);
             console.log("Total: " + parseFloat(total));
             return this.total = parseFloat(total).toFixed(8);
+        }),
+        updateTakeProfit: (function () {
+            let tp = parseFloat(this.price) + (parseFloat(this.price) * (parseFloat(this.tppercent) / 100));
+            return this.takeprofit = parseFloat(tp).toFixed(8);
+        }),
+        updateTpPercent: (function () {
+            let percent = ((parseFloat(this.takeprofit) - parseFloat(this.price)) * 100) / parseFloat(this.price);
+            return this.tppercent = parseFloat(percent).toFixed(2);
+        }),
+        updateStopLoss: (function () {
+            let sl = parseFloat(this.price) - (parseFloat(this.price) * (parseFloat(this.slpercent) / 100));
+            return this.stoploss = parseFloat(sl).toFixed(8);
+        }),
+        updateSlPercent: (function () {
+            let percent = -(((parseFloat(this.stoploss) - parseFloat(this.price)) * 100) / parseFloat(this.price));
+            return this.slpercent = parseFloat(percent).toFixed(2);
         }),
 
         updateprice(exchange, pair, pricetype) {

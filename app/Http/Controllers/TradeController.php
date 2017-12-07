@@ -240,17 +240,20 @@ class TradeController extends Controller
         // Update trade status
         $this->trade->status = "Closing";
         $this->trade->save();
-
+        
+        // Update stop-loss status if it exists
         $stop = Stop::find( $this->trade->stop_id);
-        $profit = Profit::find( $this->trade->profit_id);
-       
-        // Update stop-loss status
-        $stop->status = "Closing";
-        $stop->save();
+        if ($stop) {
+            $stop->status = "Closing";
+            $stop->save();
+        }
 
-        // Update take-profit status
-        $profit->status = "Closing";
-        $profit->save();
+        // Update take-profit status if it exists
+        $profit = Profit::find( $this->trade->profit_id);
+        if ($profit) {
+            $profit->status = "Closing";
+            $profit->save();
+        }
 
         // Get the user linked to the trade
         $user = User::find(Auth::id());
