@@ -31,7 +31,7 @@
                     <div class="input-group">
                         <span class="input-group-label">
                             <i v-show="loadingprice" class="fa fa-cog fa-spin fa-fw"></i>
-                            <i v-if="!loadingprice && price!=0" class="fa fa-refresh fa-fw "></i>
+                            <i v-if="!loadingprice && price!=0" class="fa fa-refresh fa-fw" v-on:click="updateprice(exchange, pairselected, priceselected)"></i>
                              Price
                         </span>
 
@@ -401,7 +401,6 @@ export default {
             let percent = -(((parseFloat(this.stoploss) - parseFloat(this.price)) * 100) / parseFloat(this.price));
             return this.slpercent = parseFloat(percent).toFixed(2);
         }),
-
         updateprice(exchange, pair, pricetype) {
             this.loadingprice = true;
             

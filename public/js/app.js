@@ -80251,7 +80251,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var percent = -((parseFloat(this.stoploss) - parseFloat(this.price)) * 100 / parseFloat(this.price));
             return this.slpercent = parseFloat(percent).toFixed(2);
         },
-
         updateprice: function updateprice(exchange, pair, pricetype) {
             var _this = this;
 
@@ -80594,7 +80593,18 @@ var render = function() {
               }),
               _vm._v(" "),
               !_vm.loadingprice && _vm.price != 0
-                ? _c("i", { staticClass: "fa fa-refresh fa-fw " })
+                ? _c("i", {
+                    staticClass: "fa fa-refresh fa-fw",
+                    on: {
+                      click: function($event) {
+                        _vm.updateprice(
+                          _vm.exchange,
+                          _vm.pairselected,
+                          _vm.priceselected
+                        )
+                      }
+                    }
+                  })
                 : _vm._e(),
               _vm._v("\n                         Price\n                    ")
             ]),
