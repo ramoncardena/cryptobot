@@ -78621,6 +78621,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'tradelist2',
@@ -78760,6 +78761,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }).catch(function (error) {
                 console.log(error.response.data);
             });
+        },
+        calculateProfit: function calculateProfit(price) {
+            if (this.closingprice != 0) {
+                return ((parseFloat(this.closingprice) - parseFloat(price)) / parseFloat(this.closingprice) * 100).toFixed(2);
+            } else {
+                return 0;
+            }
         }
     }
 });
@@ -79271,7 +79279,15 @@ var render = function() {
                                 "\n                               Go Back\n                            "
                               )
                             ]
-                          )
+                          ),
+                          _vm._v(" "),
+                          _c("p", { staticClass: "text-right" }, [
+                            _vm._v(
+                              "Aprox. profit: " +
+                                _vm._s(_vm.calculateProfit(trade.price)) +
+                                "%"
+                            )
+                          ])
                         ]
                       )
                     ])
@@ -80964,22 +80980,13 @@ var render = function() {
         _c("div", { staticClass: "medium-12 cell" }, [
           _c(
             "button",
-            {
-              staticClass: "hollow button",
-              attrs: { href: "#" },
-              on: { click: _vm.openLong }
-            },
+            { staticClass: "hollow button", on: { click: _vm.openLong } },
             [_vm._v("\n                    Open Long\n                ")]
           ),
           _vm._v(" "),
-          _c(
-            "button",
-            {
-              staticClass: "hollow button alert disabled",
-              attrs: { href: "#" }
-            },
-            [_vm._v("\n                    Open Short\n                ")]
-          )
+          _c("button", { staticClass: "hollow button alert disabled" }, [
+            _vm._v("\n                    Open Short\n                ")
+          ])
         ])
       ])
     ]),

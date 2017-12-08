@@ -124,10 +124,10 @@
                 </div>
                 <!-- Open Position Button -->
                 <div class="medium-12 cell">
-                    <button class="hollow button" v-on:click="openLong" href="#">
+                    <button class="hollow button" v-on:click="openLong">
                         Open Long
                     </button>
-                    <button class="hollow button alert disabled" href="#">
+                    <button class="hollow button alert disabled">
                         Open Short
                     </button>
                 </div>

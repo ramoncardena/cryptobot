@@ -85,6 +85,7 @@
                                 <button class="hollow button" data-close v-on:click="last=0; bid=0; ask=0; high=0; low=0; closingprice=0.00000000; priceselected='';">
                                    Go Back
                                 </button>
+                                <p class="text-right">Aprox. profit: {{ calculateProfit(trade.price) }}%</p>
                             </div>
                             
                         </div>
@@ -289,6 +290,14 @@
             .catch(error => {
                 console.log(error.response.data); 
             });
+        },
+        calculateProfit(price) {
+            if (this.closingprice!=0) {
+                return ( ( ( parseFloat(this.closingprice)-parseFloat(price) ) / parseFloat(this.closingprice)) * 100 ).toFixed(2);
+            }
+            else {
+                return 0;
+            }
         }
 
     }

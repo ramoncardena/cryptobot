@@ -27,23 +27,23 @@
             </div>
 
             <!-- Trade Panel, Active Trades and History -->
-            <div class="small-12 cell text-center portfolio form-container">
+            <div class="small-12 cell portfolio form-container">
                     <div class="trades-area">
                         <ul class="accordion" data-accordion data-multi-expand="true" data-allow-all-closed="true">
                             <li class="accordion-item is-active" data-accordion-item>
-                                <a href="#" class="accordion-title">Trading Panel</a>
+                                <a href="#" class="accordion-title text-center">Trading Panel</a>
                                 <div class="accordion-content" data-tab-content >
                                     <tradepanel></tradepanel>
                                 </div>
                             </li>
                             <li class="accordion-item is-active" data-accordion-item>
-                                <a href="#" class="accordion-title">Opened Trades</a>
+                                <a href="#" class="accordion-title  text-center">Opened Trades</a>
                                 <div class="accordion-content" data-tab-content >
                                     <tradelist2 type="opened" :trades="{{ $tradesOpened }}"></tradelist2>
                                 </div>
                             </li>
                             <li class="accordion-item is-active" data-accordion-item>
-                                <a href="#" class="accordion-title">Conditional Trades</a>
+                                <a href="#" class="accordion-title text-center">Conditional Trades</a>
                                 <div class="accordion-content" data-tab-content >
                                     <tradelist2 type="waiting" :trades="{{ $tradesWaiting }}"></tradelist2>
                                 </div>
