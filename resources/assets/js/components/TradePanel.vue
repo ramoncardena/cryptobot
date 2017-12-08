@@ -30,6 +30,7 @@
                         <span class="input-group-label">
                             <i v-show="loadingprice" class="fa fa-cog fa-spin fa-fw"></i> Price
                         </span>
+
                         <input v-model="price" class="input-group-field price" type="number">
                          <select v-model="priceselected" id="price-select"  v-on:change="updateprice(exchange, pairselected, priceselected)">
                             <option disabled value="">Autofill</option>
@@ -39,8 +40,12 @@
                         </select>
                           
                     </div>
+                    
                 </div>
-
+                <!-- Available balance -->
+                <div class="large-12 cell align-self-top">
+                    <div class="float-right"><small v-model="availableBalance"> Available: {{ availableBalance }} </small></div>
+                </div>
                 <!-- Amount -->
                 <div class="large-6 cell">
                     <div class="input-group">
@@ -55,6 +60,7 @@
                         <input v-model="total" class="input-group-field" type="number">
                     </div>
                 </div>
+                
 
                 <!-- Condition -->
                 <div class="medium-2 cell">
@@ -226,7 +232,8 @@ export default {
             low: 0.00000000,
             amount: 0.00000000,
             total: 0.00000000,
-            fee: 0.00
+            fee: 0.00,
+            availableBalance: "0"
         }
     },
     mounted() {
@@ -463,8 +470,13 @@ export default {
                     this.stopAtTotal = true;
                     this.price = parseFloat(0.00000000);
 
+
+                    // TODO Get balance for the selected base currency
+                    this.getbalance(exchange, pair);
+                    
                     // Get coin info from api call getmarkets
                     this.getmarkets(exchange, pair);
+
                     
                     this.loadingpairs = false;
                     console.log("Success: " + this.marketsummary.MarketName);
@@ -501,6 +513,30 @@ export default {
                     console.log("Error: " +  e.message);
                 })
             }
+        },
+        getbalance (exchange, pair) {
+            this.loadingpairs = true;
+
+            if (exchange.toLowerCase() == 'bittrex') {
+                let coin = pair.split("-");
+                console.log("PAIR!!! " + coin);
+                axios('/api/bittrexapi/getbalance/' + coin[0], {
+                    method: 'GET',
+                })
+                .then(response => {
+                    console.log("Success balance: " + response.data.Available);
+                    let res = response.data[0];  
+                    this.availableBalance = response.data.Available + " " + response.data.Currency;
+                    this.loadingpairs = false;
+                    console.log("Success balance: ");
+                })
+                .catch(e => {
+                    this.errors.push(e);
+                    this.loadingpairs = false;
+                    console.log("Error: " +  e.message);
+                })
+            }
+
         },
         openLong () {
             if (this.conditionalSwitch == false) {

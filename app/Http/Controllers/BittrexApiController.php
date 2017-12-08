@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Exceptions\Handler;
 use App\Library\Services\Facades\Bittrex;
@@ -58,5 +59,21 @@ class BittrexApiController extends Controller
         $coin = array_values($coin->all());
 
         return $coin;
+    }
+
+    public function getbalance($coin)
+    {
+        $this->user = Auth::user();
+        Bittrex::setAPI($this->user->settings()->get('bittrex_key'), $this->user->settings()->get('bittrex_secret'));
+       
+        $bittrexBalance = Bittrex::getbalance($coin);
+
+        if ($bittrexBalance->success) {
+            return collect($bittrexBalance->result);
+        }
+        else {
+            return $bittrexBalance->message;
+        }
+        
     }
 }

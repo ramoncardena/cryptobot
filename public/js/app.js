@@ -80047,6 +80047,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'tradepanel',
@@ -80091,7 +80097,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             low: 0.00000000,
             amount: 0.00000000,
             total: 0.00000000,
-            fee: 0.00
+            fee: 0.00,
+            availableBalance: "0"
         };
     },
     mounted: function mounted() {},
@@ -80308,6 +80315,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     _this3.stopAtTotal = true;
                     _this3.price = parseFloat(0.00000000);
 
+                    // TODO Get balance for the selected base currency
+                    _this3.getbalance(exchange, pair);
+
                     // Get coin info from api call getmarkets
                     _this3.getmarkets(exchange, pair);
 
@@ -80342,6 +80352,29 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 }).catch(function (e) {
                     _this4.errors.push(e);
                     _this4.loadingpairs = false;
+                    console.log("Error: " + e.message);
+                });
+            }
+        },
+        getbalance: function getbalance(exchange, pair) {
+            var _this5 = this;
+
+            this.loadingpairs = true;
+
+            if (exchange.toLowerCase() == 'bittrex') {
+                var coin = pair.split("-");
+                console.log("PAIR!!! " + coin);
+                axios('/api/bittrexapi/getbalance/' + coin[0], {
+                    method: 'GET'
+                }).then(function (response) {
+                    console.log("Success balance: " + response.data.Available);
+                    var res = response.data[0];
+                    _this5.availableBalance = response.data.Available + " " + response.data.Currency;
+                    _this5.loadingpairs = false;
+                    console.log("Success balance: ");
+                }).catch(function (e) {
+                    _this5.errors.push(e);
+                    _this5.loadingpairs = false;
                     console.log("Error: " + e.message);
                 });
             }
@@ -80583,6 +80616,24 @@ var render = function() {
                 _vm._v(" "),
                 _c("option", { attrs: { value: "ask" } }, [_vm._v("Ask")])
               ]
+            )
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "large-12 cell align-self-top" }, [
+          _c("div", { staticClass: "float-right" }, [
+            _c(
+              "small",
+              {
+                model: {
+                  value: _vm.availableBalance,
+                  callback: function($$v) {
+                    _vm.availableBalance = $$v
+                  },
+                  expression: "availableBalance"
+                }
+              },
+              [_vm._v(" Available: " + _vm._s(_vm.availableBalance) + " ")]
             )
           ])
         ]),
