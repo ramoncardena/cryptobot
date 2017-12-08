@@ -446,7 +446,8 @@ export default {
                     method: 'GET'
                 })
                 .then(response => {
-                    this.bittrexpairs=response.data;  
+                    this.bittrexpairs = response.data;  
+
                     console.log("Success: " + exchange + " pairs!");
 
                     // Get fee fot the exchange
@@ -508,6 +509,7 @@ export default {
                 })
                 .then(response => {
                     this.marketsummary=response.data[0];  
+                    this.priceselected = "";
                     this.last =  parseFloat(this.marketsummary.Last);
                     this.bid =  parseFloat(this.marketsummary.Bid);
                     this.ask =  parseFloat(this.marketsummary.Ask);

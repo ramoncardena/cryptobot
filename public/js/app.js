@@ -80295,6 +80295,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     method: 'GET'
                 }).then(function (response) {
                     _this2.bittrexpairs = response.data;
+
                     console.log("Success: " + exchange + " pairs!");
 
                     // Get fee fot the exchange
@@ -80352,6 +80353,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     method: 'GET'
                 }).then(function (response) {
                     _this4.marketsummary = response.data[0];
+                    _this4.priceselected = "";
                     _this4.last = parseFloat(_this4.marketsummary.Last);
                     _this4.bid = parseFloat(_this4.marketsummary.Bid);
                     _this4.ask = parseFloat(_this4.marketsummary.Ask);
