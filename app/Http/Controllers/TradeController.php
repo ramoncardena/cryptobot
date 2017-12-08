@@ -232,7 +232,22 @@ class TradeController extends Controller
      */
     public function update(Request $request, $id)
     {
+        try {
+            // Get the trade to edit
+            $this->trade = Trade::find($id);
 
+            // Update stop-loss and tale-profit
+            $this->trade->stop_loss = $request->newStopLoss;
+            $this->trade->take_profit = $request->newTakeProfit;
+            $this->trade->save();
+
+        } catch (Exception $e) {
+
+            // If exeption return error 500
+            return response($e->message(), 500)->header('Content-Type', 'text/plain');
+
+        }
+        
     }
 
     

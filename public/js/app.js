@@ -77650,6 +77650,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'trade2',
@@ -77825,6 +77826,28 @@ var render = function() {
                   }
                 ],
                 staticClass: "fa fa-times cancel-icon"
+              })
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: _vm.opened,
+                  expression: "opened"
+                }
+              ],
+              staticClass: "clear button",
+              attrs: { "data-open": "editTrade" + _vm.id }
+            },
+            [
+              _c("i", {
+                staticClass: "fa fa-pencil",
+                attrs: { "aria-hidden": "true" }
               })
             ]
           ),
@@ -78622,6 +78645,63 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'tradelist2',
@@ -78639,7 +78719,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             bid: 0.00000000,
             ask: 0.00000000,
             high: 0.00000000,
-            low: 0.00000000
+            low: 0.00000000,
+            stoploss: 0,
+            takeprofit: 0
         };
     },
     computed: {
@@ -78743,6 +78825,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             } else {
                 this.loadingprice = false;
             }
+        },
+        editTrade: function editTrade(id, stopLoss, takeProfit) {
+            var uri = 'newStopLoss=' + stopLoss + "&newTakeProfit=" + takeProfit;
+            axios.patch('/trades/' + id + '?' + uri).then(function (response) {
+                console.log("Trade edited!");
+                console.log(response.data);
+                window.location.href = '/trades';
+            }).catch(function (error) {
+                console.log(error.response.data);
+            });
+            console.log("Edit trade #" + tradeId + " new stop-loss at " + stopLoss + " and new take profit at " + takeProfit);
         },
         closeTrade: function closeTrade(id) {
             var uri = 'closingprice=' + this.closingprice;
@@ -78965,6 +79058,349 @@ var render = function() {
                   id: trade.id
                 }
               })
+            }),
+            _vm._v(" "),
+            _vm._l(_vm.trades, function(trade) {
+              return _c(
+                "div",
+                {
+                  staticClass: "reveal trade-modal",
+                  attrs: { id: "editTrade" + trade.id, "data-reveal": "" }
+                },
+                [
+                  _c("div", { staticClass: "grid-container fluid" }, [
+                    _c("div", { staticClass: "grid-x grid-padding-x" }, [
+                      _c(
+                        "div",
+                        { staticClass: "small-8 cell form-container" },
+                        [
+                          _c("p", { staticClass: "h1" }, [
+                            _vm._v("Edit Trade")
+                          ]),
+                          _vm._v(" "),
+                          _c("p", { staticClass: "lead" }, [
+                            _c("b", [
+                              _vm._v(
+                                _vm._s(trade.pair) +
+                                  " at " +
+                                  _vm._s(trade.exchange.toUpperCase())
+                              )
+                            ])
+                          ])
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "small-4 cell form-container close-trade-info text-right"
+                        },
+                        [
+                          _c(
+                            "div",
+                            {
+                              on: {
+                                click: function($event) {
+                                  _vm.loadinfo(trade.exchange, trade.pair)
+                                }
+                              }
+                            },
+                            [_vm._v(" (refresh) ")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              model: {
+                                value: _vm.last,
+                                callback: function($$v) {
+                                  _vm.last = $$v
+                                },
+                                expression: "last"
+                              }
+                            },
+                            [
+                              _c("b", [_vm._v("Last:")]),
+                              _vm._v(" " + _vm._s(_vm.last.toFixed(8)) + " ")
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              model: {
+                                value: _vm.bid,
+                                callback: function($$v) {
+                                  _vm.bid = $$v
+                                },
+                                expression: "bid"
+                              }
+                            },
+                            [
+                              _c("b", [_vm._v("Bid:")]),
+                              _vm._v(" " + _vm._s(_vm.bid.toFixed(8)))
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              model: {
+                                value: _vm.ask,
+                                callback: function($$v) {
+                                  _vm.ask = $$v
+                                },
+                                expression: "ask"
+                              }
+                            },
+                            [
+                              _c("b", [_vm._v("Ask:")]),
+                              _vm._v(" " + _vm._s(_vm.ask.toFixed(8)))
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              model: {
+                                value: _vm.low,
+                                callback: function($$v) {
+                                  _vm.low = $$v
+                                },
+                                expression: "low"
+                              }
+                            },
+                            [
+                              _c("b", [_vm._v("Low:")]),
+                              _vm._v(" " + _vm._s(_vm.low.toFixed(8)))
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              model: {
+                                value: _vm.high,
+                                callback: function($$v) {
+                                  _vm.high = $$v
+                                },
+                                expression: "high"
+                              }
+                            },
+                            [
+                              _c("b", [_vm._v("High:")]),
+                              _vm._v(" " + _vm._s(_vm.high.toFixed(8)))
+                            ]
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass: "small-12 cell form-container text-right"
+                        },
+                        [
+                          _c("small", [
+                            _vm._v(
+                              " Current Stop-Loss: " +
+                                _vm._s(trade.stop_loss) +
+                                " "
+                            ),
+                            _c("i", {
+                              staticClass: "fa fa-clipboard",
+                              attrs: { "aria-hidden": "true" },
+                              on: {
+                                click: function($event) {
+                                  _vm.stoploss = trade.stop_loss
+                                }
+                              }
+                            })
+                          ])
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "small-12 cell form-container" },
+                        [
+                          _c("div", { staticClass: "input-group" }, [
+                            _c("span", { staticClass: "input-group-label" }, [
+                              _vm._v(
+                                "\n                                    New Stop-Loss\n                                "
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.stoploss,
+                                  expression: "stoploss"
+                                }
+                              ],
+                              staticClass: "input-group-field price",
+                              attrs: { type: "number" },
+                              domProps: { value: _vm.stoploss },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.stoploss = $event.target.value
+                                }
+                              }
+                            })
+                          ])
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "small-12 cell form-container  text-right"
+                        },
+                        [
+                          _c("small", [
+                            _vm._v(
+                              " Current Take-Profit: " +
+                                _vm._s(trade.take_profit) +
+                                " "
+                            ),
+                            _c("i", {
+                              staticClass: "fa fa-clipboard",
+                              attrs: { "aria-hidden": "true" },
+                              on: {
+                                click: function($event) {
+                                  _vm.takeprofit = trade.take_profit
+                                }
+                              }
+                            })
+                          ])
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "small-12 cell form-container" },
+                        [
+                          _c("div", { staticClass: "input-group" }, [
+                            _c("span", { staticClass: "input-group-label" }, [
+                              _vm._v(
+                                "\n                                    New Take-Profit\n                                "
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.takeprofit,
+                                  expression: "takeprofit"
+                                }
+                              ],
+                              staticClass: "input-group-field price",
+                              attrs: { type: "number" },
+                              domProps: { value: _vm.takeprofit },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.takeprofit = $event.target.value
+                                }
+                              }
+                            })
+                          ])
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "small-12 cell form-container" },
+                        [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "hollow button",
+                              on: {
+                                click: function($event) {
+                                  _vm.editTrade(
+                                    trade.id,
+                                    _vm.stoploss,
+                                    _vm.takeprofit
+                                  )
+                                }
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n                               Save Trade\n                            "
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "button",
+                            {
+                              staticClass: "hollow button",
+                              attrs: { "data-close": "" },
+                              on: {
+                                click: function($event) {
+                                  _vm.last = 0
+                                  _vm.bid = 0
+                                  _vm.ask = 0
+                                  _vm.high = 0
+                                  _vm.low = 0
+                                  _vm.stoploss = 0
+                                  _vm.takeprofit = 0
+                                }
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n                               Go Back\n                            "
+                              )
+                            ]
+                          )
+                        ]
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "close-button",
+                      attrs: {
+                        "data-close": "",
+                        "aria-label": "Close modal",
+                        type: "button"
+                      },
+                      on: {
+                        click: function($event) {
+                          _vm.last = 0
+                          _vm.bid = 0
+                          _vm.ask = 0
+                          _vm.high = 0
+                          _vm.low = 0
+                          _vm.stoploss = 0
+                          _vm.takeprofit = 0
+                        }
+                      }
+                    },
+                    [
+                      _c("span", { attrs: { "aria-hidden": "true" } }, [
+                        _vm._v("×")
+                      ])
+                    ]
+                  )
+                ]
+              )
             }),
             _vm._v(" "),
             _vm._l(_vm.trades, function(trade) {

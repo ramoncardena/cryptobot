@@ -45,6 +45,61 @@
                         >
                 </trade2>
 
+                <!-- MODAL: Edit Trade -->
+                <div v-for="trade in trades" class="reveal trade-modal" :id="'editTrade' + trade.id" data-reveal>
+                    <div class="grid-container fluid">
+                        <div class="grid-x grid-padding-x">
+                            <!-- Header -->
+                            <div class="small-8 cell form-container">
+                                <p class="h1">Edit Trade</p>
+                                <p class="lead"><b>{{ trade.pair }} at {{ trade.exchange.toUpperCase() }}</b></p>
+                            </div>
+                            <div class="small-4 cell form-container close-trade-info text-right">
+                                <div v-on:click="loadinfo(trade.exchange, trade.pair)"> (refresh) </div>  
+                                <div v-model="last"> <b>Last:</b> {{ last.toFixed(8) }} </div>  
+                                <div v-model="bid"> <b>Bid:</b> {{ bid.toFixed(8) }}</div>
+                                <div v-model="ask"> <b>Ask:</b> {{ ask.toFixed(8) }}</div>
+                                <div v-model="low"> <b>Low:</b> {{ low.toFixed(8) }}</div>
+                                <div v-model="high"> <b>High:</b> {{ high.toFixed(8) }}</div>
+                            </div>
+                            <div class="small-12 cell form-container text-right">
+                               <small> Current Stop-Loss: {{ trade.stop_loss }} <i class="fa fa-clipboard" aria-hidden="true" v-on:click="stoploss=trade.stop_loss"></i> </small>
+                            </div>
+                            <div class="small-12 cell form-container">
+                                <div class="input-group">
+                                    <span class="input-group-label">
+                                        New Stop-Loss
+                                    </span>
+                                    <input v-model="stoploss" class="input-group-field price" type="number">
+                                </div>
+                            </div>
+                            <div class="small-12 cell form-container  text-right">
+                               <small> Current Take-Profit: {{ trade.take_profit }} <i class="fa fa-clipboard" aria-hidden="true" v-on:click="takeprofit=trade.take_profit"></i> </small>
+                            </div>
+                            <div class="small-12 cell form-container">
+                                 <div class="input-group">
+                                    <span class="input-group-label">
+                                        New Take-Profit
+                                    </span>
+                                    <input v-model="takeprofit" class="input-group-field price" type="number" >
+                                </div>
+                            </div>
+                            <div class="small-12 cell form-container">
+                                <button class="hollow button" v-on:click="editTrade(trade.id, stoploss, takeprofit)">
+                                   Save Trade
+                                </button>
+                                <button class="hollow button" data-close v-on:click="last=0; bid=0; ask=0; high=0; low=0; stoploss=0; takeprofit=0;">
+                                   Go Back
+                                </button>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <button class="close-button" data-close aria-label="Close modal" type="button" v-on:click="last=0; bid=0; ask=0; high=0; low=0; stoploss=0; takeprofit=0;">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
                 <!-- MODAL: Close Trade -->
                 <div v-for="trade in trades" class="reveal trade-modal" :id="'closeTrade' + trade.id" data-reveal>
                     <div class="grid-container fluid">
@@ -131,6 +186,8 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
+
+
             </tbody>
         </table>
     </div>
@@ -156,7 +213,9 @@
             bid: 0.00000000,
             ask: 0.00000000,
             high: 0.00000000,
-            low: 0.00000000
+            low: 0.00000000,
+            stoploss: 0,
+            takeprofit: 0,
         }
     },
     computed: {
@@ -268,6 +327,19 @@
             else {
                 this.loadingprice = false;
             }
+        },
+        editTrade(id, stopLoss, takeProfit) {
+            let uri = 'newStopLoss=' + stopLoss + "&newTakeProfit=" + takeProfit;
+            axios.patch('/trades/' + id + '?' + uri)
+            .then(response => {
+                console.log("Trade edited!");
+                console.log(response.data);
+                window.location.href = '/trades';
+            })
+            .catch(error => {
+                console.log(error.response.data); 
+            });
+            console.log("Edit trade #" + tradeId + " new stop-loss at " + stopLoss + " and new take profit at " + takeProfit);
         },
         closeTrade(id) {
             let uri = 'closingprice=' + this.closingprice;

@@ -25,6 +25,8 @@ Route::get('/orders', 'OrdersController@index');
 Route::get('/trades', 'TradeController@index');
 Route::post('/trades', 'TradeController@store');
 Route::delete('/trades/{id}', 'TradeController@destroy');
+Route::patch('/trades/{id}', 'TradeController@update');
+
 
 Auth::routes();
 
