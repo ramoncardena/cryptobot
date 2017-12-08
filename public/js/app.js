@@ -80348,7 +80348,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     _this4.basecurrency = res.BaseCurrency;
                     _this4.marketLoaded = true;
                     _this4.loadingpairs = false;
-                    console.log("Success coin info: " + _this4.coinname);
+                    // console.log("Success coin info: " + this.coinname );
                 }).catch(function (e) {
                     _this4.errors.push(e);
                     _this4.loadingpairs = false;
@@ -80363,15 +80363,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             if (exchange.toLowerCase() == 'bittrex') {
                 var coin = pair.split("-");
-                console.log("PAIR!!! " + coin);
+
                 axios('/api/bittrexapi/getbalance/' + coin[0], {
                     method: 'GET'
                 }).then(function (response) {
                     console.log("Success balance: " + response.data.Available);
                     var res = response.data[0];
-                    _this5.availableBalance = response.data.Available + " " + response.data.Currency;
+                    response.data.Available ? _this5.availableBalance = response.data.Available + " " + response.data.Currency : _this5.availableBalance = "0 ";
                     _this5.loadingpairs = false;
-                    console.log("Success balance: ");
+                    // console.log("Success balance");
                 }).catch(function (e) {
                     _this5.errors.push(e);
                     _this5.loadingpairs = false;
@@ -80620,23 +80620,25 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "large-12 cell align-self-top" }, [
-          _c("div", { staticClass: "float-right" }, [
-            _c(
-              "small",
-              {
-                model: {
-                  value: _vm.availableBalance,
-                  callback: function($$v) {
-                    _vm.availableBalance = $$v
+        _vm.availableBalance != "0"
+          ? _c("div", { staticClass: "large-12 cell align-self-top" }, [
+              _c("div", { staticClass: "float-right" }, [
+                _c(
+                  "small",
+                  {
+                    model: {
+                      value: _vm.availableBalance,
+                      callback: function($$v) {
+                        _vm.availableBalance = $$v
+                      },
+                      expression: "availableBalance"
+                    }
                   },
-                  expression: "availableBalance"
-                }
-              },
-              [_vm._v(" Available: " + _vm._s(_vm.availableBalance) + " ")]
-            )
-          ])
-        ]),
+                  [_vm._v(" Available: " + _vm._s(_vm.availableBalance) + " ")]
+                )
+              ])
+            ])
+          : _vm._e(),
         _vm._v(" "),
         _c("div", { staticClass: "large-6 cell" }, [
           _c("div", { staticClass: "input-group" }, [

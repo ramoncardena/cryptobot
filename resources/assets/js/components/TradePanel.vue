@@ -43,7 +43,7 @@
                     
                 </div>
                 <!-- Available balance -->
-                <div class="large-12 cell align-self-top">
+                <div v-if="availableBalance!='0'" class="large-12 cell align-self-top">
                     <div class="float-right"><small v-model="availableBalance"> Available: {{ availableBalance }} </small></div>
                 </div>
                 <!-- Amount -->
@@ -505,7 +505,7 @@ export default {
                     this.basecurrency = res.BaseCurrency;
                     this.marketLoaded = true;
                     this.loadingpairs = false;
-                    console.log("Success coin info: " + this.coinname );
+                    // console.log("Success coin info: " + this.coinname );
                 })
                 .catch(e => {
                     this.errors.push(e);
@@ -519,16 +519,16 @@ export default {
 
             if (exchange.toLowerCase() == 'bittrex') {
                 let coin = pair.split("-");
-                console.log("PAIR!!! " + coin);
+                
                 axios('/api/bittrexapi/getbalance/' + coin[0], {
                     method: 'GET',
                 })
                 .then(response => {
                     console.log("Success balance: " + response.data.Available);
                     let res = response.data[0];  
-                    this.availableBalance = response.data.Available + " " + response.data.Currency;
+                    response.data.Available ? this.availableBalance = response.data.Available + " " + response.data.Currency : this.availableBalance = "0 ";
                     this.loadingpairs = false;
-                    console.log("Success balance: ");
+                    // console.log("Success balance");
                 })
                 .catch(e => {
                     this.errors.push(e);
