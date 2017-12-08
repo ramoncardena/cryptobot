@@ -80053,6 +80053,28 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'tradepanel',
@@ -80068,6 +80090,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             stopAtAmount: false,
             loadingpairs: false,
             loadingprice: false,
+            loadinginfo: false,
             marketLoaded: false,
             slSwitch: false,
             tpSwitch: false,
@@ -80294,10 +80317,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 });
             }
         },
-        getmarketsummary: function getmarketsummary(exchange, pair) {
+        refreshInfopanel: function refreshInfopanel(exchange, pair) {
             var _this3 = this;
 
-            this.loadingpairs = true;
+            this.loadinginfo = true;
             if (exchange.toLowerCase() == 'bittrex') {
                 var uri = '/api/bittrexapi/getmarketsummary/' + pair;
                 axios(uri, {
@@ -80311,27 +80334,53 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     _this3.low = parseFloat(_this3.marketsummary.Low);
                     _this3.volume = parseFloat(_this3.marketsummary.BaseVolume);
 
-                    // Set price for current pair to 0
-                    _this3.stopAtTotal = true;
-                    _this3.price = parseFloat(0.00000000);
-
-                    // TODO Get balance for the selected base currency
-                    _this3.getbalance(exchange, pair);
-
-                    // Get coin info from api call getmarkets
-                    _this3.getmarkets(exchange, pair);
-
-                    _this3.loadingpairs = false;
-                    console.log("Success: " + _this3.marketsummary.MarketName);
+                    _this3.loadinginfo = false;
+                    console.log("Success loading info!");
                 }).catch(function (e) {
                     _this3.errors.push(e);
-                    _this3.loadingpairs = false;
+                    _this3.loadinginfo = false;
+                    console.log("Error: " + e.message);
+                });
+            }
+        },
+        getmarketsummary: function getmarketsummary(exchange, pair) {
+            var _this4 = this;
+
+            this.loadingpairs = true;
+            if (exchange.toLowerCase() == 'bittrex') {
+                var uri = '/api/bittrexapi/getmarketsummary/' + pair;
+                axios(uri, {
+                    method: 'GET'
+                }).then(function (response) {
+                    _this4.marketsummary = response.data[0];
+                    _this4.last = parseFloat(_this4.marketsummary.Last);
+                    _this4.bid = parseFloat(_this4.marketsummary.Bid);
+                    _this4.ask = parseFloat(_this4.marketsummary.Ask);
+                    _this4.high = parseFloat(_this4.marketsummary.High);
+                    _this4.low = parseFloat(_this4.marketsummary.Low);
+                    _this4.volume = parseFloat(_this4.marketsummary.BaseVolume);
+
+                    // Set price for current pair to 0
+                    _this4.stopAtTotal = true;
+                    _this4.price = parseFloat(0.00000000);
+
+                    // TODO Get balance for the selected base currency
+                    _this4.getbalance(exchange, pair);
+
+                    // Get coin info from api call getmarkets
+                    _this4.getmarkets(exchange, pair);
+
+                    _this4.loadingpairs = false;
+                    console.log("Success: " + _this4.marketsummary.MarketName);
+                }).catch(function (e) {
+                    _this4.errors.push(e);
+                    _this4.loadingpairs = false;
                     console.log("Error: " + e.message);
                 });
             }
         },
         getmarkets: function getmarkets(exchange, pair) {
-            var _this4 = this;
+            var _this5 = this;
 
             this.loadingpairs = true;
             this.coinname = { 'long': 'loading', 'short': '...' };
@@ -80343,21 +80392,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     method: 'GET'
                 }).then(function (response) {
                     var res = response.data[0];
-                    _this4.coinname = { 'long': res.MarketCurrencyLong, 'short': res.MarketCurrency };
-                    _this4.coinlogo = res.LogoUrl;
-                    _this4.basecurrency = res.BaseCurrency;
-                    _this4.marketLoaded = true;
-                    _this4.loadingpairs = false;
+                    _this5.coinname = { 'long': res.MarketCurrencyLong, 'short': res.MarketCurrency };
+                    _this5.coinlogo = res.LogoUrl;
+                    _this5.basecurrency = res.BaseCurrency;
+                    _this5.marketLoaded = true;
+                    _this5.loadingpairs = false;
                     // console.log("Success coin info: " + this.coinname );
                 }).catch(function (e) {
-                    _this4.errors.push(e);
-                    _this4.loadingpairs = false;
+                    _this5.errors.push(e);
+                    _this5.loadingpairs = false;
                     console.log("Error: " + e.message);
                 });
             }
         },
         getbalance: function getbalance(exchange, pair) {
-            var _this5 = this;
+            var _this6 = this;
 
             this.loadingpairs = true;
 
@@ -80369,12 +80418,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 }).then(function (response) {
                     console.log("Success balance: " + response.data.Available);
                     var res = response.data[0];
-                    response.data.Available ? _this5.availableBalance = response.data.Available + " " + response.data.Currency : _this5.availableBalance = "0 ";
-                    _this5.loadingpairs = false;
+                    response.data.Available ? _this6.availableBalance = response.data.Available + " " + response.data.Currency : _this6.availableBalance = "0 ";
+                    _this6.loadingpairs = false;
                     // console.log("Success balance");
                 }).catch(function (e) {
-                    _this5.errors.push(e);
-                    _this5.loadingpairs = false;
+                    _this6.errors.push(e);
+                    _this6.loadingpairs = false;
                     console.log("Error: " + e.message);
                 });
             }
@@ -80543,7 +80592,11 @@ var render = function() {
                 ],
                 staticClass: "fa fa-cog fa-spin fa-fw"
               }),
-              _vm._v(" Price\n                    ")
+              _vm._v(" "),
+              !_vm.loadingprice && _vm.price != 0
+                ? _c("i", { staticClass: "fa fa-refresh fa-fw " })
+                : _vm._e(),
+              _vm._v("\n                         Price\n                    ")
             ]),
             _vm._v(" "),
             _c("input", {
@@ -81056,7 +81109,7 @@ var render = function() {
               expression: "marketLoaded == false"
             }
           ],
-          staticClass: "title-image"
+          staticClass: "title-image text-center"
         },
         [
           _c("img", {
@@ -81139,14 +81192,33 @@ var render = function() {
                 staticClass: "clear button",
                 on: {
                   click: function($event) {
-                    _vm.getmarketsummary(_vm.exchange, _vm.pairselected)
+                    _vm.refreshInfopanel(_vm.exchange, _vm.pairselected)
                   }
                 }
               },
               [
                 _c("i", {
-                  staticClass: "fa fa-refresh",
-                  attrs: { "aria-hidden": "true" }
+                  directives: [
+                    {
+                      name: "show",
+                      rawName: "v-show",
+                      value: !_vm.loadinginfo,
+                      expression: "!loadinginfo"
+                    }
+                  ],
+                  staticClass: "fa fa-refresh loading-info-icon"
+                }),
+                _vm._v(" "),
+                _c("i", {
+                  directives: [
+                    {
+                      name: "show",
+                      rawName: "v-show",
+                      value: _vm.loadinginfo,
+                      expression: "loadinginfo"
+                    }
+                  ],
+                  staticClass: "fa fa-cog fa-spin fa-fw loading-info-icon"
                 })
               ]
             )

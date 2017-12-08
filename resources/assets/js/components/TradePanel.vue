@@ -3,6 +3,7 @@
         <!-- Trade form -->
         <div class="cell large-7 small-order-2 large-order-1">
             <div class="grid-x grid-padding-x align-middle">
+
                 <!-- Exchange -->
                 <div class="cell large-6">
                     <div class="input-group">
@@ -13,6 +14,7 @@
                         </select>
                     </div>
                 </div>
+
                 <!-- Pair -->
                 <div class="cell large-6">
                     <div class="input-group">
@@ -28,7 +30,9 @@
                 <div class="small-12 cell">
                     <div class="input-group">
                         <span class="input-group-label">
-                            <i v-show="loadingprice" class="fa fa-cog fa-spin fa-fw"></i> Price
+                            <i v-show="loadingprice" class="fa fa-cog fa-spin fa-fw"></i>
+                            <i v-if="!loadingprice && price!=0" class="fa fa-refresh fa-fw "></i>
+                             Price
                         </span>
 
                         <input v-model="price" class="input-group-field price" type="number">
@@ -42,10 +46,12 @@
                     </div>
                     
                 </div>
+
                 <!-- Available balance -->
                 <div v-if="availableBalance!='0'" class="large-12 cell align-self-top">
                     <div class="float-right"><small v-model="availableBalance"> Available: {{ availableBalance }} </small></div>
                 </div>
+
                 <!-- Amount -->
                 <div class="large-6 cell">
                     <div class="input-group">
@@ -53,6 +59,7 @@
                         <input v-model="amount" class="input-group-field" type="number">
                     </div>
                 </div>
+
                 <!-- Total -->
                 <div class="large-6 cell">
                     <div class="input-group">
@@ -61,7 +68,6 @@
                     </div>
                 </div>
                 
-
                 <!-- Condition -->
                 <div class="medium-2 cell">
                     <div class="switch small">
@@ -82,6 +88,7 @@
                         <input v-model="conditionprice" class="input-group-field" type="number">
                     </div>
                 </div>
+
                 <!-- Stop Loss -->
                 <div class="medium-2 cell">
                     <div class="switch small">
@@ -121,6 +128,7 @@
                         <input v-model="takeprofit"class="input-group-field" type="number">
                     </div>
                 </div>
+
                 <!-- Take Profit % -->
                 <div class="medium-3 cell">
                     <div class="input-group">
@@ -128,6 +136,7 @@
                         <input v-model="tppercent" class="input-group-field" type="number">
                     </div>
                 </div>
+
                 <!-- Open Position Button -->
                 <div class="medium-12 cell">
                     <button class="hollow button" v-on:click="openLong">
@@ -142,47 +151,60 @@
 
         <!-- Information panel -->
         <div class="cell large-5 small-order-1 large-order-2">
-            <div v-show="marketLoaded == false" class="title-image">
+            <div v-show="marketLoaded == false" class="title-image text-center">
                 <img src="/storage/cryptobot-logo-300px.png" alt="">
             </div>
             <div v-show="marketLoaded" class="grid-x grid-margin-x">
+                
                 <!-- Blank up left corner -->
                 <div class="cell small-2 text-center">
                     
                 </div>
+               
                 <!-- Coin Info -->
                 <div class="cell small-8 text-center">
                     <img id="cryptologo" v-show="coinlogo != ''" v-model="coinlogo" :src="coinlogo" :alt="coinname.short">
                     <p v-show="coinname != ''" v-model="coinname" class="h3"> {{ coinname.long }} <small> {{ coinname.short }} </small></p>
                 </div>
+              
                 <!-- Refresh -->
                 <div class="cell small-2 text-center">
-                    <button class="clear button" v-on:click="getmarketsummary(exchange, pairselected)"><i class="fa fa-refresh" aria-hidden="true"></i></button>
+                    <button class="clear button" v-on:click="refreshInfopanel(exchange, pairselected)">
+                        <i v-show="!loadinginfo" class="fa fa-refresh loading-info-icon"></i>
+                        <i v-show="loadinginfo" class="fa fa-cog fa-spin fa-fw loading-info-icon"></i>
+                    </button>
                 </div>
+                
                 <!-- Volume -->
                 <div class="cell small-12 text-center volume">
                     <div v-model="volumeC"> Vol: <i class="fa fa-btc" aria-hidden="true"></i> {{ volumeC }}</div>
                 </div>
+               
                 <!-- 24h High -->
                 <div class="cell small-6 text-center">
                     <div v-model="highC" class="high-low"> H: <i class="fa fa-btc" aria-hidden="true"></i> {{ highC }}</div>
                 </div>
+                
                 <!-- 24h Low -->
                 <div class="cell small-6 text-center">
                     <div v-model="lowC" class="high-low"> L: <i class="fa fa-btc" aria-hidden="true"></i> {{ lowC }} </div>
                 </div>
+                
                 <!-- Bid -->
                 <div class="cell small-6 text-center bid">
                     <div v-model="bidC"> BID: <i class="fa fa-btc" aria-hidden="true"></i> {{ bidC }}</div>
                 </div>
+               
                 <!-- Ask -->
                 <div class="cell small-6 text-center ask">
                     <div v-model="askC"> ASK: <i class="fa fa-btc" aria-hidden="true"></i> {{ askC }} </div> 
                 </div>
+               
                 <!-- Last -->
                 <div class="cell small-12 text-center last">
                     <div v-model="lastC"> LAST: <i class="fa fa-btc" aria-hidden="true"></i> {{ lastC }} </div>
                 </div>
+
             </div>
         </div>       
     </div>
@@ -203,6 +225,7 @@ export default {
             stopAtAmount: false,
             loadingpairs: false,
             loadingprice: false,
+            loadinginfo: false,
             marketLoaded: false,
             slSwitch: false,
             tpSwitch: false,
@@ -449,6 +472,33 @@ export default {
                     console.log("Error: " +  e.message);
                 });
             }
+        },
+        refreshInfopanel(exchange, pair){
+            this.loadinginfo = true;
+            if (exchange.toLowerCase() == 'bittrex') {
+                let uri = '/api/bittrexapi/getmarketsummary/' + pair;
+                axios(uri, {
+                    method: 'GET',
+                })
+                .then(response => {
+                    this.marketsummary=response.data[0];  
+                    this.last =  parseFloat(this.marketsummary.Last);
+                    this.bid =  parseFloat(this.marketsummary.Bid);
+                    this.ask =  parseFloat(this.marketsummary.Ask);
+                    this.high =  parseFloat(this.marketsummary.High);
+                    this.low =  parseFloat(this.marketsummary.Low);
+                    this.volume =  parseFloat(this.marketsummary.BaseVolume);
+                    
+                    this.loadinginfo = false;
+                    console.log("Success loading info!");
+                })
+                .catch(e => {
+                    this.errors.push(e);
+                    this.loadinginfo = false;
+                    console.log("Error: " +  e.message);
+                })
+            }
+
         },
         getmarketsummary(exchange, pair) {
             this.loadingpairs = true;
