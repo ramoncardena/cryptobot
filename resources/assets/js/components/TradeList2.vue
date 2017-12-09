@@ -21,6 +21,7 @@
                     <th class="sorting" tabindex="0" rowspan="1" colspan="1">Take-Profit</th>
                     <th class="sorting" tabindex="0" rowspan="1" colspan="1">Condition</th>
                     <th class="sorting" tabindex="0" rowspan="1" colspan="1">Cond. Price</th>
+                    <th class="sorting" tabindex="0" rowspan="1" colspan="1">Date</th>
 
                 </tr>
             </thead>
@@ -41,6 +42,7 @@
                             :closing-price ="trade.closing_price"
                             :type = "type"
                             :id = "trade.id"
+                            :timestamp="trade.created_at"
                             :key="trade.id"
                         >
                 </trade2>

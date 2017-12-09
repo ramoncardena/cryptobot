@@ -77651,6 +77651,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'trade2',
@@ -77661,7 +77662,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             last: 0
         };
     },
-    props: ['status', 'exchange', 'position', 'pair', 'price', 'amount', 'total', 'stop-loss', 'take-profit', 'condition', 'condition-price', "final-profit", "type", "closing-price", "id"],
+    props: ['status', 'exchange', 'position', 'pair', 'price', 'amount', 'total', 'stop-loss', 'take-profit', 'condition', 'condition-price', "final-profit", "type", "closing-price", "timestamp", "id"],
     computed: {
         opened: function opened() {
             if (this.status == "Opened") {
@@ -77697,6 +77698,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             } else {
                 return false;
             }
+        },
+        date: function date() {
+            var fullDate = new Date(this.timestamp);
+            return fullDate.getDate() + "/" + (fullDate.getMonth() + 1) + "/" + fullDate.getFullYear();
         }
     },
     mounted: function mounted() {
@@ -77918,7 +77923,9 @@ var render = function() {
       )
     ]),
     _vm._v(" "),
-    _c("td", [_vm._v(" " + _vm._s(parseFloat(_vm.conditionPrice).toFixed(8)))])
+    _c("td", [_vm._v(" " + _vm._s(parseFloat(_vm.conditionPrice).toFixed(8)))]),
+    _vm._v(" "),
+    _c("td", [_vm._v(" " + _vm._s(_vm.date))])
   ])
 }
 var staticRenderFns = []
@@ -78702,6 +78709,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'tradelist2',
@@ -79029,6 +79038,15 @@ var render = function() {
                   attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
                 },
                 [_vm._v("Cond. Price")]
+              ),
+              _vm._v(" "),
+              _c(
+                "th",
+                {
+                  staticClass: "sorting",
+                  attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
+                },
+                [_vm._v("Date")]
               )
             ]
           )
@@ -79055,7 +79073,8 @@ var render = function() {
                   "final-profit": trade.profit,
                   "closing-price": trade.closing_price,
                   type: _vm.type,
-                  id: trade.id
+                  id: trade.id,
+                  timestamp: trade.created_at
                 }
               })
             }),

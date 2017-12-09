@@ -24,6 +24,7 @@
             <td>{{ parseFloat(takeProfit).toFixed(8) }}</td>
             <td>{{ (condition == 'now') ? 'none' : condition + ' than' }} </td>
             <td> {{ parseFloat(conditionPrice).toFixed(8) }}</td>
+            <td> {{ date }}</td>
         </tr>
         
 </template>
@@ -53,6 +54,7 @@
     "final-profit",
     "type",
     "closing-price",
+    "timestamp",
     "id"
     ],
     computed: {
@@ -95,6 +97,10 @@
             else {
                 return false;
             }
+        },
+        date: function() {
+            let fullDate = new Date(this.timestamp);
+            return fullDate.getDate() + "/" + (fullDate.getMonth()+1) + "/" + fullDate.getFullYear();
         }
     },
     mounted() {
