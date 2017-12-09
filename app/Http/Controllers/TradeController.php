@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
+use App\Notifications\TradeEditedNotification;
 use App\Notifications\TradeCancelledNotification;
 use App\Events\OrderLaunched;
 use App\Library\Services\Facades\Bittrex;
@@ -240,6 +241,9 @@ class TradeController extends Controller
             $this->trade->stop_loss = $request->newStopLoss;
             $this->trade->take_profit = $request->newTakeProfit;
             $this->trade->save();
+
+            // NOTIFY: Trade Edited
+            User::find($this->trade->user_id)->notify(new TradeEditedNotification($this->trade));
 
         } catch (Exception $e) {
 
