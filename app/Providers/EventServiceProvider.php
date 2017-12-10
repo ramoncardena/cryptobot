@@ -34,6 +34,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\ConditionReached' => [
             'App\Listeners\ExecuteConditional',
         ],
+        'App\Events\TradeStatusChanged' => [
+            'App\Listeners\UpdateTradeStatus'
+        ]
     ];
 
 
