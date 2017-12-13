@@ -13,6 +13,7 @@ use App\Profit;
 use App\Trade;
 use App\User;
 use App\Order;
+use App\Exchange;
 
 class CloseTrade implements ShouldQueue
 {
@@ -56,7 +57,7 @@ class CloseTrade implements ShouldQueue
             $trade->closing_price = $event->price;
 
             // Calculate fee
-            $fee = floatval($event->total) * floatval($exchange->fee) / 100;
+            $fee = floatval($trade->total) * floatval($exchange->fee) / 100;
 
             // Calculate profit
             $decreaseValue = ( floatval($event->price) - floatval($fee) ) - floatval($trade->price);

@@ -45,8 +45,6 @@ class TrackOrder implements ShouldQueue
     {
         try {
 
-            // Log::info("Tracking order: " . $event->order['order_id']);
-            
             // Get user
             $user = User::find($event->order->user_id);
 
@@ -89,6 +87,12 @@ class TrackOrder implements ShouldQueue
 
                         // Log ERROR: Bittrex API returned error
                         Log::error("[TrackOrder] Bittrex API: " . $onlineOrder->message);
+
+                        // Add delay before requeueing
+                        sleep(env('FAILED_ORDER_DELAY', 5));
+
+                        // Event: OrderNotCompleted
+                        event(new OrderNotCompleted($event->order));
                         
                     }
                     else {

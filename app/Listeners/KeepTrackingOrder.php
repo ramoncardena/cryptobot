@@ -87,6 +87,12 @@ class KeepTrackingOrder implements ShouldQueue
 
                         // Log ERROR: Bittrex API returned error
                         Log::error("[KeepTrackingOrder] Bittrex API: " . $onlineOrder->message);
+
+                        // Add delay before requeueing
+                        sleep(env('FAILED_ORDER_DELAY', 5));
+
+                        // Event: OrderNotCompleted
+                        event(new OrderNotCompleted($event->order));
                         
                     }
                     else {
@@ -112,7 +118,6 @@ class KeepTrackingOrder implements ShouldQueue
                         else {
 
                             // If the order is not completed
-                            
                             // Add delay before requeueing
                             sleep(env('ORDER_DELAY', 0));
                             

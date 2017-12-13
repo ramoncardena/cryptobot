@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Log;
 
 use App\Library\FakeOrder;
 use App\Notifications\TradeEditedNotification;
+use App\Events\TakeProfitLaunched;
+use App\Events\StopLossLaunched;
 use App\Events\OrderLaunched;
 use App\Events\ConditionalLaunched;
 use App\Library\Services\Facades\Bittrex;
@@ -260,10 +262,155 @@ class TradeController extends Controller
             // Get the trade to edit
             $this->trade = Trade::find($id);
 
-            // Update stop-loss and tale-profit
-            $this->trade->stop_loss = $request->newStopLoss;
-            $this->trade->take_profit = $request->newTakeProfit;
-            $this->trade->save();
+            // Process new Stop-Loss
+            if( $this->trade->stop_id == "-" ) {
+
+                if($request->newStopLoss != 0) 
+                {
+                    // Create a new Stop-Loss instance in the DB
+                    $stopLoss = new Stop;
+
+                    $stopLoss->trade_id = $this->trade->id;
+                    $stopLoss->order_id = $this->trade->order_id;
+                    $stopLoss->status = "Opened";
+                    $stopLoss->exchange = $this->trade->exchange;
+                    $stopLoss->pair = $this->trade->pair;
+                    $stopLoss->price = $request->newStopLoss;
+                    $stopLoss->amount = $this->trade->amount;
+                    $stopLoss->cancel = false;
+
+                    if ($this->trade->position = 'long') {
+
+                        $stopLoss->type = 'sell';
+
+                    }
+                    else if ($this->trade->position = 'short') {
+
+                        $stopLoss->type = 'buy';
+
+                    }
+
+                    $stopLoss->save();
+
+                    // Update trade with stop-loss id and value
+                    $this->trade->stop_id = $stopLoss->id;
+                    $this->trade->stop_loss = $request->newStopLoss;
+                    $this->trade->save();
+
+                    // Log INFO: Stop-Loss launched
+                    Log::info("Stop-Loss #" . $stopLoss->id . " launched by Trade #" . $this->trade->id);
+
+                    // EVENT: StopLossLaunched
+                    event(new StopLossLaunched($stopLoss));
+
+                }
+
+            }
+            else {
+
+                // Find stop-loss
+                $stop = Stop::find($this->trade->stop_id);
+
+                // If new stop-loss is 0 cancel stop-loss
+                if ($request->newStopLoss == 0) 
+                {
+                    
+                    $stop->cancel = true;
+                    $stop->save();
+
+                    $this->trade->stop_id = "-";
+                    $this->trade->save();
+
+
+                }
+                else
+                {
+                    // Update stop-loss in db
+                    $stop->price = $request->newStopLoss;
+                    $stop->save();
+                }
+
+                // Update stop-loss value in trade
+                $this->trade->stop_loss = $request->newStopLoss;
+                $this->trade->save();
+
+            }
+           
+            // Process new Take Profit
+            if ( ($this->trade->profit_id == "-") ) 
+            {
+                 Log::info("NEW TAKE PROFIT: " . $request->newTakeProfit);
+                if ($request->newTakeProfit != 0)
+                {
+
+                    $takeProfit = new Profit;
+
+                    $takeProfit->trade_id = $this->trade->id;
+                    $takeProfit->order_id = $this->trade->order_id;
+                    $takeProfit->status = "Opened";
+                    $takeProfit->exchange = $this->trade->exchange;
+                    $takeProfit->pair = $this->trade->pair;
+                    $takeProfit->price = $request->newTakeProfit;
+                    $takeProfit->amount = $this->trade->amount;
+                    $takeProfit->cancel = false;
+
+                    if ($this->trade->position = 'long') {
+
+                        $takeProfit->type = 'sell';
+
+                    }
+                    else if ($this->trade->position = 'short') {
+
+                       $takeProfit->type = 'buy';
+
+                    }
+
+                    $takeProfit->save();
+
+                    // Update trade with take-profit id and value
+                    $this->trade->profit_id = $takeProfit->id;
+                    $this->trade->take_profit = $request->newTakeProfit;
+                    $this->trade->save();
+
+
+                    // Log INFO: Take-Profit launched
+                    Log::info("Take-Profit #" . $takeProfit->id . " launched by Trade #" . $this->trade->id);
+                   
+                    // EVENT: TakeProfitLaunched
+                    event(new TakeProfitLaunched($takeProfit));
+                }
+            }
+            else
+            {
+                // Find take-profit
+                $profit = Profit::find($this->trade->profit_id);
+
+                // If new stop-loss is 0 cancel stop-loss
+                if ($request->newTakeProfit == 0) 
+                {
+
+                    $profit->cancel = true;
+                    $profit->save();
+
+                    $this->trade->profit_id = "-";
+                    $this->trade->save();
+
+                }
+                else 
+                {
+
+                    // Update take-profit in db
+                    $profit->price = $request->newTakeProfit;
+                    $profit->save();
+
+                }
+
+                // Update take-profit value in trade
+                $this->trade->take_profit = $request->newTakeProfit;
+                $this->trade->save();
+            }
+
+            
 
             // NOTIFY: Trade Edited
             User::find($this->trade->user_id)->notify(new TradeEditedNotification($this->trade));

@@ -137,7 +137,7 @@ class OpenTrade implements ShouldQueue
             User::find($trade->user_id)->notify(new TradeOpenedNotification($trade));
 
             // Log NOTICE: Trade opened
-            Log::notice("Trade #" . $trade->id . " opened at " . $trade->exchange . " for " . $trade->pair . " at an actual price of " . $trade->price . " per unit");
+            Log::notice("Trade #" . $trade->id . ": Opened.  Exchange: " . $trade->exchange . " Pair: " . $trade->pair . " Price per unit: " . $trade->price);
 
            
        } catch (Exception $e) {
