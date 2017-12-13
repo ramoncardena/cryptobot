@@ -5,7 +5,6 @@ namespace App\Listeners;
 use App\Events\OrderNotCompleted;
 use App\Events\CloseOrderCompleted;
 use App\Events\OpenOrderCompleted;
-use App\Events\OrderLaunched;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Log;
@@ -16,15 +15,15 @@ use App\Trade;
 use App\User;
 use App\Order;
 
-class TrackOrder implements ShouldQueue
+class KeepTrackingOrder implements ShouldQueue
 {
-    /**
+     /**
      * The name of the queue the job should be sent to.
      *
      * @var string|null
      */
     public $queue = 'orders';
-    
+
     /**
      * Create the event listener.
      *
@@ -41,20 +40,20 @@ class TrackOrder implements ShouldQueue
      * @param  OrderLaunched  $event
      * @return void
      */
-    public function handle(OrderLaunched $event)
+    public function handle(OrderNotCompleted $event)
     {
         try {
 
-            // Log::info("Tracking order: " . $event->order['order_id']);
-            
+            //Log::info("Tracking order: " . $event->order['order_id']);
+
             // Get user
             $user = User::find($event->order->user_id);
 
             // Select Exchange
-            switch ($event->order->exchange) {
+            switch ( $event->order->exchange ) {
 
                 // BITTREX
-                case "bittrex":
+                case 'bittrex':
 
                     // Initialize Bittrex API
                     Bittrex::setAPI($user->settings()->get('bittrex_key'), $user->settings()->get('bittrex_secret'));
@@ -82,13 +81,12 @@ class TrackOrder implements ShouldQueue
                         $onlineOrder = Bittrex::getOrder($event->order->order_id);
                         
                     }
-                    
 
                     // Check for success on API call
                     if (! $onlineOrder->success) {
 
                         // Log ERROR: Bittrex API returned error
-                        Log::error("[TrackOrder] Bittrex API: " . $onlineOrder->message);
+                        Log::error("[KeepTrackingOrder] Bittrex API: " . $onlineOrder->message);
                         
                     }
                     else {
@@ -109,7 +107,7 @@ class TrackOrder implements ShouldQueue
                                     event(new CloseOrderCompleted($event->order, $onlineOrder->result->PricePerUnit));
                                     break;
                             }
-                            
+
                         }
                         else {
 
@@ -117,19 +115,19 @@ class TrackOrder implements ShouldQueue
                             
                             // Add delay before requeueing
                             sleep(env('ORDER_DELAY', 0));
-
+                            
                             // Event: OrderNotCompleted
                             event(new OrderNotCompleted($event->order));
 
                         }
-                    } 
+                    }
                     break;
-            }
+            }          
 
         } catch (Exception $e) {
 
             // Log CRITICAL: Exception
-            Log::critical("[TrackOrder] Exception: " . $e->getMessage());
+            Log::critical("[KeepTrackingOrder] Exception: " . $e->getMessage());
             
         }
         

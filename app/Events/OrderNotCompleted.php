@@ -10,7 +10,7 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class OrderLaunched
+class OrderNotCompleted
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 

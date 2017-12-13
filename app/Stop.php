@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Stop extends Model
 {
+	protected  $primaryKey = 'id';
+	
     /**
      * The attributes that are mass assignable.
      *

@@ -10,21 +10,20 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class OrderLaunched
+class TakeProfitNotReached
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $order;
-
-
+    public $takeProfit;
+    
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($order)
+    public function __construct($takeprofit)
     {
-        $this->order = $order;
+        $this->takeProfit = $takeprofit;
     }
 
     /**

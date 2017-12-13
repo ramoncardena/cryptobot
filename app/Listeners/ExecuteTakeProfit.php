@@ -1,17 +1,18 @@
 <?php
-
 namespace App\Listeners;
 
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Log;
 
+use App\Library\FakeOrder;
 use App\Notifications\TakeProfitNotification;
 use App\Events\OrderLaunched;
 use App\Events\TakeProfitReached;
 use App\Library\Services\Facades\Bittrex;
 use App\Trade;
 use App\Profit;
+use App\Stop;
 use App\User;
 use App\Order;
 
@@ -59,13 +60,26 @@ class ExecuteTakeProfit
      */
     public function handle(TakeProfitReached $event)
     {
+
         try {
-            // Update take-profit status
+
+            // Update take-profit status and mark for cancel
             $event->takeProfit->status = "Closing";
+            $event->takeProfit->cancel = true;
             $event->takeProfit->save();
 
             // Get the trade to close
             $this->trade = Trade::find($event->takeProfit->trade_id);
+
+            // Mark the associated stop-loss to cancel if exists
+            if ($this->trade->stop_id != "-") {
+                $stopLoss = Stop::find($this->trade->stop_id);
+                $stopLoss->status = "Closing";
+                $stopLoss->cancel = true;
+                $stopLoss->save();
+            }
+
+            // Update last price for the pair
             $this->last = $event->last;
 
             // Update trade status
@@ -84,22 +98,21 @@ class ExecuteTakeProfit
                 // Check for order type
                 if ($event->takeProfit->type == "sell") {
                 
-                    // Launch Bittrex sell order with Pair, Amount and Price as parameters
-                    // $order = Bittrex::sellLimit($this->trade['pair'], $this->trade['amount'], $this->last); 
-                
-                    // TESTING SUCCESS
-                    $order = new \stdClass();
-                    $order->success=true;
-                    $order->message="";
-                    $order->result = new \stdClass();
-                    $order->result->uuid = "7c6db929-6c4f-4711-b99b-01c9697330ce";
+                    if ( env('ORDERS_TEST', true) == true ) {
 
-                    // TESTING FAIL
-                    // $order = new \stdClass();
-                    // $order->success=false;
-                    // $order->message="Invalid API credentials";
-                    // $order->result = new \stdClass();
-                    // $order->result->uuid = "";
+                        // TESTING SUCCESS
+                        $order = FakeOrder::success();
+
+                        // TESTING FAIL
+                        // $order = FakeOrder::fail();
+                        
+                    }
+                    else {
+
+                        // Launch Bittrex sell order with Pair, Amount and Price as parameters
+                        $order = Bittrex::sellLimit($this->trade['pair'], $this->trade['amount'], $this->last); 
+                        
+                    }
                     
                     // Check for order success
                     if ($order->success == true) {
@@ -116,32 +129,36 @@ class ExecuteTakeProfit
                     }
                     else {
 
-                        // Error: On submiting order to Bittrex.
                         // Log ERROR: Bittrex API returned error
-                        Log::error("Bittrex API: " . $order->message);
+                        Log::error("[ExecuteTakeProfit] Bittrex API: " . $order->message);
 
                     }
 
                     // Event: OrderLaunched
-                    event(new OrderLaunched($this->order, $this->trade));
+                    event(new OrderLaunched($this->order));
 
-                    // Log NOTICE: Order Launched
-                    Log::notice("Order Launched: Take Profit launched a SELL order (#" . $this->order->id .") at " . $this->last  . " for trade #" . $this->trade['id'] . " for the pair " . $this->trade['pair'] . " at " . $this->trade['exchange']);
+                    // Destroy Profit
+                    Profit::destroy($event->takeProfit->id);
+
+                    // Log INFO: Order Launched
+                    Log::info("Order Launched: Take Profit launched a SELL order (#" . $this->order->id .") at " . $this->last  . " for trade #" . $this->trade['id'] . " for the pair " . $this->trade['pair'] . " at " . $this->trade['exchange']);
 
                     // NOTIFY: TakeProfit
                     User::find($this->trade['user_id'])->notify(new TakeProfitNotification($this->trade));
 
                 }
                 else if ($event->takeProfit->type == "buy") {
+
                     // TODO next ver.
+                    
                 }
                 
             }
             
-        } catch(\Exception $e) {
+        } catch(Exception $e) {
               
             // Log CRITICAL: Exception
-            Log::critical("ExecuteTakePRofit Exception: " . $e->getMessage());
+            Log::critical("[ExecuteTakeProfit] Exception: " . $e->getMessage());
 
         }
 

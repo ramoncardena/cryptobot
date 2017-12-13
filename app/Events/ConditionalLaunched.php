@@ -10,11 +10,11 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class OrderLaunched
+class ConditionalLaunched
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $order;
+    public $conditional;
 
 
     /**
@@ -22,9 +22,9 @@ class OrderLaunched
      *
      * @return void
      */
-    public function __construct($order)
+    public function __construct($conditional)
     {
-        $this->order = $order;
+        $this->conditional = $conditional;
     }
 
     /**

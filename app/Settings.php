@@ -78,7 +78,7 @@ class Settings
 			array_only($attributes,array_keys($this->settings))
 		);
 
-		return $this->persis();
+		return $this->persist();
 	}
 
 	protected function persist()
