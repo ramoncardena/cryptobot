@@ -65,6 +65,7 @@
                     </div>
 
                     <div class="title-bar-right">
+                        <a href="#" data-open="notificationsModal"><i class="fa fa-bell-o badge-icon" aria-hidden="true"></i><span class="badge alert">{{ count(Auth::user()->Notifications) }}</span></a>
                         <button class="menu-icon" type="button" data-open="offCanvas"></button>
                     </div>
                 </div>
@@ -101,7 +102,7 @@
                                 <a href="/settings"><i class="fa fa-cog" aria-hidden="true"></i></a>
                             </li>
 
-                            <li>
+                            <li  class="show-for-medium">
                                 <a href="#" data-open="notificationsModal"><i class="fa fa-bell-o" aria-hidden="true"></i><span class="badge alert">{{ count(Auth::user()->Notifications) }}</span></a>
                             </li>
 

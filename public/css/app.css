@@ -14033,6 +14033,15 @@ a.thumbnail image {
   margin-left: 15px;
 }
 
+.title-bar-right .badge-icon {
+  color: #fefefe;
+  margin-right: 0.2rem;
+}
+
+.title-bar-right .badge {
+  margin-right: 1rem;
+}
+
 .dataTable {
   margin-bottom: 2rem !important;
   margin-top: 1rem !important;
@@ -14064,6 +14073,7 @@ section#home body {
 section#home .section-title {
   background-color: #F7F8FB;
   border-bottom: 1px solid #e6e6e6;
+  padding: 1rem;
 }
 
 section#home .section-title h1 {
@@ -14195,6 +14205,7 @@ section#register .login-icon .fa {
 section#dashboard .section-title {
   background-color: #F7F8FB;
   border-bottom: 1px solid #e6e6e6;
+  padding: 1rem;
 }
 
 section#dashboard .section-title h1 {
@@ -14212,6 +14223,7 @@ section#dashboard .portfolio {
 section#settings .section-title {
   background-color: #F7F8FB;
   border-bottom: 1px solid #e6e6e6;
+  padding: 1rem;
 }
 
 section#settings .section-title h1 {
@@ -14245,6 +14257,7 @@ section#settings .input-group-label {
 section#orders .section-title {
   background-color: #F7F8FB;
   border-bottom: 1px solid #e6e6e6;
+  padding: 1rem;
 }
 
 section#orders .section-title h1 {
@@ -14278,7 +14291,7 @@ section#orders .input-group-label {
 section#trades .section-title {
   background-color: #F7F8FB;
   border-bottom: 1px solid #e6e6e6;
-  margin-bottom: 1rem;
+  padding: 1rem;
 }
 
 section#trades .section-title h1 {
