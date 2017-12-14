@@ -65,7 +65,9 @@
                     </div>
 
                     <div class="title-bar-right">
+                        @if (Auth::check())
                         <a href="#" data-open="notificationsModal"><i class="fa fa-bell-o badge-icon" aria-hidden="true"></i><span class="badge alert">{{ count(Auth::user()->Notifications) }}</span></a>
+                        @endif
                         <button class="menu-icon" type="button" data-open="offCanvas"></button>
                     </div>
                 </div>
