@@ -77,17 +77,52 @@ return [
 
     'environments' => [
         'production' => [
-            'supervisor-1' => [
+            'default' => [
                 'connection' => 'redis',
                 'queue' => ['default'],
                 'balance' => 'simple',
-                'processes' => 10,
+                'processes' => 3,
+                'tries' => 3,
+            ],
+            'orders' => [
+                'connection' => 'redis',
+                'queue' => ['orders'],
+                'balance' => 'simple',
+                'processes' => 3,
+                'tries' => 3,
+            ],
+            'conditionals' => [
+                'connection' => 'redis',
+                'queue' => ['conditionals'],
+                'balance' => 'simple',
+                'processes' => 3,
+                'tries' => 3,
+            ],
+            'trades' => [
+                'connection' => 'redis',
+                'queue' => ['trades'],
+                'balance' => 'simple',
+                'processes' => 3,
+                'tries' => 3,
+            ],
+            'stops' => [
+                'connection' => 'redis',
+                'queue' => ['stops'],
+                'balance' => 'simple',
+                'processes' => 3,
+                'tries' => 3,
+            ],
+            'profits' => [
+                'connection' => 'redis',
+                'queue' => ['profits'],
+                'balance' => 'simple',
+                'processes' => 3,
                 'tries' => 3,
             ],
         ],
 
         'local' => [
-            'supervisor-1' => [
+            'default' => [
                 'connection' => 'redis',
                 'queue' => ['default'],
                 'balance' => 'simple',
