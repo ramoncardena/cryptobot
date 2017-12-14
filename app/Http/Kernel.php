@@ -42,6 +42,10 @@ class Kernel extends HttpKernel
             'throttle:60,1',
             'bindings',
         ],
+        
+        'horizon' => [
+            \App\Http\Middleware\AuthenticateHorizon::class
+        ]
     ];
 
     /**
