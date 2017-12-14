@@ -54,57 +54,69 @@
 
           <div id="app">
             <nav class="navigation">
+
                 <div class="title-bar" data-responsive-toggle="example-menu" data-hide-for="medium">
-                  <button class="menu-icon" type="button" data-toggle="example-menu"></button>
-                  <div class="title-bar-title">Menu</div>
-              </div>
+                    <div class="title-bar-left">
+                        <button class="menu-icon" type="button" data-toggle="example-menu"></button>
+                    </div>
+                    <div class="title-bar-center text-center">
+                        <img class="logo" width="60" src="<?php echo Storage::url('cryptobot-logo-white-200px.png')?>"/>
+                        <p class="h2">CryptoBot</p>
+                    </div>
 
-              <div class="top-bar" id="example-menu">
-
-                <div class="top-bar-left">
-                    <ul class="menu">
-                        <li><img class="logo" src="<?php echo asset('storage/cryptobot-logo-40px.png') ?>"/></li>
-                    </ul>
+                    <div class="title-bar-right">
+                        <button class="menu-icon" type="button" data-open="offCanvas"></button>
+                    </div>
                 </div>
 
-                <div class="top-bar-right">
-                    <ul class="dropdown menu" data-dropdown-menu data-disable-hover="true" data-click-open="true">
-                        @if (Auth::guest())
-                        <li><a href="{{ route('login') }}">Login</i></a></li>
+                <div class="top-bar" id="example-menu">
 
-                        <li><a href="{{ route('register') }}">Register</a></li>
-                        @else
-                        <li> <a href="{{ route('home') }}">  {{ Auth::user()->email }} </a></li>
-                        
-                        <li>
-                            <a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
-                                <i class="fa fa-sign-out" aria-hidden="true"></i>
-                            </a>
+                    <div class="top-bar-left show-for-medium">
+                        <ul class="menu">
+                            <li><img class="logo" src="<?php echo asset('storage/cryptobot-logo-40px.png') ?>"/></li>
+                        </ul>
+                    </div>
 
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                {{ csrf_field() }}
-                            </form>
-                        </li>
-                       
+                    <div class="top-bar-right">
+                        <ul class="dropdown menu" data-dropdown-menu data-disable-hover="true" data-click-open="true">
+                            @if (Auth::guest())
+                            <li><a href="{{ route('login') }}">Login</i></a></li>
 
-                        <li>
-                            <a href="/settings"><i class="fa fa-cog" aria-hidden="true"></i></a>
-                        </li>
+                            <li><a href="{{ route('register') }}">Register</a></li>
+                            @else
+                            <li> <a href="{{ route('home') }}">  <i class="fa fa-home" aria-hidden="true"></i> </a></li>
+                            
+                            <li>
+                                <a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                                    <i class="fa fa-sign-out" aria-hidden="true"></i>
+                                </a>
 
-                        <li>
-                            <a href="#" data-open="notificationsModal"><i class="fa fa-bell-o" aria-hidden="true"></i><span class="badge alert">{{ count(Auth::user()->Notifications) }}</span></a>
-                        </li>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    {{ csrf_field() }}
+                                </form>
+                            </li>
+                           
 
-                        <li>
-                            <a href="#"><i class="fa fa-th" aria-hidden="true" data-toggle="offCanvas"></i></a>
-                        </li>
-                        
+                            <li>
+                                <a href="/settings"><i class="fa fa-cog" aria-hidden="true"></i></a>
+                            </li>
 
-                        @endif
-                    </ul>
+                            <li>
+                                <a href="#" data-open="notificationsModal"><i class="fa fa-bell-o" aria-hidden="true"></i><span class="badge alert">{{ count(Auth::user()->Notifications) }}</span></a>
+                            </li>
+
+                            <li>
+                                <a href="#"><i class="fa fa-th" aria-hidden="true" data-toggle="offCanvas"></i></a>
+                            </li>
+                            
+
+                            @endif
+                        </ul>
+                    </div>
+
                 </div>
-            </div>
-        </nav>
+
+            </nav>
 
         @yield('content')
         @if (Auth::check())
