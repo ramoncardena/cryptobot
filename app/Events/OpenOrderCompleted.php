@@ -10,21 +10,23 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class OrderLaunched
+class OpenOrderCompleted
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $order;
 
+    public $price;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($order)
+    public function __construct($order, $price)
     {
         $this->order = $order;
+        $this->price = $price;
     }
 
     /**

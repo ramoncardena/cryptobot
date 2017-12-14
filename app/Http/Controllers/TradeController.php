@@ -6,9 +6,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
+use App\Library\FakeOrder;
 use App\Notifications\TradeEditedNotification;
-use App\Notifications\TradeCancelledNotification;
+use App\Events\TakeProfitLaunched;
+use App\Events\StopLossLaunched;
 use App\Events\OrderLaunched;
+use App\Events\ConditionalLaunched;
 use App\Library\Services\Facades\Bittrex;
 use App\Trade;
 use App\Stop;
@@ -19,10 +22,22 @@ use App\Order;
 
 class TradeController extends Controller
 {
+    /**
+     * Owner of the trade
+     * @var User
+     */
     protected $user;
   
+    /**
+     * Trade being controlled
+     * @var Trade
+     */
     protected $trade;
   
+    /**
+     * ID for the order launched by trade to the exchange
+     * @var string
+     */
     protected $order_id;
 
     /**
@@ -36,7 +51,7 @@ class TradeController extends Controller
     }
 
     /**
-     * Show the application dashboard.
+     * Show the trades dashboard.
      *
      * @return \Illuminate\Http\Response
      */
@@ -57,9 +72,11 @@ class TradeController extends Controller
                     ->orWhere([
                         ['status', '=', 'Cancelled']
                     ])
+                    ->orWhere([
+                        ['status', '=', 'Aborted']
+                    ])
                     ->orderBy('updated_at', 'desc')
                     ->get();
-                
 
                 // Retrieve open trades
                 $tradesOpened = Trade::where('user_id',  Auth::id())
@@ -78,33 +95,31 @@ class TradeController extends Controller
                     return $trade->status == 'Cancelled';
                 });
 
+                $tradesOpened = $tradesOpened->reject(function ($trade) {
+                    return $trade->status == 'Aborted';
+                });
+
                 // Retrieve waiting trades
                 $tradesWaiting = Trade::where('user_id',  Auth::id())
                    ->where('status', 'Waiting')
                    ->orderBy('updated_at', 'desc')
                    ->get();
 
-            
-            
                 // Return 'trades' view passing trade history and open trades objects
                 return view('trades', ['tradesHistory' => $tradesHistory, 'tradesOpened' => $tradesOpened, 'tradesWaiting' => $tradesWaiting]);
             }
             else {
-                Log::error("User not authorized trying to retieve trades.");
-            }
-        }catch(\Exception $e) {
-                Log::critical("Exception: " . $e->getMessage());
-            }
-    }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+                // LOG: Not authorized
+                Log::error("User not authorized trying to retieve trades.");
+
+            }
+        }catch(Exception $e) {
+
+                // LOG: Exception trying to show trades
+                Log::critical("[TradeController] Exception: " . $e->getMessage());
+
+        }
     }
 
     /**
@@ -115,91 +130,99 @@ class TradeController extends Controller
      */
     public function store(Request $request)
     {   
-        // Double check for user to be authenticated
-        if (Auth::check()) 
-        {
-            // Create new Trade model
-            $this->trade = new Trade;
+        try {
 
-            // Fill the new Trade model 
-            $this->trade->order_id = "-";
-            $this->trade->stop_id = "-";
-            $this->trade->profit_id = "-";
-            $this->trade->condition_id = "-";
-            $this->trade->user_id = Auth::id();
-            $this->trade->status = "Opening";
-            $this->trade->position = $request->position;
-            $this->trade->exchange = $request->exchange;
-            $this->trade->pair = $request->pair;
-            $this->trade->price = $request->price;
-            $this->trade->amount = floatval($request->amount);
-            $this->trade->total = $request->total;
-            $this->trade->stop_loss = $request->stop_loss;
-            $this->trade->take_profit = $request->take_profit;
-            $this->trade->condition = $request->condition;
-            $this->trade->condition_price = $request->condition_price;
-            $this->trade->profit = 0.00000000;
-            $this->trade->closing_price = 0.00000000;
-            $this->trade->save();
+            // Double check for user to be authenticated
+            if ( Auth::check() ) 
+            {
+                // Create new Trade model
+                $this->trade = new Trade;
 
-            // Chech if conditional order
-            if ($this->trade->condition == "now") {
+                // Trade status change
+                $this->trade->status = "Opening";
 
-                // No conditional order
-                // Launch order to the exchange to get the order uuid
-                $order = $this->newOrder($request->exchange, $request->pair, $request->price,$request->amount, $request->stop_loss, $request->take_profit, $request->position);
+                // Fill the properties of the new trade that
+                // are common to conditional and not conditional
+                $this->trade->user_id = Auth::id();
+                $this->trade->order_id = "-";
+                $this->trade->stop_id = "-";
+                $this->trade->profit_id = "-";
+                $this->trade->condition_id = "-";
+                $this->trade->position = $request->position;
+                $this->trade->exchange = $request->exchange;
+                $this->trade->pair = $request->pair;
+                $this->trade->price = $request->price;
+                $this->trade->amount = floatval($request->amount);
+                $this->trade->total = $request->total;
+                $this->trade->stop_loss = $request->stop_loss;
+                $this->trade->take_profit = $request->take_profit;
+                $this->trade->condition = $request->condition;
+                $this->trade->condition_price = $request->condition_price;
+                $this->trade->profit = 0.00000000;
+                $this->trade->closing_price = 0.00000000;
+                $this->trade->save();
 
-                if ($order['status'] == 'success') {
+                /**********************************
+                 *  INMEDIATE TRADE
+                 **********************************/
+                if ( $this->trade->condition == "now" ) {
 
-                    // If order succeeds fill the order id, stop id and profit id in the trade
-                    // and set status as 'Opened'
-                    $this->trade->order_id = $order['order_id'];
-                    // $this->trade->stop_id = $order['stop_id'];
-                    // $this->trade->profit_id = $order['profit_id'];
-                    $this->trade->status = "Opening";
-                    $this->trade->save();
+                    // Launch order to the exchange to get the order uuid
+                    $order = $this->newOrder($this->trade);
 
-                    $res = '#' . $this->trade->id . ' Opening Trade.' . 'Exchange: ' . $this->trade->exchange . ' Pair: ' . $this->trade->pair . ' Price: ' . $this->trade->price . ' Amount: ' . $this->trade->amount . ' Total: ' . $this->trade->total .' Stop-Loss: ' . $this->trade->stop . ' Take-Profit: ' . $this->trade->profit;
+                    if ( $order['status'] == 'success' ) {
 
-                    return response($res , 200)->header('Content-Type', 'text/plain');
-               
-                } else if ($order['status'] == 'fail') {
+                        // LOG: Order created
+                        Log::info("[TradeController] Order #" . $this->trade->order_id . " created for Trade #" . $this->trade->id);
 
-                    // If order fails set trade status as 'Aborted'
-                    $this->trade->status = "Aborted";
-                    $this->trade->save();
+                        // Send the new trade to the client in json
+                        return response($this->trade->toJson(), 200)->header('Content-Type', 'application/json');
+                   
+                    } else if ( $order['status'] == 'fail' ) {
+                        
+                        // LOG: Error creating order
+                        Log::critical("[TradeController] Error creating Order for Trade #" . $this->trade->id . ": " . $order['message']);
 
-                    return response($order['message'], 500)->header('Content-Type', 'text/plain');
+                        // Trade status change
+                        return response($order['message'], 500)->header('Content-Type', 'text/plain');
+                    }
+                }
+                /**********************************
+                 *  CONDITIONAL TRADE
+                 **********************************/
+                else {
+                    
+                    // Stores a conditional order in the database to watch
+                    $conditional = $this->newConditional($this->trade);
+
+                    if ( $conditional['status'] == 'success' ) {
+                        
+                        // LOG: Conditional order created
+                        Log::info("[TradeController] Conditional order #" . $this->trade->condition_id . " created for Trade #" . $this->trade->id);
+
+                        // Send the new trade to the client in json
+                        return response($this->trade->toJson(), 200)->header('Content-Type', 'application/json');
+
+
+                    } else if ( $conditional['status'] == 'fail' ) {
+
+                        // LOG: Error creating order
+                        Log::critical("[TradeController] Error creating conditional for Trade #" . $this->trade->id . ": " . $conditional['message']);
+
+                        // Error creating conditional
+                        return response($conditional['message'], 500 )->header( 'Content-Type', 'text/plain');
+                    }
                 }
             }
-            else {
-                // Conditional order
-                
-                // Stores a conditional order in the database to watch
-                $conditional = $this->newConditional($request->exchange, $request->pair, $request->condition, $request->condition_price);
+        } catch (Exception $e) {
+            
+            // LOG: Exception trying to create trade
+            Log::critical("[TradeController] Exception: " . $e->getMessage());
 
-                if ($conditional['status'] == 'success') {
+            return response($e->getMessage(), 500)->header('Content-Type', 'text/plain');
 
-                    // Create a condition to be watched and lauched when reached
-                    $this->condition_id = $conditional['conditional_id'];
-                    $this->trade->status = "Waiting";
-                    $this->trade->save();
-
-                    $res = '#' . $this->trade->id . ' Conditional Trade Waiting.' . 'Exchange: ' . $this->trade->exchange . ' Pair: ' . $this->trade->pair . ' Price: ' . $this->trade->price . ' Amount: ' . $this->trade->amount . ' Total: ' . $this->trade->total .' Stop-Loss: ' . $this->trade->stop . ' Take-Profit: ' . $this->trade->profit . ' Condition: ' . $this->trade->condition . ' Condition Price: ' . $this->trade->condition_price;
-
-                    return response($res , 200)->header('Content-Type', 'text/plain');
-
-
-                } else if ($conditional['status'] == 'fail') {
-
-                    // If order fails set trade status as 'Aborted'
-                    $this->trade->status = "Aborted";
-                    $this->trade->save();
-
-                    return response($conditional['message'], 500)->header('Content-Type', 'text/plain');
-                }
-            }
         }
+        
     }
 
     /**
@@ -213,6 +236,7 @@ class TradeController extends Controller
         
     }
 
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -223,6 +247,7 @@ class TradeController extends Controller
     {
         //
     }
+
 
     /**
      * Update the specified resource in storage.
@@ -237,15 +262,166 @@ class TradeController extends Controller
             // Get the trade to edit
             $this->trade = Trade::find($id);
 
-            // Update stop-loss and tale-profit
-            $this->trade->stop_loss = $request->newStopLoss;
-            $this->trade->take_profit = $request->newTakeProfit;
-            $this->trade->save();
+            // Process new Stop-Loss
+            if( $this->trade->stop_id == "-" ) {
+
+                if($request->newStopLoss != 0) 
+                {
+                    // Create a new Stop-Loss instance in the DB
+                    $stopLoss = new Stop;
+
+                    $stopLoss->trade_id = $this->trade->id;
+                    $stopLoss->order_id = $this->trade->order_id;
+                    $stopLoss->status = "Opened";
+                    $stopLoss->exchange = $this->trade->exchange;
+                    $stopLoss->pair = $this->trade->pair;
+                    $stopLoss->price = $request->newStopLoss;
+                    $stopLoss->amount = $this->trade->amount;
+                    $stopLoss->cancel = false;
+
+                    if ($this->trade->position = 'long') {
+
+                        $stopLoss->type = 'sell';
+
+                    }
+                    else if ($this->trade->position = 'short') {
+
+                        $stopLoss->type = 'buy';
+
+                    }
+
+                    $stopLoss->save();
+
+                    // Update trade with stop-loss id and value
+                    $this->trade->stop_id = $stopLoss->id;
+                    $this->trade->stop_loss = $request->newStopLoss;
+                    $this->trade->save();
+
+                    // Log INFO: Stop-Loss launched
+                    Log::info("Stop-Loss #" . $stopLoss->id . " launched by Trade #" . $this->trade->id);
+
+                    // EVENT: StopLossLaunched
+                    event(new StopLossLaunched($stopLoss));
+
+                }
+
+            }
+            else {
+
+                // Find stop-loss
+                $stop = Stop::find($this->trade->stop_id);
+
+                // If new stop-loss is 0 cancel stop-loss
+                if ($request->newStopLoss == 0) 
+                {
+                    
+                    $stop->cancel = true;
+                    $stop->save();
+
+                    $this->trade->stop_id = "-";
+                    $this->trade->save();
+
+
+                }
+                else
+                {
+                    // Update stop-loss in db
+                    $stop->price = $request->newStopLoss;
+                    $stop->save();
+                }
+
+                // Update stop-loss value in trade
+                $this->trade->stop_loss = $request->newStopLoss;
+                $this->trade->save();
+
+            }
+           
+            // Process new Take Profit
+            if ( ($this->trade->profit_id == "-") ) 
+            {
+                 Log::info("NEW TAKE PROFIT: " . $request->newTakeProfit);
+                if ($request->newTakeProfit != 0)
+                {
+
+                    $takeProfit = new Profit;
+
+                    $takeProfit->trade_id = $this->trade->id;
+                    $takeProfit->order_id = $this->trade->order_id;
+                    $takeProfit->status = "Opened";
+                    $takeProfit->exchange = $this->trade->exchange;
+                    $takeProfit->pair = $this->trade->pair;
+                    $takeProfit->price = $request->newTakeProfit;
+                    $takeProfit->amount = $this->trade->amount;
+                    $takeProfit->cancel = false;
+
+                    if ($this->trade->position = 'long') {
+
+                        $takeProfit->type = 'sell';
+
+                    }
+                    else if ($this->trade->position = 'short') {
+
+                       $takeProfit->type = 'buy';
+
+                    }
+
+                    $takeProfit->save();
+
+                    // Update trade with take-profit id and value
+                    $this->trade->profit_id = $takeProfit->id;
+                    $this->trade->take_profit = $request->newTakeProfit;
+                    $this->trade->save();
+
+
+                    // Log INFO: Take-Profit launched
+                    Log::info("Take-Profit #" . $takeProfit->id . " launched by Trade #" . $this->trade->id);
+                   
+                    // EVENT: TakeProfitLaunched
+                    event(new TakeProfitLaunched($takeProfit));
+                }
+            }
+            else
+            {
+                // Find take-profit
+                $profit = Profit::find($this->trade->profit_id);
+
+                // If new stop-loss is 0 cancel stop-loss
+                if ($request->newTakeProfit == 0) 
+                {
+
+                    $profit->cancel = true;
+                    $profit->save();
+
+                    $this->trade->profit_id = "-";
+                    $this->trade->save();
+
+                }
+                else 
+                {
+
+                    // Update take-profit in db
+                    $profit->price = $request->newTakeProfit;
+                    $profit->save();
+
+                }
+
+                // Update take-profit value in trade
+                $this->trade->take_profit = $request->newTakeProfit;
+                $this->trade->save();
+            }
+
+            
 
             // NOTIFY: Trade Edited
             User::find($this->trade->user_id)->notify(new TradeEditedNotification($this->trade));
 
+            // Log NOTICE: Trade edited
+            Log::notice("Trade #" . $this->trade->id . " edited. New Stop-Loss at " . $this->trade->stop_loss . " and new Take-Profit at " . $this->trade->take_profit);
+
         } catch (Exception $e) {
+
+            // Log CRITICAL: Exception
+            Log::critical("[TradeController] Exception: " . $e->message());
 
             // If exeption return error 500
             return response($e->message(), 500)->header('Content-Type', 'text/plain');
@@ -256,206 +432,297 @@ class TradeController extends Controller
 
     
     /**
-     * /Remove the specified resource from storage.
+     * Remove the specified resource from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request, $id)
     {
-        // Get the trade to close
-        $this->trade = Trade::find($id);
+        try {
 
-        // If trade is waiting, we just cancel it and don't launch any order to the exchange
-        if ($this->trade->status == 'Waiting') {
+            // Get the trade to close
+            $this->trade = Trade::find($id);
 
-            // Update trade status
-            $this->trade->status = "Cancelled";
-            $this->trade->save();
 
-            // NOTIFY: Trade Cancelled
-            User::find($this->trade->user_id)->notify(new TradeCancelledNotification($this->trade));
+            /*****************************************
+             *  CANCEL CONDITIONAL TRADE WAITING
+             *****************************************/
+            
+            if ($this->trade->status == 'Waiting') {
 
-            return response("Trade " . $id . " cancelled." , 200)->header('Content-Type', 'text/plain');
+                // Update trade status
+                $this->trade->status = "Cancelling";
+                $this->trade->save();
+
+                // Set conditional to cancel
+                $conditional = Conditional::find($this->trade->condition_id);
+                $conditional->cancel = true;
+                $conditional->save();
+
+                // Send the cancelled trade to the client in json
+                return response($this->trade->toJson(), 200)->header('Content-Type', 'application/json');
+ 
+            }
+
+            /*****************************************
+             *  CLOSE OPENED TRADE
+             *****************************************/
+            else {
+
+                // Update trade status
+                $this->trade->status = "Closing";
+                $this->trade->save();
+                
+                // Update stop-loss status if it exists
+                $stop = Stop::find( $this->trade->stop_id);
+                if ($stop) {
+                    $stop->status = "Closing";
+                    $stop->cancel = true;
+                    $stop->save();
+                }
+
+                // Update take-profit status if it exists
+                $profit = Profit::find( $this->trade->profit_id);
+                if ($profit) {
+                    $profit->status = "Closing";
+                    $profit->cancel = true;
+                    $profit->save();
+                }
+
+                // Get the user linked to the trade
+                $user = User::find(Auth::id());
+                
+                // Select Exchange
+                switch ($this->trade->exchange) {
+
+                    // BITTREX
+                    case 'bittrex':
+                        
+                        // Initialize Bittrex with user info
+                        Bittrex::setAPI($user->settings()->get('bittrex_key'), $user->settings()->get('bittrex_secret'));
+                        
+                        // Check for order type
+                        if ($this->trade->position == "long") {
+           
+                            // Call to exchange API or a fakeOrder based on ENV->ORDERS_TEST
+                            if ( env('ORDERS_TEST', true) == true ) {
+
+                                // TESTING SUCCESS
+                                $remoteOrder = FakeOrder::success();
+
+                                // TESTING FAIL
+                                // $order = FakeOrder::fail();
+                                
+                            }
+                            else {
+
+                                // Launch Bittrex sell order with Pair, Amount and Price as parameters
+                                $remoteOrder = Bittrex::sellLimit($this->trade->pair, $this->trade->amount, $request->closingprice);
+                                
+                            }
+                            
+                            // Check for remoteOrder success
+                            if ($remoteOrder->success == true) {
+
+                                // If we get a success response we create an Order in our database to track
+                                $order = new Order;
+                                $order->user_id = $this->trade->user_id;
+                                $order->trade_id = $this->trade->id;
+                                $order->exchange = 'bittrex';
+                                $order->order_id = $remoteOrder->result->uuid;
+                                $order->type = 'close';
+                                $order->save();
+
+                                // EVENT: OrderLaunched
+                                event(new OrderLaunched($order));
+
+                                // Log NOTICE: Order Launched
+                                Log::notice("Order Launched: User action closing trade launched a SELL order (#" . $order->id .") at " . $request->closingprice  . " for trade #" . $this->trade->id . " for the pair " . $this->trade->pair . " at " . $this->trade->exchange);
+                                
+                                return response($this->trade->toJson(), 200)->header('Content-Type', 'application/json');
+
+                            }
+                            else {
+
+                                // Log ERROR: Bittrex API returned error
+                                Log::error("[TradeController] Bittrex API: " . $remoteOrder->message);
+
+                                return response($remoteOrder->message, 500)->header('Content-Type', 'text/plain');
+
+                            }
+
+                        }
+                        
+                        break;
+
+                }
+                if ($this->trade->exchange == 'bittrex') {
+
+                    
+
+                }
+        
+            }
+            
+        } catch (Exception $e) {
+
+            // Log CRITICAL: Exception
+            Log::critical("[TradeController] Exception: " . $e->message());
+
+            // If exeption return error 500
+            return response($e->message(), 500)->header('Content-Type', 'text/plain');
 
         }
-        else {
+        
 
-            // Update trade status
-            $this->trade->status = "Closing";
-            $this->trade->save();
-            
-            // Update stop-loss status if it exists
-            $stop = Stop::find( $this->trade->stop_id);
-            if ($stop) {
-                $stop->status = "Closing";
-                $stop->save();
-            }
+    }
 
-            // Update take-profit status if it exists
-            $profit = Profit::find( $this->trade->profit_id);
-            if ($profit) {
-                $profit->status = "Closing";
-                $profit->save();
-            }
 
-            // Get the user linked to the trade
+    /**
+     * Launch new order to the exchange
+     * @param  trade $trade
+     * @return array         
+     */
+    private function newOrder($trade) 
+    {
+        try {
+
+            $stopLoss = new Stop;
+            $takeProfit = new Profit;
+
+            // Get the current user
             $user = User::find(Auth::id());
-            
-            // Check exchange
-            if ($this->trade->exchange == 'bittrex') {
 
-                // Initialize Bittrex with user info
-                Bittrex::setAPI($user->settings()->get('bittrex_key'), $user->settings()->get('bittrex_secret'));
-                
-                // Check for order type
-                if ($this->trade->position == "long") {
-                    Log::notice($request);
 
-                    // Launch Bittrex sell order with Pair, Amount and Price as parameters
-                    // $remoteOrder = Bittrex::sellLimit($this->trade->pair, $this->trade->amount, $request->closingprice);
-                
-                    // TESTING SUCCESS
-                    $remoteOrder = new \stdClass();
-                    $remoteOrder->success=true;
-                    $remoteOrder->message="";
-                    $remoteOrder->result = new \stdClass();
-                    $remoteOrder->result->uuid = "7c6db929-6c4f-4711-b99b-01c9697330ce";
+            switch ($trade->exchange) {
 
-                    // TESTING FAIL
-                    // $remoteOrder = new \stdClass();
-                    // $remoteOrder->success=false;
-                    // $remoteOrder->message="Invalid API credentials";
-                    // $remoteOrder->result = new \stdClass();
-                    // $remoteOrder->result->uuid = "";
-                    
-                    // Check for remoteOrder success
-                    if ($remoteOrder->success == true) {
+                case 'bittrex':
 
-                        // If we get a success response we create an Order in our database to track
-                        $order = new Order;
-                        $order->user_id = $this->trade->user_id;
-                        $order->trade_id = $this->trade->id;
-                        $order->exchange = 'bittrex';
-                        $order->order_id = $remoteOrder->result->uuid;
-                        $order->type = 'close';
-                        $order->save();
+                    // Initialize Bittrex with user info
+                    Bittrex::setAPI($user->settings()->get('bittrex_key'), $user->settings()->get('bittrex_secret'));
 
-                        // Event: OrderLaunched
-                        event(new OrderLaunched($order, $this->trade));
+                    // Call to exchange API or a fakeOrder based on ENV->ORDERS_TEST
+                    if ( env('ORDERS_TEST', true) == true ) {
 
-                        // Log NOTICE: Order Launched
-                        Log::notice("Order Launched: User action closing trade launched a SELL order (#" . $order->id .") at " . $request->closingprice  . " for trade #" . $this->trade->id . " for the pair " . $this->trade->pair . " at " . $this->trade->exchange);
+                        // TESTING SUCCESS
+                        $order = FakeOrder::success();
+
+                        // TESTING FAIL
+                        // $order = FakeOrder::fail();
                         
-                        return response("Trade " . $id . " closing." , 200)->header('Content-Type', 'text/plain');
-
                     }
                     else {
 
-                        // Log ERROR: Bittrex API returned error
-                        Log::error("Bittrex API: " . $remoteOrder->message);
-                        return response($remoteOrder->message, 500)->header('Content-Type', 'text/plain');
+                        // Launch Bittrex sell order with Pair, Amount and Price as parameters
+                        $order = Bittrex::buyLimit($trade->pair, $trade->amount, $trade->price);
+                        
+                    }
+                   
+                    // Check for order success
+                    if ($order->success == true) {
+
+                        // Save exchange order id in the trade
+                        $this->trade->order_id = $order->result->uuid;
+                        $this->trade->save();
+
+                        // Create an Order in our database to track
+                        $orderToTrack = new Order;
+                        $orderToTrack->user_id = $trade->user_id;
+                        $orderToTrack->trade_id = $trade->id;
+                        $orderToTrack->exchange = $trade->exchange;
+                        $orderToTrack->order_id = $trade->order_id;
+                        $orderToTrack->type = 'open';
+                        $orderToTrack->save();
+
+                        // EVENT: OrderLaunched
+                        event(new OrderLaunched($orderToTrack));
+
+                        // Return success if create order succeed
+                        return ['status' => 'success', 'order_id' => $orderToTrack->order_id, 'stop_id' => $stopLoss->id, 'profit_id' => $takeProfit->id];
+
+                    }
+                    else {
+                        // // If order fails set trade status as 'Aborted'
+                        $trade->status = "Aborted";
+                        $trade->save();
+
+                        // Return error if create order fails 
+                        return ['status' => 'fail', 'message' => $order->message];
 
                     }
 
-                }
+                    break;
 
             }
-        
-        }
+            
+        } catch (Exception $e) {
+
+            // Log CRITICAL: Exception
+            Log::critical("[TradeController] Exception: " . $e->message());
+
+            // If exeption return error 500
+            return response($e->message(), 500)->header('Content-Type', 'text/plain');
+
+        } 
 
     }
 
-    /**
-     * /Launch new order 
-     * @param  string $exchange
-     * @param  string $pair    
-     * @param  float $price   
-     * @param  float $amount  
-     * @param  float $stop    
-     * @param  float $profit  
-     * @param  string $position
-     * @return array         
-     */
-    private function newOrder($exchange, $pair, $price, $amount, $stop, $profit, $position) 
-    {
-        $stopLoss = new Stop;
-        $takeProfit = new Profit;
-
-        // Get the current user
-        $user = User::find(Auth::id());
-
-        $order_id = "-";
-
-        switch ($exchange) {
-            case 'bittrex':
-                // Initialize Bittrex with user info
-                Bittrex::setAPI($user->settings()->get('bittrex_key'), $user->settings()->get('bittrex_secret'));
-
-                // Launch Bittrex sell order with Pair, Amount and Price as parameters
-                // $order = Bittrex::buyLimit($pair, $amount, $price);
-             
-                // TESTING SUCCESS
-                $order = new \stdClass();
-                $order->success=true;
-                $order->message="";
-                $order->result = new \stdClass();
-                $order->result->uuid = "7c6db929-6c4f-4711-b99b-01c9697330ce";
-
-                // TESTING FAIL
-                // $order = new \stdClass();
-                // $order->success=false;
-                // $order->message="Invalid API credentials";
-                // $order->result = new \stdClass();
-                // $order->result->uuid = "";
-
-                // Check for order success
-                if ($order->success == true) {
-
-                    $order_id = 
-                    // If we get a success response we create an Order in our database to track
-                    $orderToTrack = new Order;
-                    $orderToTrack->user_id = $this->trade->user_id;
-                    $orderToTrack->trade_id = $this->trade->id;
-                    $orderToTrack->exchange = 'bittrex';
-                    $orderToTrack->order_id = $order->result->uuid;
-                    $orderToTrack->type = 'open';
-                    $orderToTrack->save();
-
-                    return ['status' => 'success', 'order_id' => $orderToTrack->order_id, 'stop_id' => $stopLoss->id, 'profit_id' => $takeProfit->id];
-                }
-                else {
-                    return ['status' => 'fail', 'message' => $order->message];
-                }
-
-                break;
-        }
-    }
 
     /**
      * Stores a new Conditional order in conditionals table
-     * @param  string $exchange 
-     * @param  string $pair   
-     * @param  string $condition 
-     * @param  float $conditionprice  
+     * @param  trade $trade
      * @return array        
      */
-    private function newConditional($exchange, $pair, $condition, $conditionprice) 
+    private function newConditional($trade) 
     {   
-        $conditional = new Conditional;
+        try {
 
-        $conditional->user_id = Auth::id();
-        $conditional->trade_id = $this->trade->id;
-        $conditional->exchange = $exchange;
-        $conditional->pair = $pair;
-        $conditional->condition = $condition;
-        $conditional->condition_price = $conditionprice;
-        if ($conditional->save()) {
-             return ["status"=>"success", "conditional_id"=>$conditional->id];
-        }
-        else {
-             return ["status"=>"fail", "message"=>"Error creating conditional trade."];
-        }
-       
+            // Create a condition to be watched and lauched when reached
+            $conditional = new Conditional;
+            $conditional->user_id = Auth::id();
+            $conditional->trade_id = $trade->id;
+            $conditional->exchange = $trade->exchange;
+            $conditional->pair = $trade->pair;
+            $conditional->condition = $trade->condition;
+            $conditional->condition_price = $trade->condition_price;
+            $conditional->cancel = false;
+
+            if ($conditional->save()) {
+
+                 // Trade status change
+                $trade->status = "Waiting";
+                
+                // Save conditional id into the trade
+                $trade->condition_id = $conditional->id;
+                $trade->save();
+
+                // EVENT: ConditionalLaunched
+                event(new ConditionalLaunched($conditional));
+
+                return ["status"=>"success", "conditional_id"=>$conditional->id];
+
+            }
+            else {
+
+                // If conditional fails set trade status as 'Aborted'
+                $trade->status = "Aborted";
+                $trade->save();
+                
+                return ["status"=>"fail", "message"=>"Error creating conditional trade."];
+
+            }
+            
+        } catch (Exception $e) {
+
+            // Log CRITICAL: Exception
+            Log::critical("[TradeController] Exception: " . $e->message());
+
+            // If exeption return error 500
+            return response($e->message(), 500)->header('Content-Type', 'text/plain');
+
+        } 
+
     }
+
 }

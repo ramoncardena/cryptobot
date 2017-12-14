@@ -80893,11 +80893,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             if (this.tpSwitch == false) this.takeprofit = 0;
 
             var uri = 'status=opened&position=long' + '&exchange=' + this.exchange + '&pair=' + this.pairselected + '&price=' + this.price + '&amount=' + this.amount + '&total=' + this.total + '&stop_loss=' + this.stoploss + '&take_profit=' + this.takeprofit + "&condition=" + this.conditionselected + "&condition_price=" + this.conditionprice;
+
             axios.post('/trades', uri).then(function (response) {
-                console.log("Trade opened!");
+                console.log("Trade #" + response.data.id + " opened!");
                 window.location.href = '/trades';
             }).catch(function (error) {
                 console.log(error.response.data);
+                window.location.href = '/trades';
             });
         }
     }

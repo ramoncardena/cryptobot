@@ -10,21 +10,20 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class OrderLaunched
+class TradeCancelled
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $order;
-
+    public $trade_id;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($order)
+    public function __construct($id)
     {
-        $this->order = $order;
+        $this->trade_id = $id;
     }
 
     /**

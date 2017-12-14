@@ -10,21 +10,20 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class OrderLaunched
+class StopLossNotReached
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $order;
-
-
+    public $stopLoss;
+    
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($order)
+    public function __construct($stoploss)
     {
-        $this->order = $order;
+        $this->stopLoss = $stoploss;
     }
 
     /**

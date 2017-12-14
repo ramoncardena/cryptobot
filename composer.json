@@ -10,6 +10,7 @@
         "guzzlehttp/guzzle": "^6.3",
         "laravel-frontend-presets/zurb-foundation": "^1.2",
         "laravel/framework": "5.5.*",
+        "laravel/horizon": "^1.0",
         "laravel/passport": "^4.0",
         "laravel/tinker": "~1.0",
         "predis/predis": "^1.1",

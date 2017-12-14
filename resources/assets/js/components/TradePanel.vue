@@ -599,13 +599,15 @@ export default {
 
 
             let uri = 'status=opened&position=long' + '&exchange=' + this.exchange + '&pair=' + this.pairselected + '&price=' + this.price + '&amount=' + this.amount + '&total=' + this.total + '&stop_loss=' + this.stoploss + '&take_profit=' + this.takeprofit + "&condition=" + this.conditionselected + "&condition_price=" + this.conditionprice;
+           
             axios.post('/trades', uri)
             .then(response => {
-                console.log("Trade opened!");
+                console.log("Trade #" + response.data.id + " opened!");
                 window.location.href = '/trades';
             })
             .catch(error => {
                 console.log(error.response.data); 
+                window.location.href = '/trades';
             });
         }
 
