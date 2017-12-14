@@ -84,7 +84,7 @@ class KeepTrackingStopLoss implements ShouldQueue
                                 event(new StopLossReached($stop, $ticker->Last));
 
                                 // Log NOTICE: Take-Profit reached
-                                Log::notice("Stop-Loss: Trade #" . $stop->trade_id . " reached its stop-loss at " . $stop->price . " for the pair " . $stop->pair . " at " . $stop->exchange);
+                                Log::notice("Stop-Loss: Trade #" . $stop->trade_id . " reached its stop-loss at " . $stop->price . " for the pair " . $stop->pair . " at " . $stop->exchange . " (last price: " . $ticker->Last . ")");
 
                             }
                             else {

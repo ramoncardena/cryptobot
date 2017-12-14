@@ -2,12 +2,14 @@
 
 namespace App\Listeners;
 
+use App\Events\OrderLaunched;
 use App\Events\ConditionReached;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Log;
 
 use App\Notifications\ConditionalNotification;
+use App\Library\FakeOrder;
 use App\User;
 use App\Conditional;
 use App\Trade;
@@ -68,12 +70,11 @@ class ExecuteConditional
             
             Log::notice('New Trade: Trade #' . $this->trade->id . ' opened at ' . $this->trade->exchange . ' for ' . $this->trade->pair . ' at ' . $this->trade->price . ' an amount of ' . $this->trade->amount . ' units for a total of ' . $this->trade->total .' with Stop-Loss at ' . $this->trade->stop_loss . ' and Take-Profit at ' . $this->trade->take_profit);
 
-            $res = '#' . $this->trade->id . ' Trade Opened.' . 'Exchange: ' . $this->trade->exchange . ' Pair: ' . $this->trade->pair . ' Price: ' . $this->trade->price . ' Amount: ' . $this->trade->amount . ' Total: ' . $this->trade->total .' Stop-Loss: ' . $this->trade->stop_loss . ' Take-Profit: ' . $this->trade->take_profit;
 
             // NOTIFY: Conditional launched
             User::find($this->trade->user_id)->notify(new ConditionalNotification($this->trade));
         
-            return response($res , 200)->header('Content-Type', 'text/plain');
+            return response($this->trade->toJson(), 200)->header('Content-Type', 'application/json');
        
         } else if ($order['status'] == 'fail') {
 
@@ -109,7 +110,7 @@ class ExecuteConditional
         $user = User::find($trade->user_id);
 
         // Select Exchange
-        switch ($exchange) {
+        switch ($trade->exchange) {
 
             // BITTREX
             case 'bittrex':
@@ -159,7 +160,7 @@ class ExecuteConditional
 
                 }
                 else {
-                    / // If order fails set trade status as 'Aborted'
+                    // If order fails set trade status as 'Aborted'
                     $trade->status = "Aborted";
                     $trade->save();
                     

@@ -84,7 +84,7 @@ class TrackTakeProfit implements ShouldQueue
                                 event(new TakeProfitReached($profit, $ticker->Last));
 
                                 // Log NOTICE: Take-Profit reached
-                                Log::notice("Take-Profit: Trade #" . $profit->trade_id . " reached its take-profit at " . $profit->price . " for the pair " . $profit->pair . " at " . $profit->exchange);
+                                Log::notice("Take-Profit: Trade #" . $profit->trade_id . " reached its take-profit at " . $profit->price . " for the pair " . $profit->pair . " at " . $profit->exchange . " (last price: " . $ticker->Last . ")");
 
                             }
                             else {
