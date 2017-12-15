@@ -117,8 +117,6 @@ class TrackOrder implements ShouldQueue
                         }
                         else {
 
-                            // If the order is not completed
-                            
                             // Add delay before requeueing
                             sleep(env('ORDER_DELAY', 0));
 

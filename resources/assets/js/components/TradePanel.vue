@@ -1,235 +1,252 @@
 <template>
-    <div>
 
-            <div v-if="event" class="callout success flash-alert" data-closable>
-                <h5>{{ eventTitle}}</h5>
-                <p>{{ eventBody}}</p>
-                <p>{{ eventData }}</p>
-                <button class="close-button" aria-label="Dismiss alert" type="button" data-close>
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
+    <div class="grid-x grid-padding-x tradepanel">
+        <!-- Trade form -->
+        <div class="cell large-7 small-order-2 large-order-1">
 
-        <div class="grid-x grid-padding-x tradepanel">
-            <!-- Trade form -->
-            <div class="cell large-7 small-order-2 large-order-1">
+            <form method="POST" action="/trades">
+            <input type="hidden" name="_token" :value="csrf">
 
-                <form method="POST" action="/trades">
-                <input type="hidden" name="_token" :value="csrf">
-
-                    <div class="grid-x grid-padding-x align-middle">
-                        
-                        <!-- Exchange -->
-                        <div class="cell large-6">
-                            <div class="input-group">
-                                <span class="input-group-label">Exchange</span>
-                                <select name="exchange" v-model="exchange" class="input-group-field" v-on:change="getpairs(exchange)">
-                                    <option disabled value="">Select...</option>
-                                    <option value="bittrex" selected="true"> Bittrex </option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <!-- Pair -->
-                        <div class="cell large-6">
-                            <div class="input-group">
-                                <span class="input-group-label"><i v-show="loadingpairs" class="fa fa-cog fa-spin fa-fw"></i> Pair</span>
-                                <select name="pair" v-model="pairselected" class="input-group-field" v-on:change="getmarketsummary(exchange, pairselected)">
-                                    <option disabled value="">Select...</option>
-                                    <option v-for="pair in bittrexpairs" :value="pair"> {{ pair }}</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <!-- Price -->
-                        <div class="small-12 cell">
-                            <div class="input-group">
-                                <span class="input-group-label">
-                                    <i v-show="loadingprice" class="fa fa-cog fa-spin fa-fw"></i>
-                                    <i v-if="!loadingprice && price!=0" class="fa fa-refresh fa-fw" v-on:click="updateprice(exchange, pairselected, priceselected)"></i>
-                                     Price
-                                </span>
-
-                                <input name="price" v-model="price" class="input-group-field price number" type="text">
-                                 <select v-model="priceselected" id="price-select"  v-on:change="updateprice(exchange, pairselected, priceselected)">
-                                    <option disabled value="">Autofill</option>
-                                    <option value="last">Last</option>
-                                    <option value="bid">Bid</option>
-                                    <option value="ask">Ask</option>
-                                </select>
-                                  
-                            </div>
-                            
-                        </div>
-
-                        <!-- Available balance -->
-                        <div v-if="availableBalance!='0'" class="large-12 cell align-self-top">
-                            <div class="float-right"><small v-model="availableBalance"> Available: {{ availableBalance }} </small></div>
-                        </div>
-
-                        <!-- Amount -->
-                        <div class="large-6 cell">
-                            <div class="input-group">
-                                <span class="input-group-label">Amount</span>
-                                <input name="amount" v-model="amount" class="input-group-field number" type="text">
-                            </div>
-                        </div>
-
-                        <!-- Total -->
-                        <div class="large-6 cell">
-                            <div class="input-group">
-                                <span class="input-group-label">Total</span>
-                                <input name="total" v-model="total" class="input-group-field number" type="text">
-                            </div>
-                        </div>
-                        
-                        <!-- Condition -->
-                        <div class="medium-2 cell">
-                            <div class="switch small">
-                                <input name="conditionalSwitch" v-model="conditionalSwitch" class="switch-input" id="conditionalSwitch" type="checkbox">
-                                <label class="switch-paddle" for="conditionalSwitch">
-                                    <span class="switch-active" aria-hidden="true">On</span>
-                                    <span class="switch-inactive" aria-hidden="true">Off</span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="medium-10 cell">
-                            <div class="input-group">
-                                <select name="condition" v-model="conditionselected" id="condition-select">
-                                    <option disabled value="now">Condition</option>
-                                    <option value="greater">When price >= </option>
-                                    <option value="less">When price <= </option>
-                                </select>
-                                <input name="condition_price" v-model="conditionprice" class="input-group-field number" type="text">
-                            </div>
-                        </div>
-
-                        <!-- Stop Loss -->
-                        <div class="medium-2 cell">
-                            <div class="switch small">
-                                <input name="slSwitch" v-model="slSwitch" class="switch-input" id="stopLossSwitch" type="checkbox" >
-                                <label class="switch-paddle" for="stopLossSwitch">
-                                    <span class="switch-active" aria-hidden="true">On</span>
-                                    <span class="switch-inactive" aria-hidden="true">Off</span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="medium-7 cell">
-                            <div class="input-group">
-                                <span class="input-group-label">Stop-Loss</span>
-                                <input name="stop_loss" v-model="stoploss" class="input-group-field number" type="text">
-                            </div>
-                        </div>
-                        <div class="medium-3 cell">
-                            <div class="input-group">
-                                <span class="input-group-label">(-)%</span>
-                                <input name="slpercent" v-model="slpercent" class="input-group-field number" type="text">
-                            </div>
-                        </div>
-
-                        <!-- Take Profit -->
-                        <div class="medium-2 cell">
-                            <div class="switch small">
-                                <input  name="tpSwitch" v-model="tpSwitch" class="switch-input" id="takeProfitSwitch" type="checkbox">
-                                <label class="switch-paddle" for="takeProfitSwitch">
-                                    <span class="switch-active" aria-hidden="true">On</span>
-                                    <span class="switch-inactive" aria-hidden="true">Off</span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="medium-7 cell">
-                            <div class="input-group">
-                                <span class="input-group-label">Take-Profit</span>
-                                <input name="take_profit" v-model="takeprofit"class="input-group-field number" type="text">
-                            </div>
-                        </div>
-
-                        <!-- Take Profit % -->
-                        <div class="medium-3 cell">
-                            <div class="input-group">
-                                <span class="input-group-label">(+)%</span>
-                                <input name="tppercent" v-model="tppercent" class="input-group-field number" type="text">
-                            </div>
-                        </div>
-
-                        <!-- Open Position Button -->
-                        <div class="medium-12 cell">
-                            <button class="hollow button" type="submit">
-                                Open Trade
-                            </button>
-                        </div>
-
-                    </div>
-                </form>
-            </div>
-          
-
-            <!-- Information panel -->
-            <div class="cell large-5 small-order-1 large-order-2">
-                <div v-show="marketLoaded == false" class="title-image text-center">
-                    <img src="/storage/cryptobot-logo-300px.png" alt="">
-                </div>
-                <div v-show="marketLoaded" class="grid-x grid-margin-x">
+                <div class="grid-x grid-padding-x align-middle">
                     
-                    <!-- Blank up left corner -->
-                    <div class="cell small-2 text-center">
+                    <!-- Exchange -->
+                    <div class="cell large-6">
+                        <div v-if="validationErrors.exchange">
+                           <span class="validation-error" v-for="error in validationErrors.exchange"> {{ error }} </span>
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-label">Exchange</span>
+                            <select name="exchange" v-model="exchange" class="input-group-field" v-on:change="getpairs(exchange)">
+                                <option disabled value="">Select...</option>
+                                <option value="bittrex" selected="true"> Bittrex </option>
+                            </select>                     
+                        </div>
                         
                     </div>
-                   
-                    <!-- Coin Info -->
-                    <div class="cell small-8 text-center">
-                        <img id="cryptologo" v-show="coinlogo != ''" v-model="coinlogo" :src="coinlogo" :alt="coinname.short">
-                        <p v-show="coinname != ''" v-model="coinname" class="h3"> {{ coinname.long }} <small> {{ coinname.short }} </small></p>
+
+                    <!-- Pair -->
+                    <div class="cell large-6">
+                        <div v-if="validationErrors.pair">
+                           <span class="validation-error" v-for="error in validationErrors.pair"> {{ error }} </span>
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-label"><i v-show="loadingpairs" class="fa fa-cog fa-spin fa-fw"></i> Pair</span>
+                            <select name="pair" v-model="pairselected" class="input-group-field" v-on:change="getmarketsummary(exchange, pairselected)">
+                                <option disabled value="">Select...</option>
+                                <option v-for="pair in bittrexpairs" :value="pair"> {{ pair }}</option>
+                            </select>
+                        </div>
                     </div>
-                  
-                    <!-- Refresh -->
-                    <div class="cell small-2 text-center">
-                        <button class="clear button" v-on:click="refreshInfopanel(exchange, pairselected)">
-                            <i v-show="!loadinginfo" class="fa fa-refresh loading-info-icon"></i>
-                            <i v-show="loadinginfo" class="fa fa-cog fa-spin fa-fw loading-info-icon"></i>
+
+                    <!-- Price -->
+                    <div class="small-12 cell">
+                        <div v-if="validationErrors.price">
+                           <span class="validation-error" v-for="error in validationErrors.price"> {{ error }} </span>
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-label">
+                                <i v-show="loadingprice" class="fa fa-cog fa-spin fa-fw"></i>
+                                <i v-if="!loadingprice && price!=0" class="fa fa-refresh fa-fw" v-on:click="updateprice(exchange, pairselected, priceselected)"></i>
+                                 Price
+                            </span>
+
+                            <input name="price" v-model="price" class="input-group-field price number" type="text">
+                             <select v-model="priceselected" id="price-select"  v-on:change="updateprice(exchange, pairselected, priceselected)">
+                                <option disabled value="">Autofill</option>
+                                <option value="last">Last</option>
+                                <option value="bid">Bid</option>
+                                <option value="ask">Ask</option>
+                            </select>
+                              
+                        </div>
+                        
+                    </div>
+
+                    <!-- Available balance -->
+                    <div v-if="availableBalance!='0'" class="large-12 cell align-self-top">
+                        <div class="float-right"><small v-model="availableBalance"> Available: {{ availableBalance }} </small></div>
+                    </div>
+
+                    <!-- Amount -->
+                    <div class="large-6 cell">
+                        <div v-if="validationErrors.amount">
+                           <span class="validation-error" v-for="error in validationErrors.amount"> {{ error }} </span>
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-label">Amount</span>
+                            <input name="amount" v-model="amount" class="input-group-field number" type="text">
+                        </div>
+                    </div>
+
+                    <!-- Total -->
+                    <div class="large-6 cell">
+                        <div v-if="validationErrors.total">
+                           <span class="validation-error" v-for="error in validationErrors.total"> {{ error }} </span>
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-label">Total</span>
+                            <input name="total" v-model="total" class="input-group-field number" type="text">
+                        </div>
+                    </div>
+                    
+                    <!-- Condition -->
+                    <div class="medium-2 cell">
+                        <div class="switch small">
+                            <input name="conditionalSwitch" v-model="conditionalSwitch" class="switch-input" id="conditionalSwitch" type="checkbox">
+                            <label class="switch-paddle" for="conditionalSwitch">
+                                <span class="switch-active" aria-hidden="true">On</span>
+                                <span class="switch-inactive" aria-hidden="true">Off</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="medium-10 cell">
+                        <div v-if="validationErrors.condition_price">
+                           <span class="validation-error" v-for="error in validationErrors.condition_price"> {{ error }} </span>
+                        </div>
+                        <div class="input-group">
+                            <select name="condition" v-model="conditionselected" id="condition-select">
+                                <option disabled value="now">Condition</option>
+                                <option value="greater">When price >= </option>
+                                <option value="less">When price <= </option>
+                            </select>
+                            <input name="condition_price" v-model="conditionprice" class="input-group-field number" type="text">
+                        </div>
+                    </div>
+
+                    <!-- Stop Loss -->
+                    <div class="medium-2 cell">
+                        <div class="switch small">
+                            <input name="slSwitch" v-model="slSwitch" class="switch-input" id="stopLossSwitch" type="checkbox" >
+                            <label class="switch-paddle" for="stopLossSwitch">
+                                <span class="switch-active" aria-hidden="true">On</span>
+                                <span class="switch-inactive" aria-hidden="true">Off</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="medium-7 cell">
+                        <div v-if="validationErrors.stop_loss">
+                           <span class="validation-error" v-for="error in validationErrors.stop_loss"> {{ error }} </span>
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-label">Stop-Loss</span>
+                            <input name="stop_loss" v-model="stoploss" class="input-group-field number" type="text">
+                        </div>
+                    </div>
+                    <div class="medium-3 cell">
+                        <div class="input-group">
+                            <span class="input-group-label">(-)%</span>
+                            <input name="slpercent" v-model="slpercent" class="input-group-field number" type="text">
+                        </div>
+                    </div>
+
+                    <!-- Take Profit -->
+                    <div class="medium-2 cell">
+                        <div class="switch small">
+                            <input  name="tpSwitch" v-model="tpSwitch" class="switch-input" id="takeProfitSwitch" type="checkbox">
+                            <label class="switch-paddle" for="takeProfitSwitch">
+                                <span class="switch-active" aria-hidden="true">On</span>
+                                <span class="switch-inactive" aria-hidden="true">Off</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="medium-7 cell">
+                        <div v-if="validationErrors.take_profit">
+                           <span class="validation-error" v-for="error in validationErrors.take_profit"> {{ error }} </span>
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-label">Take-Profit</span>
+                            <input name="take_profit" v-model="takeprofit"class="input-group-field number" type="text">
+                        </div>
+                    </div>
+
+                    <!-- Take Profit % -->
+                    <div class="medium-3 cell">
+                        <div class="input-group">
+                            <span class="input-group-label">(+)%</span>
+                            <input name="tppercent" v-model="tppercent" class="input-group-field number" type="text">
+                        </div>
+                    </div>
+
+                    <!-- Open Position Button -->
+                    <div class="medium-12 cell">
+                        <button class="hollow button" type="submit">
+                            Open Trade
                         </button>
                     </div>
-                    
-                    <!-- Volume -->
-                    <div class="cell small-12 text-center volume">
-                        <div v-model="volumeC"> Vol: <i class="fa fa-btc" aria-hidden="true"></i> {{ volumeC }}</div>
-                    </div>
-                   
-                    <!-- 24h High -->
-                    <div class="cell small-6 text-center">
-                        <div v-model="highC" class="high-low"> H: <i class="fa fa-btc" aria-hidden="true"></i> {{ highC }}</div>
-                    </div>
-                    
-                    <!-- 24h Low -->
-                    <div class="cell small-6 text-center">
-                        <div v-model="lowC" class="high-low"> L: <i class="fa fa-btc" aria-hidden="true"></i> {{ lowC }} </div>
-                    </div>
-                    
-                    <!-- Bid -->
-                    <div class="cell small-6 text-center bid">
-                        <div v-model="bidC"> BID: <i class="fa fa-btc" aria-hidden="true"></i> {{ bidC }}</div>
-                    </div>
-                   
-                    <!-- Ask -->
-                    <div class="cell small-6 text-center ask">
-                        <div v-model="askC"> ASK: <i class="fa fa-btc" aria-hidden="true"></i> {{ askC }} </div> 
-                    </div>
-                   
-                    <!-- Last -->
-                    <div class="cell small-12 text-center last">
-                        <div v-model="lastC"> LAST: <i class="fa fa-btc" aria-hidden="true"></i> {{ lastC }} </div>
-                    </div>
 
                 </div>
-            </div>       
+            </form>
         </div>
+      
+
+        <!-- Information panel -->
+        <div class="cell large-5 small-order-1 large-order-2">
+            <div v-show="marketLoaded == false" class="title-image text-center">
+                <img src="/storage/cryptobot-logo-300px.png" alt="">
+            </div>
+            <div v-show="marketLoaded" class="grid-x grid-margin-x">
+                
+                <!-- Blank up left corner -->
+                <div class="cell small-2 text-center">
+                    
+                </div>
+               
+                <!-- Coin Info -->
+                <div class="cell small-8 text-center">
+                    <img id="cryptologo" v-show="coinlogo != ''" v-model="coinlogo" :src="coinlogo" :alt="coinname.short">
+                    <p v-show="coinname != ''" v-model="coinname" class="h3"> {{ coinname.long }} <small> {{ coinname.short }} </small></p>
+                </div>
+              
+                <!-- Refresh -->
+                <div class="cell small-2 text-center">
+                    <button class="clear button" v-on:click="refreshInfopanel(exchange, pairselected)">
+                        <i v-show="!loadinginfo" class="fa fa-refresh loading-info-icon"></i>
+                        <i v-show="loadinginfo" class="fa fa-cog fa-spin fa-fw loading-info-icon"></i>
+                    </button>
+                </div>
+                
+                <!-- Volume -->
+                <div class="cell small-12 text-center volume">
+                    <div v-model="volumeC"> Vol: <i class="fa fa-btc" aria-hidden="true"></i> {{ volumeC }}</div>
+                </div>
+               
+                <!-- 24h High -->
+                <div class="cell small-6 text-center">
+                    <div v-model="highC" class="high-low"> H: <i class="fa fa-btc" aria-hidden="true"></i> {{ highC }}</div>
+                </div>
+                
+                <!-- 24h Low -->
+                <div class="cell small-6 text-center">
+                    <div v-model="lowC" class="high-low"> L: <i class="fa fa-btc" aria-hidden="true"></i> {{ lowC }} </div>
+                </div>
+                
+                <!-- Bid -->
+                <div class="cell small-6 text-center bid">
+                    <div v-model="bidC"> BID: <i class="fa fa-btc" aria-hidden="true"></i> {{ bidC }}</div>
+                </div>
+               
+                <!-- Ask -->
+                <div class="cell small-6 text-center ask">
+                    <div v-model="askC"> ASK: <i class="fa fa-btc" aria-hidden="true"></i> {{ askC }} </div> 
+                </div>
+               
+                <!-- Last -->
+                <div class="cell small-12 text-center last">
+                    <div v-model="lastC"> LAST: <i class="fa fa-btc" aria-hidden="true"></i> {{ lastC }} </div>
+                </div>
+
+            </div>
+        </div>       
     </div>
+  
 </template>
 
 <script>
 export default {
     name: 'tradepanel',
-    props: [],
+    props: [
+        'validation-errors'
+    ],
     data() {
         return {
             pirceChanged: false,
@@ -273,15 +290,12 @@ export default {
             total: 0.00000000,
             fee: 0.00,
             availableBalance: "0",
-            event: false,
-            eventTitle: "",
-            eventBody: "",
-            eventData: "",
             csrf: ""
         }
     },
     mounted() {
         this.csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        console.log(this.validationErrors);
     },
     computed: {
         highC: function() {
@@ -623,10 +637,6 @@ export default {
             axios.post('/trades', uri)
             .then(response => {
                 console.log("Trade #" + response.data.id + " opened!");
-                // this.eventTitle = "New Trade Launched";
-                // this.eventBody = " A new trade has been launched. ";
-                // this.eventData = "Exchange: " + response.data.exchange + " Pair: " + response.data.pair + " Open Price: " + response.data.price + " Amount: " + response.data.amount + " Total: " + response.data.total + " Stop-Loss: " + response.data.stop_loss + " Take-Profit: " +  + response.data.take_profit;
-                // this.event = true;
                 window.location.href = '/trades';
             })
             .catch(error => {

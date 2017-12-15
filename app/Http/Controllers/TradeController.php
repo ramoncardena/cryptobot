@@ -132,11 +132,21 @@ class TradeController extends Controller
     public function store(Request $request)
     {   
         try {
-
             // Double check for user to be authenticated
             if ( Auth::check() ) 
             {
-
+                // Validate form
+                $validatedData = $request->validate([
+                    'exchange' => 'required',
+                    'pair' => 'required',
+                    'price' => 'required | numeric | min:0.00000001',
+                    'amount' => 'required | numeric | min:0.00000001',
+                    'total' => 'required | numeric | min:0.00000001',
+                    'stop_loss' => 'numeric | min:0',
+                    'take_profit' => 'numeric | min:0',
+                    'condition_price' => 'numeric | min:0',
+                ]);
+                
                 // Create new Trade model
                 $this->trade = new Trade;
 
@@ -176,6 +186,8 @@ class TradeController extends Controller
 
                         // LOG: Order created
                         Log::info("[TradeController] Order #" . $this->trade->order_id . " created for Trade #" . $this->trade->id);
+
+                        $request->session()->flash('status', 'New trade for ' . $this->trade->pair . ' launched!');
 
                         // Send the new trade to the client in json
                         //return response($this->trade->toJson(), 200)->header('Content-Type', 'application/json');

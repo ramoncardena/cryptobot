@@ -4,6 +4,15 @@
 
 <section id="trades">
 
+    @if( Session::has('status') )
+        <div class="callout success alerts-callout" data-closable>
+            <h5>{{ Session::get('status') }}</h5>
+            <button class="close-button" aria-label="Dismiss" type="button" data-close>
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
+
     <div class="grid-container fluid">
         
         <div class="grid-x grid-padding-x align-middle align-left">
@@ -34,7 +43,7 @@
                             <li class="accordion-item is-active" data-accordion-item>
                                 <a href="#" class="accordion-title text-center">Trading Panel</a>
                                 <div class="accordion-content" data-tab-content >
-                                    <tradepanel></tradepanel>
+                                    <tradepanel :validation-errors="{{ $errors }}"></tradepanel>
                                 </div>
                             </li>
                             <li class="accordion-item is-active" data-accordion-item>

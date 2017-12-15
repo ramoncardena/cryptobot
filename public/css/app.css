@@ -8187,9 +8187,9 @@ a.button:focus {
 .callout {
   position: relative;
   margin: 0 0 1rem 0;
-  padding: 1rem;
-  border: 1px solid rgba(10, 10, 10, 0.25);
-  border-radius: 0;
+  padding: 1.5rem;
+  border: 1px solid rgba(10, 10, 10, 0.15);
+  border-radius: 10px;
   background-color: white;
   color: #0a0a0a;
 }
@@ -8203,27 +8203,27 @@ a.button:focus {
 }
 
 .callout.primary {
-  background-color: #d1f3ff;
+  background-color: #b3ecff;
   color: #0a0a0a;
 }
 
 .callout.secondary {
-  background-color: #ffeaea;
+  background-color: #ffdcdd;
   color: #0a0a0a;
 }
 
 .callout.success {
-  background-color: #e1faea;
+  background-color: #cef6dd;
   color: #0a0a0a;
 }
 
 .callout.warning {
-  background-color: #fff3d9;
+  background-color: #ffebbf;
   color: #0a0a0a;
 }
 
 .callout.alert {
-  background-color: #f7e4e1;
+  background-color: #f2d2cd;
   color: #0a0a0a;
 }
 
@@ -14042,6 +14042,23 @@ a.thumbnail image {
   margin-right: 1rem;
 }
 
+.alerts-callout {
+  position: absolute;
+  right: 1rem;
+  margin-top: 0.3rem;
+  z-index: 9999;
+  display: none;
+  padding: 2rem;
+}
+
+.form-callout {
+  position: absolute;
+  right: 1rem;
+  margin-top: 0.3rem;
+  z-index: 9999;
+  display: none;
+}
+
 .dataTable {
   margin-bottom: 2rem !important;
   margin-top: 1rem !important;
@@ -14508,6 +14525,14 @@ div.dataTables_wrapper div.dataTables_length select {
 .trade .loading-icon {
   font-size: 1rem;
   color: #cc4b37;
+}
+
+.tradepanel .validation-error {
+  margin: 0;
+  padding: 0;
+  color: #cc4b37;
+  font-style: oblique;
+  font-size: 0.8rem;
 }
 
 .tradepanel .input-group #price-select {

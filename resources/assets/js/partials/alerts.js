@@ -1,0 +1,1 @@
+$('.alerts-callout').hide().delay(1000).fadeIn(2000).delay(5000).fadeOut(1000);

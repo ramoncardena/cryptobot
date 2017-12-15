@@ -56,6 +56,7 @@ const app = new Vue({
 $(document).ready(function () {
 
     require('./partials/notifications');
+    require('./partials/alerts');
     
 	$.extend( $.fn.dataTable.defaults, {
 	    responsive: true
