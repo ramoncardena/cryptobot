@@ -36,9 +36,11 @@ Vue.component('order', require('./components/Order.vue'));
 Vue.component('trade', require('./components/Trade.vue'));
 Vue.component('trade2', require('./components/Trade2.vue'));
 Vue.component('trade3', require('./components/Trade3.vue'));
+Vue.component('trade4', require('./components/Trade4.vue'));
 Vue.component('tradelist', require('./components/TradeList.vue'));
 Vue.component('tradelist2', require('./components/TradeList2.vue'));
 Vue.component('tradelist3', require('./components/TradeList3.vue'));
+Vue.component('tradelist4', require('./components/TradeList4.vue'));
 Vue.component('tradepanel', require('./components/TradePanel.vue'));
 Vue.component('notification-list', require('./components/NotificationList.vue'));
 
@@ -60,5 +62,14 @@ $(document).ready(function () {
 	} );
 	$('#myTable').DataTable();
 	$('.myTable').DataTable();
+
+    $('#activeTradesTable').DataTable({
+        "columnDefs": [
+            { "orderSequence": [ "des" ], "targets": [ 4 ] },
+            { "orderData": [ 4, 16 ],    "targets": 4 }
+          ],
+        "order": [ 4, 'des' ]
+    });
+    $('#historyTradesTable').DataTable();
 
 });

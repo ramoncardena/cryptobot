@@ -9154,7 +9154,7 @@ a.button:focus {
   height: 100%;
   -webkit-transition: opacity 0.5s ease, visibility 0.5s ease;
   transition: opacity 0.5s ease, visibility 0.5s ease;
-  background: rgba(254, 254, 254, 0.25);
+  background: rgba(10, 10, 10, 0.25);
   opacity: 0;
   visibility: hidden;
   overflow: hidden;
@@ -14456,8 +14456,23 @@ div.dataTables_wrapper div.dataTables_length select {
 }
 
 .trade .trade-status {
-  color: #3adb76;
   font-weight: 400;
+}
+
+.trade .status-Opened {
+  color: #3adb76;
+}
+
+.trade .status-Waiting,
+.trade .status-Cancelling,
+.trade .status-Opening,
+.trade .status-Closing {
+  color: #ffae00;
+}
+
+.trade .status-Closed,
+.trade .status-Aborted {
+  color: #cc4b37;
 }
 
 .trade .trade-cancel {
@@ -14470,6 +14485,11 @@ div.dataTables_wrapper div.dataTables_length select {
   margin: 0;
 }
 
+.trade .loading {
+  padding: 0;
+  margin: 0;
+}
+
 .trade .Opened {
   color: #3adb76;
 }
@@ -14478,12 +14498,14 @@ div.dataTables_wrapper div.dataTables_length select {
   color: #8a8a8a;
 }
 
-.trade .refresh-icon {
+.trade .refresh-icon,
+.trade .edit-icon {
   font-size: 1rem;
   color: #009ACE;
 }
 
-.trade .cancel-icon {
+.trade .cancel-icon,
+.trade .loading-icon {
   font-size: 1rem;
   color: #cc4b37;
 }
@@ -14496,7 +14518,7 @@ div.dataTables_wrapper div.dataTables_length select {
   color: #009ACE;
 }
 
-.tradepanel .input-group input[type=number] {
+.tradepanel .input-group .number {
   text-align: right;
 }
 

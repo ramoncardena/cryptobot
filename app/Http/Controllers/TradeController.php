@@ -79,26 +79,27 @@ class TradeController extends Controller
                     ->get();
 
                 // Retrieve open trades
-                $tradesOpened = Trade::where('user_id',  Auth::id())
+                $tradesAll = Trade::where('user_id',  Auth::id())
                    ->orderBy('updated_at', 'desc')
                    ->get();
 
-                $tradesOpened = $tradesOpened->reject(function ($trade) {
+                $tradesActive = $tradesAll->reject(function ($trade) {
                     return $trade->status == 'Closed';
                 });
 
-                $tradesOpened = $tradesOpened->reject(function ($trade) {
-                    return $trade->status == 'Waiting';
-                });
-                
-                $tradesOpened = $tradesOpened->reject(function ($trade) {
-                    return $trade->status == 'Cancelled';
-                });
-
-                $tradesOpened = $tradesOpened->reject(function ($trade) {
+                $tradesActive = $tradesActive->reject(function ($trade) {
                     return $trade->status == 'Aborted';
                 });
 
+                $tradesOpened = $tradesActive->reject(function ($trade) {
+                    return $trade->status == 'Cancelled';
+                });
+
+                $tradesOpened = $tradesActive->reject(function ($trade) {
+                    return $trade->status == 'Waiting';
+                });
+                
+            
                 // Retrieve waiting trades
                 $tradesWaiting = Trade::where('user_id',  Auth::id())
                    ->where('status', 'Waiting')
@@ -106,7 +107,7 @@ class TradeController extends Controller
                    ->get();
 
                 // Return 'trades' view passing trade history and open trades objects
-                return view('trades', ['tradesHistory' => $tradesHistory, 'tradesOpened' => $tradesOpened, 'tradesWaiting' => $tradesWaiting]);
+                return view('trades', ['tradesActive' => $tradesActive, 'tradesHistory' => $tradesHistory, 'tradesOpened' => $tradesOpened, 'tradesWaiting' => $tradesWaiting]);
             }
             else {
 
@@ -135,6 +136,7 @@ class TradeController extends Controller
             // Double check for user to be authenticated
             if ( Auth::check() ) 
             {
+
                 // Create new Trade model
                 $this->trade = new Trade;
 
@@ -148,15 +150,15 @@ class TradeController extends Controller
                 $this->trade->stop_id = "-";
                 $this->trade->profit_id = "-";
                 $this->trade->condition_id = "-";
-                $this->trade->position = $request->position;
+                $this->trade->position = "long";
                 $this->trade->exchange = $request->exchange;
                 $this->trade->pair = $request->pair;
                 $this->trade->price = $request->price;
                 $this->trade->amount = floatval($request->amount);
                 $this->trade->total = $request->total;
-                $this->trade->stop_loss = $request->stop_loss;
-                $this->trade->take_profit = $request->take_profit;
-                $this->trade->condition = $request->condition;
+                $this->trade->stop_loss = $request->slSwitch ? $request->stop_loss : 0;
+                $this->trade->take_profit = $request->tpSwitch ? $request->take_profit : 0;
+                $this->trade->condition = $request->condition ? $request->condition : "now";
                 $this->trade->condition_price = $request->condition_price;
                 $this->trade->profit = 0.00000000;
                 $this->trade->closing_price = 0.00000000;
@@ -176,8 +178,9 @@ class TradeController extends Controller
                         Log::info("[TradeController] Order #" . $this->trade->order_id . " created for Trade #" . $this->trade->id);
 
                         // Send the new trade to the client in json
-                        return response($this->trade->toJson(), 200)->header('Content-Type', 'application/json');
-                   
+                        //return response($this->trade->toJson(), 200)->header('Content-Type', 'application/json');
+                        return redirect('/trades');
+
                     } else if ( $order['status'] == 'fail' ) {
                         
                         // LOG: Error creating order

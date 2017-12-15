@@ -55,9 +55,19 @@ div.dataTables_wrapper div.dataTables_length select {
 		text-align: center;
 	}
 	.trade-status{
-		color: get-color(success);
+		//color: get-color(success);
 		font-weight: 400;
 	}
+	.status-Opened {
+		color: get-color(success);
+	}
+	.status-Waiting, .status-Cancelling, .status-Opening, .status-Closing {
+		color: get-color(warning);
+	}
+	.status-Closed, .status-Aborted {
+		color: get-color(alert);
+	}
+
 	.trade-cancel{
 		color: get-color(alert);
 		font-size: 1.3rem;
@@ -66,18 +76,23 @@ div.dataTables_wrapper div.dataTables_length select {
 			margin: 0;
 		}
 	}
+	.loading {
+		padding: 0;
+		margin: 0;
+	}
 	.Opened {
 		color: get-color(success);
 	}
 	.Closed {
 		color: $dark-gray;
 	}
-	.refresh-icon {
+	.refresh-icon, .edit-icon {
 		font-size: 1rem;
 		color: get-color(primary);
 
+
 	}
-	.cancel-icon {
+	.cancel-icon, .loading-icon {
 		font-size: 1rem;
 		color: get-color(alert);
 	}
