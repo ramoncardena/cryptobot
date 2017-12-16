@@ -14417,6 +14417,14 @@ div.dataTables_wrapper div.dataTables_length select {
   margin-bottom: 1rem !important;
 }
 
+.validation-error {
+  margin: 0;
+  padding: 0;
+  color: #cc4b37;
+  font-style: oblique;
+  font-size: 0.8rem;
+}
+
 .trade-modal .input-group-label {
   color: #009ACE;
   background-color: transparent;
@@ -14430,7 +14438,7 @@ div.dataTables_wrapper div.dataTables_length select {
   color: #009ACE;
 }
 
-.trade-modal input[type=number] {
+.trade-modal .number {
   text-align: right;
 }
 
@@ -14488,7 +14496,8 @@ div.dataTables_wrapper div.dataTables_length select {
 }
 
 .trade .status-Closed,
-.trade .status-Aborted {
+.trade .status-Aborted,
+.trade .status-Cancelled {
   color: #cc4b37;
 }
 

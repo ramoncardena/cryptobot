@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Log;
 
 use App\Notifications\TradeCancelledNotification;
 use App\Trade;
+use App\User;
 
 class CancelTrade
 {

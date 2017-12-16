@@ -75,39 +75,32 @@ class TradeController extends Controller
                     ->orWhere([
                         ['status', '=', 'Aborted']
                     ])
+                    ->orWhere([
+                        ['status', '=', 'Cancelling']
+                    ])
+                    ->orWhere([
+                        ['status', '=', 'Closing']
+                    ])
                     ->orderBy('updated_at', 'desc')
                     ->get();
 
-                // Retrieve open trades
-                $tradesAll = Trade::where('user_id',  Auth::id())
-                   ->orderBy('updated_at', 'desc')
-                   ->get();
+                // Retrieve active trades
 
-                $tradesActive = $tradesAll->reject(function ($trade) {
-                    return $trade->status == 'Closed';
-                });
-
-                $tradesActive = $tradesActive->reject(function ($trade) {
-                    return $trade->status == 'Aborted';
-                });
-
-                $tradesOpened = $tradesActive->reject(function ($trade) {
-                    return $trade->status == 'Cancelled';
-                });
-
-                $tradesOpened = $tradesActive->reject(function ($trade) {
-                    return $trade->status == 'Waiting';
-                });
-                
-            
-                // Retrieve waiting trades
-                $tradesWaiting = Trade::where('user_id',  Auth::id())
-                   ->where('status', 'Waiting')
-                   ->orderBy('updated_at', 'desc')
-                   ->get();
+                $tradesActive = Trade::where('user_id',  Auth::id())
+                    ->where([
+                        ['status', '=', 'Opening'] 
+                    ])
+                    ->orWhere([
+                        ['status', '=', 'Waiting']
+                    ])
+                    ->orWhere([
+                        ['status', '=', 'Opened']
+                    ])
+                    ->orderBy('updated_at', 'desc')
+                    ->get();
 
                 // Return 'trades' view passing trade history and open trades objects
-                return view('trades', ['tradesActive' => $tradesActive, 'tradesHistory' => $tradesHistory, 'tradesOpened' => $tradesOpened, 'tradesWaiting' => $tradesWaiting]);
+                return view('trades', ['tradesActive' => $tradesActive, 'tradesHistory' => $tradesHistory]);
             }
             else {
 
@@ -174,10 +167,10 @@ class TradeController extends Controller
                 $this->trade->closing_price = 0.00000000;
                 $this->trade->save();
 
-                /**********************************
-                 *  INMEDIATE TRADE
-                 **********************************/
                 if ( $this->trade->condition == "now" ) {
+                     /**********************************
+                     *  INMEDIATE TRADE
+                     **********************************/
 
                     // Launch order to the exchange to get the order uuid
                     $order = $this->newOrder($this->trade);
@@ -187,7 +180,9 @@ class TradeController extends Controller
                         // LOG: Order created
                         Log::info("[TradeController] Order #" . $this->trade->order_id . " created for Trade #" . $this->trade->id);
 
-                        $request->session()->flash('status', 'New trade for ' . $this->trade->pair . ' launched!');
+                        // SESSION FLASH: New Trade
+                        $request->session()->flash('status-text', 'New trade for ' . $this->trade->pair . ' launched!');
+                         $request->session()->flash('status-class', 'success');
 
                         // Send the new trade to the client in json
                         //return response($this->trade->toJson(), 200)->header('Content-Type', 'application/json');
@@ -198,8 +193,13 @@ class TradeController extends Controller
                         // LOG: Error creating order
                         Log::critical("[TradeController] Error creating Order for Trade #" . $this->trade->id . ": " . $order['message']);
 
-                        // Trade status change
-                        return response($order['message'], 500)->header('Content-Type', 'text/plain');
+                        // SESSION FLASH: New Trade Fails
+                        $request->session()->flash('status-text', 'Error launching new trade for ' . $this->trade->pair . ': ' . $order['message']);
+                        $request->session()->flash('status-class', 'alert');
+
+                       
+                        // return response($order['message'], 500)->header('Content-Type', 'text/plain');
+                        return redirect('/trades');
                     }
                 }
                 /**********************************
@@ -215,17 +215,26 @@ class TradeController extends Controller
                         // LOG: Conditional order created
                         Log::info("[TradeController] Conditional order #" . $this->trade->condition_id . " created for Trade #" . $this->trade->id);
 
-                        // Send the new trade to the client in json
-                        return response($this->trade->toJson(), 200)->header('Content-Type', 'application/json');
+                        // SESSION FLASH: New Trade
+                        $request->session()->flash('status-text', 'New conditional trade for ' . $this->trade->pair . ' launched!');
+                        $request->session()->flash('status-class', 'success');
 
+                        // Send the new trade to the client in json
+                        //return response($this->trade->toJson(), 200)->header('Content-Type', 'application/json');
+                        return redirect('/trades');
 
                     } else if ( $conditional['status'] == 'fail' ) {
-
+                        // Error creating conditional
+                        
                         // LOG: Error creating order
                         Log::critical("[TradeController] Error creating conditional for Trade #" . $this->trade->id . ": " . $conditional['message']);
 
-                        // Error creating conditional
-                        return response($conditional['message'], 500 )->header( 'Content-Type', 'text/plain');
+                        // SESSION FLASH: New Trade Fails
+                        $request->session()->flash('status-text', 'Error launching new conditional trade for ' . $this->trade->pair . ': ' . $conditional['message']);
+                        $request->session()->flash('status-class', 'alert');
+                       
+                        //return response($conditional['message'], 500 )->header( 'Content-Type', 'text/plain');
+                        return redirect('/trades');
                     }
                 }
             }
@@ -274,6 +283,12 @@ class TradeController extends Controller
     public function update(Request $request, $id)
     {
         try {
+            // Validate form
+            $validatedData = $request->validate([
+                'newStopLoss' => 'numeric | min:0',
+                'newTakeProfit' => 'numeric | min:0',
+            ]);
+
             // Get the trade to edit
             $this->trade = Trade::find($id);
 
@@ -426,12 +441,17 @@ class TradeController extends Controller
             }
 
             
-
             // NOTIFY: Trade Edited
             User::find($this->trade->user_id)->notify(new TradeEditedNotification($this->trade));
 
+            // SESSION FLASH: New Trade
+            $request->session()->flash('status-text', 'Trade on pair ' . $this->trade->pair . ' edited!');
+            $request->session()->flash('status-class', 'success');
+
             // Log NOTICE: Trade edited
             Log::notice("Trade #" . $this->trade->id . " edited. New Stop-Loss at " . $this->trade->stop_loss . " and new Take-Profit at " . $this->trade->take_profit);
+
+            return redirect('/trades');
 
         } catch (Exception $e) {
 
@@ -456,6 +476,11 @@ class TradeController extends Controller
     {
         try {
 
+            // Validate form
+            $validatedData = $request->validate([
+                'closingprice' => 'numeric | min:0',
+            ]);
+
             // Get the trade to close
             $this->trade = Trade::find($id);
 
@@ -475,8 +500,13 @@ class TradeController extends Controller
                 $conditional->cancel = true;
                 $conditional->save();
 
+                // SESSION FLASH: New Trade
+                $request->session()->flash('status-text', 'Conditional trade on pair ' . $this->trade->pair . ' canceled!');
+                $request->session()->flash('status-class', 'success');
+
                 // Send the cancelled trade to the client in json
-                return response($this->trade->toJson(), 200)->header('Content-Type', 'application/json');
+                // return response($this->trade->toJson(), 200)->header('Content-Type', 'application/json');
+                return redirect('/trades');
  
             }
 
@@ -555,7 +585,12 @@ class TradeController extends Controller
                                 // Log NOTICE: Order Launched
                                 Log::notice("Order Launched: User action closing trade launched a SELL order (#" . $order->id .") at " . $request->closingprice  . " for trade #" . $this->trade->id . " for the pair " . $this->trade->pair . " at " . $this->trade->exchange);
                                 
-                                return response($this->trade->toJson(), 200)->header('Content-Type', 'application/json');
+                                // SESSION FLASH: New Trade
+                                $request->session()->flash('status-text', 'Cancel launched for trade on pair ' .$this->trade->pair);
+                                $request->session()->flash('status-class', 'success');
+                                
+                                //return response($this->trade->toJson(), 200)->header('Content-Type', 'application/json');
+                                return redirect('/trades');
 
                             }
                             else {
@@ -563,18 +598,18 @@ class TradeController extends Controller
                                 // Log ERROR: Bittrex API returned error
                                 Log::error("[TradeController] Bittrex API: " . $remoteOrder->message);
 
-                                return response($remoteOrder->message, 500)->header('Content-Type', 'text/plain');
+                                // SESSION FLASH: New Trade Fails
+                                $request->session()->flash('status-text', 'Error launching cancel order for trade on pair ' . $this->trade->pair . ': ' . $order['message']);
+                                $request->session()->flash('status-class', 'alert');
+
+                                // return response($remoteOrder->message, 500)->header('Content-Type', 'text/plain');
+                                return redirect("/trades");
 
                             }
 
                         }
                         
                         break;
-
-                }
-                if ($this->trade->exchange == 'bittrex') {
-
-                    
 
                 }
         

@@ -2,6 +2,13 @@ div.dataTables_wrapper div.dataTables_length select {
     width: 75px;
     margin-bottom: 1rem !important;
 }
+.validation-error {
+	margin: 0;
+	padding: 0;
+	color: get-color(alert);
+	font-style: oblique;
+	font-size: 0.8rem;
+}
 .trade-modal {
 	.input-group-label {
 		color: get-color(primary);
@@ -14,9 +21,9 @@ div.dataTables_wrapper div.dataTables_length select {
 			min-width: 0;
 			color: get-color(primary);
 	}
-	input[type=number] {
+	.number {
 		text-align: right;
-	}
+	} 
 }
 
 .close-trade-info {
@@ -64,7 +71,7 @@ div.dataTables_wrapper div.dataTables_length select {
 	.status-Waiting, .status-Cancelling, .status-Opening, .status-Closing {
 		color: get-color(warning);
 	}
-	.status-Closed, .status-Aborted {
+	.status-Closed, .status-Aborted, .status-Cancelled {
 		color: get-color(alert);
 	}
 

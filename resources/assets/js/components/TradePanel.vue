@@ -316,6 +316,9 @@ export default {
         volumeC: function() {
             return this.volume.toFixed(4);
         },
+        priceC: function() {
+            return this.price.toFixed(8);
+        },
     },
     watch: {
         amount: function () {

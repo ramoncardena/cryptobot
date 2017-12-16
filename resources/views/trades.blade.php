@@ -4,9 +4,9 @@
 
 <section id="trades">
 
-    @if( Session::has('status') )
-        <div class="callout success alerts-callout" data-closable>
-            <h5>{{ Session::get('status') }}</h5>
+    @if( Session::has('status-text') )
+        <div class="callout {{ Session::get('status-class') }} alerts-callout" data-closable>
+            <div class="alerts-callout-text">{{ Session::get('status-text') }}</div>
             <button class="close-button" aria-label="Dismiss" type="button" data-close>
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -49,14 +49,14 @@
                             <li class="accordion-item is-active" data-accordion-item>
                                 <a href="#" class="accordion-title  text-center">Active Trades</a>
                                 <div class="accordion-content" data-tab-content >
-                                    <tradelist4 type="opened" :trades="{{ $tradesActive }}"></tradelist4>
+                                    <tradelist4 :validation-errors="{{ $errors }}" type="opened" :trades="{{ $tradesActive }}"></tradelist4>
                                 </div>
                             </li>
 
                             <li class="accordion-item is-active" data-accordion-item>
                                 <a href="#" class="accordion-title text-center">Trade History</a>
                                 <div class="accordion-content" data-tab-content >
-                                    <tradelist4 type="history" :trades="{{ $tradesHistory }}"></tradelist4>
+                                    <tradelist4 :validation-errors="{{ $errors }}" type="history" :trades="{{ $tradesHistory }}"></tradelist4>
                                 </div>
                             </li>
                         </ul>
