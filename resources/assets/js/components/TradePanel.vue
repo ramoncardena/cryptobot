@@ -31,10 +31,11 @@
                         </div>
                         <div class="input-group">
                             <span class="input-group-label"><i v-show="loadingpairs" class="fa fa-cog fa-spin fa-fw"></i> Pair</span>
-                            <select name="pair" v-model="pairselected" class="input-group-field" v-on:change="getmarketsummary(exchange, pairselected)">
+                            <input name="pair" id="pairs" v-model="pairselected" class="input-group-field number" type="text">
+                            <!-- <select name="pair" v-model="pairselected" class="input-group-field" v-on:change="getmarketsummary(exchange, pairselected)">
                                 <option disabled value="">Select...</option>
                                 <option v-for="pair in bittrexpairs" :value="pair"> {{ pair }}</option>
-                            </select>
+                            </select> -->
                         </div>
                     </div>
 
@@ -475,6 +476,45 @@ export default {
                 this.loadingprice = false;
             }
         },
+        getmarketsummary(exchange, pair) {
+            this.loadingpairs = true;
+            if (exchange.toLowerCase() == 'bittrex') {
+                let uri = '/api/bittrexapi/getmarketsummary/' + pair;
+                axios(uri, {
+                    method: 'GET',
+                })
+                .then(response => {
+                    this.marketsummary=response.data[0];  
+                    this.priceselected = "";
+                    this.last =  parseFloat(this.marketsummary.Last);
+                    this.bid =  parseFloat(this.marketsummary.Bid);
+                    this.ask =  parseFloat(this.marketsummary.Ask);
+                    this.high =  parseFloat(this.marketsummary.High);
+                    this.low =  parseFloat(this.marketsummary.Low);
+                    this.volume =  parseFloat(this.marketsummary.BaseVolume);
+
+                    // Set price for current pair to 0
+                    this.stopAtTotal = true;
+                    this.price = parseFloat(0.00000000);
+
+
+                    // TODO Get balance for the selected base currency
+                    this.getbalance(exchange, pair);
+                    
+                    // Get coin info from api call getmarkets
+                    this.getmarkets(exchange, pair);
+
+                    
+                    this.loadingpairs = false;
+                    console.log("Success: " + this.marketsummary.MarketName);
+                })
+                .catch(e => {
+                    this.errors.push(e);
+                    this.loadingpairs = false;
+                    console.log("Error: " +  e.message);
+                })
+            }
+        },
         getpairs(exchange) {
             this.loadingpairs = true;
 
@@ -485,6 +525,34 @@ export default {
                 })
                 .then(response => {
                     this.bittrexpairs = response.data;  
+
+                    let options = {
+                        data:  this.bittrexpairs,
+                        list: {
+                            onClickEvent: () => {
+                                this.pairselected = $("#pairs").getSelectedItemData();
+                                this.getmarketsummary(exchange,this.pairselected)
+                            },   
+                            maxNumberOfElements: 999,
+                            match: {
+                                enabled: true
+                            },
+                            showAnimation: {
+                                type: "fade", //normal|slide|fade
+                                time: 400,
+                                callback: function() {}
+                            },
+                            hideAnimation: {
+                                type: "fade s", //normal|slide|fade
+                                time: 400,
+                                callback: function() {}
+                            }
+                        },
+                        theme: "square"
+                    };
+
+                    $("#pairs").easyAutocomplete(options);
+
 
                     console.log("Success: " + exchange + " pairs!");
 
@@ -537,45 +605,6 @@ export default {
                 })
             }
         },
-        getmarketsummary(exchange, pair) {
-            this.loadingpairs = true;
-            if (exchange.toLowerCase() == 'bittrex') {
-                let uri = '/api/bittrexapi/getmarketsummary/' + pair;
-                axios(uri, {
-                    method: 'GET',
-                })
-                .then(response => {
-                    this.marketsummary=response.data[0];  
-                    this.priceselected = "";
-                    this.last =  parseFloat(this.marketsummary.Last);
-                    this.bid =  parseFloat(this.marketsummary.Bid);
-                    this.ask =  parseFloat(this.marketsummary.Ask);
-                    this.high =  parseFloat(this.marketsummary.High);
-                    this.low =  parseFloat(this.marketsummary.Low);
-                    this.volume =  parseFloat(this.marketsummary.BaseVolume);
-
-                    // Set price for current pair to 0
-                    this.stopAtTotal = true;
-                    this.price = parseFloat(0.00000000);
-
-
-                    // TODO Get balance for the selected base currency
-                    this.getbalance(exchange, pair);
-                    
-                    // Get coin info from api call getmarkets
-                    this.getmarkets(exchange, pair);
-
-                    
-                    this.loadingpairs = false;
-                    console.log("Success: " + this.marketsummary.MarketName);
-                })
-                .catch(e => {
-                    this.errors.push(e);
-                    this.loadingpairs = false;
-                    console.log("Error: " +  e.message);
-                })
-            }
-        },
         getmarkets(exchange, pair) {
             this.loadingpairs = true;
             this.coinname = {'long': 'loading', 'short':'...'};
@@ -624,7 +653,6 @@ export default {
                     console.log("Error: " +  e.message);
                 })
             }
-
         },
         openLong () {
             if (this.conditionalSwitch == false) {

@@ -17,9 +17,10 @@ let mix = require('laravel-mix');
  	'node_modules/datatables.net-zf/css/dataTables.foundation.css',
  	'node_modules/datatables.net-responsive-zf/css/responsive.foundation.css'
  	], 'public/css/datatables.css')
- // .styles([
- // 	'resources/assets/css/responsive-tables.css'
- // 	], 'public/css/vendor.css')
+  .styles([
+  	'node_modules/easy-autocomplete/dist/easy-autocomplete.css',
+  	'node_modules/easy-autocomplete/dist/easy-autocomplete.themes.css'
+  	], 'public/css/vendor.css')
  .js('resources/assets/js/app.js', 'public/js')
  .browserSync({
  	proxy: 'cryptobot.dev',

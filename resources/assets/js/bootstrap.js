@@ -16,6 +16,8 @@ try {
     // require( 'datatables.net-responsive/js/dataTables.responsive' );
     require( 'datatables.net-responsive-zf' );
     //require('footable/dist/footable');
+    //
+    require('easy-autocomplete/dist/jquery.easy-autocomplete');
     
 
 } catch (e) {}
