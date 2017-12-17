@@ -79960,6 +79960,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     mounted: function mounted() {
         this.update(this.exchange, this.pair, this.price);
+        Echo.private('trades.' + this.id).listen('TradeOpened', function (e) {
+            console.log('New status: ' + e.trade.status);
+        });
+
         console.log('Component Trade mounted.');
     },
 

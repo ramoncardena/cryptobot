@@ -30,6 +30,7 @@ Route::patch('/trades/{id}', 'TradeController@update');
 
 Auth::routes();
 
+
 Route::get('/home', 'HomeController@index')->name('home');
 
 

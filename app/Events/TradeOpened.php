@@ -12,7 +12,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
 use App\Trade;
 
-class TradeOpened
+class TradeOpened implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
     
@@ -35,6 +35,6 @@ class TradeOpened
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('channel-name');
+        return new PrivateChannel('trades.' . $this->trade->id);
     }
 }

@@ -1,5 +1,5 @@
 <?php
-
+use App\Trade;
 /*
 |--------------------------------------------------------------------------
 | Broadcast Channels
@@ -13,4 +13,8 @@
 
 Broadcast::channel('App.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
+});
+
+Broadcast::channel('trades.{tradeId}', function ($user, $tradeId) {
+    return (int) $user->id === (int) Trade::find($tradeId)->user_id;
 });

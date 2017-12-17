@@ -14547,8 +14547,18 @@ div.dataTables_wrapper div.dataTables_length select {
 .tradepanel .easy-autocomplete.eac-square input {
   border: 1px solid #cacaca;
   border-radius: 0;
+  min-width: 1rem;
+  width: 100%;
   font-weight: 400;
   padding: 6px 25px 6px 6px;
+}
+
+.tradepanel .easy-autocomplete {
+  width: 100% !important;
+}
+
+.tradepanel .easy-autocomplete input {
+  width: 100%;
 }
 
 .tradepanel .input-group #price-select {

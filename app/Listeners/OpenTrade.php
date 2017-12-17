@@ -2,6 +2,7 @@
 
 namespace App\Listeners;
 
+use App\Events\TradeOpened;
 use App\Events\StopLossLaunched;
 use App\Events\TakeProfitLaunched;
 use App\Events\OpenOrderCompleted;
@@ -135,6 +136,9 @@ class OpenTrade implements ShouldQueue
 
              // NOTIFY: TradeOpened
             User::find($trade->user_id)->notify(new TradeOpenedNotification($trade));
+
+            // EVENT: TradeOpened
+            event(new TradeOpened($trade));
 
             // Log NOTICE: Trade opened
             Log::notice("Trade #" . $trade->id . ": Opened.  Exchange: " . $trade->exchange . " Pair: " . $trade->pair . " Price per unit: " . $trade->price);

@@ -113,7 +113,12 @@
         }
     },
     mounted() {
-        this.update(this.exchange, this.pair, this.price);
+        this.update(this.exchange, this.pair, this.price); 
+        Echo.private('trades.' + this.id)
+            .listen('TradeOpened', (e) => {
+                console.log('New status: ' + e.trade.status);
+            });
+
         console.log('Component Trade mounted.');
     },
     methods: {
