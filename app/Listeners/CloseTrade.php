@@ -2,6 +2,8 @@
 
 namespace App\Listeners;
 
+
+use App\Events\TradeClosed;
 use App\Events\CloseOrderCompleted;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -68,6 +70,9 @@ class CloseTrade implements ShouldQueue
 
             // Log NOTICE: Trade close
             Log::notice("Trade #" . $trade->id . ": Closed. Exchange: " . $trade->exchange . " Pair: " . $trade->pair . " Final Price: " . $trade->closing_price ." Profit: " . $trade->profit . "%");
+
+            // EVENT: TradeOpened
+            event(new TradeClosed($trade));
 
             // NOTIFY: TradeClosed
             User::find($trade->user_id)->notify(new TradeClosedNotification($trade));

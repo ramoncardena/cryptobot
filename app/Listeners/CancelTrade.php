@@ -42,7 +42,7 @@ class CancelTrade
         try {
 
             // Mark event as cancelled
-            $trade = Trade::find($event->trade_id);
+            $trade = Trade::find($event->trade->id);
             $trade->status = "Cancelled";
             $trade->save();
 
@@ -50,7 +50,7 @@ class CancelTrade
             User::find($trade->user_id)->notify(new TradeCancelledNotification($trade));
 
             // Log INFO: Event cancelled
-            Log::info("Trade #" . $event->trade_id . ": Cancelled.");
+            Log::info("Trade #" . $trade->id . ": Cancelled.");
             
         } catch (Exception $e) {
 

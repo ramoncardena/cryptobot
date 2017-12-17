@@ -13,53 +13,47 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'App\Events\TradeOpened' => [
-            'App\Listeners\EmailTradeOpened',
-        ],
-        'App\Events\TradeClosed' => [
-            'App\Listeners\EmailTradeClosed',
-        ],
         'App\Events\TradeCancelled' => [
             'App\Listeners\CancelTrade',
-        ],
-        'App\Events\StopLossReached' => [
-            'App\Listeners\ExecuteStopLoss',
-        ],
-        'App\Events\StopLossNotReached' => [
-            'App\Listeners\KeepTrackingStopLoss',
-        ],
-        'App\Events\TakeProfitReached' => [
-            'App\Listeners\ExecuteTakeProfit',
-        ],
-        'App\Events\TakeProfitNotReached' => [
-            'App\Listeners\KeepTrackingTakeProfit',
-        ],
-        'App\Events\OrderLaunched' => [
-            'App\Listeners\TrackOrder',
-        ],
-        'App\Events\OrderCompleted' => [
-            'App\Listeners\UpdateTrade',
-        ],
-        'App\Events\OpenOrderCompleted' => [
-            'App\Listeners\OpenTrade',
         ],
         'App\Events\CloseOrderCompleted' => [
             'App\Listeners\CloseTrade',
         ],
-        'App\Events\OrderNotCompleted' => [
-            'App\Listeners\KeepTrackingOrder',
+        'App\Events\TradeClosed' => [
+            'App\Listeners\EmailTradeClosed',
         ],
-        'App\Events\ConditionalLaunched' => [
-            'App\Listeners\TrackConditional',
-        ],
-        'App\Events\ConditionNotReached' => [
-            'App\Listeners\KeepTrackingConditional',
+        'App\Events\TradeOpened' => [
+            'App\Listeners\EmailTradeOpened',
         ],
         'App\Events\ConditionReached' => [
             'App\Listeners\ExecuteConditional',
         ],
-        'App\Events\TradeStatusChanged' => [
-            'App\Listeners\UpdateTradeStatus'
+        'App\Events\StopLossReached' => [
+            'App\Listeners\ExecuteStopLoss',
+        ],
+        'App\Events\TakeProfitReached' => [
+            'App\Listeners\ExecuteTakeProfit',
+        ],
+        'App\Events\ConditionNotReached' => [
+            'App\Listeners\KeepTrackingConditional',
+        ],
+        'App\Events\OrderNotCompleted' => [
+            'App\Listeners\KeepTrackingOrder',
+        ],
+        'App\Events\StopLossNotReached' => [
+            'App\Listeners\KeepTrackingStopLoss',
+        ],
+        'App\Events\TakeProfitNotReached' => [
+            'App\Listeners\KeepTrackingTakeProfit',
+        ],
+        'App\Events\OpenOrderCompleted' => [
+            'App\Listeners\OpenTrade',
+        ],
+        'App\Events\ConditionalLaunched' => [
+            'App\Listeners\TrackConditional',
+        ],
+        'App\Events\OrderLaunched' => [
+            'App\Listeners\TrackOrder',
         ],
         'App\Events\StopLossLaunched' => [
             'App\Listeners\TrackStopLoss',
@@ -67,6 +61,7 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\TakeProfitLaunched' => [
             'App\Listeners\TrackTakeProfit',
         ],
+        
     ];
 
 

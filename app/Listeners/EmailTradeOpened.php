@@ -41,7 +41,7 @@ class EmailTradeOpened
         try {
 
             // Mark event as cancelled
-            $trade = Trade::find($event->trade_id);
+            $trade = Trade::find($event->trade->id);
            
 
             // NOTIFY: Trade Cancelled

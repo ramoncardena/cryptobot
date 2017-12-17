@@ -79906,46 +79906,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return {
             updating: false,
             profit: 0,
-            last: 0
+            last: 0,
+            tradeStatus: ""
         };
     },
     props: ['status', 'exchange', 'position', 'pair', 'price', 'amount', 'total', 'stop-loss', 'take-profit', 'condition', 'condition-price', "final-profit", "type", "closing-price", "timestamp", "id"],
     computed: {
-        opened: function opened() {
-            if (this.status == "Opened") {
-                return true;
-            } else {
-                return false;
-            }
-        },
-        waiting: function waiting() {
-            if (this.status == "Waiting") {
-                return true;
-            } else {
-                return false;
-            }
-        },
-        closing: function closing() {
-            if (this.status == "Closing") {
-                return true;
-            } else {
-                return false;
-            }
-        },
-        opening: function opening() {
-            if (this.status == "Opening") {
-                return true;
-            } else {
-                return false;
-            }
-        },
-        cancelling: function cancelling() {
-            if (this.status == "Cancelling") {
-                return true;
-            } else {
-                return false;
-            }
-        },
         history: function history() {
             if (this.type == "history") {
                 return true;
@@ -79959,9 +79925,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     },
     mounted: function mounted() {
+        var _this = this;
+
+        this.tradeStatus = this.status;
         this.update(this.exchange, this.pair, this.price);
+
         Echo.private('trades.' + this.id).listen('TradeOpened', function (e) {
             console.log('New status: ' + e.trade.status);
+            _this.tradeStatus = e.trade.status;
+        }).listen('TradeClosed', function (e) {
+            console.log('New status: ' + e.trade.status);
+            _this.tradeStatus = e.trade.status;
         });
 
         console.log('Component Trade mounted.');
@@ -79969,7 +79943,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     methods: {
         update: function update(exchange, pair, price) {
-            var _this = this;
+            var _this2 = this;
 
             var percent = 0;
             this.updating = true;
@@ -79978,18 +79952,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 axios(uri, {
                     method: 'GET'
                 }).then(function (response) {
-                    _this.marketsummary = response.data[0];
-                    _this.last = _this.marketsummary.Last;
+                    _this2.marketsummary = response.data[0];
+                    _this2.last = _this2.marketsummary.Last;
 
                     // Calculate percentual diference
-                    var decreaseValue = _this.last - price;
+                    var decreaseValue = _this2.last - price;
                     decreaseValue = decreaseValue / price * 100;
-                    _this.profit = decreaseValue.toFixed(2) + "%";
+                    _this2.profit = decreaseValue.toFixed(2) + "%";
 
-                    _this.updating = false;
+                    _this2.updating = false;
                     //console.log("Last: " + this.last + " - " + (decreaseValue / price) * 100);
                 }).catch(function (e) {
-                    _this.updating = false;
+                    _this2.updating = false;
                     console.log("Error: " + e.message);
                 });
             }
@@ -80011,66 +79985,48 @@ var render = function() {
     _vm.history == false
       ? _c("td", [
           _c("div", { staticClass: "trade-cancel icons-area" }, [
-            _c(
-              "button",
-              {
-                directives: [
+            _vm.tradeStatus == "Opened"
+              ? _c(
+                  "button",
                   {
-                    name: "show",
-                    rawName: "v-show",
-                    value: _vm.opened,
-                    expression: "opened"
-                  }
-                ],
-                staticClass: "clear button",
-                attrs: { "data-open": "closeTrade" + _vm.id }
-              },
-              [_c("i", { staticClass: "fa fa-times cancel-icon" })]
-            ),
+                    staticClass: "clear button",
+                    attrs: { "data-open": "closeTrade" + _vm.id }
+                  },
+                  [_c("i", { staticClass: "fa fa-times cancel-icon" })]
+                )
+              : _vm._e(),
             _vm._v(" "),
-            _c(
-              "button",
-              {
-                directives: [
+            _vm.tradeStatus == "Waiting"
+              ? _c(
+                  "button",
                   {
-                    name: "show",
-                    rawName: "v-show",
-                    value: _vm.waiting,
-                    expression: "waiting"
-                  }
-                ],
-                staticClass: "clear button",
-                attrs: { "data-open": "closeWaitingTrade" + _vm.id }
-              },
-              [_c("i", { staticClass: "fa fa-times cancel-icon" })]
-            ),
+                    staticClass: "clear button",
+                    attrs: { "data-open": "closeWaitingTrade" + _vm.id }
+                  },
+                  [_c("i", { staticClass: "fa fa-times cancel-icon" })]
+                )
+              : _vm._e(),
             _vm._v(" "),
-            _c(
-              "button",
-              {
-                directives: [
+            _vm.tradeStatus == "Opened"
+              ? _c(
+                  "button",
                   {
-                    name: "show",
-                    rawName: "v-show",
-                    value: _vm.opened,
-                    expression: "opened"
-                  }
-                ],
-                staticClass: "clear button",
-                attrs: { "data-open": "editTrade" + _vm.id }
-              },
-              [
-                _c("i", {
-                  staticClass: "fa fa-pencil edit-icon",
-                  attrs: { "aria-hidden": "true" }
-                })
-              ]
-            ),
+                    staticClass: "clear button",
+                    attrs: { "data-open": "editTrade" + _vm.id }
+                  },
+                  [
+                    _c("i", {
+                      staticClass: "fa fa-pencil edit-icon",
+                      attrs: { "aria-hidden": "true" }
+                    })
+                  ]
+                )
+              : _vm._e(),
             _vm._v(" "),
-            (_vm.opened == true ||
-              _vm.waiting == true ||
-              _vm.closing == true ||
-              _vm.opening == true) &&
+            (_vm.tradeStatus == "Opened" ||
+              _vm.tradeStatus == "Waiting" ||
+              _vm.tradeStatus == "Closing" ||
+              _vm.tradeStatus == "Opening") &&
             _vm.updating == false
               ? _c("i", {
                   staticClass: "fa fa-refresh refresh-icon",
@@ -80082,19 +80038,12 @@ var render = function() {
                 })
               : _vm._e(),
             _vm._v(" "),
-            (_vm.opened == true ||
-              _vm.waiting == true ||
-              _vm.closing == true ||
-              _vm.opening == true) &&
+            (_vm.tradeStatus == "Opened" ||
+              _vm.tradeStatus == "Waiting" ||
+              _vm.tradeStatus == "Closing" ||
+              _vm.tradeStatus == "Opening") &&
             _vm.updating == true
-              ? _c("i", {
-                  staticClass: "fa fa-refresh fa-spin refresh-icon",
-                  on: {
-                    click: function($event) {
-                      _vm.update(_vm.exchange, _vm.pair, _vm.price)
-                    }
-                  }
-                })
+              ? _c("i", { staticClass: "fa fa-refresh fa-spin refresh-icon" })
               : _vm._e()
           ])
         ])
@@ -80113,9 +80062,20 @@ var render = function() {
     _c("td", [_vm._v(_vm._s(_vm.pair))]),
     _vm._v(" "),
     _c("td", { staticClass: "sorting_1  trade-status" }, [
-      _c("span", { class: "status-" + _vm.status }, [
-        _vm._v(_vm._s(_vm.status))
-      ])
+      _c(
+        "span",
+        {
+          class: "status-" + _vm.tradeStatus,
+          model: {
+            value: _vm.tradeStatus,
+            callback: function($$v) {
+              _vm.tradeStatus = $$v
+            },
+            expression: "tradeStatus"
+          }
+        },
+        [_vm._v(_vm._s(_vm.tradeStatus))]
+      )
     ]),
     _vm._v(" "),
     _c("td", [_vm._v(_vm._s(_vm.exchange))]),
@@ -82520,14 +82480,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'tradelist4',
@@ -83222,48 +83174,7 @@ var render = function() {
                             ]
                           ),
                           _vm._v(" "),
-                          _c(
-                            "div",
-                            { staticClass: "small-12 cell form-container" },
-                            [
-                              _c(
-                                "button",
-                                {
-                                  staticClass: "hollow button",
-                                  attrs: { type: "submit" }
-                                },
-                                [
-                                  _vm._v(
-                                    "\n                                   Save Trade\n                                "
-                                  )
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "button",
-                                {
-                                  staticClass: "hollow button",
-                                  attrs: { "data-close": "" },
-                                  on: {
-                                    click: function($event) {
-                                      _vm.last = 0
-                                      _vm.bid = 0
-                                      _vm.ask = 0
-                                      _vm.high = 0
-                                      _vm.low = 0
-                                      _vm.stoploss = 0
-                                      _vm.takeprofit = 0
-                                    }
-                                  }
-                                },
-                                [
-                                  _vm._v(
-                                    "\n                                   Go Back\n                                "
-                                  )
-                                ]
-                              )
-                            ]
-                          )
+                          _vm._m(0, true, false)
                         ])
                       ]
                     )
@@ -83630,30 +83541,6 @@ var render = function() {
                                 ]
                               ),
                               _vm._v(" "),
-                              _c(
-                                "button",
-                                {
-                                  staticClass: "hollow button",
-                                  attrs: { "data-close": "" },
-                                  on: {
-                                    click: function($event) {
-                                      _vm.last = 0
-                                      _vm.bid = 0
-                                      _vm.ask = 0
-                                      _vm.high = 0
-                                      _vm.low = 0
-                                      _vm.closingprice = 0.0
-                                      _vm.priceselected = ""
-                                    }
-                                  }
-                                },
-                                [
-                                  _vm._v(
-                                    "\n                                   Go Back\n                                "
-                                  )
-                                ]
-                              ),
-                              _vm._v(" "),
                               _c("p", { staticClass: "text-right" }, [
                                 _vm._v(
                                   "Aprox. profit: " +
@@ -83859,48 +83746,9 @@ var render = function() {
                             ]
                           ),
                           _vm._v(" "),
-                          _vm._m(0, true, false),
+                          _vm._m(1, true, false),
                           _vm._v(" "),
-                          _c(
-                            "div",
-                            { staticClass: "small-12 cell form-container" },
-                            [
-                              _c(
-                                "button",
-                                {
-                                  staticClass: "hollow button",
-                                  attrs: { type: "submit" }
-                                },
-                                [
-                                  _vm._v(
-                                    "\n                                   Yes, cancel\n                                "
-                                  )
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "button",
-                                {
-                                  staticClass: "hollow button",
-                                  attrs: { "data-close": "" },
-                                  on: {
-                                    click: function($event) {
-                                      _vm.last = 0
-                                      _vm.bid = 0
-                                      _vm.ask = 0
-                                      _vm.high = 0
-                                      _vm.low = 0
-                                    }
-                                  }
-                                },
-                                [
-                                  _vm._v(
-                                    "\n                                   No, thanks\n                                "
-                                  )
-                                ]
-                              )
-                            ]
-                          )
+                          _vm._m(2, true, false)
                         ])
                       ]
                     )
@@ -83949,11 +83797,43 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "small-12 cell form-container" }, [
+      _c(
+        "button",
+        { staticClass: "hollow button", attrs: { type: "submit" } },
+        [
+          _vm._v(
+            "\n                                   Save Trade\n                                "
+          )
+        ]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "small-12 cell form-container" }, [
       _c("p", [
         _vm._v(
           "You are going to close a waiting trade, if you proceed the trade will be canceled and no order will be launched. Are you sure?"
         )
       ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "small-12 cell form-container" }, [
+      _c(
+        "button",
+        { staticClass: "hollow button", attrs: { type: "submit" } },
+        [
+          _vm._v(
+            "\n                                   Yes, cancel\n                                "
+          )
+        ]
+      )
     ])
   }
 ]

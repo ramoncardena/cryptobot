@@ -4,16 +4,16 @@
             <td v-if="history==false">
                 <div class="trade-cancel icons-area">
                     <!-- <i v-show="updating" class="fa fa-cog fa-spin fa-fw loading-icon"></i>  -->
-                    <button v-show="opened" class="clear button" :data-open="'closeTrade' + id"><i class="fa fa-times cancel-icon"></i></button>
-                    <button v-show="waiting" class="clear button" :data-open="'closeWaitingTrade' + id"><i class="fa fa-times cancel-icon"></i></button>
-                    <button v-show="opened" class="clear button" :data-open="'editTrade' + id"><i class="fa fa-pencil edit-icon" aria-hidden="true"></i></button>
-                    <i v-if="((opened == true || waiting==true || closing==true || opening==true) && updating==false)" v-on:click="update(exchange, pair, price)" class="fa fa-refresh refresh-icon"></i>
-                    <i v-if="((opened == true || waiting==true || closing==true || opening==true) && updating==true)" v-on:click="update(exchange, pair, price)" class="fa fa-refresh fa-spin refresh-icon"></i>
+                    <button v-if="tradeStatus=='Opened'" class="clear button" :data-open="'closeTrade' + id"><i class="fa fa-times cancel-icon"></i></button>
+                    <button v-if="tradeStatus=='Waiting'" class="clear button" :data-open="'closeWaitingTrade' + id"><i class="fa fa-times cancel-icon"></i></button>
+                    <button v-if="tradeStatus=='Opened'" class="clear button" :data-open="'editTrade' + id"><i class="fa fa-pencil edit-icon" aria-hidden="true"></i></button>
+                    <i v-if="((tradeStatus=='Opened' || tradeStatus=='Waiting' || tradeStatus=='Closing' || tradeStatus=='Opening') && updating==false)" v-on:click="update(exchange, pair, price)" class="fa fa-refresh refresh-icon"></i>
+                    <i v-if="((tradeStatus=='Opened' || tradeStatus=='Waiting' || tradeStatus=='Closing' || tradeStatus=='Opening') && updating==true)" class="fa fa-refresh fa-spin refresh-icon"></i>
                 </div>
             </td>
             <td>{{ (history==true) ? parseFloat(finalProfit).toFixed(2) + '%' : profit }}</td>
             <td>{{ pair }}</td>
-            <td class="sorting_1  trade-status"><span :class="'status-' + status">{{ status }}</span></td>
+            <td class="sorting_1  trade-status"><span :class="'status-' + tradeStatus" v-model="tradeStatus">{{ tradeStatus }}</span></td>
             <td>{{ exchange }}</td>
             <td>{{ position }}</td>
             <td>{{ last.toFixed(8) }}</td>
@@ -37,7 +37,8 @@
         return {
             updating: false,
             profit: 0,
-            last: 0
+            last: 0,
+            tradeStatus: ""
         }
     },
     props: [
@@ -59,46 +60,6 @@
     "id"
     ],
     computed: {
-        opened: function() {
-            if (this.status == "Opened") {
-                return true;
-            }
-            else {
-                return false;
-            }
-        },
-        waiting: function() {
-            if (this.status == "Waiting") {
-                return true;
-            }
-            else {
-                return false;
-            }
-        },
-        closing: function() {
-            if (this.status == "Closing") {
-                return true;
-            }
-            else {
-                return false;
-            }
-        },
-        opening: function() {
-            if (this.status == "Opening") {
-                return true;
-            }
-            else {
-                return false;
-            }
-        },
-        cancelling: function() {
-            if (this.status == "Cancelling") {
-                return true;
-            }
-            else {
-                return false;
-            }
-        },
         history: function() {
             if (this.type == "history") {
                 return true;
@@ -113,11 +74,18 @@
         }
     },
     mounted() {
+        this.tradeStatus = this.status;
         this.update(this.exchange, this.pair, this.price); 
+
         Echo.private('trades.' + this.id)
-            .listen('TradeOpened', (e) => {
-                console.log('New status: ' + e.trade.status);
-            });
+        .listen('TradeOpened', (e) => {
+            console.log('New status: ' + e.trade.status);
+            this.tradeStatus = e.trade.status;
+        })
+        .listen('TradeClosed', (e) => {
+            console.log('New status: ' + e.trade.status);
+            this.tradeStatus = e.trade.status;
+        });
 
         console.log('Component Trade mounted.');
     },

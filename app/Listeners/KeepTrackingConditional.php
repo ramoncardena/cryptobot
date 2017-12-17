@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Log;
 use App\Library\Services\Facades\Bittrex;
 use App\User;
 use App\Conditional;
+use App\Trade;
 
 class KeepTrackingConditional implements ShouldQueue
 {
@@ -55,7 +56,8 @@ class KeepTrackingConditional implements ShouldQueue
             if ($conditional->cancel) {
 
                 // EVENT: TradeCancelled
-                event(new TradeCancelled($event->conditional->trade_id));
+                $trade = Trade::find($event->conditional->trade_id);
+                event(new TradeCancelled($trade));
 
                 // Delete conditional from the database
                 Conditional::destroy($event->conditional->id);

@@ -104,9 +104,6 @@
                                     <button class="hollow button" type="submit">
                                        Save Trade
                                     </button>
-                                    <button class="hollow button" data-close v-on:click="last=0; bid=0; ask=0; high=0; low=0; stoploss=0; takeprofit=0;">
-                                       Go Back
-                                    </button>
                                 </div>
                                 
                             </div>
@@ -164,9 +161,6 @@
                                     <button class="hollow button" type="submit">
                                        Close Trade
                                     </button>
-                                    <button class="hollow button" data-close v-on:click="last=0; bid=0; ask=0; high=0; low=0; closingprice=0.00000000; priceselected='';">
-                                       Go Back
-                                    </button>
                                     <p class="text-right">Aprox. profit: {{ calculateProfit(trade.price) }}%</p>
                                 </div>
                                 
@@ -202,11 +196,9 @@
                                     <p>You are going to close a waiting trade, if you proceed the trade will be canceled and no order will be launched. Are you sure?</p>
                                 </div>
                                 <div class="small-12 cell form-container">
+                                    
                                     <button class="hollow button"  type="submit">
                                        Yes, cancel
-                                    </button>
-                                    <button class="hollow button" data-close v-on:click="last=0; bid=0; ask=0; high=0; low=0;">
-                                       No, thanks
                                     </button>
 
                                 </div>

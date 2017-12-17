@@ -10,18 +10,22 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class TradeClosed
+use App\Trade;
+
+class TradeClosed implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
+
+    public $trade;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($trade)
     {
-        //
+        $this->trade = $trade;
     }
 
     /**
@@ -31,6 +35,6 @@ class TradeClosed
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('channel-name');
+        return new PrivateChannel('trades.' . $this->trade->id);
     }
 }
