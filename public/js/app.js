@@ -79936,7 +79936,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }).listen('TradeClosed', function (e) {
             console.log('New status: ' + e.trade.status);
             _this.tradeStatus = e.trade.status;
-        });
+        }).listen('TradeCancelled', function (e) {
+            console.log('New status: ' + e.trade.status);
+            _this.tradeStatus = e.trade.status;
+        });;
 
         console.log('Component Trade mounted.');
     },

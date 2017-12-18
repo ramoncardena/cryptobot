@@ -85,7 +85,11 @@
         .listen('TradeClosed', (e) => {
             console.log('New status: ' + e.trade.status);
             this.tradeStatus = e.trade.status;
-        });
+        })
+        .listen('TradeCancelled', (e) => {
+            console.log('New status: ' + e.trade.status);
+            this.tradeStatus = e.trade.status;
+        });;
 
         console.log('Component Trade mounted.');
     },
