@@ -245,29 +245,6 @@ class TradeController extends Controller
         
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($trade)
-    {
-        
-    }
-
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
 
     /**
      * Update the specified resource in storage.
@@ -481,6 +458,9 @@ class TradeController extends Controller
             $this->trade = Trade::find($id);
             
             if ($this->trade->status == 'Waiting') {
+                /*****************************************
+                 *  CANCEL WAITING TRADE
+                 *****************************************/
 
                 // Update trade status
                 $this->trade->status = "Cancelling";
@@ -504,6 +484,7 @@ class TradeController extends Controller
                 /*****************************************
                  *  CANCEL OPENING TRADE
                  *****************************************/
+
                 // Update trade status
                 $this->trade->status = "Cancelling";
                 $this->trade->save();
@@ -543,12 +524,15 @@ class TradeController extends Controller
                     $broker = new Broker;
                     $broker->setUser($user);
                     $broker->setExchange($this->trade->exchange);
-                    $remoteOrder = $broker->cancelOrder($this->trade->order_id);
+                    $remoteOrder = $broker->cancel($this->trade->order_id);
                     
                 }
                 
                 // Check for remoteOrder success
                 if ($remoteOrder->success == true) {
+
+                    // Delete order
+                    Order::destroy($this->trade->order_id);
 
                     // EVENT: TradeKept
                     event(new TradeCancelled($this->trade));
@@ -737,6 +721,7 @@ class TradeController extends Controller
                 // BUY ORDER
                 $broker = new Broker;
                 $broker->setExchange($trade->exchange);
+                $broker->setUser($user);
                 $order = $broker->buyLimit($trade->pair, $trade->amount, $trade->price);
                 
             }
