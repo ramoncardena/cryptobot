@@ -69,41 +69,29 @@ class TradeController extends Controller
                 // Get current authenticated user
                 $this->user = Auth::user();
 
+                $historyMatch1 = [ ['user_id', '=',  Auth::id()],  ['status', '=', 'Closed'] ];
+                $historyMatch2 = [ ['user_id', '=',  Auth::id()],  ['status', '=', 'Cancelled'] ];
+                $historyMatch3 = [ ['user_id', '=',  Auth::id()],  ['status', '=', 'Aborted'] ];
+                $historyMatch4 = [ ['user_id', '=',  Auth::id()],  ['status', '=', 'Cancelling'] ];
+                $historyMatch5 = [ ['user_id', '=',  Auth::id()],  ['status', '=', 'Closing'] ];
+                $historyMatch6 = [ ['user_id', '=',  Auth::id()],  ['status', '=', 'Kept'] ];
                 // Retrieve trade history
-                $tradesHistory = Trade::where('user_id',  Auth::id())
-                    ->where([
-                        ['status', '=', 'Closed'] 
-                    ])
-                    ->orWhere([
-                        ['status', '=', 'Cancelled']
-                    ])
-                    ->orWhere([
-                        ['status', '=', 'Aborted']
-                    ])
-                    ->orWhere([
-                        ['status', '=', 'Cancelling']
-                    ])
-                    ->orWhere([
-                        ['status', '=', 'Closing']
-                    ])
-                    ->orWhere([
-                        ['status', '=', 'Kept']
-                    ])
+                $tradesHistory = Trade::where($historyMatch1)
+                    ->orWhere($historyMatch2)
+                    ->orWhere($historyMatch3)
+                    ->orWhere($historyMatch4)
+                    ->orWhere($historyMatch5)
+                    ->orWhere($historyMatch6)
                     ->orderBy('updated_at', 'desc')
                     ->get();
 
                 // Retrieve active trades
-
-                $tradesActive = Trade::where('user_id',  Auth::id())
-                    ->where([
-                        ['status', '=', 'Opening'] 
-                    ])
-                    ->orWhere([
-                        ['status', '=', 'Waiting']
-                    ])
-                    ->orWhere([
-                        ['status', '=', 'Opened']
-                    ])
+                $activeMatch1 = [ ['user_id', '=',  Auth::id()],  ['status', '=', 'Opening'] ];
+                $activeMatch3 = [ ['user_id', '=',  Auth::id()],  ['status', '=', 'Waiting'] ];
+                $activeMatch2 = [ ['user_id', '=',  Auth::id()],  ['status', '=', 'Opened'] ];
+                $tradesActive = Trade::where($activeMatch1)
+                    ->orWhere($activeMatch2)
+                    ->orWhere($activeMatch3)
                     ->orderBy('updated_at', 'desc')
                     ->get();
 
