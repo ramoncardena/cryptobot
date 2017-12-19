@@ -2,14 +2,16 @@
 
 namespace App\Listeners;
 
-use App\Events\StopLossLaunched;
-use App\Events\StopLossReached;
-use App\Events\StopLossNotReached;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Log;
 
-use App\Library\Services\Facades\Bittrex;
+use App\Events\StopLossLaunched;
+use App\Events\StopLossReached;
+use App\Events\StopLossNotReached;
+
+use App\Library\Services\Broker;
+
 use App\Trade;
 use App\User;
 use App\Stop;
@@ -61,46 +63,40 @@ class TrackStopLoss implements ShouldQueue
             }
             else {
 
-                // Select exchange
-                switch ($stop->exchange) {
-                    // BITTREX
-                    case "bittrex":
+                // TICKER
+                $broker = new Broker;
+                $broker->setExchange($stop->exchange);
+                $ticker = $broker->getTicker($stop->pair);
 
-                        // Call to Bittrex API to get market ticker (last price)
-                        $ticker = Bittrex::getTicker($stop->pair);
+                // Check for success on API call
+                if (! $ticker->success) {
 
-                        // Check for success on API call
-                        if (! $ticker->success) {
+                    // Log ERROR: Bittrex API returned error
+                    Log::error("[TrackStopLoss] Bittrex API: " . $ticker->message);
 
-                            // Log ERROR: Bittrex API returned error
-                            Log::error("[TrackStopLoss] Bittrex API: " . $ticker->message);
+                }
+                else {
 
-                        }
-                        else {
+                    $ticker= $ticker->result;
 
-                            $ticker= $ticker->result;
+                    if ( floatval($ticker->Last) <= floatval($stop->price)) {
 
-                            if ( floatval($ticker->Last) <= floatval($stop->price)) {
+                        // EVENT: StopLossReached
+                        event(new StopLossReached($stop, $ticker->Last));
 
-                                // EVENT: StopLossReached
-                                event(new StopLossReached($stop, $ticker->Last));
+                        // Log NOTICE: Take-Profit reached
+                        Log::notice("Stop-Loss: Trade #" . $stop->trade_id . " reached its stop-loss at " . $stop->price . " for the pair " . $stop->pair . " at " . $stop->exchange . " (last price: " . $ticker->Last . ")");
 
-                                // Log NOTICE: Take-Profit reached
-                                Log::notice("Stop-Loss: Trade #" . $stop->trade_id . " reached its stop-loss at " . $stop->price . " for the pair " . $stop->pair . " at " . $stop->exchange . " (last price: " . $ticker->Last . ")");
+                    }
+                    else {
+                        
+                        // Add delay before requeueing
+                        sleep(env('STOPLOSS_DELAY', 5));
 
-                            }
-                            else {
-                                
-                                // Add delay before requeueing
-                                sleep(env('STOPLOSS_DELAY', 5));
+                        // EVENT: StopLossNotReached
+                        event(new StopLossNotReached($stop));
+                    }
 
-                                // EVENT: StopLossNotReached
-                                event(new StopLossNotReached($stop));
-                            }
-
-                        }
-
-                    break;
                 }
 
             }

@@ -1,14 +1,17 @@
 <?php
+
 namespace App\Listeners;
 
-use App\Events\TakeProfitLaunched;
-use App\Events\TakeProfitReached;
-use App\Events\TakeProfitNotReached;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Log;
 
-use App\Library\Services\Facades\Bittrex;
+use App\Events\TakeProfitLaunched;
+use App\Events\TakeProfitReached;
+use App\Events\TakeProfitNotReached;
+
+use App\Library\Services\Broker;
+
 use App\Trade;
 use App\User;
 use App\Profit;
@@ -59,46 +62,40 @@ class TrackTakeProfit implements ShouldQueue
             }
             else {
 
-                // Select exchange
-                switch ($profit->exchange) {
-                    // BITTREX
-                    case "bittrex":
+                // TICKER
+                $broker = new Broker;
+                $broker->setExchange($profit->exchange);
+                $ticker = $broker->getTicker($profit->pair);
 
-                        // Call to Bittrex API to get market ticker (last price)
-                        $ticker = Bittrex::getTicker($profit->pair);
+                // Check for success on API call
+                if (! $ticker->success) {
 
-                        // Check for success on API call
-                        if (! $ticker->success) {
+                    // Log ERROR: Bittrex API returned error
+                    Log::error("[TrackTakeProfit] Bittrex API: " . $ticker->message);
 
-                            // Log ERROR: Bittrex API returned error
-                            Log::error("[TrackTakeProfit] Bittrex API: " . $ticker->message);
+                }
+                else {
 
-                        }
-                        else {
+                    $ticker= $ticker->result;
 
-                            $ticker= $ticker->result;
+                    if ( floatval($ticker->Last) >= floatval($profit->price)) {
 
-                            if ( floatval($ticker->Last) >= floatval($profit->price)) {
+                        // EVENT: TakeProfitReached
+                        event(new TakeProfitReached($profit, $ticker->Last));
 
-                                // EVENT: TakeProfitReached
-                                event(new TakeProfitReached($profit, $ticker->Last));
+                        // Log NOTICE: Take-Profit reached
+                        Log::notice("Take-Profit: Trade #" . $profit->trade_id . " reached its take-profit at " . $profit->price . " for the pair " . $profit->pair . " at " . $profit->exchange . " (last price: " . $ticker->Last . ")");
 
-                                // Log NOTICE: Take-Profit reached
-                                Log::notice("Take-Profit: Trade #" . $profit->trade_id . " reached its take-profit at " . $profit->price . " for the pair " . $profit->pair . " at " . $profit->exchange . " (last price: " . $ticker->Last . ")");
+                    }
+                    else {
+                        
+                        // Add delay before requeueing
+                        sleep(env('TAKEPROFIT_DELAY', 5));
 
-                            }
-                            else {
-                                
-                                // Add delay before requeueing
-                                sleep(env('TAKEPROFIT_DELAY', 5));
+                        // EVENT: TakeProfitNotReached
+                        event(new TakeProfitNotReached($profit));
+                    }
 
-                                // EVENT: TakeProfitNotReached
-                                event(new TakeProfitNotReached($profit));
-                            }
-
-                        }
-
-                    break;
                 }
 
             }

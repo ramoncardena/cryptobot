@@ -2,10 +2,11 @@
 
 namespace App\Listeners;
 
-use App\Events\TradeClosed;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Log;
+
+use App\Events\TradeClosed;
 
 use App\Trade;
 use App\User;

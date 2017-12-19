@@ -2,13 +2,15 @@
 
 namespace App\Listeners;
 
-use App\Events\StopLossReached;
-use App\Events\StopLossNotReached;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Log;
 
-use App\Library\Services\Facades\Bittrex;
+use App\Events\StopLossReached;
+use App\Events\StopLossNotReached;
+
+use App\Library\Services\Broker;
+
 use App\Trade;
 use App\User;
 use App\Stop;
@@ -64,8 +66,10 @@ class KeepTrackingStopLoss implements ShouldQueue
                     // BITTREX
                     case "bittrex":
 
-                        // Call to Bittrex API to get market ticker (last price)
-                        $ticker = Bittrex::getTicker($stop->pair);
+                        // TICKER
+                        $broker = new Broker;
+                        $broker->setExchange($stop->exchange);
+                        $ticker = $broker->getTicker($stop->pair);
 
                         // Check for success on API call
                         if (! $ticker->success) {

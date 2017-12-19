@@ -2,14 +2,15 @@
 
 namespace App\Listeners;
 
-use App\Events\ConditionNotReached;
-use App\Events\ConditionReached;
-use App\Events\TradeCancelled;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Log;
 
-use App\Library\Services\Facades\Bittrex;
+use App\Events\ConditionNotReached;
+use App\Events\ConditionReached;
+use App\Events\TradeCancelled;
+
+use App\Library\Services\Broker;
 use App\User;
 use App\Conditional;
 use App\Trade;
@@ -67,78 +68,72 @@ class KeepTrackingConditional implements ShouldQueue
 
             }
             else {
-                // Select Exchange
-                switch ($conditional->exchange) {
-                    // BITTREX
-                    case "bittrex":
+                // TICKER
+                $broker = new Broker;
+                $broker->setExchange($conditional->exchange);
+                $broker->setUser($user);
+                $ticker = $broker->getTicker($conditional->pair);
 
-                        // Call to Bittrex API to get market ticker (last price)
-                        $ticker = Bittrex::getTicker($conditional->pair);
+                // Check for success on API call
+                if (! $ticker->success) {
 
-                        // Check for success on API call
-                        if (! $ticker->success) {
+                    // Log ERROR: Bittrex API returned error
+                    Log::error("[KeepTrackingConditional] Bittrex API: " . $ticker->message);
 
-                            // Log ERROR: Bittrex API returned error
-                            Log::error("[KeepTrackingConditional] Bittrex API: " . $ticker->message);
+                }
+                else {
 
-                        }
-                        else {
+                    $ticker= $ticker->result;
 
-                            $ticker= $ticker->result;
+                    // Check the condition type: greater or less
+                    switch ($conditional->condition) {
+                        case 'greater':
 
-                            // Check the condition type: greater or less
-                            switch ($conditional->condition) {
-                                case 'greater':
+                            if ( floatval($ticker->Last) >= floatval($conditional->condition_price) ) {
 
-                                    if ( floatval($ticker->Last) >= floatval($conditional->condition_price) ) {
+                                // EVENT ConditionReached
+                                event(new ConditionReached($conditional, $ticker->Last));
 
-                                        // EVENT ConditionReached
-                                        event(new ConditionReached($conditional, $ticker->Last));
+                                // Log NOTICE: Condition reached in a conditional order
+                                Log::notice("Conditional Order: Trade #" . $conditional->trade_id . " reached its condition, current price (" . $ticker->Last . ") for " . $conditional->pair . " at " . $conditional->exchange .  " is " . $conditional->condition . " than " . $conditional->condition_price);
+                                
+                            }
+                            else {
 
-                                        // Log NOTICE: Condition reached in a conditional order
-                                        Log::notice("Conditional Order: Trade #" . $conditional->trade_id . " reached its condition, current price (" . $ticker->Last . ") for " . $conditional->pair . " at " . $conditional->exchange .  " is " . $conditional->condition . " than " . $conditional->condition_price);
-                                        
-                                    }
-                                    else {
+                                // Add delay before requeueing
+                                sleep(env('CONDITIONAL_DELAY', 5));
 
-                                        // Add delay before requeueing
-                                        sleep(env('CONDITIONAL_DELAY', 5));
-
-                                        // EVENT: ConditionNotReached
-                                        event(new ConditionNotReached($conditional));
-
-                                    }
-
-                                    break;
-
-                                case 'less':
-
-                                    if ( floatval($ticker->Last) <= floatval($conditional->condition_price) ) {
-                                        
-                                        // EVENT ConditionReached
-                                        event(new ConditionReached($conditional, $ticker->Last));
-
-                                        // Log NOTICE: Condition reached in a conditional order
-                                        Log::notice("Conditional Order: Trade #" . $conditional->trade_id . " reached its condition, current price (" . $ticker->Last . ") for " . $conditional->pair . " at " . $conditional->exchange .  " is " . $conditional->condition . " than " . $conditional->condition_price);
-                                        
-                                    }
-                                    else {
-
-                                        // Add delay before requeueing
-                                        sleep(env('CONDITIONAL_DELAY', 5));
-
-                                        // EVENT: ConditionNotReached
-                                        event(new ConditionNotReached($conditional));
-
-                                    }
-
-                                    break;
+                                // EVENT: ConditionNotReached
+                                event(new ConditionNotReached($conditional));
 
                             }
 
-                        }
+                            break;
 
-                    break;
+                        case 'less':
+
+                            if ( floatval($ticker->Last) <= floatval($conditional->condition_price) ) {
+                                
+                                // EVENT ConditionReached
+                                event(new ConditionReached($conditional, $ticker->Last));
+
+                                // Log NOTICE: Condition reached in a conditional order
+                                Log::notice("Conditional Order: Trade #" . $conditional->trade_id . " reached its condition, current price (" . $ticker->Last . ") for " . $conditional->pair . " at " . $conditional->exchange .  " is " . $conditional->condition . " than " . $conditional->condition_price);
+                                
+                            }
+                            else {
+
+                                // Add delay before requeueing
+                                sleep(env('CONDITIONAL_DELAY', 5));
+
+                                // EVENT: ConditionNotReached
+                                event(new ConditionNotReached($conditional));
+
+                            }
+
+                            break;
+
+                    }
 
                 }
             }

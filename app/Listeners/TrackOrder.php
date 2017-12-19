@@ -2,16 +2,18 @@
 
 namespace App\Listeners;
 
-use App\Events\OrderNotCompleted;
-use App\Events\CloseOrderCompleted;
-use App\Events\OpenOrderCompleted;
 use App\Events\OrderLaunched;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Log;
 
+use App\Events\OrderNotCompleted;
+use App\Events\CloseOrderCompleted;
+use App\Events\OpenOrderCompleted;
+
+use App\Library\Services\Broker;
 use App\Library\FakeOrder;
-use App\Library\Services\Facades\Bittrex;
+
 use App\Trade;
 use App\User;
 use App\Order;
@@ -48,85 +50,77 @@ class TrackOrder implements ShouldQueue
             // Get user
             $user = User::find($event->order->user_id);
 
-            // Select Exchange
-            switch ($event->order->exchange) {
+            // Call to exchange API or a fakeOrder based on ENV->ORDERS_TEST
+            if (env('ORDERS_TEST', true) == true) {
 
-                // BITTREX
-                case "bittrex":
+                if( rand() % 2 == 0) {
 
-                    // Initialize Bittrex API
-                    Bittrex::setAPI($user->settings()->get('bittrex_key'), $user->settings()->get('bittrex_secret'));
+                    // TESTING SUCCESS
+                    $onlineOrder = FakeOrder::success();    
 
-                    // Call to exchange API or a fakeOrder based on ENV->ORDERS_TEST
-                    if (env('ORDERS_TEST', true) == true) {
+                }
+                else {
 
-                        if( rand() % 2 == 0) {
+                    // TESTING FAIL
+                    $onlineOrder = FakeOrder::notClosed();
 
-                            // TESTING SUCCESS
-                            $onlineOrder = FakeOrder::success();    
+                }
+                
+            }
+            else {
 
-                        }
-                        else {
+                // GET ORDER
+                $broker = new Broker;
+                $broker->setUser($user);
+                $broker->setExchange($event->order->exchange);
+                $onlineOrder = $broker->getOrder($event->order->order_id);
+                
+            }
+            
 
-                            // TESTING FAIL
-                            $onlineOrder = FakeOrder::notClosed();
+            // Check for success on API call
+            if (! $onlineOrder->success) {
 
-                        }
+                // Log ERROR: Bittrex API returned error
+                Log::error("[TrackOrder] Bittrex API: " . $onlineOrder->message);
+
+                // Add delay before requeueing
+                sleep(env('FAILED_ORDER_DELAY', 5));
+
+                // Event: OrderNotCompleted
+                event(new OrderNotCompleted($event->order));
+                
+            }
+            else {
+
+                // If order is closed then update trade
+                if ( $onlineOrder->result->Closed != "" ) {
+
+                    switch ($event->order->type) {
+                        case 'open':
+
+                            // EVENT: OpenOrderCompleted
+                            event(new OpenOrderCompleted($event->order, $onlineOrder->result->PricePerUnit));
+                            break;
                         
-                    }
-                    else {
+                        case 'close':
 
-                        // Get order from Bittrex
-                        $onlineOrder = Bittrex::getOrder($event->order->order_id);
-                        
+                            // EVENT: CloseOrderCompleted
+                            event(new CloseOrderCompleted($event->order, $onlineOrder->result->PricePerUnit));
+                            break;
                     }
                     
+                }
+                else {
 
-                    // Check for success on API call
-                    if (! $onlineOrder->success) {
+                    // Add delay before requeueing
+                    sleep(env('ORDER_DELAY', 0));
 
-                        // Log ERROR: Bittrex API returned error
-                        Log::error("[TrackOrder] Bittrex API: " . $onlineOrder->message);
+                    // Event: OrderNotCompleted
+                    event(new OrderNotCompleted($event->order));
 
-                        // Add delay before requeueing
-                        sleep(env('FAILED_ORDER_DELAY', 5));
-
-                        // Event: OrderNotCompleted
-                        event(new OrderNotCompleted($event->order));
-                        
-                    }
-                    else {
-
-                        // If order is closed then update trade
-                        if ( $onlineOrder->result->Closed != "" ) {
-
-                            switch ($event->order->type) {
-                                case 'open':
-
-                                    // EVENT: OpenOrderCompleted
-                                    event(new OpenOrderCompleted($event->order, $onlineOrder->result->PricePerUnit));
-                                    break;
-                                
-                                case 'close':
-
-                                    // EVENT: CloseOrderCompleted
-                                    event(new CloseOrderCompleted($event->order, $onlineOrder->result->PricePerUnit));
-                                    break;
-                            }
-                            
-                        }
-                        else {
-
-                            // Add delay before requeueing
-                            sleep(env('ORDER_DELAY', 0));
-
-                            // Event: OrderNotCompleted
-                            event(new OrderNotCompleted($event->order));
-
-                        }
-                    } 
-                    break;
-            }
+                }
+            } 
 
         } catch (Exception $e) {
 

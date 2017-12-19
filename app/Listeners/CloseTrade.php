@@ -2,14 +2,15 @@
 
 namespace App\Listeners;
 
-
-use App\Events\TradeClosed;
-use App\Events\CloseOrderCompleted;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Log;
 
+use App\Events\TradeClosed;
+use App\Events\CloseOrderCompleted;
+
 use App\Notifications\TradeClosedNotification;
+
 use App\Stop;
 use App\Profit;
 use App\Trade;

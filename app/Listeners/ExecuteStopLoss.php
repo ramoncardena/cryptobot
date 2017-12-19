@@ -5,11 +5,14 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Log;
 
-use App\Library\FakeOrder;
-use App\Notifications\StopLossNotification;
 use App\Events\OrderLaunched;
 use App\Events\StopLossReached;
-use App\Library\Services\Facades\Bittrex;
+
+use App\Notifications\StopLossNotification;
+
+use App\Library\Services\Broker;
+use App\Library\FakeOrder;
+
 use App\Trade;
 use App\Stop;
 use App\Profit;
@@ -88,70 +91,65 @@ class ExecuteStopLoss
             // Get the user linked to the trade
             $user = User::find($this->trade['user_id']);
 
-            // Check exchange
-            if ($this->trade['exchange'] == 'bittrex') {
+            // Check for order type
+            if ($event->stopLoss->type == "sell") {
+            
+                if (env('ORDERS_TEST', true) == true) {
 
-                // Initialize Bittrex with user info
-                Bittrex::setAPI($user->settings()->get('bittrex_key'), $user->settings()->get('bittrex_secret'));
-                
-                // Check for order type
-                if ($event->stopLoss->type == "sell") {
-                
-                    if (env('ORDERS_TEST', true) == true) {
+                    // TESTING SUCCESS
+                    $order = FakeOrder::success();
 
-                        // TESTING SUCCESS
-                        $order = FakeOrder::success();
-
-                        // TESTING FAIL
-                        // $order = FakeOrder::fail();
-                        
-                    }
-                    else {
-
-                        // Launch Bittrex sell order with Pair, Amount and Price as parameters
-                        $order = Bittrex::sellLimit($this->trade['pair'], $this->trade['amount'], $this->last);
-                        
-                    }
-                    
-                    // Check for order success
-                    if ($order->success == true) {
-
-                        // If we get a success response we create an Order in our database to track
-                        $this->order = new Order;
-                        $this->order->user_id = $this->trade['user_id'];
-                        $this->order->trade_id = $this->trade['id'];
-                        $this->order->exchange = 'bittrex';
-                        $this->order->order_id = $order->result->uuid;
-                        $this->order->type = 'close';
-                        $this->order->save();
-
-                    }
-                    else {
-
-                        // Log ERROR: Bittrex API returned error
-                        Log::error("[ExecuteStopLoss] Bittrex API: " . $order->message);
-
-                    }
-
-                    // Event: OrderLaunched
-                    event(new OrderLaunched($this->order));
-
-                    // Destroy Stop
-                    Stop::destroy($event->stopLoss->id);
-
-                    // Log INFO: Order Launched
-                    Log::info("Order Launched: Stop-loss launched a SELL order (#" . $this->order->id .") at " . $this->last  . " for trade #" . $this->trade['id'] . " for the pair " . $this->trade['pair'] . " at " . $this->trade['exchange']);
-
-                    // NOTIFY: StopLoss
-                    User::find($this->trade['user_id'])->notify(new StopLossNotification($this->trade));
-
-                }
-                else if ($event->stopLoss->type == "buy") {
-
-                    // TODO next ver.
+                    // TESTING FAIL
+                    // $order = FakeOrder::fail();
                     
                 }
+                else {
 
+                    // SELL ORDER
+                    $broker = new Broker;
+                    $broker->setExchange($this->trade['exchange']);
+                    $broker->setUser($user);
+                    $order = $broker->sellLimit($this->trade['pair'], $this->trade['amount'], $this->last);
+                    
+                }
+                
+                // Check for order success
+                if ($order->success == true) {
+
+                    // If we get a success response we create an Order in our database to track
+                    $this->order = new Order;
+                    $this->order->user_id = $this->trade['user_id'];
+                    $this->order->trade_id = $this->trade['id'];
+                    $this->order->exchange = 'bittrex';
+                    $this->order->order_id = $order->result->uuid;
+                    $this->order->type = 'close';
+                    $this->order->save();
+
+                }
+                else {
+
+                    // Log ERROR: Bittrex API returned error
+                    Log::error("[ExecuteStopLoss] Bittrex API: " . $order->message);
+
+                }
+
+                // Event: OrderLaunched
+                event(new OrderLaunched($this->order));
+
+                // Destroy Stop
+                Stop::destroy($event->stopLoss->id);
+
+                // Log INFO: Order Launched
+                Log::info("Order Launched: Stop-loss launched a SELL order (#" . $this->order->id .") at " . $this->last  . " for trade #" . $this->trade['id'] . " for the pair " . $this->trade['pair'] . " at " . $this->trade['exchange']);
+
+                // NOTIFY: StopLoss
+                User::find($this->trade['user_id'])->notify(new StopLossNotification($this->trade));
+
+            }
+            else if ($event->stopLoss->type == "buy") {
+
+                // TODO next ver.
+                
             }
             
         } catch(Exception $e) {

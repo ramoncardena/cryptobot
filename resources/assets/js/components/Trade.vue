@@ -1,84 +1,34 @@
 <template>
-    <div class="trade">
-        <div class="grid-container fluid">
-            <div class="grid-x grid-margin-x align-middle">
-                <div class="small-6 medium-auto cell">
-                    <div :class="status">
-                        {{ status }}
-                    </div>
+        <tr>
+            <td></td>
+            <td v-if="history==false">
+                <div class="trade-cancel icons-area">
+                    <!-- <i v-show="updating" class="fa fa-cog fa-spin fa-fw loading-icon"></i>  -->
+                    <button class="clear button" v-if="tradeStatus=='Opened'" :data-open="'closeTrade' + id"><i class="fa fa-times cancel-icon"></i></button>
+                    <button class="clear button"  v-if="tradeStatus=='Waiting'" :data-open="'closeWaitingTrade' + id"><i class="fa fa-times cancel-icon"></i></button>
+                    <button class="clear button"  v-if="tradeStatus=='Opened'" :data-open="'keepTrade' + id"><i class="fa fa-chevron-circle-down" aria-hidden="true"></i></button>
+                    <button class="clear button"  v-if="tradeStatus=='Opened'" :data-open="'editTrade' + id"><i class="fa fa-pencil edit-icon" aria-hidden="true"></i></button>
+                    <button class="clear button" v-if="((tradeStatus=='Opened' || tradeStatus=='Waiting' || tradeStatus=='Closing' || tradeStatus=='Opening') && updating==false)" v-on:click="update(exchange, pair, price)"> <i class="fa fa-refresh refresh-icon"></i> </button>
+                    <button class="clear button" v-if="((tradeStatus=='Opened' || tradeStatus=='Waiting' || tradeStatus=='Closing' || tradeStatus=='Opening') && updating==true)"> <i class="fa fa-refresh fa-spin refresh-icon"></i></button> 
                 </div>
-
-                <div class="small-6 medium-auto cell">
-                    <div class="trade-exchange">
-                        {{ exchange }}
-                    </div>
-                </div>
-
-                <div class="small-6 medium-auto cell">
-                    <div class="trade-type">
-                        {{ position }}
-                    </div>
-                </div>
-
-                <div class="small-6 medium-auto cell">
-                    <div class="trade-limit">
-                       {{ pair }}
-                    </div>
-                </div>
-
-                <div class="small-6 medium-auto cell">
-                    <div class="trade-quantity">
-                        {{ price }}
-                    </div>
-                </div>
-
-                <div class="small-6 medium-auto cell">
-                    <div class="trade-reamining">
-                        {{ amount }}
-                    </div>
-                </div>
-
-                <div  class="small-6 medium-auto cell">
-                    <div class="trade-limit">
-                       {{ total }}
-                   </div>
-               </div>
-
-               <div class="small-6 medium-auto cell">
-                    <div class="trade-limit">
-                       {{ stopLoss }}
-                   </div>
-               </div>
-
-               <div class="small-6 medium-auto cell">
-                    <div class="trade-limit">
-                       {{ takeProfit }}
-                   </div>
-               </div>
-
-               <div class="small-6 medium-auto cell">
-                    <div v-model="last" class="trade-limit">
-                       {{ last }}
-                   </div>
-               </div>
-
-               <div class="small-6 medium-auto cell">
-                    <div v-model="profit" class="trade-limit">
-                       {{ profit }}
-                   </div>
-               </div>
-
-               <div class="small-6 medium-auto cell">
-                    <div v-show="opened" class="trade-cancel icons-area">
-                        <i v-show="updating" class="fa fa-cog fa-spin fa-fw"></i> 
-                        <i v-show="!updating" class="fa fa-times cancel-icon" aria-hidden="true"></i>
-                        <i v-on:click="update(exchange, pair, price)" class="fa fa-refresh refresh-icon" aria-hidden="true"></i>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
+            </td>
+            <td>{{ (history==true) ? parseFloat(finalProfit).toFixed(2) + '%' : profit }}</td>
+            <td>{{ pair }}</td>
+            <td class="sorting_1  trade-status"><span :class="'status-' + tradeStatus" v-model="tradeStatus">{{ tradeStatus }}</span></td>
+            <td>{{ exchange }}</td>
+            <td>{{ position }}</td>
+            <td>{{ last.toFixed(8) }}</td>
+            <td>{{ parseFloat(price).toFixed(8) }}</td>
+            <td>{{ parseFloat(closingPrice).toFixed(8) }}</td>
+            <td>{{ parseFloat(amount).toFixed(4) }}</td>
+            <td>{{ parseFloat(total).toFixed(8) }}</td>
+            <td>{{ parseFloat(stopLoss).toFixed(8) }}</td>
+            <td>{{ parseFloat(takeProfit).toFixed(8) }}</td>
+            <td>{{ (condition == 'now') ? 'none' : condition + ' than' }} </td>
+            <td> {{ parseFloat(conditionPrice).toFixed(8) }}</td>
+            <td> {{ date }}</td>
+        </tr>
+        
 </template>
 
    <script>
@@ -88,7 +38,8 @@
         return {
             updating: false,
             profit: 0,
-            last: 0
+            last: 0,
+            tradeStatus: ""
         }
     },
     props: [
@@ -101,19 +52,46 @@
     'total', 
     'stop-loss',
     'take-profit',
+    'condition',
+    'condition-price',
+    "final-profit",
+    "type",
+    "closing-price",
+    "timestamp",
+    "id"
     ],
     computed: {
-        opened: function() {
-            if (this.status == "Opened") {
+        history: function() {
+            if (this.type == "history") {
                 return true;
             }
             else {
                 return false;
             }
+        },
+        date: function() {
+            let fullDate = new Date(this.timestamp);
+            return fullDate.getDate() + "/" + (fullDate.getMonth()+1) + "/" + fullDate.getFullYear();
         }
     },
     mounted() {
-        this.update(this.exchange, this.pair, this.price);
+        this.tradeStatus = this.status;
+        this.update(this.exchange, this.pair, this.price); 
+
+        Echo.private('trades.' + this.id)
+        .listen('TradeOpened', (e) => {
+            console.log('New status: ' + e.trade.status);
+            this.tradeStatus = e.trade.status;
+        })
+        .listen('TradeClosed', (e) => {
+            console.log('New status: ' + e.trade.status);
+            this.tradeStatus = e.trade.status;
+        })
+        .listen('TradeCancelled', (e) => {
+            console.log('New status: ' + e.trade.status);
+            this.tradeStatus = e.trade.status;
+        });;
+
         console.log('Component Trade mounted.');
     },
     methods: {
@@ -132,7 +110,7 @@
                     // Calculate percentual diference
                     let decreaseValue = this.last - price;
                     decreaseValue = (decreaseValue / price) * 100;
-                    this.profit = decreaseValue.toFixed(2).toString() + "%";
+                    this.profit = decreaseValue.toFixed(2) + "%";
 
                     this.updating = false;
                     //console.log("Last: " + this.last + " - " + (decreaseValue / price) * 100);
@@ -143,6 +121,7 @@
                 })
             }
         }
+
     }
 }
 </script>

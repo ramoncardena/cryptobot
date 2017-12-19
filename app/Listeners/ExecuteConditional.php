@@ -2,21 +2,24 @@
 
 namespace App\Listeners;
 
-use App\Events\OrderLaunched;
-use App\Events\ConditionReached;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Log;
 
+use App\Events\OrderLaunched;
+use App\Events\ConditionReached;
+
 use App\Notifications\ConditionalNotification;
+
+use App\Library\Services\Broker;
 use App\Library\FakeOrder;
+
 use App\User;
 use App\Conditional;
 use App\Trade;
 use App\Stop;
 use App\Profit;
 use App\Order;
-use App\Library\Services\Facades\Bittrex;
 
 class ExecuteConditional
 {
@@ -109,66 +112,57 @@ class ExecuteConditional
         // Get the current user
         $user = User::find($trade->user_id);
 
-        // Select Exchange
-        switch ($trade->exchange) {
+        // Call to exchange API or a fakeOrder based on ENV->ORDERS_TEST
+        if ( env('ORDERS_TEST', true) == true ) {
 
-            // BITTREX
-            case 'bittrex':
+            // TESTING SUCCESS
+            $order = FakeOrder::success();
 
-                // Initialize Bittrex with user info
-                Bittrex::setAPI($user->settings()->get('bittrex_key'), $user->settings()->get('bittrex_secret'));
+            // TESTING FAIL
+            // $order = FakeOrder::fail();
+            
+        }
+        else {
 
-                // Call to exchange API or a fakeOrder based on ENV->ORDERS_TEST
-                if ( env('ORDERS_TEST', true) == true ) {
-
-                    // TESTING SUCCESS
-                    $order = FakeOrder::success();
-
-                    // TESTING FAIL
-                    // $order = FakeOrder::fail();
-                    
-                }
-                else {
-
-                    // Launch Bittrex sell order with Pair, Amount and Price as parameters
-                    $order = Bittrex::buyLimit($trade->pair, $trade->amount, $price);
-                    
-                }
+            // BUY ORDER
+            $broker = new Broker;
+            $broker->setExchange($trade->exchange);
+            $broker->setUser($user);
+            $order = $broker->buyLimit($trade->pair, $trade->amount, $price);
+            
+        }
 
 
-                // Check for order success
-                if ($order->success == true) {
+        // Check for order success
+        if ($order->success == true) {
 
-                    // Save exchange order id in the trade
-                    $this->trade->order_id = $order->result->uuid;
-                    $this->trade->save();
+            // Save exchange order id in the trade
+            $this->trade->order_id = $order->result->uuid;
+            $this->trade->save();
 
-                    // If we get a success response we create an Order in our database to track
-                    $orderToTrack = new Order;
-                    $orderToTrack->user_id = $this->trade->user_id;
-                    $orderToTrack->trade_id = $this->trade->id;
-                    $orderToTrack->exchange = $this->trade->exchange;
-                    $orderToTrack->order_id = $this->trade->order_id;
-                    $orderToTrack->type = 'open';
-                    $orderToTrack->save();
+            // If we get a success response we create an Order in our database to track
+            $orderToTrack = new Order;
+            $orderToTrack->user_id = $this->trade->user_id;
+            $orderToTrack->trade_id = $this->trade->id;
+            $orderToTrack->exchange = $this->trade->exchange;
+            $orderToTrack->order_id = $this->trade->order_id;
+            $orderToTrack->type = 'open';
+            $orderToTrack->save();
 
-                    // EVENT: OrderLaunched
-                    event(new OrderLaunched($orderToTrack));
+            // EVENT: OrderLaunched
+            event(new OrderLaunched($orderToTrack));
 
-                    // Return success if create order succeed
-                    return ['status' => 'success', 'order_id' => $orderToTrack->order_id, 'stop_id' => $stopLoss->id, 'profit_id' => $takeProfit->id];
+            // Return success if create order succeed
+            return ['status' => 'success', 'order_id' => $orderToTrack->order_id, 'stop_id' => $stopLoss->id, 'profit_id' => $takeProfit->id];
 
-                }
-                else {
-                    // If order fails set trade status as 'Aborted'
-                    $trade->status = "Aborted";
-                    $trade->save();
-                    
-                    return ['status' => 'fail', 'message' => $order->message];
+        }
+        else {
+            // If order fails set trade status as 'Aborted'
+            $trade->status = "Aborted";
+            $trade->save();
+            
+            return ['status' => 'fail', 'message' => $order->message];
 
-                }
-
-                break;
         }
     }
 }

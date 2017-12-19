@@ -49,14 +49,14 @@
                             <li class="accordion-item is-active" data-accordion-item>
                                 <a href="#" class="accordion-title  text-center">Active Trades</a>
                                 <div class="accordion-content" data-tab-content >
-                                    <tradelist4 :validation-errors="{{ $errors }}" type="opened" :trades="{{ $tradesActive }}"></tradelist4>
+                                    <tradelist :validation-errors="{{ $errors }}" type="opened" :trades="{{ $tradesActive }}"></tradelist>
                                 </div>
                             </li>
 
                             <li class="accordion-item is-active" data-accordion-item>
                                 <a href="#" class="accordion-title text-center">Trade History</a>
                                 <div class="accordion-content" data-tab-content >
-                                    <tradelist4 :validation-errors="{{ $errors }}" type="history" :trades="{{ $tradesHistory }}"></tradelist4>
+                                    <tradelist :validation-errors="{{ $errors }}" type="history" :trades="{{ $tradesHistory }}"></tradelist>
                                 </div>
                             </li>
                         </ul>

@@ -27098,13 +27098,7 @@ Vue.component('passport-personal-access-tokens', __webpack_require__(59));
 Vue.component('balance', __webpack_require__(64));
 Vue.component('order', __webpack_require__(67));
 Vue.component('trade', __webpack_require__(70));
-Vue.component('trade2', __webpack_require__(73));
-Vue.component('trade3', __webpack_require__(76));
-Vue.component('trade4', __webpack_require__(79));
 Vue.component('tradelist', __webpack_require__(82));
-Vue.component('tradelist2', __webpack_require__(85));
-Vue.component('tradelist3', __webpack_require__(88));
-Vue.component('tradelist4', __webpack_require__(91));
 Vue.component('tradepanel', __webpack_require__(94));
 Vue.component('notification-list', __webpack_require__(97));
 
@@ -78894,1014 +78888,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'trade',
-    data: function data() {
-        return {
-            updating: false,
-            profit: 0,
-            last: 0
-        };
-    },
-    props: ['status', 'exchange', 'position', 'pair', 'price', 'amount', 'total', 'stop-loss', 'take-profit'],
-    computed: {
-        opened: function opened() {
-            if (this.status == "Opened") {
-                return true;
-            } else {
-                return false;
-            }
-        }
-    },
-    mounted: function mounted() {
-        this.update(this.exchange, this.pair, this.price);
-        console.log('Component Trade mounted.');
-    },
-
-    methods: {
-        update: function update(exchange, pair, price) {
-            var _this = this;
-
-            var percent = 0;
-            this.updating = true;
-            if (exchange.toLowerCase() == 'bittrex') {
-                var uri = '/api/bittrexapi/getmarketsummary/' + pair;
-                axios(uri, {
-                    method: 'GET'
-                }).then(function (response) {
-                    _this.marketsummary = response.data[0];
-                    _this.last = _this.marketsummary.Last;
-
-                    // Calculate percentual diference
-                    var decreaseValue = _this.last - price;
-                    decreaseValue = decreaseValue / price * 100;
-                    _this.profit = decreaseValue.toFixed(2).toString() + "%";
-
-                    _this.updating = false;
-                    //console.log("Last: " + this.last + " - " + (decreaseValue / price) * 100);
-                }).catch(function (e) {
-                    _this.updating = false;
-                    console.log("Error: " + e.message);
-                });
-            }
-        }
-    }
-});
-
-/***/ }),
-/* 72 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "trade" }, [
-    _c("div", { staticClass: "grid-container fluid" }, [
-      _c("div", { staticClass: "grid-x grid-margin-x align-middle" }, [
-        _c("div", { staticClass: "small-6 medium-auto cell" }, [
-          _c("div", { class: _vm.status }, [
-            _vm._v(
-              "\n                    " +
-                _vm._s(_vm.status) +
-                "\n                "
-            )
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "small-6 medium-auto cell" }, [
-          _c("div", { staticClass: "trade-exchange" }, [
-            _vm._v(
-              "\n                    " +
-                _vm._s(_vm.exchange) +
-                "\n                "
-            )
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "small-6 medium-auto cell" }, [
-          _c("div", { staticClass: "trade-type" }, [
-            _vm._v(
-              "\n                    " +
-                _vm._s(_vm.position) +
-                "\n                "
-            )
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "small-6 medium-auto cell" }, [
-          _c("div", { staticClass: "trade-limit" }, [
-            _vm._v(
-              "\n                   " + _vm._s(_vm.pair) + "\n                "
-            )
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "small-6 medium-auto cell" }, [
-          _c("div", { staticClass: "trade-quantity" }, [
-            _vm._v(
-              "\n                    " +
-                _vm._s(_vm.price) +
-                "\n                "
-            )
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "small-6 medium-auto cell" }, [
-          _c("div", { staticClass: "trade-reamining" }, [
-            _vm._v(
-              "\n                    " +
-                _vm._s(_vm.amount) +
-                "\n                "
-            )
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "small-6 medium-auto cell" }, [
-          _c("div", { staticClass: "trade-limit" }, [
-            _vm._v(
-              "\n                   " + _vm._s(_vm.total) + "\n               "
-            )
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "small-6 medium-auto cell" }, [
-          _c("div", { staticClass: "trade-limit" }, [
-            _vm._v(
-              "\n                   " +
-                _vm._s(_vm.stopLoss) +
-                "\n               "
-            )
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "small-6 medium-auto cell" }, [
-          _c("div", { staticClass: "trade-limit" }, [
-            _vm._v(
-              "\n                   " +
-                _vm._s(_vm.takeProfit) +
-                "\n               "
-            )
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "small-6 medium-auto cell" }, [
-          _c(
-            "div",
-            {
-              staticClass: "trade-limit",
-              model: {
-                value: _vm.last,
-                callback: function($$v) {
-                  _vm.last = $$v
-                },
-                expression: "last"
-              }
-            },
-            [
-              _vm._v(
-                "\n                   " + _vm._s(_vm.last) + "\n               "
-              )
-            ]
-          )
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "small-6 medium-auto cell" }, [
-          _c(
-            "div",
-            {
-              staticClass: "trade-limit",
-              model: {
-                value: _vm.profit,
-                callback: function($$v) {
-                  _vm.profit = $$v
-                },
-                expression: "profit"
-              }
-            },
-            [
-              _vm._v(
-                "\n                   " +
-                  _vm._s(_vm.profit) +
-                  "\n               "
-              )
-            ]
-          )
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "small-6 medium-auto cell" }, [
-          _c(
-            "div",
-            {
-              directives: [
-                {
-                  name: "show",
-                  rawName: "v-show",
-                  value: _vm.opened,
-                  expression: "opened"
-                }
-              ],
-              staticClass: "trade-cancel icons-area"
-            },
-            [
-              _c("i", {
-                directives: [
-                  {
-                    name: "show",
-                    rawName: "v-show",
-                    value: _vm.updating,
-                    expression: "updating"
-                  }
-                ],
-                staticClass: "fa fa-cog fa-spin fa-fw"
-              }),
-              _vm._v(" "),
-              _c("i", {
-                directives: [
-                  {
-                    name: "show",
-                    rawName: "v-show",
-                    value: !_vm.updating,
-                    expression: "!updating"
-                  }
-                ],
-                staticClass: "fa fa-times cancel-icon",
-                attrs: { "aria-hidden": "true" }
-              }),
-              _vm._v(" "),
-              _c("i", {
-                staticClass: "fa fa-refresh refresh-icon",
-                attrs: { "aria-hidden": "true" },
-                on: {
-                  click: function($event) {
-                    _vm.update(_vm.exchange, _vm.pair, _vm.price)
-                  }
-                }
-              })
-            ]
-          )
-        ])
-      ])
-    ])
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-744527bd", module.exports)
-  }
-}
-
-/***/ }),
-/* 73 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(0)
-/* script */
-var __vue_script__ = __webpack_require__(74)
-/* template */
-var __vue_template__ = __webpack_require__(75)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/Trade2.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-14777945", Component.options)
-  } else {
-    hotAPI.reload("data-v-14777945", Component.options)
-' + '  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 74 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    name: 'trade2',
-    data: function data() {
-        return {
-            updating: false,
-            profit: 0,
-            last: 0
-        };
-    },
-    props: ['status', 'exchange', 'position', 'pair', 'price', 'amount', 'total', 'stop-loss', 'take-profit', 'condition', 'condition-price', "final-profit", "type", "closing-price", "timestamp", "id"],
-    computed: {
-        opened: function opened() {
-            if (this.status == "Opened") {
-                return true;
-            } else {
-                return false;
-            }
-        },
-        waiting: function waiting() {
-            if (this.status == "Waiting") {
-                return true;
-            } else {
-                return false;
-            }
-        },
-        closing: function closing() {
-            if (this.status == "Closing") {
-                return true;
-            } else {
-                return false;
-            }
-        },
-        opening: function opening() {
-            if (this.status == "Opening") {
-                return true;
-            } else {
-                return false;
-            }
-        },
-        history: function history() {
-            if (this.type == "history") {
-                return true;
-            } else {
-                return false;
-            }
-        },
-        date: function date() {
-            var fullDate = new Date(this.timestamp);
-            return fullDate.getDate() + "/" + (fullDate.getMonth() + 1) + "/" + fullDate.getFullYear();
-        }
-    },
-    mounted: function mounted() {
-        this.update(this.exchange, this.pair, this.price);
-        console.log('Component Trade mounted.');
-    },
-
-    methods: {
-        update: function update(exchange, pair, price) {
-            var _this = this;
-
-            var percent = 0;
-            this.updating = true;
-            if (exchange.toLowerCase() == 'bittrex') {
-                var uri = '/api/bittrexapi/getmarketsummary/' + pair;
-                axios(uri, {
-                    method: 'GET'
-                }).then(function (response) {
-                    _this.marketsummary = response.data[0];
-                    _this.last = _this.marketsummary.Last;
-
-                    // Calculate percentual diference
-                    var decreaseValue = _this.last - price;
-                    decreaseValue = decreaseValue / price * 100;
-                    _this.profit = decreaseValue.toFixed(2) + "%";
-
-                    _this.updating = false;
-                    //console.log("Last: " + this.last + " - " + (decreaseValue / price) * 100);
-                }).catch(function (e) {
-                    _this.updating = false;
-                    console.log("Error: " + e.message);
-                });
-            }
-        }
-    }
-});
-
-/***/ }),
-/* 75 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("tr", { staticClass: "mytr" }, [
-    _c("td"),
-    _vm._v(" "),
-    _c("td", [
-      _c(
-        "div",
-        {
-          directives: [
-            {
-              name: "show",
-              rawName: "v-show",
-              value: _vm.opened || _vm.waiting,
-              expression: "opened || waiting"
-            }
-          ],
-          staticClass: "trade-cancel icons-area"
-        },
-        [
-          _c("i", {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.updating,
-                expression: "updating"
-              }
-            ],
-            staticClass: "fa fa-cog fa-spin fa-fw"
-          }),
-          _vm._v(" "),
-          _c(
-            "button",
-            {
-              directives: [
-                {
-                  name: "show",
-                  rawName: "v-show",
-                  value: _vm.opened,
-                  expression: "opened"
-                }
-              ],
-              staticClass: "clear button",
-              attrs: { "data-open": "closeTrade" + _vm.id }
-            },
-            [
-              _c("i", {
-                directives: [
-                  {
-                    name: "show",
-                    rawName: "v-show",
-                    value: !_vm.updating,
-                    expression: "!updating"
-                  }
-                ],
-                staticClass: "fa fa-times cancel-icon"
-              })
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "button",
-            {
-              directives: [
-                {
-                  name: "show",
-                  rawName: "v-show",
-                  value: _vm.waiting,
-                  expression: "waiting"
-                }
-              ],
-              staticClass: "clear button",
-              attrs: { "data-open": "closeWaitingTrade" + _vm.id }
-            },
-            [
-              _c("i", {
-                directives: [
-                  {
-                    name: "show",
-                    rawName: "v-show",
-                    value: !_vm.updating,
-                    expression: "!updating"
-                  }
-                ],
-                staticClass: "fa fa-times cancel-icon"
-              })
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "button",
-            {
-              directives: [
-                {
-                  name: "show",
-                  rawName: "v-show",
-                  value: _vm.opened,
-                  expression: "opened"
-                }
-              ],
-              staticClass: "clear button",
-              attrs: { "data-open": "editTrade" + _vm.id }
-            },
-            [
-              _c("i", {
-                staticClass: "fa fa-pencil",
-                attrs: { "aria-hidden": "true" }
-              })
-            ]
-          ),
-          _vm._v(" "),
-          _vm.opened == true ||
-          _vm.waiting == true ||
-          _vm.closing == true ||
-          _vm.opening == true
-            ? _c("i", {
-                staticClass: "fa fa-refresh refresh-icon",
-                on: {
-                  click: function($event) {
-                    _vm.update(_vm.exchange, _vm.pair, _vm.price)
-                  }
-                }
-              })
-            : _vm._e()
-        ]
-      )
-    ]),
-    _vm._v(" "),
-    _vm.opened == true ||
-    _vm.history == true ||
-    _vm.closing == true ||
-    _vm.opening == true
-      ? _c("td", [
-          _vm._v(
-            _vm._s(
-              _vm.history == true
-                ? parseFloat(_vm.finalProfit).toFixed(2) + "%"
-                : _vm.profit
-            )
-          )
-        ])
-      : _vm._e(),
-    _vm._v(" "),
-    _c("td", [_vm._v(_vm._s(_vm.pair))]),
-    _vm._v(" "),
-    _c("td", { staticClass: "sorting_1  trade-status" }, [
-      _vm._v(_vm._s(_vm.status))
-    ]),
-    _vm._v(" "),
-    _c("td", [_vm._v(_vm._s(_vm.exchange))]),
-    _vm._v(" "),
-    _c("td", [_vm._v(_vm._s(_vm.position))]),
-    _vm._v(" "),
-    _c("td", [_vm._v(_vm._s(parseFloat(_vm.price).toFixed(8)))]),
-    _vm._v(" "),
-    _vm.history == false
-      ? _c("td", [_vm._v(_vm._s(_vm.last.toFixed(8)))])
-      : _vm._e(),
-    _vm._v(" "),
-    _vm.history == true
-      ? _c("td", [_vm._v(_vm._s(parseFloat(_vm.closingPrice).toFixed(8)))])
-      : _vm._e(),
-    _vm._v(" "),
-    _c("td", [_vm._v(_vm._s(parseFloat(_vm.amount).toFixed(4)))]),
-    _vm._v(" "),
-    _c("td", [_vm._v(_vm._s(parseFloat(_vm.total).toFixed(8)))]),
-    _vm._v(" "),
-    _c("td", [_vm._v(_vm._s(parseFloat(_vm.stopLoss).toFixed(8)))]),
-    _vm._v(" "),
-    _c("td", [_vm._v(_vm._s(parseFloat(_vm.takeProfit).toFixed(8)))]),
-    _vm._v(" "),
-    _c("td", [
-      _vm._v(
-        _vm._s(_vm.condition == "now" ? "none" : _vm.condition + " than") + " "
-      )
-    ]),
-    _vm._v(" "),
-    _c("td", [_vm._v(" " + _vm._s(parseFloat(_vm.conditionPrice).toFixed(8)))]),
-    _vm._v(" "),
-    _c("td", [_vm._v(" " + _vm._s(_vm.date))])
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-14777945", module.exports)
-  }
-}
-
-/***/ }),
-/* 76 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(0)
-/* script */
-var __vue_script__ = __webpack_require__(77)
-/* template */
-var __vue_template__ = __webpack_require__(78)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/Trade3.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-148590c6", Component.options)
-  } else {
-    hotAPI.reload("data-v-148590c6", Component.options)
-' + '  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 77 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    name: 'trade3',
-    data: function data() {
-        return {
-            updating: false,
-            profit: 0,
-            last: 0
-        };
-    },
-    props: ['status', 'exchange', 'position', 'pair', 'price', 'amount', 'total', 'stop-loss', 'take-profit'],
-    computed: {
-        opened: function opened() {
-            if (this.status == "Opened") {
-                return true;
-            } else {
-                return false;
-            }
-        },
-        waiting: function waiting() {
-            if (this.status == "Waiting") {
-                return true;
-            } else {
-                return false;
-            }
-        }
-    },
-    mounted: function mounted() {
-        this.update(this.exchange, this.pair, this.price);
-        console.log('Component Trade mounted.');
-    },
-
-    methods: {
-        update: function update(exchange, pair, price) {
-            var _this = this;
-
-            var percent = 0;
-            this.updating = true;
-            if (exchange.toLowerCase() == 'bittrex') {
-                var uri = '/api/bittrexapi/getmarketsummary/' + pair;
-                axios(uri, {
-                    method: 'GET'
-                }).then(function (response) {
-                    _this.marketsummary = response.data[0];
-                    _this.last = _this.marketsummary.Last;
-
-                    // Calculate percentual diference
-                    var decreaseValue = _this.last - price;
-                    decreaseValue = decreaseValue / price * 100;
-                    _this.profit = decreaseValue.toFixed(2).toString() + "%";
-
-                    _this.updating = false;
-                    //console.log("Last: " + this.last + " - " + (decreaseValue / price) * 100);
-                }).catch(function (e) {
-                    _this.updating = false;
-                    console.log("Error: " + e.message);
-                });
-            }
-        }
-    }
-});
-
-/***/ }),
-/* 78 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("tr", { attrs: { role: "row" } }, [
-    _c("td", [
-      _c(
-        "div",
-        {
-          directives: [
-            {
-              name: "show",
-              rawName: "v-show",
-              value: _vm.opened || _vm.waiting,
-              expression: "opened || waiting"
-            }
-          ],
-          staticClass: "trade-cancel icons-area"
-        },
-        [
-          _c("i", {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.updating && !_vm.waiting,
-                expression: "updating && !waiting"
-              }
-            ],
-            staticClass: "fa fa-cog fa-spin fa-fw"
-          }),
-          _vm._v(" "),
-          _c("i", {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: !_vm.updating,
-                expression: "!updating"
-              }
-            ],
-            staticClass: "fa fa-times cancel-icon"
-          }),
-          _vm._v(" "),
-          _vm.opened == true
-            ? _c("i", {
-                staticClass: "fa fa-refresh refresh-icon",
-                on: {
-                  click: function($event) {
-                    _vm.update(_vm.exchange, _vm.pair, _vm.price)
-                  }
-                }
-              })
-            : _vm._e()
-        ]
-      )
-    ]),
-    _vm._v(" "),
-    _vm.opened == true ? _c("td", [_vm._v(_vm._s(_vm.profit))]) : _vm._e(),
-    _vm._v(" "),
-    _c("td", [_vm._v(_vm._s(_vm.pair))]),
-    _vm._v(" "),
-    _c("td", { staticClass: "sorting_1  trade-status" }, [
-      _vm._v(_vm._s(_vm.status))
-    ]),
-    _vm._v(" "),
-    _c("td", [_vm._v(_vm._s(_vm.exchange))]),
-    _vm._v(" "),
-    _c("td", [_vm._v(_vm._s(_vm.position))]),
-    _vm._v(" "),
-    _c("td", [_vm._v(_vm._s(_vm.price))]),
-    _vm._v(" "),
-    _c("td", [_vm._v(_vm._s(_vm.last.toFixed(8)))]),
-    _vm._v(" "),
-    _c("td", [_vm._v(_vm._s(_vm.amount))]),
-    _vm._v(" "),
-    _c("td", [_vm._v(_vm._s(_vm.total))]),
-    _vm._v(" "),
-    _c("td", [_vm._v(_vm._s(_vm.stopLoss))]),
-    _vm._v(" "),
-    _c("td", [_vm._v(_vm._s(_vm.takeProfit))])
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-148590c6", module.exports)
-  }
-}
-
-/***/ }),
-/* 79 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(0)
-/* script */
-var __vue_script__ = __webpack_require__(80)
-/* template */
-var __vue_template__ = __webpack_require__(81)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/Trade4.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-1493a847", Component.options)
-  } else {
-    hotAPI.reload("data-v-1493a847", Component.options)
-' + '  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 80 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    name: 'trade4',
     data: function data() {
         return {
             updating: false,
@@ -79975,7 +78964,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 81 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -80015,6 +79004,22 @@ var render = function() {
                   "button",
                   {
                     staticClass: "clear button",
+                    attrs: { "data-open": "keepTrade" + _vm.id }
+                  },
+                  [
+                    _c("i", {
+                      staticClass: "fa fa-chevron-circle-down",
+                      attrs: { "aria-hidden": "true" }
+                    })
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.tradeStatus == "Opened"
+              ? _c(
+                  "button",
+                  {
+                    staticClass: "clear button",
                     attrs: { "data-open": "editTrade" + _vm.id }
                   },
                   [
@@ -80031,14 +79036,18 @@ var render = function() {
               _vm.tradeStatus == "Closing" ||
               _vm.tradeStatus == "Opening") &&
             _vm.updating == false
-              ? _c("i", {
-                  staticClass: "fa fa-refresh refresh-icon",
-                  on: {
-                    click: function($event) {
-                      _vm.update(_vm.exchange, _vm.pair, _vm.price)
+              ? _c(
+                  "button",
+                  {
+                    staticClass: "clear button",
+                    on: {
+                      click: function($event) {
+                        _vm.update(_vm.exchange, _vm.pair, _vm.price)
+                      }
                     }
-                  }
-                })
+                  },
+                  [_c("i", { staticClass: "fa fa-refresh refresh-icon" })]
+                )
               : _vm._e(),
             _vm._v(" "),
             (_vm.tradeStatus == "Opened" ||
@@ -80046,7 +79055,9 @@ var render = function() {
               _vm.tradeStatus == "Closing" ||
               _vm.tradeStatus == "Opening") &&
             _vm.updating == true
-              ? _c("i", { staticClass: "fa fa-refresh fa-spin refresh-icon" })
+              ? _c("button", { staticClass: "clear button" }, [
+                  _c("i", { staticClass: "fa fa-refresh fa-spin refresh-icon" })
+                ])
               : _vm._e()
           ])
         ])
@@ -80116,11 +79127,20 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-1493a847", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-744527bd", module.exports)
   }
 }
 
 /***/ }),
+/* 73 */,
+/* 74 */,
+/* 75 */,
+/* 76 */,
+/* 77 */,
+/* 78 */,
+/* 79 */,
+/* 80 */,
+/* 81 */,
 /* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -80256,2236 +79276,185 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'tradelist',
-    props: ['type', 'trades'],
-    data: function data() {
-        return {};
-    },
-    computed: {
-        opened: function opened() {
-            if (this.type == "opened") {
-                return true;
-            } else {
-                return false;
-            }
-        }
-    },
-    mounted: function mounted() {
-        console.log('Component TradeList mounted.');
-    },
-
-    methods: {}
-});
-
-/***/ }),
-/* 84 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "trade-list" },
-    [
-      _vm._m(0, false, false),
-      _vm._v(" "),
-      _vm._l(_vm.trades, function(trade) {
-        return _c("trade", {
-          key: trade.id,
-          attrs: {
-            status: trade.status,
-            exchange: trade.exchange,
-            position: trade.position,
-            pair: trade.pair,
-            price: trade.price,
-            amount: trade.amount,
-            total: trade.total,
-            "stop-loss": trade.stop_loss,
-            "take-profit": trade.take_profit
-          }
-        })
-      })
-    ],
-    2
-  )
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "trade" }, [
-      _c("div", { staticClass: "grid-container fluid" }, [
-        _c("div", { staticClass: "grid-x grid-margin-x align-middle" }, [
-          _c("div", { staticClass: "small-6 medium-auto cell" }, [
-            _c("div", { staticClass: "trade-title" }, [
-              _vm._v("\n                        Status\n                    ")
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "small-6 medium-auto cell" }, [
-            _c("div", { staticClass: "trade-title" }, [
-              _vm._v("\n                        Exchange\n                    ")
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "small-6 medium-auto cell" }, [
-            _c("div", { staticClass: "trade-title" }, [
-              _vm._v("\n                        Position\n                    ")
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "small-6 medium-auto cell" }, [
-            _c("div", { staticClass: "trade-title" }, [
-              _vm._v("\n                        Pair\n                    ")
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "small-6 medium-auto cell" }, [
-            _c("div", { staticClass: "trade-title" }, [
-              _vm._v("\n                        Price\n                    ")
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "small-6 medium-auto cell" }, [
-            _c("div", { staticClass: "trade-title" }, [
-              _vm._v("\n                        Ammount\n                    ")
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "small-6 medium-auto cell" }, [
-            _c("div", { staticClass: "trade-title" }, [
-              _vm._v("\n                        Total\n                    ")
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "small-6 medium-auto cell" }, [
-            _c("div", { staticClass: "trade-title" }, [
-              _vm._v(
-                "\n                        Stop-Loss\n                    "
-              )
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "small-6 medium-auto cell" }, [
-            _c("div", { staticClass: "trade-title" }, [
-              _vm._v(
-                "\n                       Take-Profit\n                    "
-              )
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "small-6 medium-auto cell" }, [
-            _c("div", { staticClass: "trade-title" }, [
-              _vm._v("\n                       Last\n                    ")
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "small-6 medium-auto cell" }, [
-            _c("div", { staticClass: "trade-title" }, [
-              _vm._v("\n                       P/L (%)\n                    ")
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "small-6 medium-auto cell" })
-        ])
-      ])
-    ])
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-73f3a2fb", module.exports)
-  }
-}
-
-/***/ }),
-/* 85 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(0)
-/* script */
-var __vue_script__ = __webpack_require__(86)
-/* template */
-var __vue_template__ = __webpack_require__(87)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/TradeList2.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-0a9865c7", Component.options)
-  } else {
-    hotAPI.reload("data-v-0a9865c7", Component.options)
-' + '  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 86 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    name: 'tradelist2',
-    props: ['type', 'trades'],
-    data: function data() {
-        return {
-            loadingprice: false,
-            updating: false,
-            profit: 0,
-            marketsummary: [],
-            exchange: "",
-            priceselected: "",
-            closingprice: 0.0000000,
-            last: 0.00000000,
-            bid: 0.00000000,
-            ask: 0.00000000,
-            high: 0.00000000,
-            low: 0.00000000,
-            stoploss: 0,
-            takeprofit: 0
-        };
-    },
-    computed: {
-        opened: function opened() {
-            if (this.type == "opened") {
-                return true;
-            } else {
-                return false;
-            }
-        },
-        waiting: function waiting() {
-            if (this.type == "waiting") {
-                return true;
-            } else {
-                return false;
-            }
-        },
-        opening: function opening() {
-            if (this.type == "opening") {
-                return true;
-            } else {
-                return false;
-            }
-        },
-        closing: function closing() {
-            if (this.type == "closing") {
-                return true;
-            } else {
-                return false;
-            }
-        },
-        history: function history() {
-            if (this.type == "history") {
-                return true;
-            } else {
-                return false;
-            }
-        }
-    },
-    mounted: function mounted() {
-        console.log('Component TradeList mounted.');
-    },
-
-    methods: {
-        loadinfo: function loadinfo(exchange, pair) {
-            var _this = this;
-
-            this.loadingprice = true;
-
-            if (exchange.toLowerCase() == 'bittrex') {
-                var uri = '/api/bittrexapi/getmarketsummary/' + pair;
-                axios(uri, {
-                    method: 'GET'
-                }).then(function (response) {
-                    _this.marketsummary = response.data[0];
-                    _this.last = parseFloat(_this.marketsummary.Last);
-                    _this.bid = parseFloat(_this.marketsummary.Bid);
-                    _this.ask = parseFloat(_this.marketsummary.Ask);
-                    _this.high = parseFloat(_this.marketsummary.High);
-                    _this.low = parseFloat(_this.marketsummary.Low);
-                    _this.loadingprice = false;
-                }).catch(function (e) {
-                    _this.errors.push(e);
-                    _this.loadingprice = false;
-                    console.log("Error: " + e.message);
-                });
-            } else {
-                this.loadingprice = false;
-            }
-        },
-        updateprice: function updateprice(exchange, pair, pricetype) {
-            var _this2 = this;
-
-            this.loadingprice = true;
-
-            if (exchange.toLowerCase() == 'bittrex') {
-                var uri = '/api/bittrexapi/getmarketsummary/' + pair;
-                axios(uri, {
-                    method: 'GET'
-                }).then(function (response) {
-                    _this2.marketsummary = response.data[0];
-                    _this2.last = parseFloat(_this2.marketsummary.Last);
-                    _this2.bid = parseFloat(_this2.marketsummary.Bid);
-                    _this2.ask = parseFloat(_this2.marketsummary.Ask);
-                    _this2.high = parseFloat(_this2.marketsummary.High);
-                    _this2.low = parseFloat(_this2.marketsummary.Low);
-
-                    if (pricetype.toLowerCase() == "last") {
-                        _this2.closingprice = parseFloat(_this2.last);
-                    } else if (pricetype.toLowerCase() == "bid") {
-                        _this2.closingprice = parseFloat(_this2.bid);
-                    } else if (pricetype.toLowerCase() == "ask") {
-                        _this2.closingprice = parseFloat(_this2.ask);
-                    }
-                    _this2.loadingprice = false;
-                }).catch(function (e) {
-                    _this2.errors.push(e);
-                    _this2.loadingprice = false;
-                    console.log("Error: " + e.message);
-                });
-            } else {
-                this.loadingprice = false;
-            }
-        },
-        editTrade: function editTrade(id, stopLoss, takeProfit) {
-            var uri = 'newStopLoss=' + stopLoss + "&newTakeProfit=" + takeProfit;
-            axios.patch('/trades/' + id + '?' + uri).then(function (response) {
-                console.log("Trade edited!");
-                console.log(response.data);
-                window.location.href = '/trades';
-            }).catch(function (error) {
-                console.log(error.response.data);
-            });
-            console.log("Edit trade #" + tradeId + " new stop-loss at " + stopLoss + " and new take profit at " + takeProfit);
-        },
-        closeTrade: function closeTrade(id) {
-            var uri = 'closingprice=' + this.closingprice;
-            axios.delete('/trades/' + id + '?' + uri).then(function (response) {
-                console.log("Trade closed!");
-                console.log(response.data);
-                window.location.href = '/trades';
-            }).catch(function (error) {
-                console.log(error.response.data);
-            });
-        },
-        closeWaitingTrade: function closeWaitingTrade(id) {
-            axios.delete('/trades/' + id).then(function (response) {
-                console.log("Trade cancelled!");
-                window.location.href = '/trades';
-            }).catch(function (error) {
-                console.log(error.response.data);
-            });
-        },
-        calculateProfit: function calculateProfit(price) {
-            if (this.closingprice != 0) {
-                return ((parseFloat(this.closingprice) - parseFloat(price)) / parseFloat(this.closingprice) * 100).toFixed(2);
-            } else {
-                return 0;
-            }
-        }
-    }
-});
-
-/***/ }),
-/* 87 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "trade-list" }, [
-    _c(
-      "table",
-      {
-        staticClass: "display compact dataTable trade myTable",
-        attrs: { cellspacing: "0", width: "100%", role: "grid" }
-      },
-      [
-        _c("thead", { staticClass: "dataTable-header" }, [
-          _c(
-            "tr",
-            { staticClass: "trade-title text-center", attrs: { role: "row" } },
-            [
-              _c("th", {
-                staticClass: "sorting",
-                attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
-              }),
-              _vm._v(" "),
-              _c("th", {
-                staticClass: "sorting",
-                attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
-              }),
-              _vm._v(" "),
-              _vm.opened == true ||
-              _vm.history == true ||
-              _vm.closing == true ||
-              _vm.opening == true
-                ? _c(
-                    "th",
-                    {
-                      staticClass: "sorting",
-                      attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
-                    },
-                    [_vm._v("P/L (%)")]
-                  )
-                : _vm._e(),
-              _vm._v(" "),
-              _c(
-                "th",
-                {
-                  staticClass: "sorting",
-                  attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
-                },
-                [_vm._v("Pair")]
-              ),
-              _vm._v(" "),
-              _c(
-                "th",
-                {
-                  staticClass: "sorting_asc",
-                  attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
-                },
-                [_vm._v("Status")]
-              ),
-              _vm._v(" "),
-              _c(
-                "th",
-                {
-                  staticClass: "sorting",
-                  attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
-                },
-                [_vm._v("Exchange")]
-              ),
-              _vm._v(" "),
-              _c(
-                "th",
-                {
-                  staticClass: "sorting",
-                  attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
-                },
-                [_vm._v("Position")]
-              ),
-              _vm._v(" "),
-              _c(
-                "th",
-                {
-                  staticClass: "sorting",
-                  attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
-                },
-                [_vm._v("Price")]
-              ),
-              _vm._v(" "),
-              _vm.history == false
-                ? _c(
-                    "th",
-                    {
-                      staticClass: "sorting",
-                      attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
-                    },
-                    [_vm._v("Last")]
-                  )
-                : _vm._e(),
-              _vm._v(" "),
-              _vm.history == true
-                ? _c(
-                    "th",
-                    {
-                      staticClass: "sorting",
-                      attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
-                    },
-                    [_vm._v("Final Price")]
-                  )
-                : _vm._e(),
-              _vm._v(" "),
-              _c(
-                "th",
-                {
-                  staticClass: "sorting",
-                  attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
-                },
-                [_vm._v("Amount")]
-              ),
-              _vm._v(" "),
-              _c(
-                "th",
-                {
-                  staticClass: "sorting",
-                  attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
-                },
-                [_vm._v("Total")]
-              ),
-              _vm._v(" "),
-              _c(
-                "th",
-                {
-                  staticClass: "sorting",
-                  attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
-                },
-                [_vm._v("Stop-Loss")]
-              ),
-              _vm._v(" "),
-              _c(
-                "th",
-                {
-                  staticClass: "sorting",
-                  attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
-                },
-                [_vm._v("Take-Profit")]
-              ),
-              _vm._v(" "),
-              _c(
-                "th",
-                {
-                  staticClass: "sorting",
-                  attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
-                },
-                [_vm._v("Condition")]
-              ),
-              _vm._v(" "),
-              _c(
-                "th",
-                {
-                  staticClass: "sorting",
-                  attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
-                },
-                [_vm._v("Cond. Price")]
-              ),
-              _vm._v(" "),
-              _c(
-                "th",
-                {
-                  staticClass: "sorting",
-                  attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
-                },
-                [_vm._v("Date")]
-              )
-            ]
-          )
-        ]),
-        _vm._v(" "),
-        _c(
-          "tbody",
-          [
-            _vm._l(_vm.trades, function(trade) {
-              return _c("trade2", {
-                key: trade.id,
-                attrs: {
-                  status: trade.status,
-                  exchange: trade.exchange,
-                  position: trade.position,
-                  pair: trade.pair,
-                  price: trade.price,
-                  amount: trade.amount,
-                  total: trade.total,
-                  "stop-loss": trade.stop_loss,
-                  "take-profit": trade.take_profit,
-                  condition: trade.condition,
-                  "condition-price": trade.condition_price,
-                  "final-profit": trade.profit,
-                  "closing-price": trade.closing_price,
-                  type: _vm.type,
-                  id: trade.id,
-                  timestamp: trade.created_at
-                }
-              })
-            }),
-            _vm._v(" "),
-            _vm._l(_vm.trades, function(trade) {
-              return _c(
-                "div",
-                {
-                  staticClass: "reveal trade-modal",
-                  attrs: { id: "editTrade" + trade.id, "data-reveal": "" }
-                },
-                [
-                  _c("div", { staticClass: "grid-container fluid" }, [
-                    _c("div", { staticClass: "grid-x grid-padding-x" }, [
-                      _c(
-                        "div",
-                        { staticClass: "small-8 cell form-container" },
-                        [
-                          _c("p", { staticClass: "h1" }, [
-                            _vm._v("Edit Trade")
-                          ]),
-                          _vm._v(" "),
-                          _c("p", { staticClass: "lead" }, [
-                            _c("b", [
-                              _vm._v(
-                                _vm._s(trade.pair) +
-                                  " at " +
-                                  _vm._s(trade.exchange.toUpperCase())
-                              )
-                            ])
-                          ])
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "small-4 cell form-container close-trade-info text-right"
-                        },
-                        [
-                          _c(
-                            "div",
-                            {
-                              on: {
-                                click: function($event) {
-                                  _vm.loadinfo(trade.exchange, trade.pair)
-                                }
-                              }
-                            },
-                            [_vm._v(" (refresh) ")]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            {
-                              model: {
-                                value: _vm.last,
-                                callback: function($$v) {
-                                  _vm.last = $$v
-                                },
-                                expression: "last"
-                              }
-                            },
-                            [
-                              _c("b", [_vm._v("Last:")]),
-                              _vm._v(" " + _vm._s(_vm.last.toFixed(8)) + " ")
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            {
-                              model: {
-                                value: _vm.bid,
-                                callback: function($$v) {
-                                  _vm.bid = $$v
-                                },
-                                expression: "bid"
-                              }
-                            },
-                            [
-                              _c("b", [_vm._v("Bid:")]),
-                              _vm._v(" " + _vm._s(_vm.bid.toFixed(8)))
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            {
-                              model: {
-                                value: _vm.ask,
-                                callback: function($$v) {
-                                  _vm.ask = $$v
-                                },
-                                expression: "ask"
-                              }
-                            },
-                            [
-                              _c("b", [_vm._v("Ask:")]),
-                              _vm._v(" " + _vm._s(_vm.ask.toFixed(8)))
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            {
-                              model: {
-                                value: _vm.low,
-                                callback: function($$v) {
-                                  _vm.low = $$v
-                                },
-                                expression: "low"
-                              }
-                            },
-                            [
-                              _c("b", [_vm._v("Low:")]),
-                              _vm._v(" " + _vm._s(_vm.low.toFixed(8)))
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            {
-                              model: {
-                                value: _vm.high,
-                                callback: function($$v) {
-                                  _vm.high = $$v
-                                },
-                                expression: "high"
-                              }
-                            },
-                            [
-                              _c("b", [_vm._v("High:")]),
-                              _vm._v(" " + _vm._s(_vm.high.toFixed(8)))
-                            ]
-                          )
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass: "small-12 cell form-container text-right"
-                        },
-                        [
-                          _c("small", [
-                            _vm._v(
-                              " Current Stop-Loss: " +
-                                _vm._s(trade.stop_loss) +
-                                " "
-                            ),
-                            _c("i", {
-                              staticClass: "fa fa-clipboard",
-                              attrs: { "aria-hidden": "true" },
-                              on: {
-                                click: function($event) {
-                                  _vm.stoploss = trade.stop_loss
-                                }
-                              }
-                            })
-                          ])
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        { staticClass: "small-12 cell form-container" },
-                        [
-                          _c("div", { staticClass: "input-group" }, [
-                            _c("span", { staticClass: "input-group-label" }, [
-                              _vm._v(
-                                "\n                                    New Stop-Loss\n                                "
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.stoploss,
-                                  expression: "stoploss"
-                                }
-                              ],
-                              staticClass: "input-group-field price",
-                              attrs: { type: "number" },
-                              domProps: { value: _vm.stoploss },
-                              on: {
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
-                                  }
-                                  _vm.stoploss = $event.target.value
-                                }
-                              }
-                            })
-                          ])
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "small-12 cell form-container  text-right"
-                        },
-                        [
-                          _c("small", [
-                            _vm._v(
-                              " Current Take-Profit: " +
-                                _vm._s(trade.take_profit) +
-                                " "
-                            ),
-                            _c("i", {
-                              staticClass: "fa fa-clipboard",
-                              attrs: { "aria-hidden": "true" },
-                              on: {
-                                click: function($event) {
-                                  _vm.takeprofit = trade.take_profit
-                                }
-                              }
-                            })
-                          ])
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        { staticClass: "small-12 cell form-container" },
-                        [
-                          _c("div", { staticClass: "input-group" }, [
-                            _c("span", { staticClass: "input-group-label" }, [
-                              _vm._v(
-                                "\n                                    New Take-Profit\n                                "
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.takeprofit,
-                                  expression: "takeprofit"
-                                }
-                              ],
-                              staticClass: "input-group-field price",
-                              attrs: { type: "number" },
-                              domProps: { value: _vm.takeprofit },
-                              on: {
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
-                                  }
-                                  _vm.takeprofit = $event.target.value
-                                }
-                              }
-                            })
-                          ])
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        { staticClass: "small-12 cell form-container" },
-                        [
-                          _c(
-                            "button",
-                            {
-                              staticClass: "hollow button",
-                              on: {
-                                click: function($event) {
-                                  _vm.editTrade(
-                                    trade.id,
-                                    _vm.stoploss,
-                                    _vm.takeprofit
-                                  )
-                                }
-                              }
-                            },
-                            [
-                              _vm._v(
-                                "\n                               Save Trade\n                            "
-                              )
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "button",
-                            {
-                              staticClass: "hollow button",
-                              attrs: { "data-close": "" },
-                              on: {
-                                click: function($event) {
-                                  _vm.last = 0
-                                  _vm.bid = 0
-                                  _vm.ask = 0
-                                  _vm.high = 0
-                                  _vm.low = 0
-                                  _vm.stoploss = 0
-                                  _vm.takeprofit = 0
-                                }
-                              }
-                            },
-                            [
-                              _vm._v(
-                                "\n                               Go Back\n                            "
-                              )
-                            ]
-                          )
-                        ]
-                      )
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      staticClass: "close-button",
-                      attrs: {
-                        "data-close": "",
-                        "aria-label": "Close modal",
-                        type: "button"
-                      },
-                      on: {
-                        click: function($event) {
-                          _vm.last = 0
-                          _vm.bid = 0
-                          _vm.ask = 0
-                          _vm.high = 0
-                          _vm.low = 0
-                          _vm.stoploss = 0
-                          _vm.takeprofit = 0
-                        }
-                      }
-                    },
-                    [
-                      _c("span", { attrs: { "aria-hidden": "true" } }, [
-                        _vm._v("×")
-                      ])
-                    ]
-                  )
-                ]
-              )
-            }),
-            _vm._v(" "),
-            _vm._l(_vm.trades, function(trade) {
-              return _c(
-                "div",
-                {
-                  staticClass: "reveal trade-modal",
-                  attrs: { id: "closeTrade" + trade.id, "data-reveal": "" }
-                },
-                [
-                  _c("div", { staticClass: "grid-container fluid" }, [
-                    _c("div", { staticClass: "grid-x grid-padding-x" }, [
-                      _c(
-                        "div",
-                        { staticClass: "small-8 cell form-container" },
-                        [
-                          _c("p", { staticClass: "h1" }, [
-                            _vm._v("Closing Trade")
-                          ]),
-                          _vm._v(" "),
-                          _c("p", { staticClass: "lead" }, [
-                            _c("b", [
-                              _vm._v(
-                                _vm._s(trade.pair) +
-                                  " at " +
-                                  _vm._s(trade.exchange.toUpperCase())
-                              )
-                            ])
-                          ])
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "small-4 cell form-container close-trade-info text-right"
-                        },
-                        [
-                          _c(
-                            "div",
-                            {
-                              on: {
-                                click: function($event) {
-                                  _vm.loadinfo(trade.exchange, trade.pair)
-                                }
-                              }
-                            },
-                            [_vm._v(" (refresh) ")]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            {
-                              model: {
-                                value: _vm.last,
-                                callback: function($$v) {
-                                  _vm.last = $$v
-                                },
-                                expression: "last"
-                              }
-                            },
-                            [
-                              _c("b", [_vm._v("Last:")]),
-                              _vm._v(" " + _vm._s(_vm.last.toFixed(8)) + " ")
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            {
-                              model: {
-                                value: _vm.bid,
-                                callback: function($$v) {
-                                  _vm.bid = $$v
-                                },
-                                expression: "bid"
-                              }
-                            },
-                            [
-                              _c("b", [_vm._v("Bid:")]),
-                              _vm._v(" " + _vm._s(_vm.bid.toFixed(8)))
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            {
-                              model: {
-                                value: _vm.ask,
-                                callback: function($$v) {
-                                  _vm.ask = $$v
-                                },
-                                expression: "ask"
-                              }
-                            },
-                            [
-                              _c("b", [_vm._v("Ask:")]),
-                              _vm._v(" " + _vm._s(_vm.ask.toFixed(8)))
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            {
-                              model: {
-                                value: _vm.low,
-                                callback: function($$v) {
-                                  _vm.low = $$v
-                                },
-                                expression: "low"
-                              }
-                            },
-                            [
-                              _c("b", [_vm._v("Low:")]),
-                              _vm._v(" " + _vm._s(_vm.low.toFixed(8)))
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            {
-                              model: {
-                                value: _vm.high,
-                                callback: function($$v) {
-                                  _vm.high = $$v
-                                },
-                                expression: "high"
-                              }
-                            },
-                            [
-                              _c("b", [_vm._v("High:")]),
-                              _vm._v(" " + _vm._s(_vm.high.toFixed(8)))
-                            ]
-                          )
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        { staticClass: "small-12 cell form-container" },
-                        [
-                          _c("div", { staticClass: "input-group" }, [
-                            _c("span", { staticClass: "input-group-label" }, [
-                              _c("i", {
-                                directives: [
-                                  {
-                                    name: "show",
-                                    rawName: "v-show",
-                                    value: _vm.loadingprice,
-                                    expression: "loadingprice"
-                                  }
-                                ],
-                                staticClass: "fa fa-cog fa-spin fa-fw"
-                              }),
-                              _vm._v(" "),
-                              _c("i", {
-                                directives: [
-                                  {
-                                    name: "show",
-                                    rawName: "v-show",
-                                    value:
-                                      !_vm.loadingprice &&
-                                      _vm.closingprice != 0,
-                                    expression:
-                                      "!loadingprice && closingprice!=0"
-                                  }
-                                ],
-                                staticClass: "fa fa-refresh fa-fw",
-                                on: {
-                                  click: function($event) {
-                                    _vm.updateprice(
-                                      trade.exchange,
-                                      trade.pair,
-                                      _vm.priceselected
-                                    )
-                                  }
-                                }
-                              }),
-                              _vm._v(
-                                "\n                                    Price\n                                "
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.closingprice,
-                                  expression: "closingprice"
-                                }
-                              ],
-                              staticClass: "input-group-field price",
-                              attrs: { type: "number" },
-                              domProps: { value: _vm.closingprice },
-                              on: {
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
-                                  }
-                                  _vm.closingprice = $event.target.value
-                                }
-                              }
-                            }),
-                            _vm._v(" "),
-                            _c(
-                              "select",
-                              {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.priceselected,
-                                    expression: "priceselected"
-                                  }
-                                ],
-                                attrs: { id: "close-price-select" },
-                                on: {
-                                  change: [
-                                    function($event) {
-                                      var $$selectedVal = Array.prototype.filter
-                                        .call($event.target.options, function(
-                                          o
-                                        ) {
-                                          return o.selected
-                                        })
-                                        .map(function(o) {
-                                          var val =
-                                            "_value" in o ? o._value : o.value
-                                          return val
-                                        })
-                                      _vm.priceselected = $event.target.multiple
-                                        ? $$selectedVal
-                                        : $$selectedVal[0]
-                                    },
-                                    function($event) {
-                                      _vm.updateprice(
-                                        trade.exchange,
-                                        trade.pair,
-                                        _vm.priceselected
-                                      )
-                                    }
-                                  ]
-                                }
-                              },
-                              [
-                                _c(
-                                  "option",
-                                  { attrs: { disabled: "", value: "" } },
-                                  [_vm._v("Autofill")]
-                                ),
-                                _vm._v(" "),
-                                _c("option", { attrs: { value: "last" } }, [
-                                  _vm._v("Last")
-                                ]),
-                                _vm._v(" "),
-                                _c("option", { attrs: { value: "bid" } }, [
-                                  _vm._v("Bid")
-                                ]),
-                                _vm._v(" "),
-                                _c("option", { attrs: { value: "ask" } }, [
-                                  _vm._v("Ask")
-                                ])
-                              ]
-                            )
-                          ])
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        { staticClass: "small-12 cell form-container" },
-                        [
-                          _c(
-                            "button",
-                            {
-                              staticClass: "hollow button",
-                              attrs: { href: "#" },
-                              on: {
-                                click: function($event) {
-                                  _vm.closeTrade(trade.id)
-                                }
-                              }
-                            },
-                            [
-                              _vm._v(
-                                "\n                               Close Trade\n                            "
-                              )
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "button",
-                            {
-                              staticClass: "hollow button",
-                              attrs: { "data-close": "" },
-                              on: {
-                                click: function($event) {
-                                  _vm.last = 0
-                                  _vm.bid = 0
-                                  _vm.ask = 0
-                                  _vm.high = 0
-                                  _vm.low = 0
-                                  _vm.closingprice = 0.0
-                                  _vm.priceselected = ""
-                                }
-                              }
-                            },
-                            [
-                              _vm._v(
-                                "\n                               Go Back\n                            "
-                              )
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c("p", { staticClass: "text-right" }, [
-                            _vm._v(
-                              "Aprox. profit: " +
-                                _vm._s(_vm.calculateProfit(trade.price)) +
-                                "%"
-                            )
-                          ])
-                        ]
-                      )
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      staticClass: "close-button",
-                      attrs: {
-                        "data-close": "",
-                        "aria-label": "Close modal",
-                        type: "button"
-                      },
-                      on: {
-                        click: function($event) {
-                          _vm.last = 0
-                          _vm.bid = 0
-                          _vm.ask = 0
-                          _vm.high = 0
-                          _vm.low = 0
-                          _vm.closingprice = 0.0
-                          _vm.priceselected = ""
-                        }
-                      }
-                    },
-                    [
-                      _c("span", { attrs: { "aria-hidden": "true" } }, [
-                        _vm._v("×")
-                      ])
-                    ]
-                  )
-                ]
-              )
-            }),
-            _vm._v(" "),
-            _vm._l(_vm.trades, function(trade) {
-              return _c(
-                "div",
-                {
-                  staticClass: "reveal trade-modal",
-                  attrs: {
-                    id: "closeWaitingTrade" + trade.id,
-                    "data-reveal": ""
-                  }
-                },
-                [
-                  _c("div", { staticClass: "grid-container fluid" }, [
-                    _c("div", { staticClass: "grid-x grid-padding-x" }, [
-                      _c(
-                        "div",
-                        { staticClass: "small-8 cell form-container" },
-                        [
-                          _c("p", { staticClass: "h1" }, [
-                            _vm._v("Closing Trade")
-                          ]),
-                          _vm._v(" "),
-                          _c("p", { staticClass: "lead" }, [
-                            _c("b", [
-                              _vm._v(
-                                _vm._s(trade.pair) +
-                                  " at " +
-                                  _vm._s(trade.exchange.toUpperCase())
-                              )
-                            ])
-                          ])
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "small-4 cell form-container close-trade-info text-right"
-                        },
-                        [
-                          _c(
-                            "div",
-                            {
-                              on: {
-                                click: function($event) {
-                                  _vm.loadinfo(trade.exchange, trade.pair)
-                                }
-                              }
-                            },
-                            [_vm._v(" (refresh) ")]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            {
-                              model: {
-                                value: _vm.last,
-                                callback: function($$v) {
-                                  _vm.last = $$v
-                                },
-                                expression: "last"
-                              }
-                            },
-                            [
-                              _c("b", [_vm._v("Last:")]),
-                              _vm._v(" " + _vm._s(_vm.last.toFixed(8)) + " ")
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            {
-                              model: {
-                                value: _vm.bid,
-                                callback: function($$v) {
-                                  _vm.bid = $$v
-                                },
-                                expression: "bid"
-                              }
-                            },
-                            [
-                              _c("b", [_vm._v("Bid:")]),
-                              _vm._v(" " + _vm._s(_vm.bid.toFixed(8)))
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            {
-                              model: {
-                                value: _vm.ask,
-                                callback: function($$v) {
-                                  _vm.ask = $$v
-                                },
-                                expression: "ask"
-                              }
-                            },
-                            [
-                              _c("b", [_vm._v("Ask:")]),
-                              _vm._v(" " + _vm._s(_vm.ask.toFixed(8)))
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            {
-                              model: {
-                                value: _vm.low,
-                                callback: function($$v) {
-                                  _vm.low = $$v
-                                },
-                                expression: "low"
-                              }
-                            },
-                            [
-                              _c("b", [_vm._v("Low:")]),
-                              _vm._v(" " + _vm._s(_vm.low.toFixed(8)))
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            {
-                              model: {
-                                value: _vm.high,
-                                callback: function($$v) {
-                                  _vm.high = $$v
-                                },
-                                expression: "high"
-                              }
-                            },
-                            [
-                              _c("b", [_vm._v("High:")]),
-                              _vm._v(" " + _vm._s(_vm.high.toFixed(8)))
-                            ]
-                          )
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _vm._m(0, true, false),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        { staticClass: "small-12 cell form-container" },
-                        [
-                          _c(
-                            "button",
-                            {
-                              staticClass: "hollow button",
-                              on: {
-                                click: function($event) {
-                                  _vm.closeTrade(trade.id)
-                                }
-                              }
-                            },
-                            [
-                              _vm._v(
-                                "\n                               Yes, cancel\n                            "
-                              )
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "button",
-                            {
-                              staticClass: "hollow button",
-                              attrs: { "data-close": "" },
-                              on: {
-                                click: function($event) {
-                                  _vm.last = 0
-                                  _vm.bid = 0
-                                  _vm.ask = 0
-                                  _vm.high = 0
-                                  _vm.low = 0
-                                }
-                              }
-                            },
-                            [
-                              _vm._v(
-                                "\n                               No, thanks\n                            "
-                              )
-                            ]
-                          )
-                        ]
-                      )
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      staticClass: "close-button",
-                      attrs: {
-                        "data-close": "",
-                        "aria-label": "Close modal",
-                        type: "button"
-                      },
-                      on: {
-                        click: function($event) {
-                          _vm.last = 0
-                          _vm.bid = 0
-                          _vm.ask = 0
-                          _vm.high = 0
-                          _vm.low = 0
-                          _vm.closingprice = 0.0
-                          _vm.priceselected = ""
-                        }
-                      }
-                    },
-                    [
-                      _c("span", { attrs: { "aria-hidden": "true" } }, [
-                        _vm._v("×")
-                      ])
-                    ]
-                  )
-                ]
-              )
-            })
-          ],
-          2
-        )
-      ]
-    )
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "small-12 cell form-container" }, [
-      _c("p", [
-        _vm._v(
-          "You are going to close a waiting trade, if you proceed the trade will be canceled and no order will be launched. Are you sure?"
-        )
-      ])
-    ])
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-0a9865c7", module.exports)
-  }
-}
-
-/***/ }),
-/* 88 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(0)
-/* script */
-var __vue_script__ = __webpack_require__(89)
-/* template */
-var __vue_template__ = __webpack_require__(90)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/TradeList3.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-0aa67d48", Component.options)
-  } else {
-    hotAPI.reload("data-v-0aa67d48", Component.options)
-' + '  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 89 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    name: 'tradelist3',
-    props: ['type', 'trades'],
-    data: function data() {
-        return {
-            updating: false,
-            profit: 0
-        };
-    },
-    computed: {
-        opened: function opened() {
-            if (this.type == "opened") {
-                return true;
-            } else {
-                return false;
-            }
-        },
-        waiting: function waiting() {
-            if (this.type == "waiting") {
-                return true;
-            } else {
-                return false;
-            }
-        },
-        history: function history() {
-            if (this.type == "history") {
-                return true;
-            } else {
-                return false;
-            }
-        }
-    },
-    mounted: function mounted() {
-        console.log('Component TradeList mounted.');
-    },
-
-    methods: {
-        update: function update(exchange, pair, price) {
-            var _this = this;
-
-            this.updating = true;
-            if (exchange.toLowerCase() == 'bittrex') {
-                var uri = '/api/bittrexapi/getmarketsummary/' + pair;
-                axios(uri, {
-                    method: 'GET'
-                }).then(function (response) {
-                    _this.marketsummary = response.data[0];
-
-                    // Calculate percentual diference
-                    var decreaseValue = parseFloat(_this.marketsummary.Last) - parseFloat(price);
-                    decreaseValue = parseFloat(decreaseValue) / parseFloat(price) * parseFloat(100);
-                    _this.profit = parseFloat(decreaseValue).toFixed(2) + "%";
-
-                    _this.updating = false;
-                    console.log("Last: " + last + " - " + _this.profit);
-                }).catch(function (e) {
-                    _this.updating = false;
-                    console.log("Error: " + e.message);
-                });
-            }
-        }
-    }
-});
-
-/***/ }),
-/* 90 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "trade-list" }, [
-    _c(
-      "table",
-      { staticClass: "trade", attrs: { id: "rwd-table", width: "100%" } },
-      [
-        _c("thead", [
-          _c(
-            "tr",
-            { staticClass: "trade-title text-center", attrs: { role: "row" } },
-            [
-              _c("th", [_vm._v(" Actions")]),
-              _vm._v(" "),
-              _vm.opened == true ? _c("th", [_vm._v("P/L (%)")]) : _vm._e(),
-              _vm._v(" "),
-              _c("th", [_vm._v("Pair")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Status")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Exchange")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Position")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Price")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Last")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Amount")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Total")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Stop-Loss")]),
-              _vm._v(" "),
-              _c("th", [_vm._v("Take-Profit")])
-            ]
-          )
-        ]),
-        _vm._v(" "),
-        _c(
-          "tbody",
-          _vm._l(_vm.trades, function(trade) {
-            return _c("trade3", {
-              key: trade.id,
-              attrs: {
-                status: trade.status,
-                exchange: trade.exchange,
-                position: trade.position,
-                pair: trade.pair,
-                price: trade.price,
-                amount: trade.amount,
-                total: trade.total,
-                "stop-loss": trade.stop_loss,
-                "take-profit": trade.take_profit
-              }
-            })
-          })
-        )
-      ]
-    )
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-0aa67d48", module.exports)
-  }
-}
-
-/***/ }),
-/* 91 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(0)
-/* script */
-var __vue_script__ = __webpack_require__(92)
-/* template */
-var __vue_template__ = __webpack_require__(93)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/TradeList4.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-0ab494c9", Component.options)
-  } else {
-    hotAPI.reload("data-v-0ab494c9", Component.options)
-' + '  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 92 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    name: 'tradelist4',
     props: ['validation-errors', 'type', 'trades'],
     data: function data() {
         return {
@@ -82509,34 +79478,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     computed: {
         closingpriceC: function closingpriceC() {
             return this.closingprice.toFixed(8);
-        },
-        opened: function opened() {
-            if (this.type == "opened") {
-                return true;
-            } else {
-                return false;
-            }
-        },
-        waiting: function waiting() {
-            if (this.type == "waiting") {
-                return true;
-            } else {
-                return false;
-            }
-        },
-        opening: function opening() {
-            if (this.type == "opening") {
-                return true;
-            } else {
-                return false;
-            }
-        },
-        closing: function closing() {
-            if (this.type == "closing") {
-                return true;
-            } else {
-                return false;
-            }
         },
         history: function history() {
             if (this.type == "history") {
@@ -82629,7 +79570,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         closeTrade: function closeTrade(id) {
-            var uri = 'closingprice=' + this.closingprice;
+            var uri = 'closingprice=' + this.closingprice + '&keep=false';
             axios.delete('/trades/' + id + '?' + uri).then(function (response) {
                 console.log("Trade closed!");
             }).catch(function (error) {
@@ -82639,6 +79580,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         closeWaitingTrade: function closeWaitingTrade(id) {
             axios.delete('/trades/' + id).then(function (response) {
                 console.log("Trade cancelled!");
+            }).catch(function (error) {
+                console.log(error.response.data);
+            });
+        },
+        keepTrade: function keepTrade(id) {
+            var uri = 'keep=true';
+            axios.delete('/trades/' + id + '?' + uri).then(function (response) {
+                console.log("Trade kept!");
             }).catch(function (error) {
                 console.log(error.response.data);
             });
@@ -82654,7 +79603,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 93 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -82830,7 +79779,7 @@ var render = function() {
           "tbody",
           [
             _vm._l(_vm.trades, function(trade) {
-              return _c("trade4", {
+              return _c("trade", {
                 key: trade.id,
                 attrs: {
                   status: trade.status,
@@ -83786,6 +80735,220 @@ var render = function() {
                   )
                 ]
               )
+            }),
+            _vm._v(" "),
+            _vm._l(_vm.trades, function(trade) {
+              return _c(
+                "div",
+                {
+                  staticClass: "reveal trade-modal",
+                  attrs: { id: "keepTrade" + trade.id, "data-reveal": "" }
+                },
+                [
+                  _c("div", { staticClass: "grid-container fluid" }, [
+                    _c(
+                      "form",
+                      {
+                        attrs: { method: "POST", action: "/trades/" + trade.id }
+                      },
+                      [
+                        _c("input", {
+                          attrs: {
+                            type: "hidden",
+                            name: "_method",
+                            value: "DELETE"
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("input", {
+                          attrs: { type: "hidden", name: "_token" },
+                          domProps: { value: _vm.csrf }
+                        }),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "grid-x grid-padding-x" }, [
+                          _c(
+                            "div",
+                            { staticClass: "small-8 cell form-container" },
+                            [
+                              _c("p", { staticClass: "h1" }, [
+                                _vm._v("Keep Trade")
+                              ]),
+                              _vm._v(" "),
+                              _c("p", { staticClass: "lead" }, [
+                                _c("b", [
+                                  _vm._v(
+                                    _vm._s(trade.pair) +
+                                      " at " +
+                                      _vm._s(trade.exchange.toUpperCase())
+                                  )
+                                ])
+                              ])
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "small-4 cell form-container close-trade-info text-right"
+                            },
+                            [
+                              _c(
+                                "div",
+                                {
+                                  on: {
+                                    click: function($event) {
+                                      _vm.loadinfo(trade.exchange, trade.pair)
+                                    }
+                                  }
+                                },
+                                [_vm._v(" (refresh) ")]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                {
+                                  model: {
+                                    value: _vm.last,
+                                    callback: function($$v) {
+                                      _vm.last = $$v
+                                    },
+                                    expression: "last"
+                                  }
+                                },
+                                [
+                                  _c("b", [_vm._v("Last:")]),
+                                  _vm._v(
+                                    " " + _vm._s(_vm.last.toFixed(8)) + " "
+                                  )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                {
+                                  model: {
+                                    value: _vm.bid,
+                                    callback: function($$v) {
+                                      _vm.bid = $$v
+                                    },
+                                    expression: "bid"
+                                  }
+                                },
+                                [
+                                  _c("b", [_vm._v("Bid:")]),
+                                  _vm._v(" " + _vm._s(_vm.bid.toFixed(8)))
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                {
+                                  model: {
+                                    value: _vm.ask,
+                                    callback: function($$v) {
+                                      _vm.ask = $$v
+                                    },
+                                    expression: "ask"
+                                  }
+                                },
+                                [
+                                  _c("b", [_vm._v("Ask:")]),
+                                  _vm._v(" " + _vm._s(_vm.ask.toFixed(8)))
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                {
+                                  model: {
+                                    value: _vm.low,
+                                    callback: function($$v) {
+                                      _vm.low = $$v
+                                    },
+                                    expression: "low"
+                                  }
+                                },
+                                [
+                                  _c("b", [_vm._v("Low:")]),
+                                  _vm._v(" " + _vm._s(_vm.low.toFixed(8)))
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                {
+                                  model: {
+                                    value: _vm.high,
+                                    callback: function($$v) {
+                                      _vm.high = $$v
+                                    },
+                                    expression: "high"
+                                  }
+                                },
+                                [
+                                  _c("b", [_vm._v("High:")]),
+                                  _vm._v(" " + _vm._s(_vm.high.toFixed(8)))
+                                ]
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "small-12 cell form-container" },
+                            [
+                              _c("p", [
+                                _vm._v(
+                                  "You are going to keep a trade, if you proceed the trade will be closed and no order will be launched, so you'll keep " +
+                                    _vm._s(trade.amount) +
+                                    " " +
+                                    _vm._s(
+                                      trade.pair.substr(
+                                        trade.pair.indexOf("-") + 1
+                                      )
+                                    ) +
+                                    ". Are you sure?"
+                                )
+                              ])
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _vm._m(3, true, false)
+                        ])
+                      ]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "close-button",
+                      attrs: {
+                        "data-close": "",
+                        "aria-label": "Close modal",
+                        type: "button"
+                      },
+                      on: {
+                        click: function($event) {
+                          _vm.last = 0
+                          _vm.bid = 0
+                          _vm.ask = 0
+                          _vm.high = 0
+                          _vm.low = 0
+                          _vm.closingprice = 0.0
+                          _vm.priceselected = ""
+                        }
+                      }
+                    },
+                    [
+                      _c("span", { attrs: { "aria-hidden": "true" } }, [
+                        _vm._v("×")
+                      ])
+                    ]
+                  )
+                ]
+              )
             })
           ],
           2
@@ -83838,6 +81001,22 @@ var staticRenderFns = [
         ]
       )
     ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "small-12 cell form-container" }, [
+      _c(
+        "button",
+        { staticClass: "hollow button", attrs: { type: "submit" } },
+        [
+          _vm._v(
+            "\n                                   Yes, keep\n                                "
+          )
+        ]
+      )
+    ])
   }
 ]
 render._withStripped = true
@@ -83845,11 +81024,20 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-0ab494c9", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-73f3a2fb", module.exports)
   }
 }
 
 /***/ }),
+/* 85 */,
+/* 86 */,
+/* 87 */,
+/* 88 */,
+/* 89 */,
+/* 90 */,
+/* 91 */,
+/* 92 */,
+/* 93 */,
 /* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 

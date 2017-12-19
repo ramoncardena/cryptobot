@@ -6,13 +6,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
+use App\Library\Services\Broker;
 use App\Library\FakeOrder;
 use App\Notifications\TradeEditedNotification;
 use App\Events\TakeProfitLaunched;
 use App\Events\StopLossLaunched;
 use App\Events\OrderLaunched;
 use App\Events\ConditionalLaunched;
-use App\Library\Services\Facades\Bittrex;
 use App\Trade;
 use App\Stop;
 use App\Profit;
@@ -61,6 +61,7 @@ class TradeController extends Controller
             // Double check for user to be authenticated
             if (Auth::check()) 
             {
+                
                 // Get current authenticated user
                 $this->user = Auth::user();
 
@@ -537,79 +538,69 @@ class TradeController extends Controller
 
                 // Get the user linked to the trade
                 $user = User::find(Auth::id());
-                
-                // Select Exchange
-                switch ($this->trade->exchange) {
 
-                    // BITTREX
-                    case 'bittrex':
+                // Check for order type
+                if ($this->trade->position == "long") {
+   
+                    // Call to exchange API or a fakeOrder based on ENV->ORDERS_TEST
+                    if ( env('ORDERS_TEST', true) == true ) {
+
+                        // TESTING SUCCESS
+                        $remoteOrder = FakeOrder::success();
+
+                        // TESTING FAIL
+                        // $order = FakeOrder::fail();
                         
-                        // Initialize Bittrex with user info
-                        Bittrex::setAPI($user->settings()->get('bittrex_key'), $user->settings()->get('bittrex_secret'));
+                    }
+                    else {
+
+                        // SELL ORDER
+                        $broker = new Broker;
+                        $broker->setUser($user);
+                        $broker->setExchange($this->trade->exchange);
+                        $remoteOrder = $broker->sellLimit($this->trade->pair, $this->trade->amount, $request->closingprice);
                         
-                        // Check for order type
-                        if ($this->trade->position == "long") {
-           
-                            // Call to exchange API or a fakeOrder based on ENV->ORDERS_TEST
-                            if ( env('ORDERS_TEST', true) == true ) {
+                    }
+                    
+                    // Check for remoteOrder success
+                    if ($remoteOrder->success == true) {
 
-                                // TESTING SUCCESS
-                                $remoteOrder = FakeOrder::success();
+                        // If we get a success response we create an Order in our database to track
+                        $order = new Order;
+                        $order->user_id = $this->trade->user_id;
+                        $order->trade_id = $this->trade->id;
+                        $order->exchange = 'bittrex';
+                        $order->order_id = $remoteOrder->result->uuid;
+                        $order->type = 'close';
+                        $order->save();
 
-                                // TESTING FAIL
-                                // $order = FakeOrder::fail();
-                                
-                            }
-                            else {
+                        // EVENT: OrderLaunched
+                        event(new OrderLaunched($order));
 
-                                // Launch Bittrex sell order with Pair, Amount and Price as parameters
-                                $remoteOrder = Bittrex::sellLimit($this->trade->pair, $this->trade->amount, $request->closingprice);
-                                
-                            }
-                            
-                            // Check for remoteOrder success
-                            if ($remoteOrder->success == true) {
-
-                                // If we get a success response we create an Order in our database to track
-                                $order = new Order;
-                                $order->user_id = $this->trade->user_id;
-                                $order->trade_id = $this->trade->id;
-                                $order->exchange = 'bittrex';
-                                $order->order_id = $remoteOrder->result->uuid;
-                                $order->type = 'close';
-                                $order->save();
-
-                                // EVENT: OrderLaunched
-                                event(new OrderLaunched($order));
-
-                                // Log NOTICE: Order Launched
-                                Log::notice("Order Launched: User action closing trade launched a SELL order (#" . $order->id .") at " . $request->closingprice  . " for trade #" . $this->trade->id . " for the pair " . $this->trade->pair . " at " . $this->trade->exchange);
-                                
-                                // SESSION FLASH: New Trade
-                                $request->session()->flash('status-text', 'Cancel launched for trade on pair ' .$this->trade->pair);
-                                $request->session()->flash('status-class', 'success');
-                                
-                                //return response($this->trade->toJson(), 200)->header('Content-Type', 'application/json');
-                                return redirect('/trades');
-
-                            }
-                            else {
-
-                                // Log ERROR: Bittrex API returned error
-                                Log::error("[TradeController] Bittrex API: " . $remoteOrder->message);
-
-                                // SESSION FLASH: New Trade Fails
-                                $request->session()->flash('status-text', 'Error launching cancel order for trade on pair ' . $this->trade->pair . ': ' . $order['message']);
-                                $request->session()->flash('status-class', 'alert');
-
-                                // return response($remoteOrder->message, 500)->header('Content-Type', 'text/plain');
-                                return redirect("/trades");
-
-                            }
-
-                        }
+                        // Log NOTICE: Order Launched
+                        Log::notice("Order Launched: User action closing trade launched a SELL order (#" . $order->id .") at " . $request->closingprice  . " for trade #" . $this->trade->id . " for the pair " . $this->trade->pair . " at " . $this->trade->exchange);
                         
-                        break;
+                        // SESSION FLASH: New Trade
+                        $request->session()->flash('status-text', 'Cancel launched for trade on pair ' .$this->trade->pair);
+                        $request->session()->flash('status-class', 'success');
+                        
+                        //return response($this->trade->toJson(), 200)->header('Content-Type', 'application/json');
+                        return redirect('/trades');
+
+                    }
+                    else {
+
+                        // Log ERROR: Bittrex API returned error
+                        Log::error("[TradeController] Bittrex API: " . $remoteOrder->message);
+
+                        // SESSION FLASH: New Trade Fails
+                        $request->session()->flash('status-text', 'Error launching cancel order for trade on pair ' . $this->trade->pair . ': ' . $order['message']);
+                        $request->session()->flash('status-class', 'alert');
+
+                        // return response($remoteOrder->message, 500)->header('Content-Type', 'text/plain');
+                        return redirect("/trades");
+
+                    }
 
                 }
         
@@ -644,65 +635,55 @@ class TradeController extends Controller
             // Get the current user
             $user = User::find(Auth::id());
 
+            // Call to exchange API or a fakeOrder based on ENV->ORDERS_TEST
+            if ( env('ORDERS_TEST', true) == true ) {
 
-            switch ($trade->exchange) {
+                // TESTING SUCCESS
+                $order = FakeOrder::success();
 
-                case 'bittrex':
+                // TESTING FAIL
+                // $order = FakeOrder::fail();
+                
+            }
+            else {
 
-                    // Initialize Bittrex with user info
-                    Bittrex::setAPI($user->settings()->get('bittrex_key'), $user->settings()->get('bittrex_secret'));
+                // BUY ORDER
+                $broker = new Broker;
+                $broker->setExchange($trade->exchange);
+                $order = $broker->buyLimit($trade->pair, $trade->amount, $trade->price);
+                
+            }
+           
+            // Check for order success
+            if ($order->success == true) {
 
-                    // Call to exchange API or a fakeOrder based on ENV->ORDERS_TEST
-                    if ( env('ORDERS_TEST', true) == true ) {
+                // Save exchange order id in the trade
+                $this->trade->order_id = $order->result->uuid;
+                $this->trade->save();
 
-                        // TESTING SUCCESS
-                        $order = FakeOrder::success();
+                // Create an Order in our database to track
+                $orderToTrack = new Order;
+                $orderToTrack->user_id = $trade->user_id;
+                $orderToTrack->trade_id = $trade->id;
+                $orderToTrack->exchange = $trade->exchange;
+                $orderToTrack->order_id = $trade->order_id;
+                $orderToTrack->type = 'open';
+                $orderToTrack->save();
 
-                        // TESTING FAIL
-                        // $order = FakeOrder::fail();
-                        
-                    }
-                    else {
+                // EVENT: OrderLaunched
+                event(new OrderLaunched($orderToTrack));
 
-                        // Launch Bittrex sell order with Pair, Amount and Price as parameters
-                        $order = Bittrex::buyLimit($trade->pair, $trade->amount, $trade->price);
-                        
-                    }
-                   
-                    // Check for order success
-                    if ($order->success == true) {
+                // Return success if create order succeed
+                return ['status' => 'success', 'order_id' => $orderToTrack->order_id, 'stop_id' => $stopLoss->id, 'profit_id' => $takeProfit->id];
 
-                        // Save exchange order id in the trade
-                        $this->trade->order_id = $order->result->uuid;
-                        $this->trade->save();
+            }
+            else {
+                // // If order fails set trade status as 'Aborted'
+                $trade->status = "Aborted";
+                $trade->save();
 
-                        // Create an Order in our database to track
-                        $orderToTrack = new Order;
-                        $orderToTrack->user_id = $trade->user_id;
-                        $orderToTrack->trade_id = $trade->id;
-                        $orderToTrack->exchange = $trade->exchange;
-                        $orderToTrack->order_id = $trade->order_id;
-                        $orderToTrack->type = 'open';
-                        $orderToTrack->save();
-
-                        // EVENT: OrderLaunched
-                        event(new OrderLaunched($orderToTrack));
-
-                        // Return success if create order succeed
-                        return ['status' => 'success', 'order_id' => $orderToTrack->order_id, 'stop_id' => $stopLoss->id, 'profit_id' => $takeProfit->id];
-
-                    }
-                    else {
-                        // // If order fails set trade status as 'Aborted'
-                        $trade->status = "Aborted";
-                        $trade->save();
-
-                        // Return error if create order fails 
-                        return ['status' => 'fail', 'message' => $order->message];
-
-                    }
-
-                    break;
+                // Return error if create order fails 
+                return ['status' => 'fail', 'message' => $order->message];
 
             }
             

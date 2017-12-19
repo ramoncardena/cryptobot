@@ -2,15 +2,17 @@
 
 namespace App\Listeners;
 
-use App\Events\TradeOpened;
-use App\Events\StopLossLaunched;
-use App\Events\TakeProfitLaunched;
-use App\Events\OpenOrderCompleted;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Log;
 
+use App\Events\TradeOpened;
+use App\Events\StopLossLaunched;
+use App\Events\TakeProfitLaunched;
+use App\Events\OpenOrderCompleted;
+
 use App\Notifications\TradeOpenedNotification;
+
 use App\Stop;
 use App\Profit;
 use App\Trade;

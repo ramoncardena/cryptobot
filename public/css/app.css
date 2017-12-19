@@ -14412,21 +14412,88 @@ section#trades .trades-area {
   margin: 0;
 }
 
-div.dataTables_wrapper div.dataTables_length select {
-  width: 75px;
-  margin-bottom: 1rem !important;
-}
-
 .trade-list {
   font-family: 'Nunito', sans-serif;
 }
 
-.validation-error {
+.trade-list div.dataTables_wrapper div.dataTables_length select {
+  width: 75px;
+  margin-bottom: 1rem !important;
+}
+
+.trade-list .validation-error {
   margin: 0;
   padding: 0;
   color: #cc4b37;
   font-style: oblique;
   font-size: 0.8rem;
+}
+
+.trade-list .trade {
+  font-size: 1rem;
+  color: #8a8a8a;
+}
+
+.trade-list .trade .dataTable {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.trade-list .trade .trade-title {
+  color: #009ACE;
+  font-weight: normal;
+  font-size: 1rem;
+  font-style: italic;
+  text-align: center;
+}
+
+.trade-list .trade .trade-status {
+  font-weight: 400;
+}
+
+.trade-list .trade .status-Opened {
+  color: #3adb76;
+}
+
+.trade-list .trade .status-Waiting,
+.trade-list .trade .status-Cancelling,
+.trade-list .trade .status-Opening,
+.trade-list .trade .status-Closing {
+  color: #ffae00;
+}
+
+.trade-list .trade .status-Closed,
+.trade-list .trade .status-Aborted,
+.trade-list .trade .status-Cancelled {
+  color: #cc4b37;
+}
+
+.trade-list .trade .icons-area {
+  font-size: 1rem;
+  width: 5rem;
+}
+
+.trade-list .trade .icons-area .button {
+  padding: 0;
+  margin: 0;
+}
+
+.trade-list .trade .refresh-icon,
+.trade-list .trade .edit-icon,
+.trade-list .trade .loading-icon {
+  font-size: 1rem;
+  color: #009ACE;
+}
+
+.trade-list .trade .cancel-icon {
+  font-size: 1rem;
+  color: #cc4b37;
+}
+
+.trade-modal .close-trade-info {
+  font-size: 0.7rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
 }
 
 .trade-modal .input-group-label {
@@ -14444,100 +14511,6 @@ div.dataTables_wrapper div.dataTables_length select {
 
 .trade-modal .number {
   text-align: right;
-}
-
-.close-trade-info {
-  font-size: 0.7rem;
-  margin-top: 1.5rem;
-  margin-bottom: 0.5rem;
-}
-
-.trade {
-  font-size: 1rem;
-  color: #8a8a8a;
-}
-
-.trade .col-coin .coin-logo {
-  height: 20px;
-  margin: 2px;
-}
-
-.trade .dataTable {
-  margin-top: 2rem;
-  margin-bottom: 1rem;
-}
-
-.trade .coin-logo {
-  height: 35px;
-  padding: 2px;
-}
-
-.trade .coin-name {
-  font-size: 1.1rem;
-}
-
-.trade .trade-title {
-  color: #009ACE;
-  font-weight: normal;
-  font-size: 1rem;
-  font-style: italic;
-  text-align: center;
-}
-
-.trade .trade-status {
-  font-weight: 400;
-}
-
-.trade .status-Opened {
-  color: #3adb76;
-}
-
-.trade .status-Waiting,
-.trade .status-Cancelling,
-.trade .status-Opening,
-.trade .status-Closing {
-  color: #ffae00;
-}
-
-.trade .status-Closed,
-.trade .status-Aborted,
-.trade .status-Cancelled {
-  color: #cc4b37;
-}
-
-.trade .trade-cancel {
-  color: #cc4b37;
-  font-size: 1.3rem;
-}
-
-.trade .trade-cancel .button {
-  padding: 0;
-  margin: 0;
-}
-
-.trade .loading {
-  padding: 0;
-  margin: 0;
-}
-
-.trade .Opened {
-  color: #3adb76;
-}
-
-.trade .Closed {
-  color: #8a8a8a;
-}
-
-.trade .refresh-icon,
-.trade .edit-icon {
-  font-size: 1rem;
-  color: #009ACE;
-}
-
-.trade .cancel-icon,
-.trade .loading-icon {
-  font-size: 1rem;
-  color: #cc4b37;
 }
 
 .tradepanel .validation-error {

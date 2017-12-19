@@ -2,12 +2,14 @@
 
 namespace App\Listeners;
 
-use App\Events\TradeCancelled;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Log;
 
+use App\Events\TradeCancelled;
+
 use App\Notifications\TradeCancelledNotification;
+
 use App\Trade;
 use App\User;
 
