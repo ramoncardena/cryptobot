@@ -188,7 +188,7 @@ class Broker
             switch (strtolower($this->exchange->name)) {
                 case 'bittrex':
                     Bittrex::setAPI($this->user->settings()->get('bittrex_key'), $this->user->settings()->get('bittrex_secret'));
-                    $exchangeResponse = Bittrex::cancelOrder($orderId);
+                    $exchangeResponse = Bittrex::cancel($orderId);
                 
                     if ($exchangeResponse->success) {
 

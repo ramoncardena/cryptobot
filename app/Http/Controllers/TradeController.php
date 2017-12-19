@@ -524,7 +524,7 @@ class TradeController extends Controller
                     $broker = new Broker;
                     $broker->setUser($user);
                     $broker->setExchange($this->trade->exchange);
-                    $remoteOrder = $broker->cancel($this->trade->order_id);
+                    $remoteOrder = $broker->cancelOrder($this->trade->order_id);
                     
                 }
                 
