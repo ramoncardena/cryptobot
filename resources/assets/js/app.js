@@ -55,16 +55,8 @@ $(document).ready(function () {
 	$.extend( $.fn.dataTable.defaults, {
 	    responsive: true
 	} );
-	$('#myTable').DataTable();
-	$('.myTable').DataTable();
 
-    $('#activeTradesTable').DataTable({
-        "columnDefs": [
-            { "orderSequence": [ "des" ], "targets": [ 4 ] },
-            { "orderData": [ 4, 16 ],    "targets": 4 }
-          ],
-        "order": [ 4, 'des' ]
-    });
+    $('#activeTradesTable').DataTable();
     $('#historyTradesTable').DataTable();
 
 });
