@@ -79000,7 +79000,7 @@ var render = function() {
                   "button",
                   {
                     staticClass: "clear button",
-                    attrs: { "data-open": "closeOpeningTrade" + _vm.id }
+                    attrs: { "data-open": "cancelOpeningTrade" + _vm.id }
                   },
                   [_c("i", { staticClass: "fa fa-times cancel-icon" })]
                 )

@@ -6,7 +6,7 @@
                     <!-- <i v-show="updating" class="fa fa-cog fa-spin fa-fw loading-icon"></i>  -->
                     <button class="clear button" v-if="tradeStatus=='Opened'" :data-open="'closeTrade' + id"><i class="fa fa-times cancel-icon"></i></button>
                     <button class="clear button"  v-if="tradeStatus=='Waiting'" :data-open="'closeWaitingTrade' + id"><i class="fa fa-times cancel-icon"></i></button>
-                    <button class="clear button"  v-if="tradeStatus=='Opening'" :data-open="'closeOpeningTrade' + id"><i class="fa fa-times cancel-icon"></i></button>
+                    <button class="clear button"  v-if="tradeStatus=='Opening'" :data-open="'cancelOpeningTrade' + id"><i class="fa fa-times cancel-icon"></i></button>
                     <button class="clear button"  v-if="tradeStatus=='Opened'" :data-open="'keepTrade' + id"><i class="fa fa-chevron-circle-down" aria-hidden="true"></i></button>
                     <button class="clear button"  v-if="tradeStatus=='Opened'" :data-open="'editTrade' + id"><i class="fa fa-pencil edit-icon" aria-hidden="true"></i></button>
                     <button class="clear button" v-if="((tradeStatus=='Opened' || tradeStatus=='Waiting' || tradeStatus=='Closing' || tradeStatus=='Opening') && updating==false)" v-on:click="update(exchange, pair, price)"> <i class="fa fa-refresh refresh-icon"></i> </button>
