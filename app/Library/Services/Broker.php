@@ -209,8 +209,15 @@ class Broker
                         return $response;
                     }
                 break;
-
             }
+        } catch (Exception $e) {
+        
+            // LOG: Exception trying to show trades
+            Log::critical("[Broker] Exception: " . $e->getMessage());
+
+            return $e->getMessage();
+        }
+
 
     }
 
