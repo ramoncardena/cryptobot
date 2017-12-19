@@ -66,7 +66,7 @@ class ExecuteConditional
         Conditional::destroy($event->conditional->id);
 
         // Launch a new order to the exchange according to the trade iformation
-        $order = $this->newOrder($this->trade, $price);
+        $order = $this->newOrder($this->trade);
 
         if ($order['status'] == 'success') {
 
@@ -103,7 +103,7 @@ class ExecuteConditional
      * @param  string $position
      * @return array         
      */
-    private function newOrder($trade, $price) 
+    private function newOrder($trade) 
     {
 
         $stopLoss = new Stop;
@@ -128,7 +128,7 @@ class ExecuteConditional
             $broker = new Broker;
             $broker->setExchange($trade->exchange);
             $broker->setUser($user);
-            $order = $broker->buyLimit($trade->pair, $trade->amount, $price);
+            $order = $broker->buyLimit($trade->pair, $trade->amount, $trade->price);
             
         }
 
