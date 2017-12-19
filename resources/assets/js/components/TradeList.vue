@@ -214,7 +214,7 @@
                 <!-- MODAL: Keep Trade -->
                 <div v-for="trade in trades" class="reveal trade-modal" :id="'keepTrade' + trade.id" data-reveal>
                     <div class="grid-container fluid">
-                        <form method="POST" :action="'/trades/' + trade.id">
+                        <form method="POST" :action="'/trades/' + trade.id + '?keep=true'">
                             <input type="hidden" name="_method" value="DELETE">
                             <input type="hidden" name="_token" :value="csrf">
                             <div class="grid-x grid-padding-x">

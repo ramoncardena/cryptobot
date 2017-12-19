@@ -6,19 +6,23 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
-use App\Library\Services\Broker;
-use App\Library\FakeOrder;
-use App\Notifications\TradeEditedNotification;
 use App\Events\TakeProfitLaunched;
 use App\Events\StopLossLaunched;
 use App\Events\OrderLaunched;
 use App\Events\ConditionalLaunched;
-use App\Trade;
-use App\Stop;
-use App\Profit;
+use App\Events\TradeKept;
+
+use App\Notifications\TradeEditedNotification;
+
+use App\Library\Services\Broker;
+use App\Library\FakeOrder;
+
 use App\Conditional;
-use App\User;
 use App\Order;
+use App\Profit;
+use App\Stop;
+use App\Trade;
+use App\User;
 
 class TradeController extends Controller
 {
@@ -81,6 +85,9 @@ class TradeController extends Controller
                     ])
                     ->orWhere([
                         ['status', '=', 'Closing']
+                    ])
+                    ->orWhere([
+                        ['status', '=', 'Kept']
                     ])
                     ->orderBy('updated_at', 'desc')
                     ->get();
@@ -512,7 +519,7 @@ class TradeController extends Controller
             }
 
             /*****************************************
-             *  CLOSE OPENED TRADE
+             *  CLOSE / KEEP OPENED TRADE
              *****************************************/
             else {
 
@@ -521,16 +528,16 @@ class TradeController extends Controller
                 $this->trade->save();
                 
                 // Update stop-loss status if it exists
-                $stop = Stop::find( $this->trade->stop_id);
-                if ($stop) {
+                $stop = Stop::find($this->trade->stop_id);
+                if ( $stop ) {
                     $stop->status = "Closing";
                     $stop->cancel = true;
                     $stop->save();
                 }
 
                 // Update take-profit status if it exists
-                $profit = Profit::find( $this->trade->profit_id);
-                if ($profit) {
+                $profit = Profit::find($this->trade->profit_id);
+                if ( $profit ) {
                     $profit->status = "Closing";
                     $profit->cancel = true;
                     $profit->save();
@@ -539,70 +546,90 @@ class TradeController extends Controller
                 // Get the user linked to the trade
                 $user = User::find(Auth::id());
 
-                // Check for order type
-                if ($this->trade->position == "long") {
-   
-                    // Call to exchange API or a fakeOrder based on ENV->ORDERS_TEST
-                    if ( env('ORDERS_TEST', true) == true ) {
+                if ( $request->keep == 'true' ) {
+                    /*****************************************
+                    *  KEEP OPENED TRADE
+                    *****************************************/
 
-                        // TESTING SUCCESS
-                        $remoteOrder = FakeOrder::success();
-
-                        // TESTING FAIL
-                        // $order = FakeOrder::fail();
-                        
-                    }
-                    else {
-
-                        // SELL ORDER
-                        $broker = new Broker;
-                        $broker->setUser($user);
-                        $broker->setExchange($this->trade->exchange);
-                        $remoteOrder = $broker->sellLimit($this->trade->pair, $this->trade->amount, $request->closingprice);
-                        
-                    }
+                    // EVENT: TradeKept
+                    event(new TradeKept($this->trade));
                     
-                    // Check for remoteOrder success
-                    if ($remoteOrder->success == true) {
+                    // SESSION FLASH: Trade Kept
+                    $request->session()->flash('status-text', 'Trade for pair ' . $this->trade->pair . ' will be kept at ' .  $this->trade->exchange);
+                    $request->session()->flash('status-class', 'success');
+                    
+                    return redirect('/trades');
 
-                        // If we get a success response we create an Order in our database to track
-                        $order = new Order;
-                        $order->user_id = $this->trade->user_id;
-                        $order->trade_id = $this->trade->id;
-                        $order->exchange = 'bittrex';
-                        $order->order_id = $remoteOrder->result->uuid;
-                        $order->type = 'close';
-                        $order->save();
+                } else {
+                    /*****************************************
+                    *  Close OPENED TRADE
+                    *****************************************/
 
-                        // EVENT: OrderLaunched
-                        event(new OrderLaunched($order));
+                    // Check for order type
+                    if ($this->trade->position == "long") {
+       
+                        // Call to exchange API or a fakeOrder based on ENV->ORDERS_TEST
+                        if ( env('ORDERS_TEST', true) == true ) {
 
-                        // Log NOTICE: Order Launched
-                        Log::notice("Order Launched: User action closing trade launched a SELL order (#" . $order->id .") at " . $request->closingprice  . " for trade #" . $this->trade->id . " for the pair " . $this->trade->pair . " at " . $this->trade->exchange);
+                            // TESTING SUCCESS
+                            $remoteOrder = FakeOrder::success();
+
+                            // TESTING FAIL
+                            // $order = FakeOrder::fail();
+                            
+                        }
+                        else {
+
+                            // SELL ORDER
+                            $broker = new Broker;
+                            $broker->setUser($user);
+                            $broker->setExchange($this->trade->exchange);
+                            $remoteOrder = $broker->sellLimit($this->trade->pair, $this->trade->amount, $request->closingprice);
+                            
+                        }
                         
-                        // SESSION FLASH: New Trade
-                        $request->session()->flash('status-text', 'Cancel launched for trade on pair ' .$this->trade->pair);
-                        $request->session()->flash('status-class', 'success');
-                        
-                        //return response($this->trade->toJson(), 200)->header('Content-Type', 'application/json');
-                        return redirect('/trades');
+                        // Check for remoteOrder success
+                        if ($remoteOrder->success == true) {
+
+                            // If we get a success response we create an Order in our database to track
+                            $order = new Order;
+                            $order->user_id = $this->trade->user_id;
+                            $order->trade_id = $this->trade->id;
+                            $order->exchange = 'bittrex';
+                            $order->order_id = $remoteOrder->result->uuid;
+                            $order->type = 'close';
+                            $order->save();
+
+                            // EVENT: OrderLaunched
+                            event(new OrderLaunched($order));
+
+                            // Log NOTICE: Order Launched
+                            Log::notice("Order Launched: User action closing trade launched a SELL order (#" . $order->id .") at " . $request->closingprice  . " for trade #" . $this->trade->id . " for the pair " . $this->trade->pair . " at " . $this->trade->exchange);
+                            
+                            // SESSION FLASH: New Trade
+                            $request->session()->flash('status-text', 'Cancel launched for trade on pair ' .$this->trade->pair);
+                            $request->session()->flash('status-class', 'success');
+                            
+                            //return response($this->trade->toJson(), 200)->header('Content-Type', 'application/json');
+                            return redirect('/trades');
+
+                        }
+                        else {
+
+                            // Log ERROR: Bittrex API returned error
+                            Log::error("[TradeController] Bittrex API: " . $remoteOrder->message);
+
+                            // SESSION FLASH: New Trade Fails
+                            $request->session()->flash('status-text', 'Error launching cancel order for trade on pair ' . $this->trade->pair . ': ' . $order['message']);
+                            $request->session()->flash('status-class', 'alert');
+
+                            // return response($remoteOrder->message, 500)->header('Content-Type', 'text/plain');
+                            return redirect("/trades");
+
+                        }
 
                     }
-                    else {
-
-                        // Log ERROR: Bittrex API returned error
-                        Log::error("[TradeController] Bittrex API: " . $remoteOrder->message);
-
-                        // SESSION FLASH: New Trade Fails
-                        $request->session()->flash('status-text', 'Error launching cancel order for trade on pair ' . $this->trade->pair . ': ' . $order['message']);
-                        $request->session()->flash('status-class', 'alert');
-
-                        // return response($remoteOrder->message, 500)->header('Content-Type', 'text/plain');
-                        return redirect("/trades");
-
-                    }
-
-                }
+               } 
         
             }
             

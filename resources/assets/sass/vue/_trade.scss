@@ -43,7 +43,7 @@
 		.status-Waiting, .status-Cancelling, .status-Opening, .status-Closing {
 			color: get-color(warning);
 		}
-		.status-Closed, .status-Aborted, .status-Cancelled {
+		.status-Closed, .status-Aborted, .status-Cancelled, .status-Kept {
 			color: get-color(alert);
 		}
 

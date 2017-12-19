@@ -14464,7 +14464,8 @@ section#trades .trades-area {
 
 .trade-list .trade .status-Closed,
 .trade-list .trade .status-Aborted,
-.trade-list .trade .status-Cancelled {
+.trade-list .trade .status-Cancelled,
+.trade-list .trade .status-Kept {
   color: #cc4b37;
 }
 

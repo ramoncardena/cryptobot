@@ -46,6 +46,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\TakeProfitNotReached' => [
             'App\Listeners\KeepTrackingTakeProfit',
         ],
+        'App\Events\TradeKept' => [
+            'App\Listeners\KeepTrade',
+        ],
         'App\Events\OpenOrderCompleted' => [
             'App\Listeners\OpenTrade',
         ],

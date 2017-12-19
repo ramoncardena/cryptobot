@@ -80749,7 +80749,10 @@ var render = function() {
                     _c(
                       "form",
                       {
-                        attrs: { method: "POST", action: "/trades/" + trade.id }
+                        attrs: {
+                          method: "POST",
+                          action: "/trades/" + trade.id + "?keep=true"
+                        }
                       },
                       [
                         _c("input", {
