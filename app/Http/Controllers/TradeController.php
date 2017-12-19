@@ -680,7 +680,7 @@ class TradeController extends Controller
                             Log::error("[TradeController] Bittrex API: " . $remoteOrder->message);
 
                             // SESSION FLASH: New Trade Fails
-                            $request->session()->flash('status-text', 'Error launching cancel order for trade on pair ' . $this->trade->pair . ': ' . $order['message']);
+                            $request->session()->flash('status-text', 'Error launching cancel order for trade on pair ' . $this->trade->pair . ': ' . $remoteOrder->message);
                             $request->session()->flash('status-class', 'alert');
 
                             // return response($remoteOrder->message, 500)->header('Content-Type', 'text/plain');
