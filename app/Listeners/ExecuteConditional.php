@@ -68,6 +68,10 @@ class ExecuteConditional
         // Launch a new order to the exchange according to the trade iformation
         $order = $this->newOrder($this->trade);
 
+        // Change the trade status  
+        $this->trade->status = "Opening";
+        $this->trade->save();
+
         if ($order['status'] == 'success') {
 
             

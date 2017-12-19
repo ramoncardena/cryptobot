@@ -78883,6 +78883,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'trade',
@@ -78989,6 +78990,17 @@ var render = function() {
                   {
                     staticClass: "clear button",
                     attrs: { "data-open": "closeWaitingTrade" + _vm.id }
+                  },
+                  [_c("i", { staticClass: "fa fa-times cancel-icon" })]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.tradeStatus == "Opening"
+              ? _c(
+                  "button",
+                  {
+                    staticClass: "clear button",
+                    attrs: { "data-open": "closeOpeningTrade" + _vm.id }
                   },
                   [_c("i", { staticClass: "fa fa-times cancel-icon" })]
                 )
@@ -79180,6 +79192,45 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -80938,6 +80989,219 @@ var render = function() {
                   )
                 ]
               )
+            }),
+            _vm._v(" "),
+            _vm._l(_vm.trades, function(trade) {
+              return _c(
+                "div",
+                {
+                  staticClass: "reveal trade-modal",
+                  attrs: {
+                    id: "cancelOpeningTrade" + trade.id,
+                    "data-reveal": ""
+                  }
+                },
+                [
+                  _c("div", { staticClass: "grid-container fluid" }, [
+                    _c(
+                      "form",
+                      {
+                        attrs: { method: "POST", action: "/trades/" + trade.id }
+                      },
+                      [
+                        _c("input", {
+                          attrs: {
+                            type: "hidden",
+                            name: "_method",
+                            value: "DELETE"
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("input", {
+                          attrs: { type: "hidden", name: "_token" },
+                          domProps: { value: _vm.csrf }
+                        }),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "grid-x grid-padding-x" }, [
+                          _c(
+                            "div",
+                            { staticClass: "small-8 cell form-container" },
+                            [
+                              _c("p", { staticClass: "h1" }, [
+                                _vm._v("Cancel Opening Trade")
+                              ]),
+                              _vm._v(" "),
+                              _c("p", { staticClass: "lead" }, [
+                                _c("b", [
+                                  _vm._v(
+                                    _vm._s(trade.pair) +
+                                      " at " +
+                                      _vm._s(trade.exchange.toUpperCase())
+                                  )
+                                ])
+                              ])
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "small-4 cell form-container close-trade-info text-right"
+                            },
+                            [
+                              _c(
+                                "div",
+                                {
+                                  on: {
+                                    click: function($event) {
+                                      _vm.loadinfo(trade.exchange, trade.pair)
+                                    }
+                                  }
+                                },
+                                [_vm._v(" (refresh) ")]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                {
+                                  model: {
+                                    value: _vm.last,
+                                    callback: function($$v) {
+                                      _vm.last = $$v
+                                    },
+                                    expression: "last"
+                                  }
+                                },
+                                [
+                                  _c("b", [_vm._v("Last:")]),
+                                  _vm._v(
+                                    " " + _vm._s(_vm.last.toFixed(8)) + " "
+                                  )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                {
+                                  model: {
+                                    value: _vm.bid,
+                                    callback: function($$v) {
+                                      _vm.bid = $$v
+                                    },
+                                    expression: "bid"
+                                  }
+                                },
+                                [
+                                  _c("b", [_vm._v("Bid:")]),
+                                  _vm._v(" " + _vm._s(_vm.bid.toFixed(8)))
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                {
+                                  model: {
+                                    value: _vm.ask,
+                                    callback: function($$v) {
+                                      _vm.ask = $$v
+                                    },
+                                    expression: "ask"
+                                  }
+                                },
+                                [
+                                  _c("b", [_vm._v("Ask:")]),
+                                  _vm._v(" " + _vm._s(_vm.ask.toFixed(8)))
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                {
+                                  model: {
+                                    value: _vm.low,
+                                    callback: function($$v) {
+                                      _vm.low = $$v
+                                    },
+                                    expression: "low"
+                                  }
+                                },
+                                [
+                                  _c("b", [_vm._v("Low:")]),
+                                  _vm._v(" " + _vm._s(_vm.low.toFixed(8)))
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                {
+                                  model: {
+                                    value: _vm.high,
+                                    callback: function($$v) {
+                                      _vm.high = $$v
+                                    },
+                                    expression: "high"
+                                  }
+                                },
+                                [
+                                  _c("b", [_vm._v("High:")]),
+                                  _vm._v(" " + _vm._s(_vm.high.toFixed(8)))
+                                ]
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "small-12 cell form-container" },
+                            [
+                              _c("p", [
+                                _vm._v(
+                                  "You are going to cancel an opening trade, if you proceed the trade will be closed by cancelling the order at " +
+                                    _vm._s(trade.exchange) +
+                                    ". If the order has been partially fullfiled, you'll keep that amount at " +
+                                    _vm._s(trade.exchange) +
+                                    ". Are you sure?"
+                                )
+                              ])
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _vm._m(4, true, false)
+                        ])
+                      ]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "close-button",
+                      attrs: {
+                        "data-close": "",
+                        "aria-label": "Close modal",
+                        type: "button"
+                      },
+                      on: {
+                        click: function($event) {
+                          _vm.last = 0
+                          _vm.bid = 0
+                          _vm.ask = 0
+                          _vm.high = 0
+                          _vm.low = 0
+                          _vm.closingprice = 0.0
+                          _vm.priceselected = ""
+                        }
+                      }
+                    },
+                    [
+                      _c("span", { attrs: { "aria-hidden": "true" } }, [
+                        _vm._v("×")
+                      ])
+                    ]
+                  )
+                ]
+              )
             })
           ],
           2
@@ -81002,6 +81266,22 @@ var staticRenderFns = [
         [
           _vm._v(
             "\n                                   Yes, keep\n                                "
+          )
+        ]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "small-12 cell form-container" }, [
+      _c(
+        "button",
+        { staticClass: "hollow button", attrs: { type: "submit" } },
+        [
+          _vm._v(
+            "\n                                   Yes, cancel\n                                "
           )
         ]
       )

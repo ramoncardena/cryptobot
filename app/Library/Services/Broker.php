@@ -181,6 +181,39 @@ class Broker
     	}
 
     }
+    public function cancelOrder($orderId) {
+
+        try {
+
+            switch (strtolower($this->exchange->name)) {
+                case 'bittrex':
+                    Bittrex::setAPI($this->user->settings()->get('bittrex_key'), $this->user->settings()->get('bittrex_secret'));
+                    $exchangeResponse = Bittrex::cancelOrder($orderId);
+                
+                    if ($exchangeResponse->success) {
+
+                        $response = new \stdClass();
+                        $response->success=true;
+                        $response->message="";
+                        $response->result = new \stdClass();
+                        $response->result->uuid = $exchangeResponse->result->uuid;
+
+                        return $response;
+                    }
+                    else {
+
+                        $response = new \stdClass();
+                        $response->success=false;
+                        $response->message= $exchangeResponse->message;
+
+                        return $response;
+                    }
+                break;
+
+            }
+
+    }
+
 
     public function getOrder($orderId)
     {

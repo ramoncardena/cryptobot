@@ -479,11 +479,6 @@ class TradeController extends Controller
 
             // Get the trade to close
             $this->trade = Trade::find($id);
-
-
-            /*****************************************
-             *  CANCEL CONDITIONAL TRADE WAITING
-             *****************************************/
             
             if ($this->trade->status == 'Waiting') {
 
@@ -505,11 +500,88 @@ class TradeController extends Controller
                 return redirect('/trades');
  
             }
+            else if ($this->trade->status == 'Opening') {
+                /*****************************************
+                 *  CANCEL OPENING TRADE
+                 *****************************************/
+                // Update trade status
+                $this->trade->status = "Cancelling";
+                $this->trade->save();
+                
+                // Update stop-loss status if it exists
+                $stop = Stop::find($this->trade->stop_id);
+                if ( $stop ) {
+                    $stop->status = "Closing";
+                    $stop->cancel = true;
+                    $stop->save();
+                }
 
-            /*****************************************
-             *  CLOSE / KEEP OPENED TRADE
-             *****************************************/
+                // Update take-profit status if it exists
+                $profit = Profit::find($this->trade->profit_id);
+                if ( $profit ) {
+                    $profit->status = "Closing";
+                    $profit->cancel = true;
+                    $profit->save();
+                }
+
+                // Get the user linked to the trade
+                $user = User::find(Auth::id());
+
+                // Call to exchange API or a fakeOrder based on ENV->ORDERS_TEST
+                if ( env('ORDERS_TEST', true) == true ) {
+
+                    // TESTING SUCCESS
+                    $remoteOrder = FakeOrder::success();
+
+                    // TESTING FAIL
+                    // $order = FakeOrder::fail();
+                    
+                }
+                else {
+
+                    // CANCEL ORDER
+                    $broker = new Broker;
+                    $broker->setUser($user);
+                    $broker->setExchange($this->trade->exchange);
+                    $remoteOrder = $broker->cancelOrder($this->trade->order_id);
+                    
+                }
+                
+                // Check for remoteOrder success
+                if ($remoteOrder->success == true) {
+
+                    // EVENT: TradeKept
+                    event(new TradeCancelled($this->trade));
+                    
+                    // SESSION FLASH: New Trade
+                    $request->session()->flash('status-text', 'Trade cancelled for pair ' .$this->trade->pair);
+                    $request->session()->flash('status-class', 'success');
+                    
+                    //return response($this->trade->toJson(), 200)->header('Content-Type', 'application/json');
+                    return redirect('/trades');
+
+                }
+                else {
+
+                    // Log ERROR: Bittrex API returned error
+                    Log::error("[TradeController] Bittrex API: " . $remoteOrder->message);
+
+                    // SESSION FLASH: New Trade Fails
+                    $request->session()->flash('status-text', 'Error trying to cancel trade # ' . $this->trade->id . ': ' . $order['message']);
+                    $request->session()->flash('status-class', 'alert');
+
+                    // return response($remoteOrder->message, 500)->header('Content-Type', 'text/plain');
+                    return redirect("/trades");
+
+                }
+
+
+            }
             else {
+
+                /*****************************************
+                 *  CLOSE / KEEP OPENED TRADE
+                 *****************************************/
 
                 // Update trade status
                 $this->trade->status = "Closing";
