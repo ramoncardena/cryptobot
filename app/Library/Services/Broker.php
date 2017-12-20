@@ -190,6 +190,8 @@ class Broker
                     Bittrex::setAPI($this->user->settings()->get('bittrex_key'), $this->user->settings()->get('bittrex_secret'));
                     $exchangeResponse = Bittrex::cancel($orderId);
                 
+                    dd($exchangeResponse);
+                    
                     if ($exchangeResponse->success) {
 
                         $response = new \stdClass();
