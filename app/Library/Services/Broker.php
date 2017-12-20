@@ -189,16 +189,13 @@ class Broker
                 case 'bittrex':
                     Bittrex::setAPI($this->user->settings()->get('bittrex_key'), $this->user->settings()->get('bittrex_secret'));
                     $exchangeResponse = Bittrex::cancel($orderId);
-                
-                    dd($exchangeResponse);
-                    
+
                     if ($exchangeResponse->success) {
 
                         $response = new \stdClass();
                         $response->success=true;
                         $response->message="";
                         $response->result = new \stdClass();
-                        $response->result->uuid = $exchangeResponse->result->uuid;
 
                         return $response;
                     }
