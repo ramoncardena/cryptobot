@@ -412,46 +412,6 @@
                 this.loadingprice = false;
             }
         },
-        editTrade(id, stopLoss, takeProfit) {
-            let uri = 'newStopLoss=' + stopLoss + "&newTakeProfit=" + takeProfit;
-            axios.patch('/trades/' + id + '?' + uri)
-            .then(response => {
-                console.log("Trade edited!");
-                console.log(response.data);
-            })
-            .catch(error => {
-                console.log(error.response.data); 
-            });
-        },
-        closeTrade(id) {
-            let uri = 'closingprice=' + this.closingprice + '&keep=false';
-            axios.delete('/trades/' + id + '?' + uri)
-            .then(response => {
-                console.log("Trade closed!");
-            })
-            .catch(error => {
-                console.log(error.response.data); 
-            });
-        },
-        closeWaitingTrade(id) {
-            axios.delete('/trades/' + id )
-            .then(response => {
-                console.log("Trade cancelled!");
-            })
-            .catch(error => {
-                console.log(error.response.data); 
-            });
-        },
-        keepTrade(id) {
-            let uri = 'keep=true';
-            axios.delete('/trades/' + id + '?' + uri)
-            .then(response => {
-                console.log("Trade kept!");
-            })
-            .catch(error => {
-                console.log(error.response.data); 
-            });
-        },
         calculateProfit(price) {
             if (this.closingprice!=0) {
                 return ( ( ( parseFloat(this.closingprice)-parseFloat(price) ) / parseFloat(this.closingprice)) * 100 ).toFixed(2);

@@ -11,7 +11,7 @@
 
                 <div class="form-container section-title cell">
 
-                    <div class="grid-x grid-padding-x">
+                    <div class="grid-x grid-padding-x align-middle">
 
                         <div class="small-6 cell text-left">
                             <div class="align-vertical">
@@ -56,41 +56,72 @@
                         <li class="accordion-item" data-accordion-item>
                             <a href="#" class="accordion-title">Exchange APIs</a>
                             <div class="accordion-content" data-tab-content>
-                                <div class="switch small">
-                                    <input class="switch-input" id="yes-no" type="checkbox" name="exampleSwitch">
-                                    <label class="switch-paddle" for="yes-no">
-                                        <span class="switch-active" aria-hidden="true">Live</span>
-                                        <span class="switch-inactive" aria-hidden="true">Test</span>
-                                    </label>
-                                </div>
-                                <div class="input-group">
-                                    <span class="input-group-label">Bittrex Key</span>
-                                    <input class="input-group-field" type="text" name="bittrex_key" value="{{$decrypt_bittrex_key}}">
-                                </div>
 
-                                <div class="input-group">
-                                    <span class="input-group-label">Bittrex Secret</span>
-                                    <input class="input-group-field" type="text" name="bittrex_secret" value="{{$decrypt_bittrex_secret}}">
+                                <div class="exchange-settings">
+                                    <span class="h4">Bittrex</span>
+                                    <span class="switch tiny api-switch float-right">
+                                        @isset($exchanges_active['bittrex'])
+                                        <input checked class="switch-input" id="bittrex-switch" type="checkbox" name="bittrex_switch">
+                                        @endisset
+                                        @empty($exchanges_active['bittrex'])
+                                        <input class="switch-input" id="bittrex-switch" type="checkbox" name="bittrex_switch">
+                                        @endempty
+                                        <label class="switch-paddle" for="bittrex-switch">
+                                        <span class="show-for-sr">Bittrex API</span>
+                                        <span class="switch-active" aria-hidden="true">On</span>
+                                        <span class="switch-inactive" aria-hidden="true">Off</span>
+                                      </label>
+                                    </span>
+                                    <div class="input-group">
+                                        <span class="input-group-label">Bittrex Key</span>
+                                        <input class="input-group-field" type="text" name="bittrex_key" value="{{ $bittrex['bittrex_key'] }}">
+                                    </div>
+
+                                    <div class="input-group">
+                                        <span class="input-group-label">Bittrex Secret</span>
+                                        <input class="input-group-field" type="text" name="bittrex_secret" value="{{ $bittrex['bittrex_secret'] }}">
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-label">Bittrex Fee</span>
+                                        <input class="input-group-field" type="text" name="bittrex_fee" value="{{ $bittrex['bittrex_fee'] }}">
+                                    </div>
+                                </div>
+                                <div class="exchange-settings">
+                                    <span class="h4">Bitstamp</span>
+                                    <span class="switch tiny api-switch float-right">
+                                        @isset($exchanges_active['bitstamp'])
+                                        <input checked class="switch-input" id="bitstamp-switch" type="checkbox" name="bitstamp_switch">
+                                        @endisset
+                                        @empty($exchanges_active['bitstamp'])
+                                        <input class="switch-input" id="bitstamp-switch" type="checkbox" name="bitstamp_switch">
+                                        @endempty
+                                        <label class="switch-paddle" for="bitstamp-switch">
+                                        <span class="show-for-sr">Bitstamp API</span>
+                                        <span class="switch-active" aria-hidden="true">On</span>
+                                        <span class="switch-inactive" aria-hidden="true">Off</span>
+                                      </label>
+                                    </span>
+                                    <div class="input-group">
+                                        <span class="input-group-label">Bitstamp Key</span>
+                                        <input class="input-group-field" type="text" name="bitstamp_key" value="{{ $bitstamp['bitstamp_key'] }}">
+                                    </div>
+
+                                    <div class="input-group">
+                                        <span class="input-group-label">Bitstamp Secret</span>
+                                        <input class="input-group-field" type="text" name="bitstamp_secret" value="{{ $bitstamp['bitstamp_secret'] }}">
+                                    </div>
+
+                                    <div class="input-group">
+                                        <span class="input-group-label">Bitstamp Fee</span>
+                                        <input class="input-group-field" type="text" name="bitstamp_fee" value="{{ $bitstamp['bitstamp_fee'] }}">
+                                    </div>
                                 </div>
 
                             </div>
                         </li>
-                        <li class="accordion-item" data-accordion-item>
-                            <a href="#" class="accordion-title">Import</a>
-                            <div class="accordion-content" data-tab-content>
-                                
-                                <label>BITTREX
-                                  <input type="text" placeholder="{{$settings['bittrex_key']}}">
-                                </label>
-                            </div>
-                        </li>
+                        
                     </ul>
 
-    <!--                 @foreach ($settings as $key => $value)
-
-                        <p> {{ $key }}: {{ $value}} </p>            
-                            
-                    @endforeach -->
                 </div>
 
             </div>

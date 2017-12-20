@@ -1,5 +1,13 @@
 section#settings{
-	
+	.h4 {
+		color: get-color(primary);
+	}
+	.exchange-settings {
+		margin-bottom: 3rem;
+	}
+	.api-switch {
+		margin-left: 2rem;
+	}
 	.section-title {
 		background-color: $title-background;
 		border-bottom: 1px solid $light-gray;

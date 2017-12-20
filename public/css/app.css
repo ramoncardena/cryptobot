@@ -14237,6 +14237,18 @@ section#dashboard .portfolio {
   margin-top: 20px;
 }
 
+section#settings .h4 {
+  color: #009ACE;
+}
+
+section#settings .exchange-settings {
+  margin-bottom: 3rem;
+}
+
+section#settings .api-switch {
+  margin-left: 2rem;
+}
+
 section#settings .section-title {
   background-color: #F7F8FB;
   border-bottom: 1px solid #e6e6e6;

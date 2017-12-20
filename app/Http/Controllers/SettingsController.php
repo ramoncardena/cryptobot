@@ -26,14 +26,19 @@ class SettingsController extends Controller
     public function index()
     {
         $settings = settings();
-         // $settings->set('bittrex_key','a8sd98as8ajlk3lkj4h88snal');
-         // $settings->set('bittrex_secret','k90welf90af455wgfm_a3kng9');
 
-        $bittrex_key = $settings->get('bittrex_key');
+        $bittrex['bittrex_key'] = $settings->get('bittrex_key');
+        $bittrex['bittrex_secret'] = $settings->get('bittrex_secret');    
+        $bittrex['bittrex_fee'] = $settings->get('bittrex_fee');      
 
-        $bittrex_secret =$settings->get('bittrex_secret');        
+        $bitstamp['bitstamp_key'] = $settings->get('bitstamp_key');
+        $bitstamp['bitstamp_secret'] = $settings->get('bitstamp_secret');    
+        $bitstamp['bitstamp_fee'] = $settings->get('bitstamp_fee');   
 
-        return view('settings', ['settings' => $settings->all(), 'decrypt_bittrex_key' => $bittrex_key, 'decrypt_bittrex_secret' => $bittrex_secret]);
+        $exchanges_active  = $settings->get('exchanges');
+
+
+        return view('settings', ['settings' => $settings->all(), 'bittrex' => $bittrex, 'bitstamp' => $bitstamp, 'exchanges_active' => $exchanges_active]);
     }
 
     /**
@@ -56,11 +61,26 @@ class SettingsController extends Controller
     {   
         $settings = settings();
 
+        $settings->set('exchanges', null);
+
         foreach ($request->all() as $key => $value) 
         {
-            if ($key !== "_token") {
-                $settings->set($key, $value);
+            switch ($key) {
+                case 'bittrex_switch':
+                    $settings->addExchange('bittrex');
+                    break;
+
+                case 'bitstamp_switch':
+                    $settings->addExchange('bitstamp');
+                    break;
+
+                default:
+                    if ($key !== "_token") {
+                        $settings->set($key, $value);
+                    }
+                    break;
             }
+
         }
         return redirect('/settings');
     }

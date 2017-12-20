@@ -79600,38 +79600,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 this.loadingprice = false;
             }
         },
-        editTrade: function editTrade(id, stopLoss, takeProfit) {
-            var uri = 'newStopLoss=' + stopLoss + "&newTakeProfit=" + takeProfit;
-            axios.patch('/trades/' + id + '?' + uri).then(function (response) {
-                console.log("Trade edited!");
-                console.log(response.data);
-            }).catch(function (error) {
-                console.log(error.response.data);
-            });
-        },
-        closeTrade: function closeTrade(id) {
-            var uri = 'closingprice=' + this.closingprice + '&keep=false';
-            axios.delete('/trades/' + id + '?' + uri).then(function (response) {
-                console.log("Trade closed!");
-            }).catch(function (error) {
-                console.log(error.response.data);
-            });
-        },
-        closeWaitingTrade: function closeWaitingTrade(id) {
-            axios.delete('/trades/' + id).then(function (response) {
-                console.log("Trade cancelled!");
-            }).catch(function (error) {
-                console.log(error.response.data);
-            });
-        },
-        keepTrade: function keepTrade(id) {
-            var uri = 'keep=true';
-            axios.delete('/trades/' + id + '?' + uri).then(function (response) {
-                console.log("Trade kept!");
-            }).catch(function (error) {
-                console.log(error.response.data);
-            });
-        },
         calculateProfit: function calculateProfit(price) {
             if (this.closingprice != 0) {
                 return ((parseFloat(this.closingprice) - parseFloat(price)) / parseFloat(this.closingprice) * 100).toFixed(2);
@@ -81985,24 +81953,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     console.log("Error: " + e.message);
                 });
             }
-        },
-        openLong: function openLong() {
-            if (this.conditionalSwitch == false) {
-                this.conditionselected = "now";
-                this.conditionprice = 0;
-            }
-            if (this.slSwitch == false) this.stoploss = 0;
-            if (this.tpSwitch == false) this.takeprofit = 0;
-
-            var uri = 'status=opened&position=long' + '&exchange=' + this.exchange + '&pair=' + this.pairselected + '&price=' + this.price + '&amount=' + this.amount + '&total=' + this.total + '&stop_loss=' + this.stoploss + '&take_profit=' + this.takeprofit + "&condition=" + this.conditionselected + "&condition_price=" + this.conditionprice;
-
-            axios.post('/trades', uri).then(function (response) {
-                console.log("Trade #" + response.data.id + " opened!");
-                window.location.href = '/trades';
-            }).catch(function (error) {
-                console.log(error.response.data);
-                window.location.href = '/trades';
-            });
         }
     }
 });
