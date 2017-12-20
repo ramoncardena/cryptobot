@@ -42,8 +42,9 @@
                         <ul class="accordion" data-accordion data-multi-expand="true" data-allow-all-closed="true">
                             <li class="accordion-item is-active" data-accordion-item>
                                 <a href="#" class="accordion-title text-center">Trading Panel</a>
+                                
                                 <div class="accordion-content" data-tab-content >
-                                    <tradepanel :validation-errors="{{ $errors }}"></tradepanel>
+                                    <tradepanel :validation-errors="{{ $errors }}" :exchanges="{{ $exchanges }}"></tradepanel>
                                 </div>
                             </li>
                             <li class="accordion-item is-active" data-accordion-item>

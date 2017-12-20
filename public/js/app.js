@@ -81569,7 +81569,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'tradepanel',
-    props: ['validation-errors'],
+    props: ['validation-errors', 'exchanges'],
     data: function data() {
         return {
             pirceChanged: false,
@@ -81823,6 +81823,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this3 = this;
 
             this.loadingpairs = true;
+            this.pairselected = "";
 
             //Bittrex
             if (exchange.toLowerCase() == 'bittrex') {
@@ -81877,6 +81878,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     _this3.loadingpairs = false;
                     console.log("Error: " + e.message);
                 });
+            } else {
+                this.loadingpairs = false;
             }
         },
         refreshInfopanel: function refreshInfopanel(exchange, pair) {
@@ -82030,12 +82033,18 @@ var render = function() {
                     _vm._v("Select...")
                   ]),
                   _vm._v(" "),
-                  _c(
-                    "option",
-                    { attrs: { value: "bittrex", selected: "true" } },
-                    [_vm._v(" Bittrex ")]
-                  )
-                ]
+                  _vm._l(_vm.exchanges, function(exchange) {
+                    return _c(
+                      "option",
+                      {
+                        attrs: { selected: "true" },
+                        domProps: { value: exchange }
+                      },
+                      [_vm._v(_vm._s(exchange) + " ")]
+                    )
+                  })
+                ],
+                2
               )
             ])
           ]),

@@ -18,7 +18,7 @@
                             <span class="input-group-label">Exchange</span>
                             <select name="exchange" v-model="exchange" class="input-group-field" v-on:change="getpairs(exchange)">
                                 <option disabled value="">Select...</option>
-                                <option value="bittrex" selected="true"> Bittrex </option>
+                                <option v-for="exchange in exchanges" :value="exchange" selected="true">{{ exchange }} </option>
                             </select>                     
                         </div>
                         
@@ -246,7 +246,8 @@
 export default {
     name: 'tradepanel',
     props: [
-        'validation-errors'
+        'validation-errors',
+        'exchanges'
     ],
     data() {
         return {
@@ -517,6 +518,7 @@ export default {
         },
         getpairs(exchange) {
             this.loadingpairs = true;
+            this.pairselected = "";
 
             //Bittrex
             if (exchange.toLowerCase() == 'bittrex') {
@@ -577,6 +579,9 @@ export default {
                     this.loadingpairs = false;
                     console.log("Error: " +  e.message);
                 });
+            }
+            else {
+                this.loadingpairs = false;
             }
         },
         refreshInfopanel(exchange, pair){

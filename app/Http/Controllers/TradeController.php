@@ -95,8 +95,11 @@ class TradeController extends Controller
                     ->orderBy('updated_at', 'desc')
                     ->get();
 
+                // Get exchanges for the user
+                $exchanges = $this->user->settings()->get('exchanges');
+                $exchanges = array_divide($exchanges)[0];
                 // Return 'trades' view passing trade history and open trades objects
-                return view('trades', ['tradesActive' => $tradesActive, 'tradesHistory' => $tradesHistory]);
+                return view('trades', ['tradesActive' => $tradesActive, 'tradesHistory' => $tradesHistory, 'exchanges' => json_encode($exchanges)]);
             }
             else {
 
