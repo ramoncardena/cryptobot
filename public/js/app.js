@@ -78884,6 +78884,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'trade',
@@ -79070,15 +79071,17 @@ var render = function() {
         ])
       : _vm._e(),
     _vm._v(" "),
-    _c("td", [
-      _vm._v(
-        _vm._s(
-          _vm.history == true
-            ? parseFloat(_vm.finalProfit).toFixed(2) + "%"
-            : _vm.profit
-        )
-      )
-    ]),
+    _vm.tradeStatus == "Opened" || _vm.tradeStatus == "Closed"
+      ? _c("td", [
+          _vm._v(
+            _vm._s(
+              _vm.history == true
+                ? parseFloat(_vm.finalProfit).toFixed(2) + "%"
+                : _vm.profit
+            )
+          )
+        ])
+      : _c("td", { staticClass: "text-center" }, [_vm._v(" -- ")]),
     _vm._v(" "),
     _c("td", [_vm._v(_vm._s(_vm.pair))]),
     _vm._v(" "),

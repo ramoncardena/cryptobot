@@ -13,7 +13,8 @@
                     <button class="clear button" v-if="((tradeStatus=='Opened' || tradeStatus=='Waiting' || tradeStatus=='Closing' || tradeStatus=='Opening') && updating==true)"> <i class="fa fa-refresh fa-spin refresh-icon"></i></button> 
                 </div>
             </td>
-            <td>{{ (history==true) ? parseFloat(finalProfit).toFixed(2) + '%' : profit }}</td>
+            <td v-if="tradeStatus == 'Opened' || tradeStatus == 'Closed'" >{{ (history==true) ? parseFloat(finalProfit).toFixed(2) + '%' : profit }}</td>
+            <td v-else class="text-center"> -- </td>
             <td>{{ pair }}</td>
             <td class="sorting_1  trade-status"><span :class="'status-' + tradeStatus" v-model="tradeStatus">{{ tradeStatus }}</span></td>
             <td>{{ exchange }}</td>
