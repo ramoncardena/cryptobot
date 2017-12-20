@@ -53,7 +53,7 @@ class TrackOrder implements ShouldQueue
             // Call to exchange API or a fakeOrder based on ENV->ORDERS_TEST
             if (env('ORDERS_TEST', true) == true) {
 
-                if( rand() % 2 == 0) {
+                if( rand() <  0) {
 
                     // TESTING SUCCESS
                     $onlineOrder = FakeOrder::success();    

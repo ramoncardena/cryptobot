@@ -9,7 +9,7 @@ class Order extends Model
 	protected  $primaryKey = 'id';
 
     protected $fillable = [
-        'user_id', 'order_id', 'trade_id', 'exchange', 'type'
+        'user_id', 'order_id', 'trade_id', 'exchange', 'type', 'cancel'
     ];
     
 }

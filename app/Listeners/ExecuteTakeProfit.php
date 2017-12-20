@@ -110,7 +110,7 @@ class ExecuteTakeProfit
                     $broker = new Broker;
                     $broker->setExchange($this->trade['exchange']);
                     $broker->setUser($user);
-                    $order = $broker->sellLimit($this->trade['pair'], $this->trade['amount'], $this->last);
+                    $order = $broker->sellLimit($this->trade['pair'], $this->trade['amount'], $event->takeProfit->price);
                     
                 }
                 
@@ -124,6 +124,7 @@ class ExecuteTakeProfit
                     $this->order->exchange = 'bittrex';
                     $this->order->order_id = $order->result->uuid;
                     $this->order->type = 'close';
+                    $this->order->cancel = false;
                     $this->order->save();
 
                 }
@@ -141,7 +142,7 @@ class ExecuteTakeProfit
                 Profit::destroy($event->takeProfit->id);
 
                 // Log INFO: Order Launched
-                Log::info("Order Launched: Take Profit launched a SELL order (#" . $this->order->id .") at " . $this->last  . " for trade #" . $this->trade['id'] . " for the pair " . $this->trade['pair'] . " at " . $this->trade['exchange']);
+                Log::info("Order Launched: Take Profit launched a SELL order (#" . $this->order->id .") at " . $event->takeProfit->price  . " for trade #" . $this->trade['id'] . " for the pair " . $this->trade['pair'] . " at " . $this->trade['exchange']);
 
                 // NOTIFY: TakeProfit
                 User::find($this->trade['user_id'])->notify(new TakeProfitNotification($this->trade));

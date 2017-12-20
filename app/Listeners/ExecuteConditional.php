@@ -151,6 +151,7 @@ class ExecuteConditional
             $orderToTrack->exchange = $this->trade->exchange;
             $orderToTrack->order_id = $this->trade->order_id;
             $orderToTrack->type = 'open';
+            $orderToTrack->cancel = false;
             $orderToTrack->save();
 
             // EVENT: OrderLaunched

@@ -487,78 +487,19 @@ class TradeController extends Controller
 
                 // Update trade status
                 $this->trade->status = "Cancelling";
-                $this->trade->save();
-                
-                // Update stop-loss status if it exists
-                $stop = Stop::find($this->trade->stop_id);
-                if ( $stop ) {
-                    $stop->status = "Closing";
-                    $stop->cancel = true;
-                    $stop->save();
-                }
+                $this->trade->save();        
 
-                // Update take-profit status if it exists
-                $profit = Profit::find($this->trade->profit_id);
-                if ( $profit ) {
-                    $profit->status = "Closing";
-                    $profit->cancel = true;
-                    $profit->save();
-                }
+                $order = Order::where('order_id', $this->trade->order_id)->first();
+                $order->cancel = true;
+                $order->save();
 
-                // Get the user linked to the trade
-                $user = User::find(Auth::id());
+                // SESSION FLASH: New Trade
+                $request->session()->flash('status-text', 'Cancelling trade on pair ' . $this->trade->pair);
+                $request->session()->flash('status-class', 'success');
 
-                // Call to exchange API or a fakeOrder based on ENV->ORDERS_TEST
-                if ( env('ORDERS_TEST', true) == true ) {
-
-                    // TESTING SUCCESS
-                    $remoteOrder = FakeOrder::success();
-
-                    // TESTING FAIL
-                    // $order = FakeOrder::fail();
-                    
-                }
-                else {
-
-                    // CANCEL ORDER
-                    $broker = new Broker;
-                    $broker->setUser($user);
-                    $broker->setExchange($this->trade->exchange);
-                    $remoteOrder = $broker->cancelOrder($this->trade->order_id);
-                    
-                }
-                
-                // Check for remoteOrder success
-                if ($remoteOrder->success == true) {
-
-                    // Delete order
-                    Order::destroy($this->trade->order_id);
-
-                    // EVENT: TradeKept
-                    event(new TradeCancelled($this->trade));
-                    
-                    // SESSION FLASH: New Trade
-                    $request->session()->flash('status-text', 'Trade cancelled for pair ' .$this->trade->pair);
-                    $request->session()->flash('status-class', 'success');
-                    
-                    //return response($this->trade->toJson(), 200)->header('Content-Type', 'application/json');
-                    return redirect('/trades');
-
-                }
-                else {
-
-                    // Log ERROR: Bittrex API returned error
-                    Log::error("[TradeController] Bittrex API: " . $remoteOrder->message);
-
-                    // SESSION FLASH: New Trade Fails
-                    $request->session()->flash('status-text', 'Error trying to cancel trade # ' . $this->trade->id . ': ' . $remoteOrder->message);
-                    $request->session()->flash('status-class', 'alert');
-
-                    // return response($remoteOrder->message, 500)->header('Content-Type', 'text/plain');
-                    return redirect("/trades");
-
-                }
-
+                // Send the cancelled trade to the client in json
+                // return response($this->trade->toJson(), 200)->header('Content-Type', 'application/json');
+                return redirect('/trades');
 
             }
             else {
@@ -642,6 +583,7 @@ class TradeController extends Controller
                             $order->exchange = 'bittrex';
                             $order->order_id = $remoteOrder->result->uuid;
                             $order->type = 'close';
+                            $order->cancel = false;
                             $order->save();
 
                             // EVENT: OrderLaunched
@@ -740,6 +682,7 @@ class TradeController extends Controller
                 $orderToTrack->exchange = $trade->exchange;
                 $orderToTrack->order_id = $trade->order_id;
                 $orderToTrack->type = 'open';
+                $orderToTrack->cancel = false;
                 $orderToTrack->save();
 
                 // EVENT: OrderLaunched

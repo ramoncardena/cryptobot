@@ -45,6 +45,7 @@ class ExecuteStopLoss
      */
     protected $order;
 
+
     /**
      * Create the event listener.
      *
@@ -109,7 +110,7 @@ class ExecuteStopLoss
                     $broker = new Broker;
                     $broker->setExchange($this->trade['exchange']);
                     $broker->setUser($user);
-                    $order = $broker->sellLimit($this->trade['pair'], $this->trade['amount'], $this->last);
+                    $order = $broker->sellLimit($this->trade['pair'], $this->trade['amount'], $event->stopLoss->price);
                     
                 }
                 
@@ -123,6 +124,7 @@ class ExecuteStopLoss
                     $this->order->exchange = 'bittrex';
                     $this->order->order_id = $order->result->uuid;
                     $this->order->type = 'close';
+                    $this->order->cancel = false;
                     $this->order->save();
 
                 }
@@ -140,7 +142,7 @@ class ExecuteStopLoss
                 Stop::destroy($event->stopLoss->id);
 
                 // Log INFO: Order Launched
-                Log::info("Order Launched: Stop-loss launched a SELL order (#" . $this->order->id .") at " . $this->last  . " for trade #" . $this->trade['id'] . " for the pair " . $this->trade['pair'] . " at " . $this->trade['exchange']);
+                Log::info("Order Launched: Stop-loss launched a SELL order (#" . $this->order->id .") at " . $event->stopLoss->price  . " for trade #" . $this->trade['id'] . " for the pair " . $this->trade['pair'] . " at " . $this->trade['exchange']);
 
                 // NOTIFY: StopLoss
                 User::find($this->trade['user_id'])->notify(new StopLossNotification($this->trade));

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Log;
 use App\Events\OrderNotCompleted;
 use App\Events\CloseOrderCompleted;
 use App\Events\OpenOrderCompleted;
+use App\Events\TradeCancelled;
 
 use App\Library\Services\Broker;
 use App\Library\FakeOrder;
@@ -51,77 +52,126 @@ class KeepTrackingOrder implements ShouldQueue
             // Get user
             $user = User::find($event->order->user_id);
 
-            // Call to exchange API or a fakeOrder based on ENV->ORDERS_TEST
-            if (env('ORDERS_TEST', true) == true) {
+            $order = Order::find($event->order->id);
 
-                if( rand() % 2 == 0) {
+            if ($order->cancel) {
+
+                // Call to exchange API or a fakeOrder based on ENV->ORDERS_TEST
+                if ( env('ORDERS_TEST', true) == true ) {
 
                     // TESTING SUCCESS
-                    $onlineOrder = FakeOrder::success();    
-
-                }
-                else {
+                    $remoteOrder = FakeOrder::success();
 
                     // TESTING FAIL
-                    $onlineOrder = FakeOrder::notClosed();
+                    // $order = FakeOrder::fail();
+                    
+                }
+                else {
 
+                    // CANCEL ORDER
+                    $broker = new Broker;
+                    $broker->setUser($user);
+                    $broker->setExchange($event->order->exchange);
+                    $remoteOrder = $broker->cancelOrder($event->order->order_id);
+                    
                 }
                 
-            }
-            else {
+                // Check for remoteOrder success
+                if ($remoteOrder->success == true) {
 
-                // GET ORDER
-                $broker = new Broker;
-                $broker->setUser($user);
-                $broker->setExchange($event->order->exchange);
-                $onlineOrder = $broker->getOrder($event->order->order_id);
-                
-            }
+                    // Delete order from the database
+                    Order::destroy($event->order->id);
 
-            // Check for success on API call
-            if (! $onlineOrder->success) {
-
-                // Log ERROR: Bittrex API returned error
-                Log::error("[KeepTrackingOrder] Bittrex API: " . $onlineOrder->message);
-
-                // Add delay before requeueing
-                sleep(env('FAILED_ORDER_DELAY', 5));
-
-                // Event: OrderNotCompleted
-                event(new OrderNotCompleted($event->order));
-                
-            }
-            else {
-
-                // If order is closed then update trade
-                if ( $onlineOrder->result->Closed != "" ) {
-
-                    switch ($event->order->type) {
-                        case 'open':
-
-                            // EVENT: OpenOrderCompleted
-                            event(new OpenOrderCompleted($event->order, $onlineOrder->result->PricePerUnit));
-                            break;
-                        
-                        case 'close':
-
-                            // EVENT: CloseOrderCompleted
-                            event(new CloseOrderCompleted($event->order, $onlineOrder->result->PricePerUnit));
-                            break;
-                    }
+                    // EVENT: TradeCancelled
+                    $trade = Trade::find($event->order->trade_id);
+                    event(new TradeCancelled($trade));
+                    
+                    // Log NOTICE: Conditional cancelled
+                    Log::notice("Order #" . $event->order->id . " cancelled.");
 
                 }
                 else {
 
-                    // If the order is not completed
-                    // Add delay before requeueing
-                    sleep(env('ORDER_DELAY', 0));
-                    
-                    // Event: OrderNotCompleted
-                    event(new OrderNotCompleted($event->order));
+                    // Log ERROR: Bittrex API returned error
+                    Log::error("[KeepTrackingOrder] Bittrex API: " . $remoteOrder->message);
 
                 }
-            }      
+
+            }
+            else {
+
+                // Call to exchange API or a fakeOrder based on ENV->ORDERS_TEST
+                if (env('ORDERS_TEST', true) == true) {
+
+                    if( rand() < 0) {
+
+                        // TESTING SUCCESS
+                        $onlineOrder = FakeOrder::success();    
+
+                    }
+                    else {
+
+                        // TESTING FAIL
+                        $onlineOrder = FakeOrder::notClosed();
+
+                    }
+                    
+                }
+                else {
+
+                    // GET ORDER
+                    $broker = new Broker;
+                    $broker->setUser($user);
+                    $broker->setExchange($event->order->exchange);
+                    $onlineOrder = $broker->getOrder($event->order->order_id);
+                    
+                }
+
+                // Check for success on API call
+                if (! $onlineOrder->success) {
+
+                    // Log ERROR: Bittrex API returned error
+                    Log::error("[KeepTrackingOrder] Bittrex API: " . $onlineOrder->message);
+
+                    // Add delay before requeueing
+                    sleep(env('FAILED_ORDER_DELAY', 5));
+
+                    // Event: OrderNotCompleted
+                    event(new OrderNotCompleted($event->order));
+                    
+                }
+                else {
+
+                    // If order is closed then update trade
+                    if ( $onlineOrder->result->Closed != "" ) {
+
+                        switch ($event->order->type) {
+                            case 'open':
+
+                                // EVENT: OpenOrderCompleted
+                                event(new OpenOrderCompleted($event->order, $onlineOrder->result->PricePerUnit));
+                                break;
+                            
+                            case 'close':
+
+                                // EVENT: CloseOrderCompleted
+                                event(new CloseOrderCompleted($event->order, $onlineOrder->result->PricePerUnit));
+                                break;
+                        }
+
+                    }
+                    else {
+
+                        // If the order is not completed
+                        // Add delay before requeueing
+                        sleep(env('ORDER_DELAY', 0));
+                        
+                        // Event: OrderNotCompleted
+                        event(new OrderNotCompleted($event->order));
+
+                    }
+                }    
+            }  
 
         } catch (Exception $e) {
 
