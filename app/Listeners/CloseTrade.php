@@ -67,15 +67,15 @@ class CloseTrade implements ShouldQueue
             // Get fee for the exchange
             $broker = new Broker;
             $broker->setUser($user);
-            $broker->setExchange($exchange);
+            $broker->setExchange($exchange->name);
             $exchangeFee = $broker->getFee();
 
             // Calculate fee
             $fee = floatval($trade->total) * floatval($exchangeFee) / 100;
 
             // Calculate profit
-            $decreaseValue = ( floatval($event->closing_price)  - floatval($trade->price) - floatval($fee));
-            $trade->profit = ( floatval($decreaseValue) / floatval($trade->price) ) * 100;
+            $decreaseValue = ( floatval($trade->amount) * floatval($event->price) ) - ( floatval($trade->amount) * floatval($trade->price) ) - floatval($fee);
+            $trade->profit = floatval($decreaseValue) / (floatval($trade->amount) * floatval($trade->price)) * 100;
 
             $trade->status = "Closed";
             $trade->save();
