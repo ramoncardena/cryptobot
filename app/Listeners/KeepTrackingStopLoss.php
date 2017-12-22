@@ -77,6 +77,12 @@ class KeepTrackingStopLoss implements ShouldQueue
                             // Log ERROR: Bittrex API returned error
                             Log::error("[KeepTrackingStopLoss] Bittrex API: " . $ticker->message);
 
+                            // Add delay before requeueing
+                            sleep(env('FAILED_STOPLOSS_DELAY', 5));
+
+                            // EVENT: StopLossNotReached
+                            event(new StopLossNotReached($stop));
+
                         }
                         else {
 

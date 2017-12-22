@@ -80,6 +80,12 @@ class KeepTrackingConditional implements ShouldQueue
                     // Log ERROR: Bittrex API returned error
                     Log::error("[KeepTrackingConditional] Bittrex API: " . $ticker->message);
 
+                    // Add delay before requeueing
+                    sleep(env('FAILED_CONDITIONAL_DELAY', 5));
+
+                    // EVENT: ConditionNotReached
+                    event(new ConditionNotReached($conditional));
+
                 }
                 else {
 

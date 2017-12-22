@@ -53,6 +53,26 @@ class Broker
 
  	}
 
+     public function getFee() {
+
+        try {
+            
+            switch (strtolower($this->exchange->name)) {
+                case 'bittrex':
+                    return $this->user->settings()->get('bittrex_fee');
+                    break;
+            } 
+
+        } catch (Exception $e) {
+
+            // LOG: Exception trying to show trades
+            Log::critical("[Broker] Exception: " . $e->getMessage());
+
+            return $e->getMessage();
+
+        }
+
+    }
 
     public function getTicker ($market)
     {

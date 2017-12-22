@@ -11,12 +11,15 @@ use App\Events\CloseOrderCompleted;
 
 use App\Notifications\TradeClosedNotification;
 
+use App\Library\Services\Broker;
+
 use App\Stop;
 use App\Profit;
 use App\Trade;
 use App\User;
 use App\Order;
 use App\Exchange;
+
 
 class CloseTrade implements ShouldQueue
 {
@@ -53,17 +56,25 @@ class CloseTrade implements ShouldQueue
 
             $exchange =Exchange::where('name', $trade->exchange)->first();
 
+            $user = User::find($trade->user_id);
+            
             // Destroy order to stop tracking
             Order::destroy($event->order->id);
 
             // Get actual final price of the order to calculate profit
             $trade->closing_price = $event->price;
 
+            // Get fee for the exchange
+            $broker = new Broker;
+            $broker->setUser($user);
+            $broker->setExchange($exchange);
+            $exchangeFee = $broker->getFee();
+
             // Calculate fee
-            $fee = floatval($trade->total) * floatval($exchange->fee) / 100;
+            $fee = floatval($trade->total) * floatval($exchangeFee) / 100;
 
             // Calculate profit
-            $decreaseValue = ( floatval($event->price) - floatval($fee) ) - floatval($trade->price);
+            $decreaseValue = ( floatval($event->closing_price)  - floatval($trade->price) - floatval($fee));
             $trade->profit = ( floatval($decreaseValue) / floatval($trade->price) ) * 100;
 
             $trade->status = "Closed";
