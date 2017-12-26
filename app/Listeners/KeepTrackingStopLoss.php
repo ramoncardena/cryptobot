@@ -117,6 +117,12 @@ class KeepTrackingStopLoss implements ShouldQueue
 
             // Log CRITICAL: Exception
             Log::critical("[KeepTrackingStopLoss] Exception: " . $e->getMessage());
+
+            // Add delay before requeueing
+            sleep(env('FAILED_STOPLOSS_DELAY', 5));
+
+            // EVENT: StopLossNotReached
+            event(new StopLossNotReached($stop));
             
         }
     }

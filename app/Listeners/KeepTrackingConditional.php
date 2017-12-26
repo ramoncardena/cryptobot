@@ -149,6 +149,12 @@ class KeepTrackingConditional implements ShouldQueue
             // Log CRITICAL: Exception
             Log::critical("[KeepTrackingConditional] Exception: " . $e->getMessage());
 
+            // Add delay before requeueing
+            sleep(env('FAILED_CONDITIONAL_DELAY', 5));
+
+            // EVENT: ConditionNotReached
+            event(new ConditionNotReached($conditional));
+
         }
     }
 }

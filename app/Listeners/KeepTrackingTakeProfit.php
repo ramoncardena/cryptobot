@@ -110,6 +110,12 @@ class KeepTrackingTakeProfit implements ShouldQueue
 
             // Log CRITICAL: Exception
             Log::critical("KeepTrakingTakeProfit Exception: " . $e->getMessage());
+
+             // Add delay before requeueing
+            sleep(env('FAILED_TAKEPROFIT_DELAY', 5));
+
+            // EVENT: TakeProfitNotReached
+            event(new TakeProfitNotReached($profit));
             
         }
     }

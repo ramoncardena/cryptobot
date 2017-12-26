@@ -82,15 +82,15 @@ class Broker
     			case 'bittrex':
     				$exchangeResponse = Bittrex::getTicker($market);
 
-    				if ($exchangeResponse->success) {
+    				if ($exchangeResponse->success == true) {
 
     					$response = new \stdClass();
 				        $response->success=true;
 				        $response->message="";
 				        $response->result = new \stdClass();
-				        $response->result->Bid = $exchangeResponse->result->Bid;
-				        $response->result->Ask = $exchangeResponse->result->Ask;
-				        $response->result->Last = $exchangeResponse->result->Last;
+				        if( $response->result->Bid ) $response->result->Bid = $exchangeResponse->result->Bid;
+				        if( $response->result->Ask )  $response->result->Ask = $exchangeResponse->result->Ask;
+				        if( $response->result->Last ) $response->result->Last = $exchangeResponse->result->Last;
 
     					return $response;
     				}
