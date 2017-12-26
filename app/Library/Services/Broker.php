@@ -81,6 +81,7 @@ class Broker
     		switch (strtolower($this->exchange->name)) {
     			case 'bittrex':
     				$exchangeResponse = Bittrex::getTicker($market);
+                    Log::critical("[Broker] getTicker: " . var_dump($exchangeResponse));
 
     				if ($exchangeResponse->success == true) {
 
@@ -89,7 +90,7 @@ class Broker
 				        $response->message="";
 				        $response->result = new \stdClass();
                         // LOG: Exception trying to show trades
-                        Log::critical("[Broker] getTicker: " . var_dump($exchangeResponse->result));
+                       
 
 				        $response->result->Bid = $exchangeResponse->result->Bid;
 				        $response->result->Ask = $exchangeResponse->result->Ask;
