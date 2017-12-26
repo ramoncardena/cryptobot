@@ -84,7 +84,7 @@ class Broker
 
     				if ($exchangeResponse->success == true) {
 
-                        if ($response->result) {
+                        if ($exchangeResponse->result) {
         					$response = new \stdClass();
     				        $response->success=true;
     				        $response->message="";
