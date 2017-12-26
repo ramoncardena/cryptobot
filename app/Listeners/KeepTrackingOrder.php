@@ -177,6 +177,12 @@ class KeepTrackingOrder implements ShouldQueue
 
             // Log CRITICAL: Exception
             Log::critical("[KeepTrackingOrder] Exception: " . $e->getMessage());
+
+            // Add delay before requeueing
+            sleep(env('FAILED_ORDER_DELAY', 5));
+
+            // Event: OrderNotCompleted
+            event(new OrderNotCompleted($event->order));
             
         }
         
