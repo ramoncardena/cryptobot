@@ -88,6 +88,9 @@ class Broker
 				        $response->success=true;
 				        $response->message="";
 				        $response->result = new \stdClass();
+                        // LOG: Exception trying to show trades
+                        Log::critical("[Broker] getTicker: " . $response);
+
 				        $response->result->Bid = $exchangeResponse->result->Bid;
 				        $response->result->Ask = $exchangeResponse->result->Ask;
 				        $response->result->Last = $exchangeResponse->result->Last;
