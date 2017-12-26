@@ -88,9 +88,9 @@ class Broker
 				        $response->success=true;
 				        $response->message="";
 				        $response->result = new \stdClass();
-				        if( $response->result->Bid ) $response->result->Bid = $exchangeResponse->result->Bid;
-				        if( $response->result->Ask )  $response->result->Ask = $exchangeResponse->result->Ask;
-				        if( $response->result->Last ) $response->result->Last = $exchangeResponse->result->Last;
+				        $response->result->Bid = $exchangeResponse->result->Bid;
+				        $response->result->Ask = $exchangeResponse->result->Ask;
+				        $response->result->Last = $exchangeResponse->result->Last;
 
     					return $response;
     				}
