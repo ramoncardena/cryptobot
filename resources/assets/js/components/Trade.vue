@@ -16,7 +16,7 @@
             <td v-if="tradeStatus == 'Opened' || tradeStatus == 'Closed'" >{{ (history==true) ? parseFloat(finalProfit).toFixed(2) + '%' : profit }}</td>
             <td v-else class="text-center"> -- </td>
             <td>{{ pair }}</td>
-            <td class="sorting_1  trade-status"><span :class="'status-' + tradeStatus" v-model="tradeStatus">{{ tradeStatus }}</span></td>
+            <td :class="'status-' + tradeStatus" v-model="tradeStatus">{{ tradeStatus }}</td>
             <td>{{ exchange }}</td>
             <td>{{ position }}</td>
             <td>{{ last.toFixed(8) }}</td>
