@@ -20,17 +20,18 @@
             <!-- Header -->
             <div class="small-12 cell form-container section-title text-left">
 
-                <div class="grid-x grid-padding-x">
+                <div class="grid-x grid-padding-x align-middle">
 
                     <div class="small-4 cell text-left">
-                        <div class="align-vertical">
+                        <div>
                             <h1>Portfolio</h1>
                         </div>
                     </div>
 
                     <div class="small-8 cell text-right">
-                        <div class="align-vertical">
-
+                        <div>
+                            <button class="button hollow"><span class="show-for-small-only">+ </span><i class="fa fa-btc" aria-hidden="true"></i> <span class="show-for-medium">Add Asset</span> </button>
+                            <button class="button hollow"><span class="show-for-small-only">+ </span><i class="fa fa-plug" aria-hidden="true"></i> <span class="show-for-medium">Add Origin</span> </button>
                         </div>
                     </div>
                 </div>
@@ -41,21 +42,14 @@
                     <div class="trades-area">
                         <ul class="accordion" data-accordion data-multi-expand="true" data-allow-all-closed="true">
                             <li class="accordion-item is-active" data-accordion-item>
-                                <a href="#" class="accordion-title text-center">Trading Panel</a>
+                                <a href="#" class="accordion-title text-center">Assets</a>
                                 
                                 <div class="accordion-content" data-tab-content >
-                                   
-                                </div>
-                            </li>
-                            <li class="accordion-item is-active" data-accordion-item>
-                                <a href="#" class="accordion-title  text-center">Active Trades</a>
-                                <div class="accordion-content" data-tab-content >
-                                   
-                                </div>
-                            </li>
 
+                                </div>
+                            </li>
                             <li class="accordion-item is-active" data-accordion-item>
-                                <a href="#" class="accordion-title text-center">Trade History</a>
+                                <a href="#" class="accordion-title  text-center">By Origin</a>
                                 <div class="accordion-content" data-tab-content >
                                    
                                 </div>
