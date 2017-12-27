@@ -27121,7 +27121,41 @@ $(document).ready(function () {
     });
 
     $('#activeTradesTable').DataTable();
-    $('#historyTradesTable').DataTable();
+    // $('#historyTradesTable').DataTable( {
+    //     initComplete: function () {
+    //         this.api().columns().every( function () {
+    //             var column = this;
+    //             var select = $('<select><option value=""></option></select>')
+    //                 .appendTo( $(column.header()).empty() )
+    //                 .on( 'change', function () {
+    //                     var val = $.fn.dataTable.util.escapeRegex(
+    //                         $(this).val()
+    //                     );
+
+    //                     column
+    //                         .search( val ? '^'+val+'$' : '', true, false )
+    //                         .draw();
+    //                 } );
+
+    //             column.data().unique().sort().each( function ( d, j ) {
+    //                 select.append( '<option value="'+d+'">'+d+'</option>' )
+    //             } );
+    //         } );
+    //     }
+    // } );
+
+    var historyTable = $('#historyTradesTable').DataTable();
+    $("#historyTradesTable tfoot th").each(function (i) {
+        if (i == 2 || i == 3 || i == 4 || i == 5) {
+            var select = $('<select><option value=""></option></select>').appendTo($(this).empty()).on('change', function () {
+                historyTable.column(i).search($(this).val()).draw();
+            });
+
+            historyTable.column(i).data().unique().sort().each(function (d, j) {
+                select.append('<option value="' + d + '">' + d + '</option>');
+            });
+        }
+    });
 });
 
 /***/ }),
@@ -79085,22 +79119,20 @@ var render = function() {
     _vm._v(" "),
     _c("td", [_vm._v(_vm._s(_vm.pair))]),
     _vm._v(" "),
-    _c("td", { staticClass: "sorting_1  trade-status" }, [
-      _c(
-        "span",
-        {
-          class: "status-" + _vm.tradeStatus,
-          model: {
-            value: _vm.tradeStatus,
-            callback: function($$v) {
-              _vm.tradeStatus = $$v
-            },
-            expression: "tradeStatus"
-          }
-        },
-        [_vm._v(_vm._s(_vm.tradeStatus))]
-      )
-    ]),
+    _c(
+      "td",
+      {
+        class: "status-" + _vm.tradeStatus,
+        model: {
+          value: _vm.tradeStatus,
+          callback: function($$v) {
+            _vm.tradeStatus = $$v
+          },
+          expression: "tradeStatus"
+        }
+      },
+      [_vm._v(_vm._s(_vm.tradeStatus))]
+    ),
     _vm._v(" "),
     _c("td", [_vm._v(_vm._s(_vm.exchange))]),
     _vm._v(" "),
@@ -79195,6 +79227,29 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -81176,7 +81231,54 @@ var render = function() {
             })
           ],
           2
-        )
+        ),
+        _vm._v(" "),
+        _c("tfoot", [
+          _c(
+            "tr",
+            { staticClass: "trade-title text-center", attrs: { role: "row" } },
+            [
+              _c("th"),
+              _vm._v(" "),
+              _vm.history == false
+                ? _c("th", {
+                    staticClass: "sorting",
+                    attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
+                  })
+                : _vm._e(),
+              _vm._v(" "),
+              _c("th"),
+              _vm._v(" "),
+              _c("th", [_vm._v("Pair")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Status")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Exchange")]),
+              _vm._v(" "),
+              _c("th", [_vm._v("Position")]),
+              _vm._v(" "),
+              _c("th"),
+              _vm._v(" "),
+              _c("th"),
+              _vm._v(" "),
+              _c("th"),
+              _vm._v(" "),
+              _c("th"),
+              _vm._v(" "),
+              _c("th"),
+              _vm._v(" "),
+              _c("th"),
+              _vm._v(" "),
+              _c("th"),
+              _vm._v(" "),
+              _c("th"),
+              _vm._v(" "),
+              _c("th"),
+              _vm._v(" "),
+              _c("th")
+            ]
+          )
+        ])
       ]
     )
   ])

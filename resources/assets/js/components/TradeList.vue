@@ -291,6 +291,29 @@
 
 
             </tbody>
+            <tfoot>
+                <tr role="row" class="trade-title text-center">
+                    <th></th>
+                    <th v-if="history==false" class="sorting" tabindex="0" rowspan="1" colspan="1"></th>
+                    <th></th>
+                    <th>Pair</th>
+                    <th>Status</th>
+                    <th>Exchange</th>
+                    <th>Position</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+
+                </tr>
+
+            </tfoot>
         </table>
     </div>
 </template>
