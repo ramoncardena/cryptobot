@@ -30,7 +30,7 @@
             </div>
             <ul class="vertical menu text-center">
                 <li><a href="/home">Dashboard</a></li>
-                <li><a href="#">Portfolio</a></li>
+                <li><a href="/portfolio">Portfolio</a></li>
                 <li><a href="/orders">Orders</a></li>
                 <li><a href="/trades">Trades</a></li>
                 <li><a href="#">Documentation</a></li>

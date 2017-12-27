@@ -27,6 +27,8 @@ Route::post('/trades', 'TradeController@store');
 Route::delete('/trades/{id}', 'TradeController@destroy');
 Route::patch('/trades/{id}', 'TradeController@update');
 
+Route::get('/portfolio', 'PortfolioController@index');
+
 
 Auth::routes();
 
