@@ -27065,7 +27065,7 @@ module.exports = Cancel;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(16);
-module.exports = __webpack_require__(84);
+module.exports = __webpack_require__(87);
 
 
 /***/ }),
@@ -27101,7 +27101,7 @@ Vue.component('trade', __webpack_require__(70));
 Vue.component('tradelist', __webpack_require__(73));
 Vue.component('tradepanel', __webpack_require__(76));
 Vue.component('notification-list', __webpack_require__(79));
-Vue.component('add-origin', __webpack_require__(93));
+Vue.component('add-origin', __webpack_require__(82));
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -27114,8 +27114,8 @@ var app = new Vue({
 
 $(document).ready(function () {
 
-    __webpack_require__(82);
-    __webpack_require__(83);
+    __webpack_require__(85);
+    __webpack_require__(86);
 
     $.extend($.fn.dataTable.defaults, {
         responsive: true
@@ -78941,8 +78941,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
         },
         date: function date() {
-            var fullDate = new Date(this.timestamp);
-            return fullDate.getDate() + "/" + (fullDate.getMonth() + 1) + "/" + fullDate.getFullYear();
+
+            var dateObj = new Date();
+            dateObj.setDate(dateObj.getDate());
+            var YYYY = dateObj.getFullYear() + '';
+            var MM = dateObj.getMonth() + 1 + '';
+            MM = MM.length === 1 ? '0' + MM : MM;
+            var DD = dateObj.getDate() + '';
+            DD = DD.length === 1 ? '0' + DD : DD;
+            console.log(YYYY + "-" + MM + "-" + DD);
+            return YYYY + "-" + MM + "-" + DD;
+
+            // let fullDate = new Date(this.timestamp);
+            // return fullDate.getDate() + "/" + (fullDate.getMonth()+1) + "/" + fullDate.getFullYear();
         }
     },
     mounted: function mounted() {
@@ -83370,50 +83381,14 @@ if (false) {
 
 /***/ }),
 /* 82 */
-/***/ (function(module, exports) {
-
-//////////////////////////////////////////////////////////////////
-// Cases Carousel 
-$('.reveal').on('open.zf.reveal', function () {
-    console.log('Modal opened!');
-    // Resize window to fit content
-    $(window).trigger('resize');
-});
-
-$('#notificationsModal').on('closed.zf.reveal', function () {
-    console.log('Modal closed!');
-});
-
-/***/ }),
-/* 83 */
-/***/ (function(module, exports) {
-
-$('.alerts-callout').hide().delay(1000).fadeIn(2000).delay(5000).fadeOut(1000);
-
-/***/ }),
-/* 84 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 85 */,
-/* 86 */,
-/* 87 */,
-/* 88 */,
-/* 89 */,
-/* 90 */,
-/* 91 */,
-/* 92 */,
-/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(94)
+var __vue_script__ = __webpack_require__(83)
 /* template */
-var __vue_template__ = __webpack_require__(95)
+var __vue_template__ = __webpack_require__(84)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -83453,7 +83428,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 94 */
+/* 83 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -83539,7 +83514,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 95 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -83748,6 +83723,34 @@ if (false) {
     require("vue-hot-reload-api")      .rerender("data-v-4c15a900", module.exports)
   }
 }
+
+/***/ }),
+/* 85 */
+/***/ (function(module, exports) {
+
+//////////////////////////////////////////////////////////////////
+// Cases Carousel 
+$('.reveal').on('open.zf.reveal', function () {
+    console.log('Modal opened!');
+    // Resize window to fit content
+    $(window).trigger('resize');
+});
+
+$('#notificationsModal').on('closed.zf.reveal', function () {
+    console.log('Modal closed!');
+});
+
+/***/ }),
+/* 86 */
+/***/ (function(module, exports) {
+
+$('.alerts-callout').hide().delay(1000).fadeIn(2000).delay(5000).fadeOut(1000);
+
+/***/ }),
+/* 87 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
 
 /***/ })
 /******/ ]);
