@@ -78949,8 +78949,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             MM = MM.length === 1 ? '0' + MM : MM;
             var DD = dateObj.getDate() + '';
             DD = DD.length === 1 ? '0' + DD : DD;
-            console.log(YYYY + "-" + MM + "-" + DD);
-            return YYYY + "-" + MM + "-" + DD;
+            return DD + "/" + MM + "/" + YYYY;
 
             // let fullDate = new Date(this.timestamp);
             // return fullDate.getDate() + "/" + (fullDate.getMonth()+1) + "/" + fullDate.getFullYear();
