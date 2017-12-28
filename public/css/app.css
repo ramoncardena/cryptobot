@@ -14682,8 +14682,25 @@ section#portfolio .accordion-title {
   color: #FF7276;
 }
 
-section#portfolio .trades-area {
+section#portfolio .portfolio-area {
   margin-top: 2rem;
+}
+
+.portfolio-modal .input-group-label {
+  color: #009ACE;
+  background-color: transparent;
+}
+
+.portfolio-modal #close-price-select {
+  width: 6rem;
+  margin: 0;
+  height: auto;
+  min-width: 0;
+  color: #009ACE;
+}
+
+.portfolio-modal .number {
+  text-align: right;
 }
 
 .balance {

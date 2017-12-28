@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Exceptions\Handler;
-use App\Library\Services\Facades\Bittrex;
+use Illuminate\Support\Facades\Auth;
+
+use App\Portfolio;
+use App\User;
 
 class SettingsController extends Controller
 {
@@ -25,8 +28,10 @@ class SettingsController extends Controller
     */
     public function index()
     {
+        // Get settings
         $settings = settings();
 
+        // Decrypt exchange keys
         $bittrex['bittrex_key'] = $settings->get('bittrex_key');
         $bittrex['bittrex_secret'] = $settings->get('bittrex_secret');    
         $bittrex['bittrex_fee'] = $settings->get('bittrex_fee');      
@@ -35,10 +40,13 @@ class SettingsController extends Controller
         $bitstamp['bitstamp_secret'] = $settings->get('bitstamp_secret');    
         $bitstamp['bitstamp_fee'] = $settings->get('bitstamp_fee');   
 
+        // Get exchange lists
         $exchanges_active  = $settings->get('exchanges');
 
+        // Get portfolio
+        $portfolio = Portfolio::where('user_id', Auth::user()->id)->first();
 
-        return view('settings', ['settings' => $settings->all(), 'bittrex' => $bittrex, 'bitstamp' => $bitstamp, 'exchanges_active' => $exchanges_active]);
+        return view('settings', ['settings' => $settings->all(), 'bittrex' => $bittrex, 'bitstamp' => $bitstamp, 'exchanges_active' => $exchanges_active, 'portfolio' => $portfolio]);
     }
 
     /**
@@ -72,6 +80,15 @@ class SettingsController extends Controller
 
                 case 'bitstamp_switch':
                     $settings->addExchange('bitstamp');
+                    break;
+
+                case 'initialize_portfolio':
+                    $portfolio = new Portfolio;
+                    $portfolio->user_id = Auth::user()->id;
+                    $portfolio->name = "My Portfolio";
+                    $portfolio->counter_value = "eur";
+                    $portfolio->balance = 0;
+                    $portfolio->save();
                     break;
 
                 default:

@@ -30,16 +30,18 @@
 
                     <div class="small-8 cell text-right">
                         <div>
+                            <button class="button hollow"><span class="show-for-small-only"></span><i class="fa fa-cog" aria-hidden="true"></i> <span class="show-for-medium">Setup</span> </button>
+                        </div>
+                        <div>
                             <button class="button hollow"><span class="show-for-small-only">+ </span><i class="fa fa-btc" aria-hidden="true"></i> <span class="show-for-medium">Add Asset</span> </button>
-                            <button class="button hollow"><span class="show-for-small-only">+ </span><i class="fa fa-plug" aria-hidden="true"></i> <span class="show-for-medium">Add Origin</span> </button>
+                            <button class="button hollow" data-open="new-origin-modal"><span class="show-for-small-only">+ </span><i class="fa fa-plug" aria-hidden="true"></i> <span class="show-for-medium">Add Origin</span> </button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Trade Panel, Active Trades and History -->
             <div class="small-12 cell portfolio form-container">
-                    <div class="trades-area">
+                    <div class="portfolio-area">
                         <ul class="accordion" data-accordion data-multi-expand="true" data-allow-all-closed="true">
                             <li class="accordion-item is-active" data-accordion-item>
                                 <a href="#" class="accordion-title text-center">Assets</a>
@@ -51,12 +53,22 @@
                             <li class="accordion-item is-active" data-accordion-item>
                                 <a href="#" class="accordion-title  text-center">By Origin</a>
                                 <div class="accordion-content" data-tab-content >
-                                   
+                            
                                 </div>
                             </li>
                         </ul>
                     </div>
             </div>
         </div>
-    </section>
-    @endsection
+    </div>
+
+    <!-- MODAL: Edit Trade -->
+    <div class="reveal portfolio-modal" id="new-origin-modal" data-reveal>
+        
+        <add-origin :exchanges="{{$exchanges}}" :origin-types="{{$originTypes}}"></add-origin>
+        <button class="close-button" data-close aria-label="Close modal" type="button">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</section>
+@endsection

@@ -21,7 +21,7 @@
 
                         <div class="small-6 cell text-right align-self-middle">
                             <div class="align-vertical">
-                                <button type="submit" class="button" value="Update">Update</button>
+                                <button type="submit" class="button hollow" value="Update">Update</button>
                             </div>
                         </div>
 
@@ -50,6 +50,57 @@
                                         @endif
                                     </select>
                                 </div>
+
+                            </div>
+                        </li>
+                        <li class="accordion-item" data-accordion-item>
+                            <a href="#" class="accordion-title">Portfolio</a>
+                            <div class="accordion-content" data-tab-content >
+                                @empty ($portfolio) 
+                                <span class="switch">
+                                    <input class="switch-input" id="initialize-portfolio" type="checkbox" name="initialize_portfolio">
+                                    <label class="switch-paddle" for="initialize-portfolio">
+                                        <span class="show-for-sr">Initialize Portfolio</span>
+                                        <span class="switch-active" aria-hidden="true">Yes</span>
+                                        <span class="switch-inactive" aria-hidden="true">No</span>
+                                    </label>
+                                </span>
+                                @endempty
+                                @isset($portfolio)
+                                <div class="input-group">
+                                    <span class="input-group-label">Name</span>
+                                    @if($settings['portfolio-name'] === "") 
+                                        <input name="portfolio-name" class="input-group-field" type="text"> 
+                                    @else
+                                        <input name="portfolio-name" class="input-group-field" type="text" value="{{$settings['portfolio-name']}}"> 
+                                    @endif
+                                </div>
+                                <div class="input-group">
+                                    <span class="input-group-label" >Counter Value Currency</span>
+                                    <select name="portfolio-countervalue" class="input-group-field"> 
+                                       
+                                        @if ( $settings['portfolio-countervalue'] === '')
+                                            <option disabled value="" selected="selected">Select...</option>)
+                                        @endif 
+                                        @if ($settings['portfolio-countervalue'] === 'usd')
+                                            <option value="usd" selected="selected">USD</option>
+                                        @else
+                                             <option value="usd">USD</option>
+                                        @endif
+                                        @if ($settings['portfolio-countervalue'] === 'eur')
+                                            <option value="eur" selected="selected">EUR</option>
+                                        @else
+                                             <option value="eur">EUR</option>
+                                        @endif
+                                        @if ($settings['portfolio-countervalue'] === 'btc')
+                                            <option value="btc" selected="selected">BTC</option>
+                                        @else
+                                             <option value="btc">BTC</option>
+                                        @endif
+
+                                    </select>
+                                </div>
+                                @endisset
 
                             </div>
                         </li>

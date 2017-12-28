@@ -37,6 +37,7 @@
  Vue.component('tradelist', require('./components/TradeList.vue'));
  Vue.component('tradepanel', require('./components/TradePanel.vue'));
  Vue.component('notification-list', require('./components/NotificationList.vue'));
+ Vue.component('add-origin', require('./components/AddOrigin.vue'));
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

@@ -29,6 +29,7 @@ Route::patch('/trades/{id}', 'TradeController@update');
 
 Route::get('/portfolio', 'PortfolioController@index');
 
+Route::post('/portfolio/origin', 'PortfolioOriginController@store');
 
 Auth::routes();
 

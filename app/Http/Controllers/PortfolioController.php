@@ -3,9 +3,20 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
+use App\Library\Services\Broker;
+
+use App\User;
+use App\Portfolio;
 
 class PortfolioController extends Controller
 {
+
+    public $user;
+
+    public $portfolio;
+
     /**
      * Create a new controller instance.
      *
@@ -15,7 +26,7 @@ class PortfolioController extends Controller
     {
         $this->middleware('auth');
     }
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -23,7 +34,12 @@ class PortfolioController extends Controller
      */
     public function index()
     {
-        return view('portfolio');
+        $this->user = Auth::user();
+        $originTypes = ['Exchange', 'Wallet'];
+        $exchanges = $this->user->settings()->get('exchanges');
+        $exchanges = array_divide($exchanges)[0];
+
+        return view('portfolio', ['originTypes' => json_encode($originTypes), 'exchanges' => json_encode($exchanges)]);
     }
 
     /**

@@ -17,9 +17,9 @@ class CreatePortfoliosTable extends Migration
             $table->increments('id');
             $table->timestamps();
             $table->string('user_id');
-            $table->string('name');
+            $table->string('name');         
+            $table->string('counter_value');
             $table->decimal('balance', 20, 10);
-            $table->decimal('counter_value', 20, 10);
         });
     }
 
