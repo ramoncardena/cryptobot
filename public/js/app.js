@@ -27102,6 +27102,7 @@ Vue.component('tradelist', __webpack_require__(73));
 Vue.component('tradepanel', __webpack_require__(76));
 Vue.component('notification-list', __webpack_require__(79));
 Vue.component('add-origin', __webpack_require__(82));
+Vue.component('add-asset', __webpack_require__(96));
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -27122,29 +27123,6 @@ $(document).ready(function () {
     });
 
     $('#activeTradesTable').DataTable();
-    // $('#historyTradesTable').DataTable( {
-    //     initComplete: function () {
-    //         this.api().columns().every( function () {
-    //             var column = this;
-    //             var select = $('<select><option value=""></option></select>')
-    //                 .appendTo( $(column.header()).empty() )
-    //                 .on( 'change', function () {
-    //                     var val = $.fn.dataTable.util.escapeRegex(
-    //                         $(this).val()
-    //                     );
-
-    //                     column
-    //                         .search( val ? '^'+val+'$' : '', true, false )
-    //                         .draw();
-    //                 } );
-
-    //             column.data().unique().sort().each( function ( d, j ) {
-    //                 select.append( '<option value="'+d+'">'+d+'</option>' )
-    //             } );
-    //         } );
-    //     }
-    // } );
-
     var historyTable = $('#historyTradesTable').DataTable();
     $("#historyTradesTable tfoot th").each(function (i) {
         if (i == 2 || i == 3 || i == 4 || i == 5) {
@@ -83492,6 +83470,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'add-origin',
@@ -83499,13 +83489,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return {
             exchange: "",
             originType: "",
-            updating: false
+            updating: false,
+            csrf: ""
         };
     },
-    props: ['exchanges', 'origin-types'],
+    props: ['exchanges', 'origin-types', 'validation-errors'],
     computed: {},
     mounted: function mounted() {
-
+        this.csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         console.log('Component AddOrigin mounted.');
     },
 
@@ -83521,13 +83512,27 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "grid-container fluid" }, [
-    _c("form", { attrs: { method: "POST", action: "'/portfolio/origin" } }, [
-      _c("input", { attrs: { type: "hidden", name: "_token", value: "csrf" } }),
+    _c("form", { attrs: { method: "POST", action: "/portfolio/origin" } }, [
+      _c("input", {
+        attrs: { type: "hidden", name: "_token" },
+        domProps: { value: _vm.csrf }
+      }),
       _vm._v(" "),
       _c("div", { staticClass: "grid-x grid-padding-x" }, [
         _vm._m(0, false, false),
         _vm._v(" "),
-        _c("div", { staticClass: "small-12 cell form-container  text-right" }, [
+        _c("div", { staticClass: "small-12 cell form-container" }, [
+          _vm.validationErrors.origin_type
+            ? _c(
+                "div",
+                _vm._l(_vm.validationErrors.origin_type, function(error) {
+                  return _c("span", { staticClass: "validation-error" }, [
+                    _vm._v(" " + _vm._s(error) + " ")
+                  ])
+                })
+              )
+            : _vm._e(),
+          _vm._v(" "),
           _c("div", { staticClass: "input-group" }, [
             _c("span", { staticClass: "input-group-label" }, [
               _vm._v("Origin Type")
@@ -83545,7 +83550,7 @@ var render = function() {
                   }
                 ],
                 staticClass: "input-group-field",
-                attrs: { name: "originType" },
+                attrs: { name: "origin_type" },
                 on: {
                   change: function($event) {
                     var $$selectedVal = Array.prototype.filter
@@ -83580,6 +83585,17 @@ var render = function() {
         _vm._v(" "),
         _vm.originType == "Exchange"
           ? _c("div", { staticClass: "small-12 cell form-container" }, [
+              _vm.validationErrors.origin_name
+                ? _c(
+                    "div",
+                    _vm._l(_vm.validationErrors.origin_name, function(error) {
+                      return _c("span", { staticClass: "validation-error" }, [
+                        _vm._v(" " + _vm._s(error) + " ")
+                      ])
+                    })
+                  )
+                : _vm._e(),
+              _vm._v(" "),
               _c("div", { staticClass: "input-group" }, [
                 _c("span", { staticClass: "input-group-label" }, [
                   _vm._v("Exchange")
@@ -83597,7 +83613,7 @@ var render = function() {
                       }
                     ],
                     staticClass: "input-group-field",
-                    attrs: { name: "exchange" },
+                    attrs: { name: "origin_name" },
                     on: {
                       change: [
                         function($event) {
@@ -83641,14 +83657,38 @@ var render = function() {
             ])
           : _vm._e(),
         _vm._v(" "),
-        _vm.originType == "Wallet"
+        _vm.originType != "Exchange"
           ? _c("div", { staticClass: "small-12 cell form-container" }, [
+              _vm.validationErrors.origin_name
+                ? _c(
+                    "div",
+                    _vm._l(_vm.validationErrors.origin_name, function(error) {
+                      return _c("span", { staticClass: "validation-error" }, [
+                        _vm._v(" " + _vm._s(error) + " ")
+                      ])
+                    })
+                  )
+                : _vm._e(),
+              _vm._v(" "),
               _vm._m(1, false, false)
             ])
           : _vm._e(),
         _vm._v(" "),
-        _vm.originType == "Wallet"
+        _vm.originType != "Exchange"
           ? _c("div", { staticClass: "small-12 cell form-container" }, [
+              _vm.validationErrors.origin_address
+                ? _c(
+                    "div",
+                    _vm._l(_vm.validationErrors.origin_address, function(
+                      error
+                    ) {
+                      return _c("span", { staticClass: "validation-error" }, [
+                        _vm._v(" " + _vm._s(error) + " ")
+                      ])
+                    })
+                  )
+                : _vm._e(),
+              _vm._v(" "),
               _vm._m(2, false, false)
             ])
           : _vm._e(),
@@ -83664,7 +83704,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "small-12 cell form-container" }, [
-      _c("p", { staticClass: "h1" }, [_vm._v("New Origin")]),
+      _c("p", { staticClass: "h1" }, [_vm._v("Portfolio: New Origin")]),
       _vm._v(" "),
       _c("p", { staticClass: "lead" }, [
         _c("b", [_vm._v("Add new source to your portfolio")])
@@ -83682,7 +83722,7 @@ var staticRenderFns = [
       _vm._v(" "),
       _c("input", {
         staticClass: "input-group-field",
-        attrs: { name: "origin-name", type: "text" }
+        attrs: { name: "origin_name", type: "text" }
       })
     ])
   },
@@ -83697,7 +83737,7 @@ var staticRenderFns = [
       _vm._v(" "),
       _c("input", {
         staticClass: "input-group-field",
-        attrs: { name: "origin-name", type: "text" }
+        attrs: { name: "origin_address", type: "text" }
       })
     ])
   },
@@ -83750,6 +83790,330 @@ $('.alerts-callout').hide().delay(1000).fadeIn(2000).delay(5000).fadeOut(1000);
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 88 */,
+/* 89 */,
+/* 90 */,
+/* 91 */,
+/* 92 */,
+/* 93 */,
+/* 94 */,
+/* 95 */,
+/* 96 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(97)
+/* template */
+var __vue_template__ = __webpack_require__(98)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/AddAsset.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-2fb23886", Component.options)
+  } else {
+    hotAPI.reload("data-v-2fb23886", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 97 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: 'add-asset',
+    data: function data() {
+        return {
+            exchange: "",
+            originType: "",
+            updating: false,
+            csrf: ""
+        };
+    },
+    props: ['exchanges', 'origin-types', 'validation-errors'],
+    computed: {},
+    mounted: function mounted() {
+        this.csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        console.log('Component AddOrigin mounted.');
+    },
+
+    methods: {}
+});
+
+/***/ }),
+/* 98 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "grid-container fluid" }, [
+    _c("form", { attrs: { method: "POST", action: "/portfolio/origin" } }, [
+      _c("input", {
+        attrs: { type: "hidden", name: "_token" },
+        domProps: { value: _vm.csrf }
+      }),
+      _vm._v(" "),
+      _c("div", { staticClass: "grid-x grid-padding-x" }, [
+        _vm._m(0, false, false),
+        _vm._v(" "),
+        _c("div", { staticClass: "small-12 cell form-container" }, [
+          _vm.validationErrors.origin
+            ? _c(
+                "div",
+                _vm._l(_vm.validationErrors.origin_type, function(error) {
+                  return _c("span", { staticClass: "validation-error" }, [
+                    _vm._v(" " + _vm._s(error) + " ")
+                  ])
+                })
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _c("div", { staticClass: "input-group" }, [
+            _c("span", { staticClass: "input-group-label" }, [
+              _vm._v("Origin")
+            ]),
+            _vm._v(" "),
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.origin,
+                    expression: "origin"
+                  }
+                ],
+                staticClass: "input-group-field",
+                attrs: { name: "origin" },
+                on: {
+                  change: function($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function(o) {
+                        return o.selected
+                      })
+                      .map(function(o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return val
+                      })
+                    _vm.origin = $event.target.multiple
+                      ? $$selectedVal
+                      : $$selectedVal[0]
+                  }
+                }
+              },
+              [
+                _c("option", { attrs: { disabled: "", value: "" } }, [
+                  _vm._v("Select...")
+                ]),
+                _vm._v(" "),
+                _vm._l(_vm.origins, function(origin) {
+                  return _c("option", { domProps: { value: origin } }, [
+                    _vm._v(_vm._s(origin) + " ")
+                  ])
+                })
+              ],
+              2
+            )
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "small-12 cell form-container" }, [
+          _vm.validationErrors.origin_name
+            ? _c(
+                "div",
+                _vm._l(_vm.validationErrors.origin_name, function(error) {
+                  return _c("span", { staticClass: "validation-error" }, [
+                    _vm._v(" " + _vm._s(error) + " ")
+                  ])
+                })
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _vm._m(1, false, false)
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "small-12 cell form-container" }, [
+          _vm.validationErrors.origin_address
+            ? _c(
+                "div",
+                _vm._l(_vm.validationErrors.origin_address, function(error) {
+                  return _c("span", { staticClass: "validation-error" }, [
+                    _vm._v(" " + _vm._s(error) + " ")
+                  ])
+                })
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _vm._m(2, false, false)
+        ]),
+        _vm._v(" "),
+        _vm._m(3, false, false)
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "small-12 cell form-container" }, [
+      _c("p", { staticClass: "h1" }, [_vm._v("Portfolio: New Asset")]),
+      _vm._v(" "),
+      _c("p", { staticClass: "lead" }, [
+        _c("b", [_vm._v("Add new asset to your portfolio")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-group" }, [
+      _c("span", { staticClass: "input-group-label" }, [
+        _vm._v("\n                        Asset\n                    ")
+      ]),
+      _vm._v(" "),
+      _c("input", {
+        staticClass: "input-group-field",
+        attrs: { name: "origin_name", type: "text" }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-group" }, [
+      _c("span", { staticClass: "input-group-label" }, [
+        _vm._v("\n                        Amount\n                    ")
+      ]),
+      _vm._v(" "),
+      _c("input", {
+        staticClass: "input-group-field number",
+        attrs: { name: "origin_address", type: "text" }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "small-12 cell form-container" }, [
+      _c(
+        "button",
+        { staticClass: "hollow button", attrs: { type: "submit" } },
+        [_vm._v("\n                   Add Origin\n                ")]
+      )
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-2fb23886", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

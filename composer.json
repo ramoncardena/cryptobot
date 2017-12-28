@@ -15,7 +15,8 @@
         "laravel/tinker": "~1.0",
         "predis/predis": "^1.1",
         "pusher/pusher-php-server": "~3.0",
-        "ratchet/pawl": "^0.2.3"
+        "ratchet/pawl": "^0.2.3",
+        "loeken/cryptocompare-api-php-wrapper": "dev-master"
     },
     "require-dev": {
         "filp/whoops": "~2.0",

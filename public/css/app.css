@@ -14392,6 +14392,14 @@ a.thumbnail image {
   display: none;
 }
 
+.validation-error {
+  margin: 0;
+  padding: 0;
+  color: #cc4b37;
+  font-style: oblique;
+  font-size: 0.8rem;
+}
+
 .dataTable {
   margin-bottom: 2rem !important;
   margin-top: 1rem !important;
@@ -14892,14 +14900,6 @@ section#portfolio .portfolio-area {
 
 .trade-modal .number {
   text-align: right;
-}
-
-.tradepanel .validation-error {
-  margin: 0;
-  padding: 0;
-  color: #cc4b37;
-  font-style: oblique;
-  font-size: 0.8rem;
 }
 
 .tradepanel .easy-autocomplete.eac-square input {

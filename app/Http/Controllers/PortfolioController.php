@@ -35,7 +35,7 @@ class PortfolioController extends Controller
     public function index()
     {
         $this->user = Auth::user();
-        $originTypes = ['Exchange', 'Wallet'];
+        $originTypes = ['Online Wallet', 'Mobile Wallet', 'Desktop Wallet', 'Hardware Wallet', 'Paper Wallet'];
         $exchanges = $this->user->settings()->get('exchanges');
         $exchanges = array_divide($exchanges)[0];
         $portfolio = Portfolio::where('user_id', $this->user->id)->first();

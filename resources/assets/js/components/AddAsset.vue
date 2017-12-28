@@ -6,54 +6,43 @@
                 <div class="grid-x grid-padding-x">
                     <!-- Header -->
                     <div class="small-12 cell form-container">
-                        <p class="h1">Portfolio: New Origin</p>
-                        <p class="lead"><b>Add new source to your portfolio</b></p>
+                        <p class="h1">Portfolio: New Asset</p>
+                        <p class="lead"><b>Add new asset to your portfolio</b></p>
                     </div>
                     <div class="small-12 cell form-container">
-                        <div v-if="validationErrors.origin_type">
+                        <div v-if="validationErrors.origin">
                            <span class="validation-error" v-for="error in validationErrors.origin_type"> {{ error }} </span>
                         </div>
                         <div class="input-group">
-                            <span class="input-group-label">Origin Type</span>
-                            <select v-model="originType" name="origin_type" class="input-group-field">
+                            <span class="input-group-label">Origin</span>
+                            <select v-model="origin" name="origin" class="input-group-field">
                                 <option disabled value="">Select...</option>
-                                <option v-for="originType in originTypes" :value="originType">{{ originType }} </option>
+                                <option v-for="origin in origins" :value="origin">{{ origin }} </option>
                             </select>                     
                         </div>
                     </div>
-                    <div v-if="originType=='Exchange'" class="small-12 cell form-container">
-                        <div v-if="validationErrors.origin_name">
-                           <span class="validation-error" v-for="error in validationErrors.origin_name"> {{ error }} </span>
-                        </div>
-                        <div class="input-group">
-                            <span class="input-group-label">Exchange</span>
-                            <select name="origin_name" v-model="exchange" class="input-group-field" v-on:change="getpairs(exchange)">
-                                <option disabled value="">Select...</option>
-                                <option v-for="exchange in exchanges" :value="exchange" selected="true">{{ exchange }} </option>
-                            </select>                     
-                        </div>
-                    </div>
+                    
 
-                    <div v-if="originType!='Exchange'" class="small-12 cell form-container">
+                    <div class="small-12 cell form-container">
                         <div v-if="validationErrors.origin_name">
                            <span class="validation-error" v-for="error in validationErrors.origin_name"> {{ error }} </span>
                         </div>
                         <div class="input-group">
                             <span class="input-group-label">
-                                Name
+                                Asset
                             </span>
                             <input name="origin_name"  class="input-group-field" type="text" >
                         </div>
                     </div>
-                    <div v-if="originType!='Exchange'" class="small-12 cell form-container">
+                    <div class="small-12 cell form-container">
                         <div v-if="validationErrors.origin_address">
                            <span class="validation-error" v-for="error in validationErrors.origin_address"> {{ error }} </span>
                         </div>
                          <div class="input-group">
                             <span class="input-group-label">
-                                Address
+                                Amount
                             </span>
-                            <input name="origin_address"  class="input-group-field" type="text" >
+                            <input name="origin_address"  class="input-group-field number" type="text" >
                         </div>
                     </div>
 
@@ -72,7 +61,7 @@
 
    <script>
    export default {
-    name: 'add-origin',
+    name: 'add-asset',
     data: () => {
         return {
             exchange: "",
