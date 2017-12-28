@@ -91,6 +91,21 @@ class SettingsController extends Controller
                     $portfolio->save();
                     break;
 
+                case 'portfolio_name':
+                    if (Portfolio::where('user_id', Auth::user()->id)->first()) {
+                        $portfolio = Portfolio::where('user_id', Auth::user()->id)->first();
+                        $portfolio->name = $value;
+                        $portfolio->save();
+                    }
+                    break;
+
+                case 'portfolio_countervalue':
+                    if (Portfolio::where('user_id', Auth::user()->id)->first()) {
+                        $portfolio = Portfolio::where('user_id', Auth::user()->id)->first();
+                        $portfolio->counter_value = $value;
+                        $portfolio->save();
+                    }
+                    break;
                 default:
                     if ($key !== "_token") {
                         $settings->set($key, $value);

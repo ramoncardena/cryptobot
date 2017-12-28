@@ -69,30 +69,30 @@
                                 @isset($portfolio)
                                 <div class="input-group">
                                     <span class="input-group-label">Name</span>
-                                    @if($settings['portfolio-name'] === "") 
-                                        <input name="portfolio-name" class="input-group-field" type="text"> 
+                                    @if($portfolio->name === "") 
+                                        <input name="portfolio_name" class="input-group-field" type="text"> 
                                     @else
-                                        <input name="portfolio-name" class="input-group-field" type="text" value="{{$settings['portfolio-name']}}"> 
+                                        <input name="portfolio_name" class="input-group-field" type="text" value="{{$portfolio->name}}"> 
                                     @endif
                                 </div>
                                 <div class="input-group">
                                     <span class="input-group-label" >Counter Value Currency</span>
-                                    <select name="portfolio-countervalue" class="input-group-field"> 
+                                    <select name="portfolio_countervalue" class="input-group-field"> 
                                        
-                                        @if ( $settings['portfolio-countervalue'] === '')
+                                        @if ( $portfolio->counter_value === '')
                                             <option disabled value="" selected="selected">Select...</option>)
                                         @endif 
-                                        @if ($settings['portfolio-countervalue'] === 'usd')
+                                        @if ($portfolio->counter_value === 'usd')
                                             <option value="usd" selected="selected">USD</option>
                                         @else
                                              <option value="usd">USD</option>
                                         @endif
-                                        @if ($settings['portfolio-countervalue'] === 'eur')
+                                        @if ($portfolio->counter_value === 'eur')
                                             <option value="eur" selected="selected">EUR</option>
                                         @else
                                              <option value="eur">EUR</option>
                                         @endif
-                                        @if ($settings['portfolio-countervalue'] === 'btc')
+                                        @if ($portfolio->counter_value === 'btc')
                                             <option value="btc" selected="selected">BTC</option>
                                         @else
                                              <option value="btc">BTC</option>

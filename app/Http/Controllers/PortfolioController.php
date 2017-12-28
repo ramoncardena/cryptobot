@@ -38,8 +38,9 @@ class PortfolioController extends Controller
         $originTypes = ['Exchange', 'Wallet'];
         $exchanges = $this->user->settings()->get('exchanges');
         $exchanges = array_divide($exchanges)[0];
+        $portfolio = Portfolio::where('user_id', $this->user->id)->first();
 
-        return view('portfolio', ['originTypes' => json_encode($originTypes), 'exchanges' => json_encode($exchanges)]);
+        return view('portfolio', ['originTypes' => json_encode($originTypes), 'exchanges' => json_encode($exchanges), 'portfolio' => $portfolio]);
     }
 
     /**

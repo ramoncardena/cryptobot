@@ -29,13 +29,17 @@
                     </div>
 
                     <div class="small-8 cell text-right">
+                        @empty($portfolio)
                         <div>
-                            <button class="button hollow"><span class="show-for-small-only"></span><i class="fa fa-cog" aria-hidden="true"></i> <span class="show-for-medium">Setup</span> </button>
+                            <a class="button hollow" href="/settings"><span class="show-for-small-only"></span><i class="fa fa-cog" aria-hidden="true"></i> <span class="show-for-medium">Setup</span> </a>
                         </div>
+                        @endempty
+                        @isset($portfolio)
                         <div>
                             <button class="button hollow"><span class="show-for-small-only">+ </span><i class="fa fa-btc" aria-hidden="true"></i> <span class="show-for-medium">Add Asset</span> </button>
                             <button class="button hollow" data-open="new-origin-modal"><span class="show-for-small-only">+ </span><i class="fa fa-plug" aria-hidden="true"></i> <span class="show-for-medium">Add Origin</span> </button>
                         </div>
+                        @endisset
                     </div>
                 </div>
             </div>
