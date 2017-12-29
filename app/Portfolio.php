@@ -9,6 +9,7 @@ class Portfolio extends Model
 	protected $fillable = [
         'user_id', 'balance', 'counter_value', 'name'
     ];
+    
     public function assets()
     {
         return $this->hasMany('App\PortfolioAsset');

@@ -35,4 +35,14 @@ class User extends Authenticatable
     public function settings() {
         return new Settings($this->settings, $this);
     }
+
+    public function assets()
+    {
+        return $this->hasMany('App\PortfolioAsset');
+    }
+
+    public function origins()
+    {
+        return $this->hasMany('App\PortfolioOrigins');
+    }
 }

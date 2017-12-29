@@ -1,6 +1,6 @@
 <template>
         <div class="grid-container fluid add-asset">
-            <form method="POST" action="/portfolio/origin">
+            <form method="POST" action="/portfolio/asset">
                 <input type="hidden" name="_token" :value="csrf">
 
                 <div class="grid-x grid-padding-x">
@@ -15,7 +15,7 @@
                         </div>
                         <div class="input-group">
                             <span class="input-group-label">Origin</span>
-                            <select v-model="originSelected" name="origin" class="input-group-field">
+                            <select v-model="originSelected" name="asset_origin" class="input-group-field">
                                 <option disabled value="">Select...</option>
                                 <option v-for="origin in origins" :value="origin.id">{{ origin.name }} </option>
                             </select>                     

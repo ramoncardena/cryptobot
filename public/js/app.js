@@ -83975,7 +83975,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "grid-container fluid add-asset" }, [
-    _c("form", { attrs: { method: "POST", action: "/portfolio/origin" } }, [
+    _c("form", { attrs: { method: "POST", action: "/portfolio/asset" } }, [
       _c("input", {
         attrs: { type: "hidden", name: "_token" },
         domProps: { value: _vm.csrf }
@@ -84013,7 +84013,7 @@ var render = function() {
                   }
                 ],
                 staticClass: "input-group-field",
-                attrs: { name: "origin" },
+                attrs: { name: "asset_origin" },
                 on: {
                   change: function($event) {
                     var $$selectedVal = Array.prototype.filter
