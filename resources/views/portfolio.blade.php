@@ -44,23 +44,11 @@
                 </div>
             </div>
 
-            <div class="small-12 cell portfolio form-container">
+            <div class="small-12 medium-6 cell portfolio form-container">
                     <div class="portfolio-area">
-                        <ul class="accordion" data-accordion data-multi-expand="true" data-allow-all-closed="true">
-                            <li class="accordion-item is-active" data-accordion-item>
-                                <a href="#" class="accordion-title text-center">Assets</a>
-                                
-                                <div class="accordion-content" data-tab-content >
+                       
+                         <portfolio :portfolio="{{$portfolio}}" :origins="{{$origins}}" :assets="{{$assets}}"></portfolio>
 
-                                </div>
-                            </li>
-                            <li class="accordion-item is-active" data-accordion-item>
-                                <a href="#" class="accordion-title  text-center">By Origin</a>
-                                <div class="accordion-content" data-tab-content >
-                            
-                                </div>
-                            </li>
-                        </ul>
                     </div>
             </div>
         </div>

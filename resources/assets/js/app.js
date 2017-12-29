@@ -39,6 +39,8 @@
  Vue.component('notification-list', require('./components/NotificationList.vue'));
  Vue.component('add-origin', require('./components/AddOrigin.vue'));
  Vue.component('add-asset', require('./components/AddAsset.vue'));
+ Vue.component('portfolio', require('./components/Portfolio.vue'));
+ Vue.component('asset', require('./components/Asset.vue'));
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -59,6 +61,11 @@
    } );
 
 
+    $('#portfolioTable').DataTable( {
+        "searching": false,
+        "paging": false,
+        "info": false
+    } );
 
     $('#activeTradesTable').DataTable();
     var historyTable = $('#historyTradesTable').DataTable();

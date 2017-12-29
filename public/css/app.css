@@ -14358,6 +14358,10 @@ a.thumbnail image {
   font-weight: bold;
 }
 
+.nowrap {
+  white-space: nowrap;
+}
+
 .top-bar {
   border-bottom: 1px solid #009ACE;
 }
@@ -14996,6 +15000,29 @@ section#portfolio .portfolio-area {
 .tradepanel .last,
 .tradepanel .volume {
   margin-bottom: 1rem;
+}
+
+.portfolio-assets {
+  font-family: 'Nunito', sans-serif;
+}
+
+.portfolio-assets .asset-img,
+.portfolio-assets .asset-name,
+.portfolio-assets .asset-type {
+  margin-right: 0.5rem;
+}
+
+.portfolio-assets .asset-info,
+.portfolio-assets .asset-balance,
+.portfolio-assets .asset-value,
+.portfolio-assets .column-title-wrapper {
+  margin-right: 0.5rem;
+}
+
+.portfolio-assets .fa-btc,
+.portfolio-assets .fa-eur,
+.portfolio-assets .fa-usd {
+  color: #8a8a8a;
 }
 
 .notification-list {

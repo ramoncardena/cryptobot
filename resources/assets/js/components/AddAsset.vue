@@ -24,12 +24,12 @@
                     
 
                     <div class="small-12 cell form-container">
-                        <div v-if="validationErrors.asset_name">
-                           <span class="validation-error" v-for="error in validationErrors.asset_name"> {{ error }} </span>
+                        <div v-if="validationErrors.asset_symbol">
+                           <span class="validation-error" v-for="error in validationErrors.asset_symbol"> {{ error }} </span>
                         </div>
                         <div class="input-group">
                             <span class="input-group-label">Asset</span>
-                            <input name="asset_name" id="coins" v-model="coinSelected" class="input-group-field number" type="text">
+                            <input name="asset_symbol" id="coins" v-model="coinSelected" class="input-group-field number" type="text">
                         </div>
                     </div>
                     <div class="small-12 cell form-container">

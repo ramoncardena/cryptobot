@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 use App\Library\Services\Broker;
+use App\Library\Services\CoinGuru;
 
 use App\User;
 use App\Portfolio;
@@ -18,6 +19,12 @@ class PortfolioController extends Controller
     public $user;
 
     public $portfolio;
+
+    public $assets;
+
+    public $origins;
+
+    public $exchanges;
 
     /**
      * Create a new controller instance.
@@ -36,24 +43,54 @@ class PortfolioController extends Controller
      */
     public function index()
     {
+        
+        // Get current user
         $this->user = Auth::user();
 
-        $cryptocompareCoin = new \Cryptocompare\Coin();
+        // Get the user's exchanges
+        $exchanges = $this->user->settings()->get('exchanges');
+        $this->exchanges = array_divide($exchanges)[0];
 
-        $coins = array_divide((array)$cryptocompareCoin->getList()->Data)[0];
+         // Get user's portfolio
+        $this->portfolio = Portfolio::where('user_id', $this->user->id)->first();
+
+        // Get porfolio assets
+        $this->assets = $this->portfolio->assets;
+
+        // Get portfolio origins
+        $this->origins = $this->portfolio->origins; 
+
+        // Update portfolio assets
+        $this->updateAssets();
 
 
+        // DATA FOR MODALS (New Asset and New Origin)
+        // Coin list
+        $guru = new CoinGuru;
+        $coins = array_divide((array)$guru->cryptocompareCoingetList()->Data)[0];
+
+        // Set origin types for new Portfolio Origins
         $originTypes = ['Online Wallet', 'Mobile Wallet', 'Desktop Wallet', 'Hardware Wallet', 'Paper Wallet'];
 
-        $exchanges = $this->user->settings()->get('exchanges');
-        $exchanges = array_divide($exchanges)[0];
-
-        $portfolio = Portfolio::where('user_id', $this->user->id)->first();
-
-        $origins = $portfolio->origins;
-        
-        return view('portfolio', ['originTypes' => json_encode($originTypes), 'exchanges' => json_encode($exchanges), 'portfolio' => $portfolio, 'origins' => $origins, 'coins' => json_encode($coins)]);
+    
+        return view('portfolio', ['originTypes' => json_encode($originTypes), 'exchanges' => json_encode($this->exchanges), 'portfolio' => $this->portfolio, 'origins' => $this->origins, 'assets' => $this->assets, 'coins' => json_encode($coins)]);
     }
+
+
+    public function updateAssets() {
+       
+        $guru = new CoinGuru;
+
+        foreach ($this->assets as $asset) {
+            $asset->balance =  $asset->amount * $guru->cryptocomparePriceGetSinglePrice($asset->symbol, "BTC")->BTC;
+
+            $counterValue = strtoupper($this->portfolio->counter_value);
+            $asset->counter_value = $asset->amount * $guru->cryptocomparePriceGetSinglePrice($asset->symbol, $counterValue)->$counterValue;
+            $asset->save();
+        }
+
+    }
+
 
     /**
      * Show the form for creating a new resource.

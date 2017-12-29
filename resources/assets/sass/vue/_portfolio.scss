@@ -1,0 +1,20 @@
+.portfolio-assets {
+	font-family: 'Nunito', sans-serif;
+
+	.asset-img, .asset-name, .asset-type{
+		margin-right: 0.5rem;
+	}
+
+	.asset-info, .asset-balance, .asset-value, .column-title-wrapper {
+		margin-right: 0.5rem;
+	}
+
+	.fa-btc, .fa-eur, .fa-usd {
+		color: $dark-gray;
+	}
+
+
+
+
+}
+

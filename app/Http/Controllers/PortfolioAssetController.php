@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use Illuminate\Support\Facades\Auth;
+
+use App\Library\Services\CoinGuru;
 
 use App\User;
 use App\Portfolio;
@@ -35,7 +36,7 @@ class PortfolioAssetController extends Controller
     	try {
     		// Validate form
 	        $validatedData = $request->validate([
-	            'asset_name' => 'required',
+	            'asset_symbol' => 'required',
 	            'asset_amount' => 'required'
 	        ]);
 
@@ -43,13 +44,23 @@ class PortfolioAssetController extends Controller
 
 	        $portfolio = Portfolio::where('user_id', $this->user->id)->first();
 	        
+            
+
+            $guru = new CoinGuru;
+            $logoBaseUrl = $guru->cryptocompareCoingetList()->BaseImageUrl;
+            $infoBaseUrl = $guru->cryptocompareCoingetList()->BaseLinkUrl;
+            $symbol = $request->asset_symbol;
+            $coinInfo = $guru->cryptocompareCoingetList()->Data->$symbol;
 
 	        $asset = new PortfolioAsset;
 	        $asset->portfolio_id = $portfolio->id;
 	        $asset->user_id = $this->user->id;
 	        $asset->origin_id = $request->asset_origin;
-	        $asset->name = $request->asset_name;
+	        $asset->symbol = $request->asset_symbol;
 	        $asset->amount = $request->asset_amount;
+            $asset->full_name = $coinInfo->CoinName;
+            $asset->logo_url = $logoBaseUrl . $coinInfo->ImageUrl;
+            $asset->info_url = $infoBaseUrl . $coinInfo->Url;
 	        $asset->price = 0;
 	        $asset->balance = 0;
 	        $asset->counter_value = 0;
@@ -58,7 +69,7 @@ class PortfolioAssetController extends Controller
 	        return redirect('/portfolio');
     	
     	} catch (Exception $e) {
-
+            dd($e->getMessage());
     		return response($e->getMessage(), 500)->header('Content-Type', 'text/plain');
     		
     	}
