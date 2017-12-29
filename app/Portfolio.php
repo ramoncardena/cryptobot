@@ -11,12 +11,12 @@ class Portfolio extends Model
     ];
     public function assets()
     {
-        return $this->hasMany('App\Asset');
+        return $this->hasMany('App\PortfolioAsset');
     }
 
     public function origins()
     {
-        return $this->hasMany('App\Origin');
+        return $this->hasMany('App\PortfolioOrigin');
     }
 
 }

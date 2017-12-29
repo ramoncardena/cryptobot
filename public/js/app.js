@@ -83912,24 +83912,55 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'add-asset',
     data: function data() {
         return {
-            exchange: "",
-            originType: "",
+            coinSelected: "",
+            coin: "",
+            originSelected: "",
             updating: false,
             csrf: ""
         };
     },
-    props: ['exchanges', 'origin-types', 'validation-errors'],
+    props: ['coins', 'origins', 'validation-errors'],
     computed: {},
     mounted: function mounted() {
+        var _this = this;
+
+        var coins = $.map(this.coins, function (a) {
+            return a.toString();
+        });
+
+        var options = {
+            data: coins,
+            list: {
+                onClickEvent: function onClickEvent() {
+                    _this.coinSelected = $("#coins").getSelectedItemData();
+                },
+                maxNumberOfElements: 2000,
+                match: {
+                    enabled: true
+                },
+                showAnimation: {
+                    type: "fade", //normal|slide|fade
+                    time: 400,
+                    callback: function callback() {}
+                },
+                hideAnimation: {
+                    type: "fade s", //normal|slide|fade
+                    time: 400,
+                    callback: function callback() {}
+                }
+            },
+            theme: "square"
+        };
+
+        $("#coins").easyAutocomplete(options);
+
         this.csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-        console.log('Component AddOrigin mounted.');
+        console.log('Component AddAsset mounted.');
     },
 
     methods: {}
@@ -83943,7 +83974,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "grid-container fluid" }, [
+  return _c("div", { staticClass: "grid-container fluid add-asset" }, [
     _c("form", { attrs: { method: "POST", action: "/portfolio/origin" } }, [
       _c("input", {
         attrs: { type: "hidden", name: "_token" },
@@ -83977,8 +84008,8 @@ var render = function() {
                   {
                     name: "model",
                     rawName: "v-model",
-                    value: _vm.origin,
-                    expression: "origin"
+                    value: _vm.originSelected,
+                    expression: "originSelected"
                   }
                 ],
                 staticClass: "input-group-field",
@@ -83993,7 +84024,7 @@ var render = function() {
                         var val = "_value" in o ? o._value : o.value
                         return val
                       })
-                    _vm.origin = $event.target.multiple
+                    _vm.originSelected = $event.target.multiple
                       ? $$selectedVal
                       : $$selectedVal[0]
                   }
@@ -84005,8 +84036,8 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _vm._l(_vm.origins, function(origin) {
-                  return _c("option", { domProps: { value: origin } }, [
-                    _vm._v(_vm._s(origin) + " ")
+                  return _c("option", { domProps: { value: origin.id } }, [
+                    _vm._v(_vm._s(origin.name) + " ")
                   ])
                 })
               ],
@@ -84016,10 +84047,49 @@ var render = function() {
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "small-12 cell form-container" }, [
-          _vm.validationErrors.origin_name
+          _vm.validationErrors.asset_name
             ? _c(
                 "div",
-                _vm._l(_vm.validationErrors.origin_name, function(error) {
+                _vm._l(_vm.validationErrors.asset_name, function(error) {
+                  return _c("span", { staticClass: "validation-error" }, [
+                    _vm._v(" " + _vm._s(error) + " ")
+                  ])
+                })
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _c("div", { staticClass: "input-group" }, [
+            _c("span", { staticClass: "input-group-label" }, [_vm._v("Asset")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.coinSelected,
+                  expression: "coinSelected"
+                }
+              ],
+              staticClass: "input-group-field number",
+              attrs: { name: "asset_name", id: "coins", type: "text" },
+              domProps: { value: _vm.coinSelected },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.coinSelected = $event.target.value
+                }
+              }
+            })
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "small-12 cell form-container" }, [
+          _vm.validationErrors.asset_amount
+            ? _c(
+                "div",
+                _vm._l(_vm.validationErrors.asset_amount, function(error) {
                   return _c("span", { staticClass: "validation-error" }, [
                     _vm._v(" " + _vm._s(error) + " ")
                   ])
@@ -84030,22 +84100,7 @@ var render = function() {
           _vm._m(1, false, false)
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "small-12 cell form-container" }, [
-          _vm.validationErrors.origin_address
-            ? _c(
-                "div",
-                _vm._l(_vm.validationErrors.origin_address, function(error) {
-                  return _c("span", { staticClass: "validation-error" }, [
-                    _vm._v(" " + _vm._s(error) + " ")
-                  ])
-                })
-              )
-            : _vm._e(),
-          _vm._v(" "),
-          _vm._m(2, false, false)
-        ]),
-        _vm._v(" "),
-        _vm._m(3, false, false)
+        _vm._m(2, false, false)
       ])
     ])
   ])
@@ -84069,27 +84124,12 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "input-group" }, [
       _c("span", { staticClass: "input-group-label" }, [
-        _vm._v("\n                        Asset\n                    ")
-      ]),
-      _vm._v(" "),
-      _c("input", {
-        staticClass: "input-group-field",
-        attrs: { name: "origin_name", type: "text" }
-      })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "input-group" }, [
-      _c("span", { staticClass: "input-group-label" }, [
         _vm._v("\n                        Amount\n                    ")
       ]),
       _vm._v(" "),
       _c("input", {
         staticClass: "input-group-field number",
-        attrs: { name: "origin_address", type: "text" }
+        attrs: { name: "asset_amount", type: "text" }
       })
     ])
   },
@@ -84101,7 +84141,7 @@ var staticRenderFns = [
       _c(
         "button",
         { staticClass: "hollow button", attrs: { type: "submit" } },
-        [_vm._v("\n                   Add Origin\n                ")]
+        [_vm._v("\n                   Add Asset\n                ")]
       )
     ])
   }

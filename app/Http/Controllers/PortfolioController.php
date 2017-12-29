@@ -9,6 +9,8 @@ use App\Library\Services\Broker;
 
 use App\User;
 use App\Portfolio;
+use App\PortfolioAsset;
+use App\PortfolioOrigin;
 
 class PortfolioController extends Controller
 {
@@ -35,12 +37,22 @@ class PortfolioController extends Controller
     public function index()
     {
         $this->user = Auth::user();
+
+        $cryptocompareCoin = new \Cryptocompare\Coin();
+
+        $coins = array_divide((array)$cryptocompareCoin->getList()->Data)[0];
+
+
         $originTypes = ['Online Wallet', 'Mobile Wallet', 'Desktop Wallet', 'Hardware Wallet', 'Paper Wallet'];
+
         $exchanges = $this->user->settings()->get('exchanges');
         $exchanges = array_divide($exchanges)[0];
+
         $portfolio = Portfolio::where('user_id', $this->user->id)->first();
 
-        return view('portfolio', ['originTypes' => json_encode($originTypes), 'exchanges' => json_encode($exchanges), 'portfolio' => $portfolio]);
+        $origins = $portfolio->origins;
+        
+        return view('portfolio', ['originTypes' => json_encode($originTypes), 'exchanges' => json_encode($exchanges), 'portfolio' => $portfolio, 'origins' => $origins, 'coins' => json_encode($coins)]);
     }
 
     /**

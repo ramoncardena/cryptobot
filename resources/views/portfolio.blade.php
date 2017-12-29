@@ -79,7 +79,7 @@
     <!-- MODAL: Add Asset -->
     <div class="reveal portfolio-modal" id="new-asset-modal" data-reveal>
         
-        <add-asset :validation-errors="{{ $errors }}" :exchanges="{{$exchanges}}" :origin-types="{{$originTypes}}"></add-asset>
+        <add-asset :validation-errors="{{ $errors }}" :coins="{{$coins}}" :origins="{{$origins}}"></add-asset>
 
         <button class="close-button" data-close aria-label="Close modal" type="button">
             <span aria-hidden="true">&times;</span>
