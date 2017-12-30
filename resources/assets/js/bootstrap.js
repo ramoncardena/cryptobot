@@ -18,6 +18,8 @@ try {
     //require('footable/dist/footable');
     //
     require('easy-autocomplete/dist/jquery.easy-autocomplete');
+
+    require('chartist/dist/chartist.min.js');
     
 
 } catch (e) {}

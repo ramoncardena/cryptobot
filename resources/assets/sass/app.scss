@@ -13,6 +13,11 @@
 // Foundation
 @import "foundation";
 
+//Chartist
+
+@import "my-chartist-settings";
+@import "node_modules/chartist/dist/scss/chartist";
+
 // Modules
 @import "modules/offcanvas";
 @import "modules/global";
