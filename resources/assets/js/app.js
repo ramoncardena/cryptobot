@@ -55,6 +55,8 @@
 
     require('./partials/notifications');
     require('./partials/alerts');
+    require('./partials/portfolio');
+
     
     $.extend( $.fn.dataTable.defaults, {
        responsive: true
@@ -68,6 +70,7 @@
     } );
 
     $('#activeTradesTable').DataTable();
+
     var historyTable = $('#historyTradesTable').DataTable();
     $("#historyTradesTable tfoot th").each( function ( i ) {
         if (i==2 || i==3 || i==4 || i==5) {

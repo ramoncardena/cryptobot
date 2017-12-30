@@ -19,7 +19,7 @@ try {
     //
     require('easy-autocomplete/dist/jquery.easy-autocomplete');
 
-    require('chartist/dist/chartist.min.js');
+    var Chart = require('chart.js');
     
 
 } catch (e) {}
