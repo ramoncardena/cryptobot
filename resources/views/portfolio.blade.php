@@ -44,7 +44,7 @@
                 </div>
             </div>
 
-            <div class="small-12 medium-6 cell portfolio form-container">
+            <div class="small-12 medium-8 cell portfolio form-container">
                     <div class="portfolio-area">
                        
                          <portfolio :portfolio="{{$portfolio}}" :origins="{{$origins}}" :assets="{{$assets}}"></portfolio>
