@@ -56,6 +56,7 @@ class PortfolioAssetController extends Controller
 	        $asset->portfolio_id = $portfolio->id;
 	        $asset->user_id = $this->user->id;
 	        $asset->origin_id = $request->asset_origin;
+            $asset->origin_name = $request->asset_origin_name;
 	        $asset->symbol = $request->asset_symbol;
 	        $asset->amount = $request->asset_amount;
             $asset->full_name = $coinInfo->CoinName;

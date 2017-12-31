@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+use App\Events\PortfolioOpened;
+
 use App\Library\Services\Broker;
 use App\Library\Services\CoinGuru;
 
@@ -49,19 +51,17 @@ class PortfolioController extends Controller
 
         // Get the user's exchanges
         $exchanges = $this->user->settings()->get('exchanges');
-        $this->exchanges = array_divide($exchanges)[0];
+        if ($exchanges) $this->exchanges = array_divide($exchanges)[0];
+        else $this->exchanges = [];
 
-         // Get user's portfolio
+        // Get user's portfolio
         $this->portfolio = Portfolio::where('user_id', $this->user->id)->first();
-
-        // Get porfolio assets
-        $this->assets = $this->portfolio->assets;
 
         // Get portfolio origins
         $this->origins = $this->portfolio->origins; 
 
-        // Update portfolio assets
-        $this->updateAssets();
+        // EVENT:  PortfolioOpened
+        event(new PortfolioOpened($this->portfolio));
 
 
         // DATA FOR MODALS (New Asset and New Origin)
@@ -73,7 +73,7 @@ class PortfolioController extends Controller
         $originTypes = ['Online Wallet', 'Mobile Wallet', 'Desktop Wallet', 'Hardware Wallet', 'Paper Wallet'];
 
     
-        return view('portfolio', ['originTypes' => json_encode($originTypes), 'exchanges' => json_encode($this->exchanges), 'portfolio' => $this->portfolio, 'origins' => $this->origins, 'assets' => $this->assets, 'coins' => json_encode($coins)]);
+        return view('portfolio', ['originTypes' => json_encode($originTypes), 'exchanges' => json_encode($this->exchanges), 'portfolio' => $this->portfolio, 'origins' => $this->origins, 'coins' => json_encode($coins)]);
     }
 
 

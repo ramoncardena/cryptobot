@@ -3,7 +3,7 @@ var ctx = $("#myChart");
 var myChart = new Chart(ctx, {
     type: 'doughnut',
     data: {
-        labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+        labels: ["BTC", "ETH", "LTC", "XRP", "NEO", "NXT"],
         datasets: [{
             label: '# of Votes',
             data: [12, 19, 3, 5, 2, 3],

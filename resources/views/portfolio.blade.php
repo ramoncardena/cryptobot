@@ -48,7 +48,7 @@
 
                     <div class="portfolio-area">
                        
-                         <portfolio :portfolio="{{$portfolio}}" :origins="{{$origins}}" :assets="{{$assets}}"></portfolio>
+                         <portfolio :portfolio="{{$portfolio}}"></portfolio>
 
                     </div>
             </div>

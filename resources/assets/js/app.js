@@ -66,7 +66,7 @@
     $('#portfolioTable').DataTable( {
         "searching": false,
         "paging": false,
-        "info": false
+        "info": false,
     } );
 
     $('#activeTradesTable').DataTable();

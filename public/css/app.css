@@ -14404,6 +14404,10 @@ a.thumbnail image {
   font-size: 0.8rem;
 }
 
+.dataTables_empty {
+  display: none;
+}
+
 .dataTable {
   margin-bottom: 2rem !important;
   margin-top: 1rem !important;

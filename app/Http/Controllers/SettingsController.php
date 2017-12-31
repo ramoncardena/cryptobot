@@ -7,6 +7,7 @@ use App\Exceptions\Handler;
 use Illuminate\Support\Facades\Auth;
 
 use App\Portfolio;
+use App\PortfolioOrigin;
 use App\User;
 
 class SettingsController extends Controller
@@ -71,20 +72,57 @@ class SettingsController extends Controller
 
         $settings->set('exchanges', null);
 
+        $bitstampSwitch=false;
+        $bittrexSwitch=false;
+
+        $user = Auth::user();
+
         foreach ($request->all() as $key => $value) 
         {
             switch ($key) {
                 case 'bittrex_switch':
                     $settings->addExchange('bittrex');
+
+                    $origins =  $user->origins;
+
+                    if ($origins->firstWhere('name', 'Bittrex') == null) {
+                        $portfolio = Portfolio::where('user_id', $user->id)->first();
+                        $origin = new PortfolioOrigin;
+                        $origin->portfolio_id = $portfolio->id;
+                        $origin->user_id = $user->id;
+                        $origin->type ='Exchange';
+                        $origin->name = 'Bittrex';
+                        $origin->address = "-";
+                        $origin->save();
+                    }
+
+                    $bittrexSwitch = true;
+
                     break;
 
                 case 'bitstamp_switch':
                     $settings->addExchange('bitstamp');
+
+                    $origins =  $user->origins;
+
+                    if ($origins->firstWhere('name', 'Bitstamp') == null) {
+                        $portfolio = Portfolio::where('user_id', $user->id)->first();
+                        $origin = new PortfolioOrigin;
+                        $origin->portfolio_id = $portfolio->id;
+                        $origin->user_id = $user->id;
+                        $origin->type ='Exchange';
+                        $origin->name = 'Bitstamp';
+                        $origin->address = "-";
+                        $origin->save();
+                    }   
+
+                    $bitstampSwitch = true;
+
                     break;
 
                 case 'initialize_portfolio':
                     $portfolio = new Portfolio;
-                    $portfolio->user_id = Auth::user()->id;
+                    $portfolio->user_id = $user->id;
                     $portfolio->name = "My Portfolio";
                     $portfolio->counter_value = "eur";
                     $portfolio->balance = 0;
@@ -92,16 +130,16 @@ class SettingsController extends Controller
                     break;
 
                 case 'portfolio_name':
-                    if (Portfolio::where('user_id', Auth::user()->id)->first()) {
-                        $portfolio = Portfolio::where('user_id', Auth::user()->id)->first();
+                    if (Portfolio::where('user_id', $user->id)->first()) {
+                        $portfolio = Portfolio::where('user_id', $user->id)->first();
                         $portfolio->name = $value;
                         $portfolio->save();
                     }
                     break;
 
                 case 'portfolio_countervalue':
-                    if (Portfolio::where('user_id', Auth::user()->id)->first()) {
-                        $portfolio = Portfolio::where('user_id', Auth::user()->id)->first();
+                    if (Portfolio::where('user_id', $user->id)->first()) {
+                        $portfolio = Portfolio::where('user_id', $user->id)->first();
                         $portfolio->counter_value = $value;
                         $portfolio->save();
                     }
@@ -112,8 +150,30 @@ class SettingsController extends Controller
                     }
                     break;
             }
-
         }
+
+
+        if ($bittrexSwitch == false) {
+            if ($user->origins->firstWhere('name', 'Bittrex')) {
+                // BORRAR ASSETS ASOCIADOS
+                $assets = $user->assets->where('origin_name', 'Bittrex');
+                foreach ($assets as $asset) {
+                    $asset->delete();  
+                }
+                $user->origins->firstWhere('name', 'Bittrex')->delete();
+            }
+        }
+        if ($bitstampSwitch == false) {
+            if ($user->origins->firstWhere('name', 'Bitstamp')) {
+                // BORRAR ASSETS ASOCIADOS
+                $assets = $user->assets->where('origin_name', 'Bitstamp');
+                foreach ($assets as $asset) {
+                    $asset->delete();  
+                }
+                $user->origins->firstWhere('name', 'Bitstamp')->delete();
+            }
+        }
+
         return redirect('/settings');
     }
 

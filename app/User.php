@@ -43,6 +43,6 @@ class User extends Authenticatable
 
     public function origins()
     {
-        return $this->hasMany('App\PortfolioOrigins');
+        return $this->hasMany('App\PortfolioOrigin');
     }
 }

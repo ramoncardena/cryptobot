@@ -10,7 +10,7 @@
                         <p class="lead"><b>Add new asset to your portfolio</b></p>
                     </div>
                     <div class="small-12 cell form-container">
-                        <div v-if="validationErrors.origin">
+                        <div v-if="validationErrors.origin_type">
                            <span class="validation-error" v-for="error in validationErrors.origin_type"> {{ error }} </span>
                         </div>
                         <div class="input-group">
@@ -18,7 +18,8 @@
                             <select v-model="originSelected" name="asset_origin" class="input-group-field">
                                 <option disabled value="">Select...</option>
                                 <option v-for="origin in origins" :value="origin.id">{{ origin.name }} </option>
-                            </select>                     
+                            </select>      
+                            <input id="asset-origin-name" name="asset_origin_name" type="hidden" :value=" originSelected">               
                         </div>
                     </div>
                     
