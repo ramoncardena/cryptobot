@@ -15036,6 +15036,30 @@ section#portfolio .portfolio-area {
   color: #8a8a8a;
 }
 
+.counter-widget {
+  font-family: 'Nunito', sans-serif;
+  padding: 1rem 1rem;
+  text-align: right;
+}
+
+.counter-widget .title {
+  color: #FF7276;
+  float: right;
+  font-size: 1.5rem;
+  clear: both;
+  margin: 0;
+  padding: 0;
+}
+
+.counter-widget .counter {
+  color: #009ACE;
+  float: right;
+  font-size: 2.5rem;
+  clear: both;
+  margin: 0;
+  padding: 0;
+}
+
 .notification-list {
   font-size: 1rem;
 }

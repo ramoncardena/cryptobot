@@ -114,12 +114,6 @@ class LoadPortfolio implements ShouldQueue
                 $assets = $event->portfolio->assets;
                 $start = microtime(true);
                 foreach ($assets as $asset) {
-                    // $assetPrice = $guru->cryptocomparePriceGetSinglePrice($asset->symbol, "BTC");
-                    // $asset->price = $assetPrice->BTC;
-                    // $asset->balance =  $asset->amount * $assetPrice->BTC;
-                    // $counterValue = strtoupper($event->portfolio->counter_value);
-                    // $asset->counter_value = $asset->amount * $guru->cryptocomparePriceGetSinglePrice($asset->symbol,$counterValue)->$counterValue;
-                    // $asset->save();
 
                     // EVENT:  Portfolio Asset Loaded
                     event(new PortfolioAssetLoaded($asset));

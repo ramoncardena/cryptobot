@@ -44,16 +44,13 @@
                 </div>
             </div>
 
-            <div class="small-12 medium-8 cell portfolio form-container">
+            <div class="small-12 cell portfolio form-container">
 
                     <div class="portfolio-area">
                        
                          <portfolio :portfolio="{{$portfolio}}"></portfolio>
 
                     </div>
-            </div>
-            <div class="small-12 medium-4 cell portfolio form-container">
-                <canvas id="myChart" width="400" height="400"></canvas>
             </div>
         </div>
     </div>

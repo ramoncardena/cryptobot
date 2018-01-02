@@ -114422,6 +114422,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'portfolio',
@@ -114461,7 +114473,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     }
                 });
             }
+        });
+        var ctx = $("#myChart");
 
+        var myChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ["BTC", "ETH", "LTC", "XRP", "NEO", "NXT"],
+                datasets: [{
+                    label: '# of Votes',
+                    data: [12, 19, 3, 5, 2, 3],
+                    backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)'],
+                    borderColor: ['rgba(255,99,132,1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)'],
+                    borderWidth: 1
+                }]
+            },
+            options: {}
         });
 
         Echo.private('assets.' + this.portfolio.id).listen('PortfolioAssetLoaded', function (e) {
@@ -114507,21 +114534,35 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "grid-x grid-margin-x" }, [
-    _c("div", { staticClass: "auto cell" }, [
-      _vm._v(
-        "\n        Total BTC: " +
-          _vm._s(_vm.totalBtc) +
-          "\n        Total " +
-          _vm._s(_vm.counterValue) +
-          ": " +
-          _vm._s(_vm.totalFiat) +
-          "\n    "
-      )
-    ]),
+    _vm._m(0, false, false),
     _vm._v(" "),
-    _c("div", { staticClass: "auto cell" }),
-    _vm._v(" "),
-    _vm._m(0, false, false)
+    _c("div", { staticClass: "small-12 medium-4 cell" }, [
+      _c("div", { staticClass: "grid-x grid-margin-x" }, [
+        _c("div", { staticClass: "small-12 cell" }, [
+          _c("div", { staticClass: "counter-widget" }, [
+            _c("div", { staticClass: "title" }, [_vm._v("Total BTC ")]),
+            _vm._v(" "),
+            _c("div", { staticClass: "counter" }, [
+              _vm._v(_vm._s(_vm.totalBtc))
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "small-12 cell" }, [
+          _c("div", { staticClass: "counter-widget" }, [
+            _c("div", { staticClass: "title" }, [
+              _vm._v("Total " + _vm._s(_vm.counterValue) + " ")
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "counter" }, [
+              _vm._v(_vm._s(_vm.totalFiat))
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _vm._m(1, false, false)
+      ])
+    ])
   ])
 }
 var staticRenderFns = [
@@ -114529,13 +114570,21 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "small-12 cell" }, [
+    return _c("div", { staticClass: "small-12 medium-8 cell" }, [
       _c("div", { staticClass: "portfolio-assets" }, [
         _c("table", {
           staticClass: "display unstriped",
           attrs: { id: "portfolioTable", width: "100%" }
         })
       ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "small-12 cell" }, [
+      _c("canvas", { attrs: { id: "myChart", width: "400", height: "400" } })
     ])
   }
 ]
@@ -114799,22 +114848,7 @@ $('.alerts-callout').hide().delay(1000).fadeIn(2000).delay(5000).fadeOut(1000);
 /* 269 */
 /***/ (function(module, exports) {
 
-var ctx = $("#myChart");
 
-var myChart = new Chart(ctx, {
-    type: 'doughnut',
-    data: {
-        labels: ["BTC", "ETH", "LTC", "XRP", "NEO", "NXT"],
-        datasets: [{
-            label: '# of Votes',
-            data: [12, 19, 3, 5, 2, 3],
-            backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)'],
-            borderColor: ['rgba(255,99,132,1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)'],
-            borderWidth: 1
-        }]
-    },
-    options: {}
-});
 
 /***/ }),
 /* 270 */
