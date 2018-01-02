@@ -126,6 +126,7 @@ class SettingsController extends Controller
                     $portfolio->name = "My Portfolio";
                     $portfolio->counter_value = "eur";
                     $portfolio->balance = 0;
+                    $portfolio->balance_counter_value = 0;
                     $portfolio->save();
                     break;
 

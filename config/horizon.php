@@ -126,6 +126,13 @@ return [
                 'processes' => 3,
                 'tries' => 3,
             ],
+            'assets' => [
+                'connection' => 'redis',
+                'queue' => ['assets'],
+                'balance' => 'simple',
+                'processes' => 3,
+                'tries' => 3,
+            ],
         ],
 
         'local' => [
@@ -174,6 +181,13 @@ return [
             'portfolios' => [
                 'connection' => 'redis',
                 'queue' => ['portfolios'],
+                'balance' => 'simple',
+                'processes' => 3,
+                'tries' => 1,
+            ],
+            'assets' => [
+                'connection' => 'redis',
+                'queue' => ['assets'],
                 'balance' => 'simple',
                 'processes' => 3,
                 'tries' => 1,

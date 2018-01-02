@@ -28,13 +28,22 @@ class CoinGuru
     public function cryptocompareCoinGetList() {
 
     	$cryptocompareCoin = new \Cryptocompare\Coin();
-    	return $cryptocompareCoin->getList();
+
+        $response =  $cryptocompareCoin->getList();
+        if ($response->Response == "Success") {
+            return $cryptocompareCoin->getList();
+        }
+        else {
+
+
+        }
 
     }
 
     public function cryptocomparePriceGetSinglePrice($symbol, $counterValue) {
 
     	$cryptocomparePrice = new \Cryptocompare\Price();
+       
     	return $cryptocomparePrice->getSinglePrice("1",$symbol,$counterValue,"CCCAGG","false");
     	 	
     }

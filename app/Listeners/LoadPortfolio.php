@@ -44,76 +44,102 @@ class LoadPortfolio implements ShouldQueue
      */
     public function handle(PortfolioOpened $event)
     {
-        if ($event->portfolio) {
+        try {
+            if ($event->portfolio) {
 
-            $guru = new CoinGuru;
-            $logoBaseUrl = $guru->cryptocompareCoingetList()->BaseImageUrl;
-            $infoBaseUrl = $guru->cryptocompareCoingetList()->BaseLinkUrl;
+                // Get user
+                $user = User::find($event->portfolio->user_id);
 
-            // Get user
-            $user = User::find($event->portfolio->user_id);
+                // Get Cryptocompare coin list properties
+                $guru = new CoinGuru;
+                $coinList = $guru->cryptocompareCoingetList();
+                // TODO controlar si retorna errot
+                $logoBaseUrl = $coinList->BaseImageUrl;
+                $infoBaseUrl = $coinList->BaseLinkUrl;
 
+                // New Broker
+                $broker = new Broker;
+                $broker->setUser($user);
 
-            /*********************************
-             * EXCHANGES'S PORTFOLIO
-             *********************************/
+                // Get the user's exchanges
+                $exchanges = $user->settings()->get('exchanges');
+                if ($exchanges) $exchanges = array_divide($exchanges)[0];
+                else $exchanges = [];
 
-            $broker = new Broker;
-            $broker->setUser($user);
+                foreach ($exchanges as $exchange) {
+                    $start = microtime(true);
+                    // Delete assets from this exchange
+                    foreach ($user->assets->where('origin_name', ucfirst($exchange)) as $asset) {
+                        PortfolioAsset::destroy($asset->id);
+                    }
 
-            // Get the user's exchanges
-            $exchanges = $user->settings()->get('exchanges');
-            if ($exchanges) $exchanges = array_divide($exchanges)[0];
-            else $exchanges = [];
+                    $time_elapsed_secs = microtime(true) - $start;
+                    var_dump("Time to delete Assets: " . $time_elapsed_secs);
 
-            foreach ($exchanges as $exchange) {
+                    $start = microtime(true);
+                    // Get balance from this exchange
+                    $broker->setExchange($exchange);
+                    $balance = $broker->getBalances();
+                    // Controlar si retorna error
+                     $time_elapsed_secs = microtime(true) - $start;
+                     var_dump("Time to load exchange balances: " . $time_elapsed_secs);
 
-                // Delete assets from this exchange
-                foreach ($user->assets->where('origin_name', ucfirst($exchange)) as $asset) {
-                    PortfolioAsset::destroy($asset->id);
+                    $start = microtime(true);
+                    $origin_id = $user->origins->where('name', ucfirst($exchange))->first()->id;
+                    foreach ($balance->result as $coin) {
+             
+                        $symbol = $coin->Currency;
+                        $coinInfo = $coinList->Data->$symbol;
+                        $asset = new PortfolioAsset;
+                        $asset->portfolio_id = $event->portfolio->id;
+                        $asset->user_id = $user->id;
+                        $asset->origin_id = $origin_id;
+                        $asset->origin_name = ucfirst($exchange);
+                        $asset->symbol = $coin->Currency;
+                        $asset->amount = $coin->Balance;
+                        $asset->full_name = $coinInfo->CoinName;
+                        $asset->logo_url = $logoBaseUrl . $coinInfo->ImageUrl;
+                        $asset->info_url = $infoBaseUrl . $coinInfo->Url;
+                        $asset->price = 0;
+                        $asset->balance = 0;
+                        $counterValue = strtoupper($event->portfolio->counter_value);
+                        $asset->counter_value = 0;
+
+                        $asset->save();
+                    }
+                    $time_elapsed_secs = microtime(true) - $start;
+                    var_dump("Time to save exchange assets: " . $time_elapsed_secs);
                 }
 
-                // Get balance from this exchange
-                $broker->setExchange($exchange);
-                $balance = $broker->getBalances();
+                $assets = $event->portfolio->assets;
+                $start = microtime(true);
+                foreach ($assets as $asset) {
+                    // $assetPrice = $guru->cryptocomparePriceGetSinglePrice($asset->symbol, "BTC");
+                    // $asset->price = $assetPrice->BTC;
+                    // $asset->balance =  $asset->amount * $assetPrice->BTC;
+                    // $counterValue = strtoupper($event->portfolio->counter_value);
+                    // $asset->counter_value = $asset->amount * $guru->cryptocomparePriceGetSinglePrice($asset->symbol,$counterValue)->$counterValue;
+                    // $asset->save();
 
-                foreach ($balance->result as $coin) {
-                    
-                    $symbol = $coin->Currency;
-                    $coinInfo = $guru->cryptocompareCoingetList()->Data->$symbol;
-                    $asset = new PortfolioAsset;
-                    $asset->portfolio_id = $event->portfolio->id;
-                    $asset->user_id = $user->id;
-                    $asset->origin_id = $user->origins->where('name', ucfirst($exchange))->first()->id;
-                    $asset->origin_name = ucfirst($exchange);
-                    $asset->symbol = $coin->Currency;
-                    $asset->amount = $coin->Balance;
-                    $asset->full_name = $coinInfo->CoinName;
-                    $asset->logo_url = $logoBaseUrl . $coinInfo->ImageUrl;
-                    $asset->info_url = $infoBaseUrl . $coinInfo->Url;
-                    $asset->price = 0;
-                    $asset->balance = 0;
-                    $counterValue = strtoupper($event->portfolio->counter_value);
-                    $asset->counter_value = 0;
-                    $asset->save();
+                    // EVENT:  Portfolio Asset Loaded
+                    event(new PortfolioAssetLoaded($asset));
                 }
-            }
+                $time_elapsed_secs = microtime(true) - $start;
+                var_dump("Time to update assets: " . $time_elapsed_secs);
 
-            $assets = $event->portfolio->assets;
+                // EVENT:  Portfolio Loaded
+                event(new PortfolioLoaded($event->portfolio));
+            } 
 
-            foreach ($assets as $asset) {
-                $asset->price = $guru->cryptocomparePriceGetSinglePrice($asset->symbol, "BTC")->BTC;
-                $asset->balance =  $asset->amount * $guru->cryptocomparePriceGetSinglePrice($asset->symbol, "BTC")->BTC;
-                $counterValue = strtoupper($event->portfolio->counter_value);
-                $asset->counter_value = $asset->amount * $guru->cryptocomparePriceGetSinglePrice($asset->symbol,$counterValue)->$counterValue;
-                $asset->save();
+        } catch (Exception $e) {
+            // Log CRITICAL: Exception
+            Log::critical("[LoadPortfolio] Exception: " . $e->getMessage());
 
-                // EVENT:  Portfolio Asset Loaded
-                event(new PortfolioAssetLoaded($asset));
-            }
+            // Add delay before requeueing
+            sleep(env('FAILED_PORTFOFLIO_DELAY', 5));
 
-            // EVENT:  Portfolio Loaded
-            event(new PortfolioLoaded($event->portfolio));
+            // EVENT:  PortfolioOpened
+            event(new PortfolioOpened($event->portfolio));
         }
     }
 }

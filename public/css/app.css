@@ -14408,6 +14408,13 @@ a.thumbnail image {
   display: none;
 }
 
+.group {
+  background-color: #ECEDEA;
+  color: #009ACE;
+  font-size: 1.3rem;
+  text-transform: uppercase;
+}
+
 .dataTable {
   margin-bottom: 2rem !important;
   margin-top: 1rem !important;

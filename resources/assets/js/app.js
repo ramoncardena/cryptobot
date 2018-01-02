@@ -63,11 +63,11 @@
    } );
 
 
-    $('#portfolioTable').DataTable( {
-        "searching": false,
-        "paging": false,
-        "info": false,
-    } );
+    // var portfolioTable = $('#portfolioTable').DataTable( {
+    //     "searching": false,
+    //     "paging": false,
+    //     "info": false,
+    // } );
 
     $('#activeTradesTable').DataTable();
 
