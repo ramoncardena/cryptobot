@@ -114453,12 +114453,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     mounted: function mounted() {
         var _this = this;
 
+        this.totalBalance = 0;
+        this.totalCounterValue = 0;
+
         var portfolioTable = $('#portfolioTable').DataTable({
             "searching": false,
             "responsive": true,
             "paging": false,
             "info": false,
-            "columnDefs": [{ "visible": false, "targets": 5 }, { "visible": false, "targets": 6 }],
+            "columnDefs": [{ "visible": false, "targets": 6 }],
             columns: [{ title: '<div class="sorting nowrap">Coin</div>' }, { title: '<div class="sorting nowrap">Value (Fiat)</div>' }, { title: '<div class="sorting nowrap">Value (BTC)</div>' }, { title: '<div class="sorting nowrap">Amount</div>' }, { title: '<div class="sorting nowrap">Price</div>' }, { title: '<div class="sorting nowrap">Asset ID</div>' }, { title: '<div class="sorting_asc nowrap">Origin</div>' }],
             "drawCallback": function drawCallback(settings) {
                 var api = this.api();
@@ -114474,34 +114477,46 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 });
             }
         });
-        var ctx = $("#myChart");
 
-        var myChart = new Chart(ctx, {
+        var ctx = $("#portfolioChart");
+
+        Chart.defaults.global.legend.position = "bottom";
+
+        var portfolioChart = new Chart(ctx, {
             type: 'doughnut',
             data: {
-                labels: ["BTC", "ETH", "LTC", "XRP", "NEO", "NXT"],
+                labels: [],
                 datasets: [{
-                    label: '# of Votes',
-                    data: [12, 19, 3, 5, 2, 3],
-                    backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)'],
-                    borderColor: ['rgba(255,99,132,1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)'],
-                    borderWidth: 1
+                    label: 'Coins',
+                    data: [],
+                    backgroundColor: [],
+                    borderColor: [],
+                    borderWidth: 0
                 }]
             },
             options: {}
         });
 
+        var that = this;
+
         Echo.private('assets.' + this.portfolio.id).listen('PortfolioAssetLoaded', function (e) {
-            //this.assets.push(e.asset);
+
             _this.balance = e.asset.balance;
             _this.counter_value = e.asset.counter_value;
             _this.price = e.asset.price;
+
             var coin = '<div class="asset-info nowrap"><a href="' + e.asset.info_url + '" target="_blank"><img class="asset-img" src="' + e.asset.logo_url + '" width="20"></a> <span class="show-for-medium asset-name">' + e.asset.full_name + '</span> <span class="asset-symbol">' + e.asset.symbol + '</span></div>';
 
             var amount = '<div class="asset-amount  nowrap">' + parseFloat(e.asset.amount).toFixed(8) + '</div>';
             var origin = '<div class="asset-origin  nowrap">' + e.asset.origin_name + '</div>';
-            portfolioTable.row.add([coin, parseFloat(_this.counter_value).toFixed(2), parseFloat(_this.balance).toFixed(8), amount, parseFloat(_this.price).toFixed(8), e.asset.id, origin]).order([6, 'asc']).draw();
+
+            // Add row to the table with the new asset
+            portfolioTable.row.add([coin, parseFloat(_this.counter_value).toFixed(2), parseFloat(_this.balance).toFixed(8), amount, parseFloat(_this.price).toFixed(8), e.asset.id, origin]).order([6, 'asc']).invalidate().draw();
         }).listen('PortfolioAssetUpdated', function (e) {
+
+            _this.totalBtc = (parseFloat(_this.totalBtc) + parseFloat(e.asset.balance)).toFixed(8);
+            _this.totalFiat = (parseFloat(_this.totalFiat) + parseFloat(e.asset.counter_value)).toFixed(2);
+
             _this.balance = parseFloat(e.asset.balance).toFixed(8);
             _this.price = parseFloat(e.asset.price).toFixed(8);
             _this.counter_value = parseFloat(e.asset.counter_value).toFixed(2);
@@ -114509,20 +114524,87 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var indexes = portfolioTable.rows().eq(0).filter(function (rowIdx) {
                 return portfolioTable.cell(rowIdx, 5).data() === e.asset.id ? true : false;
             });
+            // console.log("Indexes (" + e.asset.id +"): " + indexes[0]);
 
-            portfolioTable.cell(indexes[0], 1).data(_this.counter_value);
-            portfolioTable.cell(indexes[0], 2).data(_this.balance);
-            portfolioTable.cell(indexes[0], 4).data(_this.price);
+            portfolioTable.cell(indexes[0], 1).data(_this.counter_value).invalidate();
+            portfolioTable.cell(indexes[0], 2).data(_this.balance).invalidate();
+            portfolioTable.cell(indexes[0], 4).data(_this.price).invalidate();
+
+            portfolioChart.data.labels.push(e.asset.symbol);
+            portfolioChart.data.datasets.forEach(function (dataset) {
+                dataset.data.push(parseFloat(_this.counter_value).toFixed(2));
+            });
+
+            var randomColorPlugin = {
+                // We affect the `beforeUpdate` event
+                beforeUpdate: function beforeUpdate(chart) {
+                    var backgroundColor = [];
+                    var borderColor = [];
+
+                    // For every data we have ...
+                    for (var i = 0; i < chart.config.data.datasets[0].data.length; i++) {
+
+                        // We generate a random color
+                        //
+                        var color = "rgba( 214," + +Math.floor(Math.random() * 255) + "," + Math.floor(Math.random() * 255) + ",";
+
+                        // We push this new color to both background and border color arrays
+                        //var color = that.srtingToColor(e.asset.symbol);
+                        console.log("Color: " + color);
+                        backgroundColor.push(color + "0.5)");
+                        borderColor.push(color + "0.5)");
+                    }
+
+                    // We update the chart bars color properties
+                    chart.config.data.datasets[0].backgroundColor = backgroundColor;
+                    chart.config.data.datasets[0].borderColor = borderColor;
+                }
+            };
+            // We now register the plugin to the chart's plugin service to activate it
+            Chart.pluginService.register(randomColorPlugin);
+            portfolioChart.update();
         });
-        Echo.private('portfolios.' + this.portfolio.id).listen('PortfolioTotalsCalculated', function (e) {
-            _this.totalBtc = parseFloat(e.portfolio.balance).toFixed(8);
-            _this.totalFiat = parseFloat(e.portfolio.balance_counter_value).toFixed(2);
+        Echo.private('portfolios.' + this.portfolio.id).listen('PortfolioLoaded', function (e) {
             _this.counterValue = _this.portfolio.counter_value.toUpperCase();
         });
+
         console.log('Component TradeList mounted.');
     },
 
-    methods: {}
+    methods: {
+        srtingToColor: function srtingToColor(str, prc) {
+
+            // Check for optional lightness/darkness
+            var prc = typeof prc === 'number' ? prc : -10;
+
+            // Generate a Hash for the String
+            var hash = function hash(word) {
+                var h = 0;
+                for (var i = 0; i < word.length; i++) {
+                    h = word.charCodeAt(i) + ((h << 5) - h);
+                }
+                return h;
+            };
+
+            // Change the darkness or lightness
+            var shade = function shade(color, prc) {
+                var num = parseInt(color, 16),
+                    amt = Math.round(2.55 * prc),
+                    R = (num >> 16) + amt,
+                    G = (num >> 8 & 0x00FF) + amt,
+                    B = (num & 0x0000FF) + amt;
+                return (0x1000000 + (R < 255 ? R < 1 ? 0 : R : 255) * 0x10000 + (G < 255 ? G < 1 ? 0 : G : 255) * 0x100 + (B < 255 ? B < 1 ? 0 : B : 255)).toString(16).slice(1);
+            };
+
+            // Convert init to an RGBA
+            var int_to_rgba = function int_to_rgba(i) {
+                var color = (i >> 24 & 0xFF).toString(16) + (i >> 16 & 0xFF).toString(16) + (i >> 8 & 0xFF).toString(16) + (i & 0xFF).toString(16);
+                return color;
+            };
+
+            return shade(int_to_rgba(hash(str)), prc);
+        }
+    }
 });
 
 /***/ }),
@@ -114584,7 +114666,9 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "small-12 cell" }, [
-      _c("canvas", { attrs: { id: "myChart", width: "400", height: "400" } })
+      _c("canvas", {
+        attrs: { id: "portfolioChart", width: "400", height: "400" }
+      })
     ])
   }
 ]

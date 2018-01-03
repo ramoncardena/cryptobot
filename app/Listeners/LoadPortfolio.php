@@ -50,6 +50,11 @@ class LoadPortfolio implements ShouldQueue
                 // Get user
                 $user = User::find($event->portfolio->user_id);
 
+                // RESET PORTFOLIO TOTALS
+                $event->portfolio->balance = 0;
+                $event->portfolio->balance_counter_value = 0;
+                $event->portfolio->save();
+                
                 // Get Cryptocompare coin list properties
                 $guru = new CoinGuru;
                 $coinList = $guru->cryptocompareCoingetList();
@@ -67,24 +72,18 @@ class LoadPortfolio implements ShouldQueue
                 else $exchanges = [];
 
                 foreach ($exchanges as $exchange) {
-                    $start = microtime(true);
+
                     // Delete assets from this exchange
                     foreach ($user->assets->where('origin_name', ucfirst($exchange)) as $asset) {
                         PortfolioAsset::destroy($asset->id);
                     }
 
-                    $time_elapsed_secs = microtime(true) - $start;
-                    var_dump("Time to delete Assets: " . $time_elapsed_secs);
-
-                    $start = microtime(true);
                     // Get balance from this exchange
                     $broker->setExchange($exchange);
                     $balance = $broker->getBalances();
                     // Controlar si retorna error
-                     $time_elapsed_secs = microtime(true) - $start;
-                     var_dump("Time to load exchange balances: " . $time_elapsed_secs);
 
-                    $start = microtime(true);
+                    
                     $origin_id = $user->origins->where('name', ucfirst($exchange))->first()->id;
                     foreach ($balance->result as $coin) {
              
@@ -107,19 +106,15 @@ class LoadPortfolio implements ShouldQueue
 
                         $asset->save();
                     }
-                    $time_elapsed_secs = microtime(true) - $start;
-                    var_dump("Time to save exchange assets: " . $time_elapsed_secs);
                 }
 
                 $assets = $event->portfolio->assets;
-                $start = microtime(true);
                 foreach ($assets as $asset) {
 
                     // EVENT:  Portfolio Asset Loaded
                     event(new PortfolioAssetLoaded($asset));
+
                 }
-                $time_elapsed_secs = microtime(true) - $start;
-                var_dump("Time to update assets: " . $time_elapsed_secs);
 
                 // EVENT:  Portfolio Loaded
                 event(new PortfolioLoaded($event->portfolio));
@@ -128,12 +123,6 @@ class LoadPortfolio implements ShouldQueue
         } catch (Exception $e) {
             // Log CRITICAL: Exception
             Log::critical("[LoadPortfolio] Exception: " . $e->getMessage());
-
-            // Add delay before requeueing
-            sleep(env('FAILED_PORTFOFLIO_DELAY', 5));
-
-            // EVENT:  PortfolioOpened
-            event(new PortfolioOpened($event->portfolio));
         }
     }
 }

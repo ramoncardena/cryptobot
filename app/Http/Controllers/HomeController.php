@@ -32,7 +32,11 @@ class HomeController extends Controller
 
         if (Auth::check()) 
         {
-
+            // Check cryptocompare remaining calls
+            // $cryptocompareApi = new \Cryptocompare\CryptocompareApi();
+            // $response =  $cryptocompareApi->getRateLimits("second");
+            // dd($response);
+            
             $this->user = Auth::user();
 
             Bittrex::setAPI($this->user->settings()->get('bittrex_key'), $this->user->settings()->get('bittrex_secret'));
