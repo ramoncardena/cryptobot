@@ -16,7 +16,7 @@
                 </div>
                 <div class="small-12 cell">
                     <div class="counter-widget">
-                         <div class="title">Total {{counterValue}} </div> <div class="counter">{{ totalFiat}}</div>
+                         <div class="title">Total {{counterValueSymbol}} </div> <div class="counter">{{ totalFiat}}</div>
                        
                     </div>
                 </div>
@@ -38,12 +38,17 @@ export default {
     data: () => {
         return {
             assets: [],
+            uniqueAssetsBtc: [],
+            uniqueAssetsFiat: [],
+            uniqueAssetsName: [],
             balance: 0,
             counter_value: 0,
             price: 0,
             totalBtc: 0,
             totalFiat: 0,
-            counterValue: ''
+            counterValueSymbol: '',
+            portfolioChart: {}
+
         }
     },
     computed: {
@@ -52,13 +57,13 @@ export default {
     mounted() {
         this.totalBalance = 0;
         this.totalCounterValue = 0;
-
         var portfolioTable = $('#portfolioTable').DataTable( {
             "searching": false,
             "responsive": true,
             "paging": false,
             "info": false,
             "columnDefs": [
+            { "visible": false, "targets": 5 },
             { "visible": false, "targets": 6 }
             ],
             columns: [
@@ -92,7 +97,7 @@ export default {
 
         Chart.defaults.global.legend.position="bottom";
 
-        var portfolioChart = new Chart(ctx, {
+        this.portfolioChart = new Chart(ctx, {
             type: 'doughnut',
             data: {
                 labels: [],
@@ -113,7 +118,9 @@ export default {
 
         Echo.private('assets.' + this.portfolio.id)
         .listen('PortfolioAssetLoaded', (e) => {
-        
+            // ************
+            // ASSET LOADED
+            // ************
             this.balance = e.asset.balance; 
             this.counter_value = e.asset.counter_value;
             this.price = e.asset.price;
@@ -137,29 +144,63 @@ export default {
             
         })
         .listen('PortfolioAssetUpdated', (e) => {
-      
+            // ************
+            // ASSET UPDATED
+            // ************
+            
+            // Calculate current TOTAL balances (btc and fiat)
             this.totalBtc = (parseFloat(this.totalBtc) + parseFloat(e.asset.balance)).toFixed(8);
             this.totalFiat = (parseFloat(this.totalFiat) + parseFloat(e.asset.counter_value)).toFixed(2);
 
-
+            // Store and show TOTAL balances
             this.balance = parseFloat(e.asset.balance).toFixed(8);
             this.price = parseFloat(e.asset.price).toFixed(8);
             this.counter_value = parseFloat(e.asset.counter_value).toFixed(2);
+
+            // Store a consolidated array
+
+            var indexRepeated = this.uniqueAssetsName.indexOf(e.asset.symbol);
+
+            if ( indexRepeated >= 0 ) {
+                var newBalanceBtc = (parseFloat(this.uniqueAssetsBtc[indexRepeated]) + parseFloat(e.asset.balance));
+                var newBalanceFiat = (parseFloat(this.uniqueAssetsFiat[indexRepeated]) + parseFloat(e.asset.counter_value));
+                this.uniqueAssetsBtc[indexRepeated] = parseFloat(newBalanceBtc);
+                this.uniqueAssetsFiat[indexRepeated] = parseFloat(newBalanceFiat);
+
+                this.portfolioChart.data.datasets.forEach((dataset) => {
+                    dataset.data[indexRepeated] = this.uniqueAssetsFiat[indexRepeated];
+                });
+            }
+            else {
+                // If the asset doesn't exists we push it
+                this.uniqueAssetsBtc.push(parseFloat(e.asset.balance));
+                this.uniqueAssetsFiat.push(parseFloat(e.asset.counter_value));
+                this.uniqueAssetsName.push(e.asset.symbol);
+
+                this.portfolioChart.data.labels.push(e.asset.symbol);
+                this.portfolioChart.data.datasets.forEach((dataset) => {
+                    dataset.data.push(parseFloat(e.asset.counter_value ));
+                });
+                
+            }
             
+            // Locate current coin row in DATATABLE
             var indexes = portfolioTable.rows().eq( 0 ).filter( function (rowIdx) {
                 return portfolioTable.cell( rowIdx, 5 ).data() === e.asset.id ? true : false;
             } );
-            // console.log("Indexes (" + e.asset.id +"): " + indexes[0]);
 
+            // Update DATATABLE values (Price, Balance and Counter Value)
             portfolioTable.cell(indexes[0], 1).data(this.counter_value).invalidate();
             portfolioTable.cell(indexes[0], 2).data(this.balance).invalidate();
             portfolioTable.cell(indexes[0], 4).data(this.price).invalidate();
 
-            portfolioChart.data.labels.push(e.asset.symbol);
-            portfolioChart.data.datasets.forEach((dataset) => {
-                dataset.data.push(parseFloat(this.counter_value ).toFixed(2));
-            });
+            // Set CHART properties
+            // portfolioChart.data.labels.push(e.asset.symbol);
+            // portfolioChart.data.datasets.forEach((dataset) => {
+            //     dataset.data.push(parseFloat(this.counter_value ).toFixed(2));
+            // });
 
+            // Set CHART color
             var randomColorPlugin = {
                 // We affect the `beforeUpdate` event
                 beforeUpdate: function(chart) {
@@ -175,7 +216,7 @@ export default {
 
                         // We push this new color to both background and border color arrays
                         //var color = that.srtingToColor(e.asset.symbol);
-                        console.log("Color: " + color);
+                        //console.log("Color: " + color);
                         backgroundColor.push(color + "0.5)");
                         borderColor.push(color + "0.5)");
                     }
@@ -187,12 +228,17 @@ export default {
             };
             // We now register the plugin to the chart's plugin service to activate it
             Chart.pluginService.register(randomColorPlugin);
-            portfolioChart.update();
+
+            // Update CHART
+            this.portfolioChart.update();
             
         });
         Echo.private('portfolios.' + this.portfolio.id)
         .listen('PortfolioLoaded', (e) => {
-            this.counterValue = this.portfolio.counter_value.toUpperCase();
+            // ************
+            // PORTFOLIO LOADED
+            // ************
+            this.counterValueSymbol = this.portfolio.counter_value.toUpperCase();
         });
 
         console.log('Component TradeList mounted.');

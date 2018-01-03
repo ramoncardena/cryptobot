@@ -114441,12 +114441,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             assets: [],
+            uniqueAssetsBtc: [],
+            uniqueAssetsFiat: [],
+            uniqueAssetsName: [],
             balance: 0,
             counter_value: 0,
             price: 0,
             totalBtc: 0,
             totalFiat: 0,
-            counterValue: ''
+            counterValueSymbol: '',
+            portfolioChart: {}
+
         };
     },
     computed: {},
@@ -114455,13 +114460,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         this.totalBalance = 0;
         this.totalCounterValue = 0;
-
         var portfolioTable = $('#portfolioTable').DataTable({
             "searching": false,
             "responsive": true,
             "paging": false,
             "info": false,
-            "columnDefs": [{ "visible": false, "targets": 6 }],
+            "columnDefs": [{ "visible": false, "targets": 5 }, { "visible": false, "targets": 6 }],
             columns: [{ title: '<div class="sorting nowrap">Coin</div>' }, { title: '<div class="sorting nowrap">Value (Fiat)</div>' }, { title: '<div class="sorting nowrap">Value (BTC)</div>' }, { title: '<div class="sorting nowrap">Amount</div>' }, { title: '<div class="sorting nowrap">Price</div>' }, { title: '<div class="sorting nowrap">Asset ID</div>' }, { title: '<div class="sorting_asc nowrap">Origin</div>' }],
             "drawCallback": function drawCallback(settings) {
                 var api = this.api();
@@ -114482,7 +114486,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         Chart.defaults.global.legend.position = "bottom";
 
-        var portfolioChart = new Chart(ctx, {
+        this.portfolioChart = new Chart(ctx, {
             type: 'doughnut',
             data: {
                 labels: [],
@@ -114500,7 +114504,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         var that = this;
 
         Echo.private('assets.' + this.portfolio.id).listen('PortfolioAssetLoaded', function (e) {
-
+            // ************
+            // ASSET LOADED
+            // ************
             _this.balance = e.asset.balance;
             _this.counter_value = e.asset.counter_value;
             _this.price = e.asset.price;
@@ -114513,28 +114519,61 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             // Add row to the table with the new asset
             portfolioTable.row.add([coin, parseFloat(_this.counter_value).toFixed(2), parseFloat(_this.balance).toFixed(8), amount, parseFloat(_this.price).toFixed(8), e.asset.id, origin]).order([6, 'asc']).invalidate().draw();
         }).listen('PortfolioAssetUpdated', function (e) {
+            // ************
+            // ASSET UPDATED
+            // ************
 
+            // Calculate current TOTAL balances (btc and fiat)
             _this.totalBtc = (parseFloat(_this.totalBtc) + parseFloat(e.asset.balance)).toFixed(8);
             _this.totalFiat = (parseFloat(_this.totalFiat) + parseFloat(e.asset.counter_value)).toFixed(2);
 
+            // Store and show TOTAL balances
             _this.balance = parseFloat(e.asset.balance).toFixed(8);
             _this.price = parseFloat(e.asset.price).toFixed(8);
             _this.counter_value = parseFloat(e.asset.counter_value).toFixed(2);
 
+            // Store a consolidated array
+
+            var indexRepeated = _this.uniqueAssetsName.indexOf(e.asset.symbol);
+
+            if (indexRepeated >= 0) {
+                var newBalanceBtc = parseFloat(_this.uniqueAssetsBtc[indexRepeated]) + parseFloat(e.asset.balance);
+                var newBalanceFiat = parseFloat(_this.uniqueAssetsFiat[indexRepeated]) + parseFloat(e.asset.counter_value);
+                _this.uniqueAssetsBtc[indexRepeated] = parseFloat(newBalanceBtc);
+                _this.uniqueAssetsFiat[indexRepeated] = parseFloat(newBalanceFiat);
+
+                _this.portfolioChart.data.datasets.forEach(function (dataset) {
+                    dataset.data[indexRepeated] = _this.uniqueAssetsFiat[indexRepeated];
+                });
+            } else {
+                // If the asset doesn't exists we push it
+                _this.uniqueAssetsBtc.push(parseFloat(e.asset.balance));
+                _this.uniqueAssetsFiat.push(parseFloat(e.asset.counter_value));
+                _this.uniqueAssetsName.push(e.asset.symbol);
+
+                _this.portfolioChart.data.labels.push(e.asset.symbol);
+                _this.portfolioChart.data.datasets.forEach(function (dataset) {
+                    dataset.data.push(parseFloat(e.asset.counter_value));
+                });
+            }
+
+            // Locate current coin row in DATATABLE
             var indexes = portfolioTable.rows().eq(0).filter(function (rowIdx) {
                 return portfolioTable.cell(rowIdx, 5).data() === e.asset.id ? true : false;
             });
-            // console.log("Indexes (" + e.asset.id +"): " + indexes[0]);
 
+            // Update DATATABLE values (Price, Balance and Counter Value)
             portfolioTable.cell(indexes[0], 1).data(_this.counter_value).invalidate();
             portfolioTable.cell(indexes[0], 2).data(_this.balance).invalidate();
             portfolioTable.cell(indexes[0], 4).data(_this.price).invalidate();
 
-            portfolioChart.data.labels.push(e.asset.symbol);
-            portfolioChart.data.datasets.forEach(function (dataset) {
-                dataset.data.push(parseFloat(_this.counter_value).toFixed(2));
-            });
+            // Set CHART properties
+            // portfolioChart.data.labels.push(e.asset.symbol);
+            // portfolioChart.data.datasets.forEach((dataset) => {
+            //     dataset.data.push(parseFloat(this.counter_value ).toFixed(2));
+            // });
 
+            // Set CHART color
             var randomColorPlugin = {
                 // We affect the `beforeUpdate` event
                 beforeUpdate: function beforeUpdate(chart) {
@@ -114550,7 +114589,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
                         // We push this new color to both background and border color arrays
                         //var color = that.srtingToColor(e.asset.symbol);
-                        console.log("Color: " + color);
+                        //console.log("Color: " + color);
                         backgroundColor.push(color + "0.5)");
                         borderColor.push(color + "0.5)");
                     }
@@ -114562,10 +114601,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             };
             // We now register the plugin to the chart's plugin service to activate it
             Chart.pluginService.register(randomColorPlugin);
-            portfolioChart.update();
+
+            // Update CHART
+            _this.portfolioChart.update();
         });
         Echo.private('portfolios.' + this.portfolio.id).listen('PortfolioLoaded', function (e) {
-            _this.counterValue = _this.portfolio.counter_value.toUpperCase();
+            // ************
+            // PORTFOLIO LOADED
+            // ************
+            _this.counterValueSymbol = _this.portfolio.counter_value.toUpperCase();
         });
 
         console.log('Component TradeList mounted.');
@@ -114633,7 +114677,7 @@ var render = function() {
         _c("div", { staticClass: "small-12 cell" }, [
           _c("div", { staticClass: "counter-widget" }, [
             _c("div", { staticClass: "title" }, [
-              _vm._v("Total " + _vm._s(_vm.counterValue) + " ")
+              _vm._v("Total " + _vm._s(_vm.counterValueSymbol) + " ")
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "counter" }, [
