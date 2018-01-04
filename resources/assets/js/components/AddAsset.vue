@@ -15,11 +15,11 @@
                         </div>
                         <div class="input-group">
                             <span class="input-group-label">Origin</span>
-                            <select v-model="originSelected" name="asset_origin" class="input-group-field">
+                            <select v-model="originSelected" name="asset_origin" class="input-group-field" v-on:change="saveName()">
                                 <option disabled value="">Select...</option>
                                 <option v-for="origin in origins" :value="origin.id">{{ origin.name }} </option>
                             </select>      
-                            <input id="asset-origin-name" name="asset_origin_name" type="hidden" :value=" originSelected">               
+                            <input id="asset-origin-name" name="asset_origin_name" type="hidden" :value="originSelectedName">               
                         </div>
                     </div>
                     
@@ -66,6 +66,7 @@
             coinSelected: "",
             coin: "",
             originSelected: "",
+            originSelectedName: "",
             updating: false,
             csrf: ""
         }
@@ -78,7 +79,11 @@
     computed: {
 
     },
+    watch: {
+
+    },
     mounted() {
+        console.log(this.origins);
         let coins =$.map( this.coins, function( a ) {
           return a.toString(); 
         });
@@ -113,7 +118,11 @@
         console.log('Component AddAsset mounted.');
     },
     methods: {
-
+        saveName: (function () {
+            for (var i = 0; i < this.origins.length; i++) {     
+                if (this.origins[i].id == this.originSelected) this.originSelectedName = this.origins[i].name;
+            }
+        })
     }
 }
 </script>

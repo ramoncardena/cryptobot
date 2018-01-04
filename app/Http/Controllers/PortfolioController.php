@@ -72,7 +72,6 @@ class PortfolioController extends Controller
         // Set origin types for new Portfolio Origins
         $originTypes = ['Online Wallet', 'Mobile Wallet', 'Desktop Wallet', 'Hardware Wallet', 'Paper Wallet'];
 
-    
         return view('portfolio', ['originTypes' => json_encode($originTypes), 'exchanges' => json_encode($this->exchanges), 'portfolio' => $this->portfolio, 'origins' => $this->origins, 'coins' => json_encode($coins)]);
     }
 

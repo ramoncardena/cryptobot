@@ -43,8 +43,7 @@ class PortfolioAssetController extends Controller
 	    	$this->user = Auth::user();
 
 	        $portfolio = Portfolio::where('user_id', $this->user->id)->first();
-	        
-            
+	       
 
             $guru = new CoinGuru;
             $logoBaseUrl = $guru->cryptocompareCoingetList()->BaseImageUrl;

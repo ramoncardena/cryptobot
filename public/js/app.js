@@ -114105,15 +114105,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             coinSelected: "",
             coin: "",
             originSelected: "",
+            originSelectedName: "",
             updating: false,
             csrf: ""
         };
     },
     props: ['coins', 'origins', 'validation-errors'],
     computed: {},
+    watch: {},
     mounted: function mounted() {
         var _this = this;
 
+        console.log(this.origins);
         var coins = $.map(this.coins, function (a) {
             return a.toString();
         });
@@ -114148,7 +114151,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         console.log('Component AddAsset mounted.');
     },
 
-    methods: {}
+    methods: {
+        saveName: function saveName() {
+            for (var i = 0; i < this.origins.length; i++) {
+                if (this.origins[i].id == this.originSelected) this.originSelectedName = this.origins[i].name;
+            }
+        }
+    }
 });
 
 /***/ }),
@@ -114200,19 +114209,24 @@ var render = function() {
                 staticClass: "input-group-field",
                 attrs: { name: "asset_origin" },
                 on: {
-                  change: function($event) {
-                    var $$selectedVal = Array.prototype.filter
-                      .call($event.target.options, function(o) {
-                        return o.selected
-                      })
-                      .map(function(o) {
-                        var val = "_value" in o ? o._value : o.value
-                        return val
-                      })
-                    _vm.originSelected = $event.target.multiple
-                      ? $$selectedVal
-                      : $$selectedVal[0]
-                  }
+                  change: [
+                    function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.originSelected = $event.target.multiple
+                        ? $$selectedVal
+                        : $$selectedVal[0]
+                    },
+                    function($event) {
+                      _vm.saveName()
+                    }
+                  ]
                 }
               },
               [
@@ -114235,7 +114249,7 @@ var render = function() {
                 name: "asset_origin_name",
                 type: "hidden"
               },
-              domProps: { value: _vm.originSelected }
+              domProps: { value: _vm.originSelectedName }
             })
           ])
         ]),
@@ -114434,6 +114448,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'portfolio',
@@ -114444,13 +114461,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             uniqueAssetsBtc: [],
             uniqueAssetsFiat: [],
             uniqueAssetsName: [],
+            uniqueAssetsOriginName: [],
+            uniqueAssetsOriginFiat: [],
             balance: 0,
             counter_value: 0,
             price: 0,
             totalBtc: 0,
             totalFiat: 0,
             counterValueSymbol: '',
-            portfolioChart: {}
+            totalsChart: {}
 
         };
     },
@@ -114460,6 +114479,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         this.totalBalance = 0;
         this.totalCounterValue = 0;
+
+        // Setup DATATABLE
         var portfolioTable = $('#portfolioTable').DataTable({
             "searching": false,
             "responsive": true,
@@ -114482,25 +114503,102 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
         });
 
-        var ctx = $("#portfolioChart");
-
-        Chart.defaults.global.legend.position = "right";
+        // Setup CHART
+        var ctx = $("#totalsChart");
+        var originsChart = $("#originsChart");
+        Chart.defaults.global.legend.position = "bottom";
+        Chart.defaults.global.legend.boxWidth = 20;
+        Chart.defaults.global.legend.display = false;
 
         var CSS_COLOR_NAMES = ['rgba(230, 25, 75, 0.5)', 'rgba(60, 180, 75, 0.5)', 'rgba(255, 225, 25, 0.5)', 'rgba(0, 130, 200, 0.5)', 'rgba(245, 130, 48, 0.5)', 'rgba(145, 30, 180, 0.5)', 'rgba(70, 240, 240, 0.5)', 'rgba(240, 50, 230, 0.5)', 'rgba(210, 245, 60, 0.5)', 'rgba(250, 190, 190, 0.5)', 'rgba(0, 128, 128, 0.5)', 'rgba(230, 190, 255, 0.5)', 'rgba(170, 110, 40, 0.5)', 'rgba(255, 250, 200, 0.5)', 'rgba(128, 0, 0, 0.5)', ' rgba(170, 255, 195, 0.5)', 'rgba(128, 128, 0, 0.5)', 'rgba(255, 215, 180, 0.5)', 'rgba(0, 0, 128, 0.5)', 'rgba(128, 128, 128, 0.5)', 'rgba(255, 255, 255, 0.5)'];
 
-        this.portfolioChart = new Chart(ctx, {
+        Chart.pluginService.register({
+            beforeDraw: function beforeDraw(chart) {
+                if (chart.config.options.elements.center) {
+                    //Get ctx from string
+                    var ctx = chart.chart.ctx;
+
+                    //Get options from the center object in options
+                    var centerConfig = chart.config.options.elements.center;
+                    var fontStyle = centerConfig.fontStyle || 'Arial';
+                    var txt = centerConfig.text;
+                    var color = centerConfig.color || '#000';
+                    var sidePadding = centerConfig.sidePadding || 20;
+                    var sidePaddingCalculated = sidePadding / 100 * (chart.innerRadius * 2);
+                    //Start with a base font of 30px
+                    ctx.font = "5px " + fontStyle;
+
+                    //Get the width of the string and also the width of the element minus 10 to give it 5px side padding
+                    var stringWidth = ctx.measureText(txt).width;
+                    var elementWidth = chart.innerRadius * 2 - sidePaddingCalculated;
+
+                    // Find out how much the font can grow in width.
+                    var widthRatio = elementWidth / stringWidth;
+                    var newFontSize = Math.floor(5 * widthRatio);
+                    var elementHeight = chart.innerRadius * 2;
+
+                    // Pick a new font size so it will not be larger than the height of label.
+                    var fontSizeToUse = Math.min(newFontSize, elementHeight);
+
+                    //Set font settings to draw it correctly.
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    var centerX = (chart.chartArea.left + chart.chartArea.right) / 2;
+                    var centerY = (chart.chartArea.top + chart.chartArea.bottom) / 2;
+                    ctx.font = fontSizeToUse + "px " + fontStyle;
+                    ctx.fillStyle = color;
+
+                    //Draw text in center
+                    ctx.fillText(txt, centerX, centerY);
+                }
+            }
+        });
+
+        this.totalsChart = new Chart(ctx, {
             type: 'doughnut',
             data: {
                 labels: [],
                 datasets: [{
-                    label: 'Coins',
+                    label: 'By Value',
                     data: [],
                     backgroundColor: CSS_COLOR_NAMES,
                     borderColor: '#FEFEFA',
                     borderWidth: 1
                 }]
             },
-            options: {}
+            options: {
+                elements: {
+                    center: {
+                        text: 'Totals ',
+                        color: '#36A2EB', //Default black
+                        fontStyle: 'Helvetica', //Default Arial
+                        sidePadding: 15 //Default 20 (as a percentage)
+                    }
+                }
+            }
+        });
+        this.originsChart = new Chart(originsChart, {
+            type: 'doughnut',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'By Origin',
+                    data: [],
+                    backgroundColor: CSS_COLOR_NAMES,
+                    borderColor: '#FEFEFA',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                elements: {
+                    center: {
+                        text: 'Origins',
+                        color: '#36A2EB', //Default black
+                        fontStyle: 'Helvetica', //Default Arial
+                        sidePadding: 15 //Default 20 (as a percentage)
+                    }
+                }
+            }
         });
 
         var that = this;
@@ -114534,29 +114632,44 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             _this.price = parseFloat(e.asset.price).toFixed(8);
             _this.counter_value = parseFloat(e.asset.counter_value).toFixed(2);
 
-            // Store a consolidated array
+            // Store a consolidated array by VALUE
+            var indexRepeatedAsset = _this.uniqueAssetsName.indexOf(e.asset.symbol);
 
-            var indexRepeated = _this.uniqueAssetsName.indexOf(e.asset.symbol);
+            if (indexRepeatedAsset >= 0) {
+                // If asset is already counted we sum the new value
+                var newBalanceBtc = parseFloat(_this.uniqueAssetsBtc[indexRepeatedAsset]) + parseFloat(e.asset.balance);
+                var newBalanceFiat = parseFloat(_this.uniqueAssetsFiat[indexRepeatedAsset]) + parseFloat(e.asset.counter_value);
+                _this.uniqueAssetsBtc[indexRepeatedAsset] = parseFloat(newBalanceBtc);
+                _this.uniqueAssetsFiat[indexRepeatedAsset] = parseFloat(newBalanceFiat);
 
-            if (indexRepeated >= 0) {
-                var newBalanceBtc = parseFloat(_this.uniqueAssetsBtc[indexRepeated]) + parseFloat(e.asset.balance);
-                var newBalanceFiat = parseFloat(_this.uniqueAssetsFiat[indexRepeated]) + parseFloat(e.asset.counter_value);
-                _this.uniqueAssetsBtc[indexRepeated] = parseFloat(newBalanceBtc);
-                _this.uniqueAssetsFiat[indexRepeated] = parseFloat(newBalanceFiat);
-
-                _this.portfolioChart.data.datasets.forEach(function (dataset) {
-                    dataset.data[indexRepeated] = parseFloat(_this.uniqueAssetsFiat[indexRepeated]).toFixed(2);
-                });
+                _this.totalsChart.data.datasets[0].data[indexRepeatedAsset] = parseFloat(_this.uniqueAssetsFiat[indexRepeatedAsset]).toFixed(2);
             } else {
                 // If the asset doesn't exists we push it
                 _this.uniqueAssetsBtc.push(parseFloat(e.asset.balance));
                 _this.uniqueAssetsFiat.push(parseFloat(e.asset.counter_value));
                 _this.uniqueAssetsName.push(e.asset.symbol);
 
-                _this.portfolioChart.data.labels.push(e.asset.symbol);
-                _this.portfolioChart.data.datasets.forEach(function (dataset) {
-                    dataset.data.push(parseFloat(e.asset.counter_value).toFixed(2));
-                });
+                _this.totalsChart.data.labels.push(e.asset.symbol);
+                _this.totalsChart.data.datasets[0].data.push(parseFloat(e.asset.counter_value).toFixed(2));
+            }
+
+            // Store consolidated array of ORIGINS
+            var indexRepeatedOrigin = _this.uniqueAssetsOriginName.indexOf(e.asset.origin_name);
+
+            if (indexRepeatedOrigin >= 0) {
+                // If origin is already counted we sum the new value
+                var newBalanceFiat = parseFloat(_this.uniqueAssetsOriginFiat[indexRepeatedOrigin]) + parseFloat(e.asset.counter_value);
+                _this.uniqueAssetsOriginFiat[indexRepeatedOrigin] = parseFloat(newBalanceFiat);
+
+                _this.originsChart.data.datasets[0].data[indexRepeatedOrigin] = parseFloat(newBalanceFiat).toFixed(2);
+            } else {
+                console.log(e.asset.origin_name + " No repe!");
+                // If the asset doesn't exists we push it
+                _this.uniqueAssetsOriginName.push(e.asset.origin_name);
+                _this.uniqueAssetsOriginFiat.push(e.asset.counter_value);
+
+                _this.originsChart.data.labels.push(e.asset.origin_name);
+                _this.originsChart.data.datasets[0].data.push(parseFloat(e.asset.counter_value).toFixed(2));
             }
 
             // Locate current coin row in DATATABLE
@@ -114569,44 +114682,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             portfolioTable.cell(indexes[0], 2).data(_this.balance).invalidate();
             portfolioTable.cell(indexes[0], 4).data(_this.price).invalidate();
 
-            // Set CHART properties
-            // portfolioChart.data.labels.push(e.asset.symbol);
-            // portfolioChart.data.datasets.forEach((dataset) => {
-            //     dataset.data.push(parseFloat(this.counter_value ).toFixed(2));
-            // });
-
-            // Set CHART color
-            // var randomColorPlugin = {
-            //     // We affect the `beforeUpdate` event
-
-            //     beforeUpdate: chart => {
-            //         //console.log(chart.config.data.datasets[0].backgroundColor);
-            //         var backgroundColor = [];
-            //         var borderColor = [];
-
-            //         // For every data we have ...
-            //         for (var i = 0; i < chart.config.data.datasets[0].data.length; i++) {
-
-            //             // We generate a random color
-            //             var color = "rgba( 214," + + Math.floor(Math.random() * 255) + "," + Math.floor(Math.random() * 255) + ",";
-
-            //             // We push this new color to both background and border color arrays
-            //             //var color = that.srtingToColor(e.asset.symbol);
-
-            //             backgroundColor.push(color + ", 0.5)");
-            //             borderColor.push(color + ",0.5)");
-            //         }
-
-            //         // We update the chart bars color properties
-            //         chart.config.data.datasets[0].backgroundColor = backgroundColor;
-            //         chart.config.data.datasets[0].borderColor = borderColor;
-            //     }
-            // };
-            // // We now register the plugin to the chart's plugin service to activate it
-            // Chart.pluginService.register(randomColorPlugin);
-
-            // Update CHART
-            _this.portfolioChart.update();
+            _this.totalsChart.update();
+            _this.originsChart.update();
         });
         Echo.private('portfolios.' + this.portfolio.id).listen('PortfolioLoaded', function (e) {
             // ************
@@ -114618,40 +114695,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         console.log('Component TradeList mounted.');
     },
 
-    methods: {
-        srtingToColor: function srtingToColor(str, prc) {
-
-            // Check for optional lightness/darkness
-            var prc = typeof prc === 'number' ? prc : -10;
-
-            // Generate a Hash for the String
-            var hash = function hash(word) {
-                var h = 0;
-                for (var i = 0; i < word.length; i++) {
-                    h = word.charCodeAt(i) + ((h << 5) - h);
-                }
-                return h;
-            };
-
-            // Change the darkness or lightness
-            var shade = function shade(color, prc) {
-                var num = parseInt(color, 16),
-                    amt = Math.round(2.55 * prc),
-                    R = (num >> 16) + amt,
-                    G = (num >> 8 & 0x00FF) + amt,
-                    B = (num & 0x0000FF) + amt;
-                return (0x1000000 + (R < 255 ? R < 1 ? 0 : R : 255) * 0x10000 + (G < 255 ? G < 1 ? 0 : G : 255) * 0x100 + (B < 255 ? B < 1 ? 0 : B : 255)).toString(16).slice(1);
-            };
-
-            // Convert init to an RGBA
-            var int_to_rgba = function int_to_rgba(i) {
-                var color = (i >> 24 & 0xFF).toString(16) + (i >> 16 & 0xFF).toString(16) + (i >> 8 & 0xFF).toString(16) + (i & 0xFF).toString(16);
-                return color;
-            };
-
-            return shade(int_to_rgba(hash(str)), prc);
-        }
-    }
+    methods: {}
 });
 
 /***/ }),
@@ -114689,7 +114733,9 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
-        _vm._m(1, false, false)
+        _vm._m(1, false, false),
+        _vm._v(" "),
+        _vm._m(2, false, false)
       ])
     ])
   ])
@@ -114712,10 +114758,16 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "small-10 cell" }, [
-      _c("canvas", {
-        attrs: { id: "portfolioChart", width: "400", height: "400" }
-      })
+    return _c("div", { staticClass: "small-12 cell" }, [
+      _c("canvas", { attrs: { id: "totalsChart" } })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "small-12 cell" }, [
+      _c("canvas", { attrs: { id: "originsChart" } })
     ])
   }
 ]
