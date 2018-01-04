@@ -7,7 +7,7 @@
             </div>
         </div>
         <div class="small-12 medium-4 cell">
-            <div class="grid-x grid-margin-x">
+            <div class="grid-x grid-margin-x align-center">
                 <div class="small-12 cell">
                     <div class="counter-widget">
                         <div class="title">Total BTC </div> <div class="counter">{{ totalBtc }}</div>
@@ -20,7 +20,7 @@
                        
                     </div>
                 </div>
-                <div class="small-12 cell">
+                <div class="small-10 cell">
                     <canvas id="portfolioChart" width="400" height="400"></canvas>
                 </div>
             </div>
@@ -95,7 +95,9 @@ export default {
 
         var ctx = $("#portfolioChart");
 
-        Chart.defaults.global.legend.position="bottom";
+        Chart.defaults.global.legend.position="right";
+        
+        var CSS_COLOR_NAMES =['rgba(230, 25, 75, 0.5)', 'rgba(60, 180, 75, 0.5)', 'rgba(255, 225, 25, 0.5)', 'rgba(0, 130, 200, 0.5)', 'rgba(245, 130, 48, 0.5)', 'rgba(145, 30, 180, 0.5)', 'rgba(70, 240, 240, 0.5)', 'rgba(240, 50, 230, 0.5)', 'rgba(210, 245, 60, 0.5)', 'rgba(250, 190, 190, 0.5)', 'rgba(0, 128, 128, 0.5)', 'rgba(230, 190, 255, 0.5)', 'rgba(170, 110, 40, 0.5)', 'rgba(255, 250, 200, 0.5)', 'rgba(128, 0, 0, 0.5)',' rgba(170, 255, 195, 0.5)', 'rgba(128, 128, 0, 0.5)', 'rgba(255, 215, 180, 0.5)', 'rgba(0, 0, 128, 0.5)', 'rgba(128, 128, 128, 0.5)', 'rgba(255, 255, 255, 0.5)'];
 
         this.portfolioChart = new Chart(ctx, {
             type: 'doughnut',
@@ -104,9 +106,9 @@ export default {
                 datasets: [{
                     label: 'Coins',
                     data: [],
-                    backgroundColor: [],
-                    borderColor: [],
-                    borderWidth: 0
+                    backgroundColor: CSS_COLOR_NAMES,
+                    borderColor: '#FEFEFA',
+                    borderWidth: 1
                 }]
             },
             options: {
@@ -168,7 +170,7 @@ export default {
                 this.uniqueAssetsFiat[indexRepeated] = parseFloat(newBalanceFiat);
 
                 this.portfolioChart.data.datasets.forEach((dataset) => {
-                    dataset.data[indexRepeated] = this.uniqueAssetsFiat[indexRepeated];
+                    dataset.data[indexRepeated] = parseFloat(this.uniqueAssetsFiat[indexRepeated]).toFixed(2);
                 });
             }
             else {
@@ -179,7 +181,7 @@ export default {
 
                 this.portfolioChart.data.labels.push(e.asset.symbol);
                 this.portfolioChart.data.datasets.forEach((dataset) => {
-                    dataset.data.push(parseFloat(e.asset.counter_value ));
+                    dataset.data.push(parseFloat(e.asset.counter_value ).toFixed(2));
                 });
                 
             }
@@ -201,33 +203,34 @@ export default {
             // });
 
             // Set CHART color
-            var randomColorPlugin = {
-                // We affect the `beforeUpdate` event
-                beforeUpdate: function(chart) {
-                    var backgroundColor = [];
-                    var borderColor = [];
+            // var randomColorPlugin = {
+            //     // We affect the `beforeUpdate` event
+                
+            //     beforeUpdate: chart => {
+            //         //console.log(chart.config.data.datasets[0].backgroundColor);
+            //         var backgroundColor = [];
+            //         var borderColor = [];
                     
-                    // For every data we have ...
-                    for (var i = 0; i < chart.config.data.datasets[0].data.length; i++) {
+            //         // For every data we have ...
+            //         for (var i = 0; i < chart.config.data.datasets[0].data.length; i++) {
                     
-                        // We generate a random color
-                       //
-                       var color = "rgba( 214," + + Math.floor(Math.random() * 255) + "," + Math.floor(Math.random() * 255) + ",";
-
-                        // We push this new color to both background and border color arrays
-                        //var color = that.srtingToColor(e.asset.symbol);
-                        //console.log("Color: " + color);
-                        backgroundColor.push(color + "0.5)");
-                        borderColor.push(color + "0.5)");
-                    }
+            //             // We generate a random color
+            //             var color = "rgba( 214," + + Math.floor(Math.random() * 255) + "," + Math.floor(Math.random() * 255) + ",";
+                        
+            //             // We push this new color to both background and border color arrays
+            //             //var color = that.srtingToColor(e.asset.symbol);
+                        
+            //             backgroundColor.push(color + ", 0.5)");
+            //             borderColor.push(color + ",0.5)");
+            //         }
                     
-                    // We update the chart bars color properties
-                    chart.config.data.datasets[0].backgroundColor = backgroundColor;
-                    chart.config.data.datasets[0].borderColor = borderColor;
-                }
-            };
-            // We now register the plugin to the chart's plugin service to activate it
-            Chart.pluginService.register(randomColorPlugin);
+            //         // We update the chart bars color properties
+            //         chart.config.data.datasets[0].backgroundColor = backgroundColor;
+            //         chart.config.data.datasets[0].borderColor = borderColor;
+            //     }
+            // };
+            // // We now register the plugin to the chart's plugin service to activate it
+            // Chart.pluginService.register(randomColorPlugin);
 
             // Update CHART
             this.portfolioChart.update();
