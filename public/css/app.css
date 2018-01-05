@@ -15038,24 +15038,19 @@ section#portfolio .portfolio-area {
 
 .counter-widget {
   font-family: 'Nunito', sans-serif;
-  padding: 1rem 1rem;
-  text-align: right;
+  padding: 0.5rem 1rem;
 }
 
 .counter-widget .title {
   color: #FF7276;
-  float: right;
-  font-size: 1.5rem;
-  clear: both;
+  font-size: 1.2rem;
   margin: 0;
   padding: 0;
 }
 
 .counter-widget .counter {
   color: #009ACE;
-  float: right;
-  font-size: 2.5rem;
-  clear: both;
+  font-size: 1.8rem;
   margin: 0;
   padding: 0;
 }

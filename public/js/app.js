@@ -114486,7 +114486,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             "responsive": true,
             "paging": false,
             "info": false,
-            "columnDefs": [{ "visible": false, "targets": 5 }, { "visible": false, "targets": 6 }],
+            "columnDefs": [{ "visible": false, "targets": 5 }],
             columns: [{ title: '<div class="sorting nowrap">Coin</div>' }, { title: '<div class="sorting nowrap">Value (Fiat)</div>' }, { title: '<div class="sorting nowrap">Value (BTC)</div>' }, { title: '<div class="sorting nowrap">Amount</div>' }, { title: '<div class="sorting nowrap">Price</div>' }, { title: '<div class="sorting nowrap">Asset ID</div>' }, { title: '<div class="sorting_asc nowrap">Origin</div>' }],
             "drawCallback": function drawCallback(settings) {
                 var api = this.api();
@@ -114706,12 +114706,12 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "grid-x grid-margin-x" }, [
+  return _c("div", { staticClass: "grid-x grid-padding-x" }, [
     _vm._m(0, false, false),
     _vm._v(" "),
-    _c("div", { staticClass: "small-12 medium-4 cell" }, [
-      _c("div", { staticClass: "grid-x grid-margin-x align-center" }, [
-        _c("div", { staticClass: "small-12 cell" }, [
+    _c("div", { staticClass: "small-12 medium-6 cell" }, [
+      _c("div", { staticClass: "grid-x  align-center-middle text-center" }, [
+        _c("div", { staticClass: "small-12 large-6 cell" }, [
           _c("div", { staticClass: "counter-widget" }, [
             _c("div", { staticClass: "title" }, [_vm._v("Total BTC ")]),
             _vm._v(" "),
@@ -114721,7 +114721,7 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "small-12 cell" }, [
+        _c("div", { staticClass: "small-12 large-6 cell" }, [
           _c("div", { staticClass: "counter-widget" }, [
             _c("div", { staticClass: "title" }, [
               _vm._v("Total " + _vm._s(_vm.counterValueSymbol) + " ")
@@ -114745,7 +114745,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "small-12 medium-8 cell" }, [
+    return _c("div", { staticClass: "small-12 medium-6 cell" }, [
       _c("div", { staticClass: "portfolio-assets" }, [
         _c("table", {
           staticClass: "display unstriped",
@@ -114758,7 +114758,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "small-12 cell" }, [
+    return _c("div", { staticClass: "small-12 large-6 cell" }, [
       _c("canvas", { attrs: { id: "totalsChart" } })
     ])
   },
@@ -114766,7 +114766,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "small-12 cell" }, [
+    return _c("div", { staticClass: "small-12 large-6 cell" }, [
       _c("canvas", { attrs: { id: "originsChart" } })
     ])
   }

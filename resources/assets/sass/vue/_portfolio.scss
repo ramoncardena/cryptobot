@@ -16,21 +16,16 @@
 
 .counter-widget {
 	font-family: 'Nunito', sans-serif;
-	padding: 1rem 1rem;
-	text-align: right;
+	padding: 0.5rem 1rem;
 	.title {
 		color:  get-color(secondary);
-		float: right;
-		font-size: 1.5rem;
-		clear: both;
+		font-size: 1.2rem;
 		margin: 0;
 		padding: 0;
 	}
 	.counter {
 		color:  get-color(primary);
-		float: right;
-		font-size: 2.5rem;
-		clear: both;
+		font-size: 1.8rem;
 		margin: 0;
 		padding: 0;
 	}

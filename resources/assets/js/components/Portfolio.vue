@@ -1,29 +1,29 @@
 <template>
 
-    <div class="grid-x grid-margin-x">
-        <div class="small-12 medium-8 cell">
+    <div class="grid-x grid-padding-x">
+        <div class="small-12 medium-6 cell">
             <div class="portfolio-assets">
                 <table id="portfolioTable" class="display unstriped" width="100%"></table>
             </div>
         </div>
-        <div class="small-12 medium-4 cell">
-            <div class="grid-x grid-margin-x align-center">
-                <div class="small-12 cell">
+        <div class="small-12 medium-6 cell">
+            <div class="grid-x  align-center-middle text-center">
+                <div class="small-12 large-6 cell">
                     <div class="counter-widget">
                         <div class="title">Total BTC </div> <div class="counter">{{ totalBtc }}</div>
                       
                     </div>
                 </div>
-                <div class="small-12 cell">
+                <div class="small-12 large-6 cell">
                     <div class="counter-widget">
                          <div class="title">Total {{counterValueSymbol}} </div> <div class="counter">{{ totalFiat}}</div>
                        
                     </div>
                 </div>
-                <div class="small-12 cell">
+                <div class="small-12 large-6 cell">
                     <canvas id="totalsChart"></canvas>
                 </div>
-                <div class="small-12 cell">
+                <div class="small-12 large-6 cell">
                     <canvas id="originsChart"></canvas>
                 </div>
             </div>
@@ -70,8 +70,7 @@ export default {
             "paging": false,
             "info": false,
             "columnDefs": [
-            { "visible": false, "targets": 5 },
-            { "visible": false, "targets": 6 }
+            { "visible": false, "targets": 5 }
             ],
             columns: [
             { title: '<div class="sorting nowrap">Coin</div>'},
