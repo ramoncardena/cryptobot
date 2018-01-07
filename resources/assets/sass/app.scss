@@ -4,14 +4,15 @@
 @import url('https://fonts.googleapis.com/css?family=Nunito:200,300,400,700,800');
 
 @import "node_modules/font-awesome/scss/font-awesome";
-// @import "node_modules/easy-autocomplete/src/sass/easy-autocomplete";
-// @import "node_modules/easy-autocomplete/src/sass/easy-autocomplete.themes";
 
 // Variables
 @import "settings";
 
 // Foundation
 @import "foundation";
+
+// Modules
+@import "vendor/chartist";
 
 // Modules
 @import "modules/offcanvas";

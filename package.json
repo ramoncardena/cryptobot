@@ -23,6 +23,7 @@
     "browser-sync": "^2.18.13",
     "browser-sync-webpack-plugin": "^1.2.0",
     "chart.js": "^2.7.1",
+    "chartist-plugin-tooltips": "0.0.17",
     "datatables.net-fixedcolumns-zf": "^3.2.3",
     "datatables.net-fixedheader-zf": "^3.1.3",
     "datatables.net-responsive-dt": "^2.2.1",

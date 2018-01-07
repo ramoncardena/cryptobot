@@ -1,13 +1,10 @@
-
-.chart-container {
-		position: relative;
-		height: 50vh;
-		width: 50vw;
-	}
 section#portfolio-widget {
-	
+	.ct-chart-totals .ct-bar {
+	    stroke-width: 5px
+	}
 	.portfolio-assets {
 		font-family: 'Nunito', sans-serif;
+		display: block;
 
 		.asset-img, .asset-name, .asset-type{
 			margin-right: 0.5rem;
@@ -33,16 +30,15 @@ section#portfolio-widget {
 	.counter-widget {
 		font-family: 'Nunito', sans-serif;
 		margin: 1rem;
-		border: 1px solid $light-gray;
 		.title {
 			color:  get-color(secondary);
-			font-size: 1.2rem;
+			font-size: 0.8rem;
 			margin: 0;
 			padding: 0;
 		}
 		.counter {
 			color:  get-color(primary);
-			font-size: 1.8rem;
+			font-size: 1.3rem;
 			margin: 0;
 			padding: 0;
 		}
