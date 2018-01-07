@@ -1,33 +1,51 @@
-.portfolio-assets {
-	font-family: 'Nunito', sans-serif;
 
-	.asset-img, .asset-name, .asset-type{
-		margin-right: 0.5rem;
+.chart-container {
+		position: relative;
+		height: 50vh;
+		width: 50vw;
 	}
-
-	.asset-info, .asset-balance, .asset-value, .column-title-wrapper {
-		margin-right: 0.5rem;
-	}
-
-	.fa-btc, .fa-eur, .fa-usd {
-		color: $dark-gray;
-	}
-}
-
-.counter-widget {
-	font-family: 'Nunito', sans-serif;
-	padding: 0.5rem 1rem;
-	.title {
-		color:  get-color(secondary);
-		font-size: 1.2rem;
-		margin: 0;
-		padding: 0;
-	}
-	.counter {
-		color:  get-color(primary);
-		font-size: 1.8rem;
-		margin: 0;
-		padding: 0;
-	}
+section#portfolio-widget {
 	
+	.portfolio-assets {
+		font-family: 'Nunito', sans-serif;
+
+		.asset-img, .asset-name, .asset-type{
+			margin-right: 0.5rem;
+		}
+
+		.asset-info, .asset-balance, .asset-value, .column-title-wrapper {
+			margin-right: 0.5rem;
+		}
+
+		.fa-btc, .fa-eur, .fa-usd {
+			color: $dark-gray;
+		}
+	}
+	.data {
+		border-bottom: 1px solid gray;
+	}
+	.chart-container {
+		padding: 2rem;
+	}
+	.button-refresh {
+		font-size: 1.5rem;
+	}
+	.counter-widget {
+		font-family: 'Nunito', sans-serif;
+		margin: 1rem;
+		border: 1px solid $light-gray;
+		.title {
+			color:  get-color(secondary);
+			font-size: 1.2rem;
+			margin: 0;
+			padding: 0;
+		}
+		.counter {
+			color:  get-color(primary);
+			font-size: 1.8rem;
+			margin: 0;
+			padding: 0;
+		}
+
+	}
 }

@@ -15013,42 +15013,61 @@ section#portfolio .portfolio-area {
   margin-bottom: 1rem;
 }
 
-.portfolio-assets {
+.chart-container {
+  position: relative;
+  height: 50vh;
+  width: 50vw;
+}
+
+section#portfolio-widget .portfolio-assets {
   font-family: 'Nunito', sans-serif;
 }
 
-.portfolio-assets .asset-img,
-.portfolio-assets .asset-name,
-.portfolio-assets .asset-type {
+section#portfolio-widget .portfolio-assets .asset-img,
+section#portfolio-widget .portfolio-assets .asset-name,
+section#portfolio-widget .portfolio-assets .asset-type {
   margin-right: 0.5rem;
 }
 
-.portfolio-assets .asset-info,
-.portfolio-assets .asset-balance,
-.portfolio-assets .asset-value,
-.portfolio-assets .column-title-wrapper {
+section#portfolio-widget .portfolio-assets .asset-info,
+section#portfolio-widget .portfolio-assets .asset-balance,
+section#portfolio-widget .portfolio-assets .asset-value,
+section#portfolio-widget .portfolio-assets .column-title-wrapper {
   margin-right: 0.5rem;
 }
 
-.portfolio-assets .fa-btc,
-.portfolio-assets .fa-eur,
-.portfolio-assets .fa-usd {
+section#portfolio-widget .portfolio-assets .fa-btc,
+section#portfolio-widget .portfolio-assets .fa-eur,
+section#portfolio-widget .portfolio-assets .fa-usd {
   color: #8a8a8a;
 }
 
-.counter-widget {
-  font-family: 'Nunito', sans-serif;
-  padding: 0.5rem 1rem;
+section#portfolio-widget .data {
+  border-bottom: 1px solid gray;
 }
 
-.counter-widget .title {
+section#portfolio-widget .chart-container {
+  padding: 2rem;
+}
+
+section#portfolio-widget .button-refresh {
+  font-size: 1.5rem;
+}
+
+section#portfolio-widget .counter-widget {
+  font-family: 'Nunito', sans-serif;
+  margin: 1rem;
+  border: 1px solid #e6e6e6;
+}
+
+section#portfolio-widget .counter-widget .title {
   color: #FF7276;
   font-size: 1.2rem;
   margin: 0;
   padding: 0;
 }
 
-.counter-widget .counter {
+section#portfolio-widget .counter-widget .counter {
   color: #009ACE;
   font-size: 1.8rem;
   margin: 0;

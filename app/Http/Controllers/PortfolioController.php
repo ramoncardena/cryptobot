@@ -74,7 +74,22 @@ class PortfolioController extends Controller
 
         return view('portfolio', ['originTypes' => json_encode($originTypes), 'exchanges' => json_encode($this->exchanges), 'portfolio' => $this->portfolio, 'origins' => $this->origins, 'coins' => json_encode($coins)]);
     }
+    
+    public function refresh() {
+        // Get current user
+        $this->user = Auth::user();
 
+        // Get user's portfolio
+        $this->portfolio = Portfolio::where('user_id', $this->user->id)->first();
+
+        // Get portfolio origins
+        $this->origins = $this->portfolio->origins; 
+
+        // EVENT:  PortfolioOpened
+        event(new PortfolioOpened($this->portfolio));
+
+        return response("Portfolio loading.", 200)->header('Content-Type', 'text/plain');
+    }
 
     public function updateAssets() {
        

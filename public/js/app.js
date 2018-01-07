@@ -114451,6 +114451,29 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'portfolio',
@@ -114463,25 +114486,31 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             uniqueAssetsName: [],
             uniqueAssetsOriginName: [],
             uniqueAssetsOriginFiat: [],
+            mostValuableName: "",
+            mostValuableValue: "",
             balance: 0,
             counter_value: 0,
             price: 0,
             totalBtc: 0,
             totalFiat: 0,
             counterValueSymbol: '',
-            totalsChart: {}
-
+            totalsChart: {},
+            originsChart: {},
+            portfolioTable: {},
+            loadingPortfolio: false,
+            loadingAsset: false,
+            updatingAsset: false
         };
     },
     computed: {},
     mounted: function mounted() {
         var _this = this;
 
-        this.totalBalance = 0;
-        this.totalCounterValue = 0;
+        this.totalBtc = 0;
+        this.totalFiat = 0;
 
         // Setup DATATABLE
-        var portfolioTable = $('#portfolioTable').DataTable({
+        this.portfolioTable = $('#portfolioTable').DataTable({
             "searching": false,
             "responsive": true,
             "paging": false,
@@ -114504,102 +114533,54 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         });
 
         // Setup CHART
-        var ctx = $("#totalsChart");
+        var totalsChart = $("#totalsChart");
         var originsChart = $("#originsChart");
         Chart.defaults.global.legend.position = "bottom";
-        Chart.defaults.global.legend.boxWidth = 20;
-        Chart.defaults.global.legend.display = false;
 
         var CSS_COLOR_NAMES = ['rgba(230, 25, 75, 0.5)', 'rgba(60, 180, 75, 0.5)', 'rgba(255, 225, 25, 0.5)', 'rgba(0, 130, 200, 0.5)', 'rgba(245, 130, 48, 0.5)', 'rgba(145, 30, 180, 0.5)', 'rgba(70, 240, 240, 0.5)', 'rgba(240, 50, 230, 0.5)', 'rgba(210, 245, 60, 0.5)', 'rgba(250, 190, 190, 0.5)', 'rgba(0, 128, 128, 0.5)', 'rgba(230, 190, 255, 0.5)', 'rgba(170, 110, 40, 0.5)', 'rgba(255, 250, 200, 0.5)', 'rgba(128, 0, 0, 0.5)', ' rgba(170, 255, 195, 0.5)', 'rgba(128, 128, 0, 0.5)', 'rgba(255, 215, 180, 0.5)', 'rgba(0, 0, 128, 0.5)', 'rgba(128, 128, 128, 0.5)', 'rgba(255, 255, 255, 0.5)'];
 
-        Chart.pluginService.register({
-            beforeDraw: function beforeDraw(chart) {
-                if (chart.config.options.elements.center) {
-                    //Get ctx from string
-                    var ctx = chart.chart.ctx;
+        // Chart.pluginService.register({
+        //     beforeDraw: function (chart) {
+        //         if (chart.config.options.elements.center) {
+        //             //Get ctx from string
+        //             var ctx = chart.chart.ctx;
 
-                    //Get options from the center object in options
-                    var centerConfig = chart.config.options.elements.center;
-                    var fontStyle = centerConfig.fontStyle || 'Arial';
-                    var txt = centerConfig.text;
-                    var color = centerConfig.color || '#000';
-                    var sidePadding = centerConfig.sidePadding || 20;
-                    var sidePaddingCalculated = sidePadding / 100 * (chart.innerRadius * 2);
-                    //Start with a base font of 30px
-                    ctx.font = "5px " + fontStyle;
+        //             //Get options from the center object in options
+        //             var centerConfig = chart.config.options.elements.center;
+        //             var fontStyle = centerConfig.fontStyle || 'Arial';
+        //             var txt = centerConfig.text;
+        //             var color = centerConfig.color || '#000';
+        //             var sidePadding = centerConfig.sidePadding || 20;
+        //             var sidePaddingCalculated = (sidePadding/100) * (chart.innerRadius * 2)
+        //             //Start with a base font of 30px
+        //             ctx.font = "5px " + fontStyle;
 
-                    //Get the width of the string and also the width of the element minus 10 to give it 5px side padding
-                    var stringWidth = ctx.measureText(txt).width;
-                    var elementWidth = chart.innerRadius * 2 - sidePaddingCalculated;
+        //             //Get the width of the string and also the width of the element minus 10 to give it 5px side padding
+        //             var stringWidth = ctx.measureText(txt).width;
+        //             var elementWidth = (chart.innerRadius * 2) - sidePaddingCalculated;
 
-                    // Find out how much the font can grow in width.
-                    var widthRatio = elementWidth / stringWidth;
-                    var newFontSize = Math.floor(5 * widthRatio);
-                    var elementHeight = chart.innerRadius * 2;
+        //             // Find out how much the font can grow in width.
+        //             var widthRatio = elementWidth / stringWidth;
+        //             var newFontSize = Math.floor(5 * widthRatio);
+        //             var elementHeight = (chart.innerRadius * 2);
 
-                    // Pick a new font size so it will not be larger than the height of label.
-                    var fontSizeToUse = Math.min(newFontSize, elementHeight);
+        //             // Pick a new font size so it will not be larger than the height of label.
+        //             var fontSizeToUse = Math.min(newFontSize, elementHeight);
 
-                    //Set font settings to draw it correctly.
-                    ctx.textAlign = 'center';
-                    ctx.textBaseline = 'middle';
-                    var centerX = (chart.chartArea.left + chart.chartArea.right) / 2;
-                    var centerY = (chart.chartArea.top + chart.chartArea.bottom) / 2;
-                    ctx.font = fontSizeToUse + "px " + fontStyle;
-                    ctx.fillStyle = color;
+        //             //Set font settings to draw it correctly.
+        //             ctx.textAlign = 'center';
+        //             ctx.textBaseline = 'middle';
+        //             var centerX = ((chart.chartArea.left + chart.chartArea.right) / 2);
+        //             var centerY = ((chart.chartArea.top + chart.chartArea.bottom) / 2);
+        //             ctx.font = fontSizeToUse+"px " + fontStyle;
+        //             ctx.fillStyle = color;
 
-                    //Draw text in center
-                    ctx.fillText(txt, centerX, centerY);
-                }
-            }
-        });
+        //             //Draw text in center
+        //             ctx.fillText(txt, centerX, centerY);
+        //         }
+        //     }
+        // });
 
-        this.totalsChart = new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: [],
-                datasets: [{
-                    label: 'By Value',
-                    data: [],
-                    backgroundColor: CSS_COLOR_NAMES,
-                    borderColor: '#FEFEFA',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                elements: {
-                    center: {
-                        text: 'Totals ',
-                        color: '#36A2EB', //Default black
-                        fontStyle: 'Helvetica', //Default Arial
-                        sidePadding: 15 //Default 20 (as a percentage)
-                    }
-                }
-            }
-        });
-        this.originsChart = new Chart(originsChart, {
-            type: 'doughnut',
-            data: {
-                labels: [],
-                datasets: [{
-                    label: 'By Origin',
-                    data: [],
-                    backgroundColor: CSS_COLOR_NAMES,
-                    borderColor: '#FEFEFA',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                elements: {
-                    center: {
-                        text: 'Origins',
-                        color: '#36A2EB', //Default black
-                        fontStyle: 'Helvetica', //Default Arial
-                        sidePadding: 15 //Default 20 (as a percentage)
-                    }
-                }
-            }
-        });
 
         var that = this;
 
@@ -114607,9 +114588,81 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             // ************
             // ASSET LOADED
             // ************
+            _this.loadingAsset = true;
             _this.balance = e.asset.balance;
             _this.counter_value = e.asset.counter_value;
             _this.price = e.asset.price;
+
+            _this.totalsChart = new Chart(totalsChart, {
+                type: 'bar',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'By Value',
+                        data: [],
+                        backgroundColor: CSS_COLOR_NAMES,
+                        borderColor: '#FEFEFA',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    scales: {
+                        yAxes: [{
+                            stacked: true,
+                            gridLines: {
+                                display: true,
+                                color: "rgba(255,99,132,0.2)"
+                            }
+                        }],
+                        xAxes: [{
+                            gridLines: {
+                                display: false
+                            }
+                        }]
+                    },
+                    responsive: true,
+                    legend: {
+                        display: false
+                    }
+                    // elements: {
+                    //     center: {
+                    //     text: 'Totals ',
+                    //     color: '#36A2EB', //Default black
+                    //     fontStyle: 'Helvetica', //Default Arial
+                    //     sidePadding: 15 //Default 20 (as a percentage)
+                    //     }
+                    //}
+                }
+            });
+            _this.originsChart = new Chart(originsChart, {
+                type: 'doughnut',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'By Origin',
+                        data: [],
+                        backgroundColor: CSS_COLOR_NAMES,
+                        borderColor: '#FEFEFA',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    responsive: true,
+                    legend: {
+                        display: true
+                    }
+                    // elements: {
+                    //     center: {
+                    //     text: 'Origins',
+                    //     color: '#36A2EB', //Default black
+                    //     fontStyle: 'Helvetica', //Default Arial
+                    //     sidePadding: 15 //Default 20 (as a percentage)
+                    //     }
+                    // }
+                }
+            });
 
             var coin = '<div class="asset-info nowrap"><a href="' + e.asset.info_url + '" target="_blank"><img class="asset-img" src="' + e.asset.logo_url + '" width="20"></a> <span class="show-for-medium asset-name">' + e.asset.full_name + '</span> <span class="asset-symbol">' + e.asset.symbol + '</span></div>';
 
@@ -114617,11 +114670,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var origin = '<div class="asset-origin  nowrap">' + e.asset.origin_name + '</div>';
 
             // Add row to the table with the new asset
-            portfolioTable.row.add([coin, parseFloat(_this.counter_value).toFixed(2), parseFloat(_this.balance).toFixed(8), amount, parseFloat(_this.price).toFixed(8), e.asset.id, origin]).order([6, 'asc']).invalidate().draw();
+            _this.portfolioTable.row.add([coin, parseFloat(_this.counter_value).toFixed(2), parseFloat(_this.balance).toFixed(8), amount, parseFloat(_this.price).toFixed(8), e.asset.id, origin]).order([6, 'asc']).invalidate().draw();
+
+            _this.loadingAsset = false;
         }).listen('PortfolioAssetUpdated', function (e) {
             // ************
             // ASSET UPDATED
             // ************
+            _this.updatingAsset = true;
+            console.log("Updating: " + _this.updatingAsset);
 
             // Calculate current TOTAL balances (btc and fiat)
             _this.totalBtc = (parseFloat(_this.totalBtc) + parseFloat(e.asset.balance)).toFixed(8);
@@ -114663,7 +114720,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
                 _this.originsChart.data.datasets[0].data[indexRepeatedOrigin] = parseFloat(newBalanceFiat).toFixed(2);
             } else {
-                console.log(e.asset.origin_name + " No repe!");
+
                 // If the asset doesn't exists we push it
                 _this.uniqueAssetsOriginName.push(e.asset.origin_name);
                 _this.uniqueAssetsOriginFiat.push(e.asset.counter_value);
@@ -114673,17 +114730,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
 
             // Locate current coin row in DATATABLE
-            var indexes = portfolioTable.rows().eq(0).filter(function (rowIdx) {
-                return portfolioTable.cell(rowIdx, 5).data() === e.asset.id ? true : false;
+            var indexes = _this.portfolioTable.rows().eq(0).filter(function (rowIdx) {
+                return _this.portfolioTable.cell(rowIdx, 5).data() === e.asset.id ? true : false;
             });
 
             // Update DATATABLE values (Price, Balance and Counter Value)
-            portfolioTable.cell(indexes[0], 1).data(_this.counter_value).invalidate();
-            portfolioTable.cell(indexes[0], 2).data(_this.balance).invalidate();
-            portfolioTable.cell(indexes[0], 4).data(_this.price).invalidate();
+            _this.portfolioTable.cell(indexes[0], 1).data(_this.counter_value).invalidate();
+            _this.portfolioTable.cell(indexes[0], 2).data(_this.balance).invalidate();
+            _this.portfolioTable.cell(indexes[0], 4).data(_this.price).invalidate();
 
             _this.totalsChart.update();
             _this.originsChart.update();
+
+            _this.updatingAsset = false;
+            console.log("Updating: " + _this.updatingAsset);
         });
         Echo.private('portfolios.' + this.portfolio.id).listen('PortfolioLoaded', function (e) {
             // ************
@@ -114695,7 +114755,31 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         console.log('Component TradeList mounted.');
     },
 
-    methods: {}
+    methods: {
+        refreshPortfolio: function refreshPortfolio() {
+            var _this2 = this;
+
+            this.loadingPortfolio = true;
+            this.totalBtc = 0;
+            this.totalFiat = 0;
+            this.totalsChart.destroy();;
+            this.originsChart.destroy();;
+            this.portfolioTable.clear().draw();
+
+            var uri = '/api/portfolio/refresh';
+            axios(uri, {
+                method: 'GET'
+            }).then(function (response) {
+
+                _this2.loadingPortfolio = false;
+                console.log("Reloading portfolio...");
+            }).catch(function (e) {
+                _this2.errors.push(e);
+                _this2.loadingPortfolio = false;
+                console.log("Error: " + e.message);
+            });
+        }
+    }
 });
 
 /***/ }),
@@ -114706,37 +114790,109 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "grid-x grid-padding-x" }, [
-    _vm._m(0, false, false),
-    _vm._v(" "),
-    _c("div", { staticClass: "small-12 medium-6 cell" }, [
-      _c("div", { staticClass: "grid-x  align-center-middle text-center" }, [
-        _c("div", { staticClass: "small-12 large-6 cell" }, [
-          _c("div", { staticClass: "counter-widget" }, [
-            _c("div", { staticClass: "title" }, [_vm._v("Total BTC ")]),
-            _vm._v(" "),
-            _c("div", { staticClass: "counter" }, [
-              _vm._v(_vm._s(_vm.totalBtc))
-            ])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "small-12 large-6 cell" }, [
-          _c("div", { staticClass: "counter-widget" }, [
-            _c("div", { staticClass: "title" }, [
-              _vm._v("Total " + _vm._s(_vm.counterValueSymbol) + " ")
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "counter" }, [
-              _vm._v(_vm._s(_vm.totalFiat))
-            ])
-          ])
-        ]),
-        _vm._v(" "),
-        _vm._m(1, false, false),
-        _vm._v(" "),
-        _vm._m(2, false, false)
-      ])
+  return _c("section", { attrs: { id: "portfolio-widget" } }, [
+    _c("div", { staticClass: "grid-x grid-padding-x" }, [
+      _vm._m(0, false, false),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "small-12 medium-6 cell small-order-1 medium-order-2" },
+        [
+          _c(
+            "div",
+            {
+              staticClass:
+                "grid-x grid-padding-x align-center-middle text-center dashboard"
+            },
+            [
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "small-12 large-2 cell  small-order-1 medium-order-2"
+                },
+                [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "button clear button-refresh",
+                      on: {
+                        click: function($event) {
+                          _vm.refreshPortfolio()
+                        }
+                      }
+                    },
+                    [
+                      _c("i", {
+                        directives: [
+                          {
+                            name: "show",
+                            rawName: "v-show",
+                            value: _vm.updatingAsset,
+                            expression: "updatingAsset"
+                          }
+                        ],
+                        staticClass: "fa fa-refresh fa-spin fa-fw",
+                        attrs: { "aria-hidden": "true" }
+                      }),
+                      _vm._v(" "),
+                      _c("i", {
+                        directives: [
+                          {
+                            name: "show",
+                            rawName: "v-show",
+                            value: !_vm.updatingAsset,
+                            expression: "!updatingAsset"
+                          }
+                        ],
+                        staticClass: "fa fa-refresh "
+                      })
+                    ]
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "small-12 large-5 cell small-order-2 medium-order-1"
+                },
+                [
+                  _c("div", { staticClass: "counter-widget" }, [
+                    _c("div", { staticClass: "title" }, [_vm._v("Total BTC ")]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "counter" }, [
+                      _vm._v(_vm._s(_vm.totalBtc))
+                    ])
+                  ])
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "small-12 large-5 cell small-order-3 medium-order-3"
+                },
+                [
+                  _c("div", { staticClass: "counter-widget" }, [
+                    _c("div", { staticClass: "title" }, [
+                      _vm._v("Total " + _vm._s(_vm.counterValueSymbol) + " ")
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "counter" }, [
+                      _vm._v(_vm._s(_vm.totalFiat))
+                    ])
+                  ])
+                ]
+              ),
+              _vm._v(" "),
+              _vm._m(1, false, false)
+            ]
+          )
+        ]
+      )
     ])
   ])
 }
@@ -114745,30 +114901,78 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "small-12 medium-6 cell" }, [
-      _c("div", { staticClass: "portfolio-assets" }, [
-        _c("table", {
-          staticClass: "display unstriped",
-          attrs: { id: "portfolioTable", width: "100%" }
-        })
-      ])
-    ])
+    return _c(
+      "div",
+      { staticClass: "small-12 medium-6 cell small-order-2 medium-order-1" },
+      [
+        _c("div", { staticClass: "portfolio-assets" }, [
+          _c("table", {
+            staticClass: "display unstriped",
+            attrs: { id: "portfolioTable", width: "100%" }
+          })
+        ])
+      ]
+    )
   },
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "small-12 large-6 cell" }, [
-      _c("canvas", { attrs: { id: "totalsChart" } })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "small-12 large-6 cell" }, [
-      _c("canvas", { attrs: { id: "originsChart" } })
-    ])
+    return _c(
+      "div",
+      { staticClass: "small-12 cell charts small-order-4 medium-order-4" },
+      [
+        _c(
+          "ul",
+          {
+            staticClass: "tabs",
+            attrs: {
+              "data-active-collapse": "true",
+              "data-tabs": "",
+              id: "collapsing-tabs"
+            }
+          },
+          [
+            _c("li", { staticClass: "tabs-title is-active" }, [
+              _c(
+                "a",
+                { attrs: { href: "#panel1c", "aria-selected": "true" } },
+                [_vm._v("By Value")]
+              )
+            ]),
+            _vm._v(" "),
+            _c("li", { staticClass: "tabs-title" }, [
+              _c("a", { attrs: { href: "#panel2c" } }, [_vm._v("By Origin")])
+            ])
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "tabs-content",
+            attrs: { "data-tabs-content": "collapsing-tabs" }
+          },
+          [
+            _c(
+              "div",
+              { staticClass: "tabs-panel is-active", attrs: { id: "panel1c" } },
+              [
+                _c("div", { staticClass: "chart-container" }, [
+                  _c("canvas", { attrs: { id: "totalsChart" } })
+                ])
+              ]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "tabs-panel", attrs: { id: "panel2c" } }, [
+              _c("div", { staticClass: "chart-container" }, [
+                _c("canvas", { attrs: { id: "originsChart" } })
+              ])
+            ])
+          ]
+        )
+      ]
+    )
   }
 ]
 render._withStripped = true
