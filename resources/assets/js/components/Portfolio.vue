@@ -1,35 +1,38 @@
 <template>
     <section id="portfolio-widget">
         <div class="grid-x grid-padding-x">
-            <div class="small-12 medium-6 cell">
-                <div class="grid-x grid-padding-x dashboard">
-                    
-                    <div class="small-12 large-5 cell">
-                        <div class="counter-widget text-center">
-                            <div class="title">Total BTC </div> <div class="counter">{{ totalBtc }}</div>
+            <div class="small-12 cell">
+                <div class="grid-container fluid">
+                    <div class="grid-x grid-padding-x"> 
+                        <div class="shrink cell">
+                            <div class="counter-widget text-left">
+                                <div class="title">Total BTC </div> <div class="counter">{{ totalBtc }}</div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="small-12 large-2 cell">
-                        <button class="button clear button-refresh" v-on:click="refreshPortfolio()">
-                           <i v-show="loadingPortfolio " class="fa fa-refresh fa-spin fa-fw" aria-hidden="true"></i>
-                           <i v-show="!loadingPortfolio" class="fa fa-refresh "></i>
-                        </button>
-                    </div>
-                    <div class="small-12 large-5 cell">
-                        <div class="counter-widget text-center">
-                             <div class="title">Total {{counterValueSymbol}} </div> <div class="counter">{{ totalFiat}}</div>                  
+                        <div class="shrink cell">
+                            <div class="counter-widget text-left">
+                                 <div class="title">Total {{counterValueSymbol}} </div> <div class="counter">{{ totalFiat}}</div>                  
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="small-12 medium-12 cell">
-                        <div class="portfolio-assets">
-                            <table id="portfolioTable" class="display unstriped" width="100%"></table>
+                        <div class="auto cell text-right">
+                            <button class="button hollow button-refresh" v-on:click="refreshPortfolio()">
+                               <span v-show="loadingPortfolio"><i class="fa fa-refresh fa-spin fa-fw" aria-hidden="true"></i> <span class="show-for-medium"> Loading...</span></span>
+                               <span v-show="!loadingPortfolio"><i class="fa fa-refresh "></i> <span class="show-for-medium">Reload</span></span>
+                            </button>
                         </div>
+
                     </div>
                 </div>
             </div>
 
-            <div class="small-12 medium-6 cell">
+            <div class="small-12 large-6 cell">
+                <div class="portfolio-assets">
+                    <table id="portfolioTable" class="display unstriped" width="100%"></table>
+                </div>
+            </div>
+
+            <div class="small-12 large-6 cell">
                 <div class="grid-x grid-padding-x align-center-middle text-center dashboard">
                     <div class="small-12 cell charts">
                          <div v-show="showChart" class="ct-chart-totals ct-golden-section"></div>
@@ -189,6 +192,7 @@ export default {
             this.updatingAsset = true;
 
             if (this.portfolio.update_id == e.asset.update_id) {
+                console.log(e.asset.symbol);
                 // Calculate current TOTAL balances (btc and fiat)
                 this.totalBtc = (parseFloat(this.totalBtc) + parseFloat(e.asset.balance)).toFixed(8);
                 this.totalFiat = (parseFloat(this.totalFiat) + parseFloat(e.asset.counter_value)).toFixed(2);
@@ -223,23 +227,24 @@ export default {
 
                 // Store consolidated array of ORIGINS
                 var indexRepeatedOrigin = this.uniqueAssetsOriginName.indexOf(e.asset.origin_name);
-
+                console.log("Index: " + indexRepeatedOrigin);
                 if ( indexRepeatedOrigin >= 0 ) {
                     // If origin is already counted we sum the new value
                     var newBalanceFiat = (parseFloat(this.uniqueAssetsOriginFiat[indexRepeatedOrigin]) + parseFloat(e.asset.counter_value));
                     this.uniqueAssetsOriginFiat[indexRepeatedOrigin] = parseFloat(newBalanceFiat);
-
                     this.chartistOriginsData.series[indexRepeatedOrigin]= parseFloat( parseFloat( this.uniqueAssetsFiat[indexRepeatedOrigin]).toFixed(2) );
+
                 }
                 else {
                    
                     // If the asset doesn't exists we push it
                     this.uniqueAssetsOriginName.push(e.asset.origin_name);
                     this.uniqueAssetsOriginFiat.push(e.asset.counter_value);
-
+                    console.log("Value: " + e.asset.counter_value);
                     this.chartistOriginsData.labels.push(e.asset.origin_name);
                     this.chartistOriginsData.series.push( parseFloat( parseFloat(e.asset.counter_value).toFixed(2) ));
                 }
+                console.log("ORigins: " + JSON.stringify(this.chartistOriginsData));
 
                 // Locate current coin row in DATATABLE
                 var indexes = this.portfolioTable.rows().eq( 0 ).filter( rowIdx => {
@@ -257,14 +262,18 @@ export default {
                 // this.portfolioTable.responsive.recalc();
                 this.portfolioTable.draw();
 
+
                 this.portfolioCurrentAssetCount++;
 
+                console.log("Asset Count: " + this.portfolioCurrentAssetCount);
                 if (this.portfolioCurrentAssetCount == this.portfolioAssetCount && this.portfolioCurrentAssetCount!=0) {
-
+                    console.log(JSON.stringify(this.chartistTotalsData));
+                    console.log(JSON.stringify(this.chartistOriginsData));
                     this.showChart = true;
                     this.chartistTotalsChart = new Chartist.Bar('.ct-chart-totals', this.chartistTotalsData, this.chartistTotalsOptions,this.responsiveOptions);
                     this.chartistOriginsChart = new Chartist.Bar('.ct-chart-origins', this.chartistOriginsData, this.chartistOriginsOptions,this.responsiveOptions);
                 }
+
 
                 
             }
@@ -288,12 +297,15 @@ export default {
     methods: {
         refreshPortfolio() {
             this.loadingPortfolio = true;
+            this.chartistTotalsChart.detach();
+            this.chartistOriginsChart.detach();
             this.totalBtc = 0;
             this.totalFiat = 0;
             this.uniqueAssetsBtc = [];
             this.uniqueAssetsFiat = [];
-            this.chartistTotalsChart.detach();
-            this.chartistOriginsChart.detach();
+            this.uniqueAssetsName = [];
+            this.uniqueAssetsOriginFiat = [];
+            this.uniqueAssetsOriginName = [];
             this.portfolioTable.clear().draw();
             this.portfolioCurrentAssetCount = 0;
             this.portfolioAssetCount = 0;

@@ -118960,6 +118960,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -119079,6 +119082,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             _this.updatingAsset = true;
 
             if (_this.portfolio.update_id == e.asset.update_id) {
+                console.log(e.asset.symbol);
                 // Calculate current TOTAL balances (btc and fiat)
                 _this.totalBtc = (parseFloat(_this.totalBtc) + parseFloat(e.asset.balance)).toFixed(8);
                 _this.totalFiat = (parseFloat(_this.totalFiat) + parseFloat(e.asset.counter_value)).toFixed(2);
@@ -119111,22 +119115,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
                 // Store consolidated array of ORIGINS
                 var indexRepeatedOrigin = _this.uniqueAssetsOriginName.indexOf(e.asset.origin_name);
-
+                console.log("Index: " + indexRepeatedOrigin);
                 if (indexRepeatedOrigin >= 0) {
                     // If origin is already counted we sum the new value
                     var newBalanceFiat = parseFloat(_this.uniqueAssetsOriginFiat[indexRepeatedOrigin]) + parseFloat(e.asset.counter_value);
                     _this.uniqueAssetsOriginFiat[indexRepeatedOrigin] = parseFloat(newBalanceFiat);
-
                     _this.chartistOriginsData.series[indexRepeatedOrigin] = parseFloat(parseFloat(_this.uniqueAssetsFiat[indexRepeatedOrigin]).toFixed(2));
                 } else {
 
                     // If the asset doesn't exists we push it
                     _this.uniqueAssetsOriginName.push(e.asset.origin_name);
                     _this.uniqueAssetsOriginFiat.push(e.asset.counter_value);
-
+                    console.log("Value: " + e.asset.counter_value);
                     _this.chartistOriginsData.labels.push(e.asset.origin_name);
                     _this.chartistOriginsData.series.push(parseFloat(parseFloat(e.asset.counter_value).toFixed(2)));
                 }
+                console.log("ORigins: " + JSON.stringify(_this.chartistOriginsData));
 
                 // Locate current coin row in DATATABLE
                 var indexes = _this.portfolioTable.rows().eq(0).filter(function (rowIdx) {
@@ -119144,8 +119148,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
                 _this.portfolioCurrentAssetCount++;
 
+                console.log("Asset Count: " + _this.portfolioCurrentAssetCount);
                 if (_this.portfolioCurrentAssetCount == _this.portfolioAssetCount && _this.portfolioCurrentAssetCount != 0) {
-
+                    console.log(JSON.stringify(_this.chartistTotalsData));
+                    console.log(JSON.stringify(_this.chartistOriginsData));
                     _this.showChart = true;
                     _this.chartistTotalsChart = new Chartist.Bar('.ct-chart-totals', _this.chartistTotalsData, _this.chartistTotalsOptions, _this.responsiveOptions);
                     _this.chartistOriginsChart = new Chartist.Bar('.ct-chart-origins', _this.chartistOriginsData, _this.chartistOriginsOptions, _this.responsiveOptions);
@@ -119172,12 +119178,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this2 = this;
 
             this.loadingPortfolio = true;
+            this.chartistTotalsChart.detach();
+            this.chartistOriginsChart.detach();
             this.totalBtc = 0;
             this.totalFiat = 0;
             this.uniqueAssetsBtc = [];
             this.uniqueAssetsFiat = [];
-            this.chartistTotalsChart.detach();
-            this.chartistOriginsChart.detach();
+            this.uniqueAssetsName = [];
+            this.uniqueAssetsOriginFiat = [];
+            this.uniqueAssetsOriginName = [];
             this.portfolioTable.clear().draw();
             this.portfolioCurrentAssetCount = 0;
             this.portfolioAssetCount = 0;
@@ -119207,75 +119216,97 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("section", { attrs: { id: "portfolio-widget" } }, [
     _c("div", { staticClass: "grid-x grid-padding-x" }, [
-      _c("div", { staticClass: "small-12 medium-6 cell" }, [
-        _c("div", { staticClass: "grid-x grid-padding-x dashboard" }, [
-          _c("div", { staticClass: "small-12 large-5 cell" }, [
-            _c("div", { staticClass: "counter-widget text-center" }, [
-              _c("div", { staticClass: "title" }, [_vm._v("Total BTC ")]),
-              _vm._v(" "),
-              _c("div", { staticClass: "counter" }, [
-                _vm._v(_vm._s(_vm.totalBtc))
-              ])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "small-12 large-2 cell" }, [
-            _c(
-              "button",
-              {
-                staticClass: "button clear button-refresh",
-                on: {
-                  click: function($event) {
-                    _vm.refreshPortfolio()
-                  }
-                }
-              },
-              [
-                _c("i", {
-                  directives: [
-                    {
-                      name: "show",
-                      rawName: "v-show",
-                      value: _vm.loadingPortfolio,
-                      expression: "loadingPortfolio "
-                    }
-                  ],
-                  staticClass: "fa fa-refresh fa-spin fa-fw",
-                  attrs: { "aria-hidden": "true" }
-                }),
+      _c("div", { staticClass: "small-12 cell" }, [
+        _c("div", { staticClass: "grid-container fluid" }, [
+          _c("div", { staticClass: "grid-x grid-padding-x" }, [
+            _c("div", { staticClass: "shrink cell" }, [
+              _c("div", { staticClass: "counter-widget text-left" }, [
+                _c("div", { staticClass: "title" }, [_vm._v("Total BTC ")]),
                 _vm._v(" "),
-                _c("i", {
-                  directives: [
-                    {
-                      name: "show",
-                      rawName: "v-show",
-                      value: !_vm.loadingPortfolio,
-                      expression: "!loadingPortfolio"
-                    }
-                  ],
-                  staticClass: "fa fa-refresh "
-                })
-              ]
-            )
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "small-12 large-5 cell" }, [
-            _c("div", { staticClass: "counter-widget text-center" }, [
-              _c("div", { staticClass: "title" }, [
-                _vm._v("Total " + _vm._s(_vm.counterValueSymbol) + " ")
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "counter" }, [
-                _vm._v(_vm._s(_vm.totalFiat))
+                _c("div", { staticClass: "counter" }, [
+                  _vm._v(_vm._s(_vm.totalBtc))
+                ])
               ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "shrink cell" }, [
+              _c("div", { staticClass: "counter-widget text-left" }, [
+                _c("div", { staticClass: "title" }, [
+                  _vm._v("Total " + _vm._s(_vm.counterValueSymbol) + " ")
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "counter" }, [
+                  _vm._v(_vm._s(_vm.totalFiat))
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "auto cell text-right" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "button hollow button-refresh",
+                  on: {
+                    click: function($event) {
+                      _vm.refreshPortfolio()
+                    }
+                  }
+                },
+                [
+                  _c(
+                    "span",
+                    {
+                      directives: [
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value: _vm.loadingPortfolio,
+                          expression: "loadingPortfolio"
+                        }
+                      ]
+                    },
+                    [
+                      _c("i", {
+                        staticClass: "fa fa-refresh fa-spin fa-fw",
+                        attrs: { "aria-hidden": "true" }
+                      }),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "show-for-medium" }, [
+                        _vm._v(" Loading...")
+                      ])
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "span",
+                    {
+                      directives: [
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value: !_vm.loadingPortfolio,
+                          expression: "!loadingPortfolio"
+                        }
+                      ]
+                    },
+                    [
+                      _c("i", { staticClass: "fa fa-refresh " }),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "show-for-medium" }, [
+                        _vm._v("Reload")
+                      ])
+                    ]
+                  )
+                ]
+              )
             ])
-          ]),
-          _vm._v(" "),
-          _vm._m(0, false, false)
+          ])
         ])
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "small-12 medium-6 cell" }, [
+      _vm._m(0, false, false),
+      _vm._v(" "),
+      _c("div", { staticClass: "small-12 large-6 cell" }, [
         _c(
           "div",
           {
@@ -119321,7 +119352,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "small-12 medium-12 cell" }, [
+    return _c("div", { staticClass: "small-12 large-6 cell" }, [
       _c("div", { staticClass: "portfolio-assets" }, [
         _c("table", {
           staticClass: "display unstriped",
