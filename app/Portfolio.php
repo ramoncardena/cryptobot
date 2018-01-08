@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Portfolio extends Model
 {
 	protected $fillable = [
-        'user_id', 'balance', 'counter_value', 'name'
+        'user_id', 'balance', 'counter_value', 'name', 'assets_count', 'update_id'
     ];
     
     public function assets()

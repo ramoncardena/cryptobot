@@ -57,6 +57,10 @@ class PortfolioController extends Controller
         // Get user's portfolio
         $this->portfolio = Portfolio::where('user_id', $this->user->id)->first();
 
+        // Set update id in portfolio
+        $this->portfolio->update_id = uniqid();
+        $this->portfolio->save();
+
         // Get portfolio origins
         $this->origins = $this->portfolio->origins; 
 

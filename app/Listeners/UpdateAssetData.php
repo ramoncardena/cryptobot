@@ -23,7 +23,7 @@ class UpdateAssetData implements ShouldQueue
      *
      * @var string|null
      */
-    public $queue = 'assets';
+    public $queue = 'portfolios';
 
     /**
      * Handle the event.
@@ -36,20 +36,25 @@ class UpdateAssetData implements ShouldQueue
     {
         try {
 
-            // Get Cryptocompare coin list properties
-            $guru = new CoinGuru;
             $portfolio = Portfolio::find($event->asset->portfolio_id);
-
+            $updateId = $portfolio->update_id;
             $asset = $event->asset;
-            $assetPrice = $guru->cryptocomparePriceGetSinglePrice($asset->symbol, "BTC");
-            $asset->price = $assetPrice->BTC;
-            $asset->balance =  floatval($asset->amount) * floatval($assetPrice->BTC);
-            $counterValue = strtoupper($portfolio->counter_value);
-            $asset->counter_value = floatval($asset->amount) * floatval($guru->cryptocomparePriceGetSinglePrice($asset->symbol, $counterValue)->$counterValue);
-            $asset->save();
 
-            // EVENT:  Portfolio Asset Loaded
-            event(new PortfolioAssetUpdated($asset));
+            // If portfolio ID is diffetent than asset ID that means that portfolio is reloading 
+            // and we do nothing, if IDs match we update the asset
+            if ($asset->update_id == $portfolio->update_id) {          
+                // Get Cryptocompare coin list properties
+                $guru = new CoinGuru;
+                $assetPrice = $guru->cryptocomparePriceGetSinglePrice($asset->symbol, "BTC");
+                $asset->price = $assetPrice->BTC;
+                $asset->balance =  floatval($asset->amount) * floatval($assetPrice->BTC);
+                $counterValue = strtoupper($portfolio->counter_value);
+                $asset->counter_value = floatval($asset->amount) * floatval($guru->cryptocomparePriceGetSinglePrice($asset->symbol, $counterValue)->$counterValue);
+                $asset->save();
+
+                // EVENT:  Portfolio Asset Loaded
+                event(new PortfolioAssetUpdated($asset));
+            }
 
         } catch (Exception $e) {
 

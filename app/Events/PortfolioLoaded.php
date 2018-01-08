@@ -14,16 +14,25 @@ class PortfolioLoaded implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
     
+    /**
+     * The name of the queue the job should be sent to.
+     *
+     * @var string|null
+     */
+    public $queue = 'portfolios';
+
     public $portfolio;
+    public $assetCount;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($portfolio)
+    public function __construct($portfolio, $asset_count)
     {
         $this->portfolio = $portfolio;
+        $this->assetCount = $asset_count;
     }
 
     /**

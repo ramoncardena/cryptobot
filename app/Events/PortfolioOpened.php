@@ -14,6 +14,13 @@ class PortfolioOpened
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
     
+    /**
+     * The name of the queue the job should be sent to.
+     *
+     * @var string|null
+     */
+    public $queue = 'portfolios';
+    
     public $portfolio;
 
     /**

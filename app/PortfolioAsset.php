@@ -6,6 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class PortfolioAsset extends Model
 {
+	protected $fillable = [
+        'user_id', 'update_id'
+    ];
+
     public function portfolio()
     {
         return $this->belongsTo('App\Portfolio');

@@ -103,21 +103,30 @@ class LoadPortfolio implements ShouldQueue
                         $asset->balance = 0;
                         $counterValue = strtoupper($event->portfolio->counter_value);
                         $asset->counter_value = 0;
+                        $asset->update_id = $event->portfolio->update_id;
 
                         $asset->save();
                     }
                 }
 
                 $assets = $event->portfolio->assets;
+                $asset_count = 0;
                 foreach ($assets as $asset) {
-
+                    $asset_count++;
+                    $asset->update_id = $event->portfolio->update_id;
+                    $asset->save();
+                    
                     // EVENT:  Portfolio Asset Loaded
                     event(new PortfolioAssetLoaded($asset));
 
                 }
+                
+                $portfolio = $event->portfolio;
+                $portfolio->asset_count = $asset_count;
+                $portfolio->save();
 
                 // EVENT:  Portfolio Loaded
-                event(new PortfolioLoaded($event->portfolio));
+                event(new PortfolioLoaded($portfolio, $asset_count));
             } 
 
         } catch (Exception $e) {

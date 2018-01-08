@@ -13,6 +13,13 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 class PortfolioAssetUpdated implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
+
+    /**
+     * The name of the queue the job should be sent to.
+     *
+     * @var string|null
+     */
+    public $queue = 'portfolios';
     
     public $asset;
 
