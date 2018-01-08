@@ -97,7 +97,10 @@ class TradeController extends Controller
 
                 // Get exchanges for the user
                 $exchanges = $this->user->settings()->get('exchanges');
-                $exchanges = array_divide($exchanges)[0];
+
+                if ($exchanges) $exchanges = array_divide($exchanges)[0];
+                else $exchanges = [];
+                
                 // Return 'trades' view passing trade history and open trades objects
                 return view('trades', ['tradesActive' => $tradesActive, 'tradesHistory' => $tradesHistory, 'exchanges' => json_encode($exchanges)]);
             }
