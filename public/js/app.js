@@ -119130,7 +119130,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     _this.chartistOriginsData.labels.push(e.asset.origin_name);
                     _this.chartistOriginsData.series.push(parseFloat(parseFloat(e.asset.counter_value).toFixed(2)));
                 }
-                console.log("ORigins: " + JSON.stringify(_this.chartistOriginsData));
+                console.log("Value: " + JSON.stringify(_this.chartistOriginsData));
 
                 // Locate current coin row in DATATABLE
                 var indexes = _this.portfolioTable.rows().eq(0).filter(function (rowIdx) {

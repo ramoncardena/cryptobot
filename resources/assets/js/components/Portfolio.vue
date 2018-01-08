@@ -244,7 +244,7 @@ export default {
                     this.chartistOriginsData.labels.push(e.asset.origin_name);
                     this.chartistOriginsData.series.push( parseFloat( parseFloat(e.asset.counter_value).toFixed(2) ));
                 }
-                console.log("ORigins: " + JSON.stringify(this.chartistOriginsData));
+                console.log("Value: " + JSON.stringify(this.chartistOriginsData));
 
                 // Locate current coin row in DATATABLE
                 var indexes = this.portfolioTable.rows().eq( 0 ).filter( rowIdx => {
