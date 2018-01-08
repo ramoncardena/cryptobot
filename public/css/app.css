@@ -15280,6 +15280,7 @@ table.trade thead th {
   width: 100%;
   font-weight: 400;
   padding: 3px 25px 3px 6px;
+  color: red;
 }
 
 .easy-autocomplete {
@@ -15932,5 +15933,22 @@ section#portfolio-widget .counter-widget .counter {
 
 .notification-list .item-new:focus {
   outline: 0;
+}
+
+section#addasset .easy-autocomplete.eac-square input {
+  border: 1px solid #cacaca;
+  border-radius: 0;
+  min-width: 1rem;
+  width: 100%;
+  font-weight: 400;
+  padding: 5px 25px 5px 5px;
+}
+
+section#addasset .easy-autocomplete {
+  width: 100% !important;
+}
+
+section#addasset .easy-autocomplete input {
+  width: 100%;
 }
 

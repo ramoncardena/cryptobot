@@ -1,4 +1,5 @@
 <template>
+    <section id="addasset">
         <div class="grid-container fluid add-asset">
             <form method="POST" action="/portfolio/asset">
                 <input type="hidden" name="_token" :value="csrf">
@@ -55,7 +56,7 @@
 
             </form>
         </div>
-        
+    </section>
 </template>
 
 <script>

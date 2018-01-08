@@ -291,14 +291,18 @@ export default {
             this.portfolioAssetCount = e.assetCount;
             this.loadingPortfolio = false;
         });
-
+        this.loadingPortfolio = false;
         console.log('Component TradeList mounted.');
     },
     methods: {
         refreshPortfolio() {
             this.loadingPortfolio = true;
-            this.chartistTotalsChart.detach();
-            this.chartistOriginsChart.detach();
+
+            if (this.portfolioCurrentAssetCount > 0) {
+                this.chartistTotalsChart.detach();
+                this.chartistOriginsChart.detach();
+                this.portfolioTable.clear().draw();
+            };
             this.totalBtc = 0;
             this.totalFiat = 0;
             this.uniqueAssetsBtc = [];
@@ -306,7 +310,6 @@ export default {
             this.uniqueAssetsName = [];
             this.uniqueAssetsOriginFiat = [];
             this.uniqueAssetsOriginName = [];
-            this.portfolioTable.clear().draw();
             this.portfolioCurrentAssetCount = 0;
             this.portfolioAssetCount = 0;
             this.showChart = false;

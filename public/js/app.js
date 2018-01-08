@@ -118595,6 +118595,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'add-asset',
@@ -118666,147 +118667,151 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "grid-container fluid add-asset" }, [
-    _c("form", { attrs: { method: "POST", action: "/portfolio/asset" } }, [
-      _c("input", {
-        attrs: { type: "hidden", name: "_token" },
-        domProps: { value: _vm.csrf }
-      }),
-      _vm._v(" "),
-      _c("div", { staticClass: "grid-x grid-padding-x" }, [
-        _vm._m(0, false, false),
+  return _c("section", { attrs: { id: "addasset" } }, [
+    _c("div", { staticClass: "grid-container fluid add-asset" }, [
+      _c("form", { attrs: { method: "POST", action: "/portfolio/asset" } }, [
+        _c("input", {
+          attrs: { type: "hidden", name: "_token" },
+          domProps: { value: _vm.csrf }
+        }),
         _vm._v(" "),
-        _c("div", { staticClass: "small-12 cell form-container" }, [
-          _vm.validationErrors.origin_type
-            ? _c(
-                "div",
-                _vm._l(_vm.validationErrors.origin_type, function(error) {
-                  return _c("span", { staticClass: "validation-error" }, [
-                    _vm._v(" " + _vm._s(error) + " ")
-                  ])
-                })
-              )
-            : _vm._e(),
+        _c("div", { staticClass: "grid-x grid-padding-x" }, [
+          _vm._m(0, false, false),
           _vm._v(" "),
-          _c("div", { staticClass: "input-group" }, [
-            _c("span", { staticClass: "input-group-label" }, [
-              _vm._v("Origin")
-            ]),
+          _c("div", { staticClass: "small-12 cell form-container" }, [
+            _vm.validationErrors.origin_type
+              ? _c(
+                  "div",
+                  _vm._l(_vm.validationErrors.origin_type, function(error) {
+                    return _c("span", { staticClass: "validation-error" }, [
+                      _vm._v(" " + _vm._s(error) + " ")
+                    ])
+                  })
+                )
+              : _vm._e(),
             _vm._v(" "),
-            _c(
-              "select",
-              {
+            _c("div", { staticClass: "input-group" }, [
+              _c("span", { staticClass: "input-group-label" }, [
+                _vm._v("Origin")
+              ]),
+              _vm._v(" "),
+              _c(
+                "select",
+                {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.originSelected,
+                      expression: "originSelected"
+                    }
+                  ],
+                  staticClass: "input-group-field",
+                  attrs: { name: "asset_origin" },
+                  on: {
+                    change: [
+                      function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.originSelected = $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      },
+                      function($event) {
+                        _vm.saveName()
+                      }
+                    ]
+                  }
+                },
+                [
+                  _c("option", { attrs: { disabled: "", value: "" } }, [
+                    _vm._v("Select...")
+                  ]),
+                  _vm._v(" "),
+                  _vm._l(_vm.origins, function(origin) {
+                    return _c("option", { domProps: { value: origin.id } }, [
+                      _vm._v(_vm._s(origin.name) + " ")
+                    ])
+                  })
+                ],
+                2
+              ),
+              _vm._v(" "),
+              _c("input", {
+                attrs: {
+                  id: "asset-origin-name",
+                  name: "asset_origin_name",
+                  type: "hidden"
+                },
+                domProps: { value: _vm.originSelectedName }
+              })
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "small-12 cell form-container" }, [
+            _vm.validationErrors.asset_symbol
+              ? _c(
+                  "div",
+                  _vm._l(_vm.validationErrors.asset_symbol, function(error) {
+                    return _c("span", { staticClass: "validation-error" }, [
+                      _vm._v(" " + _vm._s(error) + " ")
+                    ])
+                  })
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _c("div", { staticClass: "input-group" }, [
+              _c("span", { staticClass: "input-group-label" }, [
+                _vm._v("Asset")
+              ]),
+              _vm._v(" "),
+              _c("input", {
                 directives: [
                   {
                     name: "model",
                     rawName: "v-model",
-                    value: _vm.originSelected,
-                    expression: "originSelected"
+                    value: _vm.coinSelected,
+                    expression: "coinSelected"
                   }
                 ],
-                staticClass: "input-group-field",
-                attrs: { name: "asset_origin" },
+                staticClass: "input-group-field number",
+                attrs: { name: "asset_symbol", id: "coins", type: "text" },
+                domProps: { value: _vm.coinSelected },
                 on: {
-                  change: [
-                    function($event) {
-                      var $$selectedVal = Array.prototype.filter
-                        .call($event.target.options, function(o) {
-                          return o.selected
-                        })
-                        .map(function(o) {
-                          var val = "_value" in o ? o._value : o.value
-                          return val
-                        })
-                      _vm.originSelected = $event.target.multiple
-                        ? $$selectedVal
-                        : $$selectedVal[0]
-                    },
-                    function($event) {
-                      _vm.saveName()
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
                     }
-                  ]
-                }
-              },
-              [
-                _c("option", { attrs: { disabled: "", value: "" } }, [
-                  _vm._v("Select...")
-                ]),
-                _vm._v(" "),
-                _vm._l(_vm.origins, function(origin) {
-                  return _c("option", { domProps: { value: origin.id } }, [
-                    _vm._v(_vm._s(origin.name) + " ")
-                  ])
-                })
-              ],
-              2
-            ),
-            _vm._v(" "),
-            _c("input", {
-              attrs: {
-                id: "asset-origin-name",
-                name: "asset_origin_name",
-                type: "hidden"
-              },
-              domProps: { value: _vm.originSelectedName }
-            })
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "small-12 cell form-container" }, [
-          _vm.validationErrors.asset_symbol
-            ? _c(
-                "div",
-                _vm._l(_vm.validationErrors.asset_symbol, function(error) {
-                  return _c("span", { staticClass: "validation-error" }, [
-                    _vm._v(" " + _vm._s(error) + " ")
-                  ])
-                })
-              )
-            : _vm._e(),
-          _vm._v(" "),
-          _c("div", { staticClass: "input-group" }, [
-            _c("span", { staticClass: "input-group-label" }, [_vm._v("Asset")]),
-            _vm._v(" "),
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.coinSelected,
-                  expression: "coinSelected"
-                }
-              ],
-              staticClass: "input-group-field number",
-              attrs: { name: "asset_symbol", id: "coins", type: "text" },
-              domProps: { value: _vm.coinSelected },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
+                    _vm.coinSelected = $event.target.value
                   }
-                  _vm.coinSelected = $event.target.value
                 }
-              }
-            })
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "small-12 cell form-container" }, [
-          _vm.validationErrors.asset_amount
-            ? _c(
-                "div",
-                _vm._l(_vm.validationErrors.asset_amount, function(error) {
-                  return _c("span", { staticClass: "validation-error" }, [
-                    _vm._v(" " + _vm._s(error) + " ")
-                  ])
-                })
-              )
-            : _vm._e(),
+              })
+            ])
+          ]),
           _vm._v(" "),
-          _vm._m(1, false, false)
-        ]),
-        _vm._v(" "),
-        _vm._m(2, false, false)
+          _c("div", { staticClass: "small-12 cell form-container" }, [
+            _vm.validationErrors.asset_amount
+              ? _c(
+                  "div",
+                  _vm._l(_vm.validationErrors.asset_amount, function(error) {
+                    return _c("span", { staticClass: "validation-error" }, [
+                      _vm._v(" " + _vm._s(error) + " ")
+                    ])
+                  })
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm._m(1, false, false)
+          ]),
+          _vm._v(" "),
+          _vm._m(2, false, false)
+        ])
       ])
     ])
   ])
@@ -118830,7 +118835,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "input-group" }, [
       _c("span", { staticClass: "input-group-label" }, [
-        _vm._v("\n                        Amount\n                    ")
+        _vm._v("\n                            Amount\n                        ")
       ]),
       _vm._v(" "),
       _c("input", {
@@ -118847,7 +118852,7 @@ var staticRenderFns = [
       _c(
         "button",
         { staticClass: "hollow button", attrs: { type: "submit" } },
-        [_vm._v("\n                   Add Asset\n                ")]
+        [_vm._v("\n                       Add Asset\n                    ")]
       )
     ])
   }
@@ -119169,7 +119174,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             _this.portfolioAssetCount = e.assetCount;
             _this.loadingPortfolio = false;
         });
-
+        this.loadingPortfolio = false;
         console.log('Component TradeList mounted.');
     },
 
@@ -119178,8 +119183,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this2 = this;
 
             this.loadingPortfolio = true;
-            this.chartistTotalsChart.detach();
-            this.chartistOriginsChart.detach();
+
+            if (this.portfolioCurrentAssetCount > 0) {
+                this.chartistTotalsChart.detach();
+                this.chartistOriginsChart.detach();
+                this.portfolioTable.clear().draw();
+            };
             this.totalBtc = 0;
             this.totalFiat = 0;
             this.uniqueAssetsBtc = [];
@@ -119187,7 +119196,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.uniqueAssetsName = [];
             this.uniqueAssetsOriginFiat = [];
             this.uniqueAssetsOriginName = [];
-            this.portfolioTable.clear().draw();
             this.portfolioCurrentAssetCount = 0;
             this.portfolioAssetCount = 0;
             this.showChart = false;
