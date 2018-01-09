@@ -322,6 +322,10 @@ export default {
             this.uniqueAssetsName = [];
             this.uniqueAssetsOriginFiat = [];
             this.uniqueAssetsOriginName = [];
+            this.chartistTotalsData.labels = [];
+            this.chartistOriginsData.labels = [];
+            this.chartistTotalsData.series = [];
+            this.chartistOriginsData.series = [];
             this.portfolioCurrentAssetCount = 0;
             this.portfolioAssetCount = 0;
             this.showChart = false;
