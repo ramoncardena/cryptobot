@@ -119012,6 +119012,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.loadingPortfolio = true;
         this.totalBtc = 0;
         this.totalFiat = 0;
+        var uri = '/api/portfolio/refresh';
+        axios(uri, {
+            method: 'GET'
+        }).then(function (response) {
+            console.log("Reloading portfolio...");
+        }).catch(function (e) {
+            _this.errors.push(e);
+            _this.loadingPortfolio = false;
+            console.log("Error: " + e.message);
+        });
 
         // Setup DATATABLE
         this.portfolioTable = $('#portfolioTable').DataTable({
@@ -119087,7 +119097,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             _this.updatingAsset = true;
 
             if (_this.portfolio.update_id == e.asset.update_id) {
-                console.log(e.asset.symbol);
+                //console.log(e.asset.symbol);
                 // Calculate current TOTAL balances (btc and fiat)
                 _this.totalBtc = (parseFloat(_this.totalBtc) + parseFloat(e.asset.balance)).toFixed(8);
                 _this.totalFiat = (parseFloat(_this.totalFiat) + parseFloat(e.asset.counter_value)).toFixed(2);
@@ -119120,7 +119130,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
                 // Store consolidated array of ORIGINS
                 var indexRepeatedOrigin = _this.uniqueAssetsOriginName.indexOf(e.asset.origin_name);
-                console.log("Index: " + indexRepeatedOrigin);
+                // console.log("Index: " + indexRepeatedOrigin);
                 if (indexRepeatedOrigin >= 0) {
                     // If origin is already counted we sum the new value
                     var newBalanceFiat = parseFloat(_this.uniqueAssetsOriginFiat[indexRepeatedOrigin]) + parseFloat(e.asset.counter_value);
@@ -119131,11 +119141,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     // If the asset doesn't exists we push it
                     _this.uniqueAssetsOriginName.push(e.asset.origin_name);
                     _this.uniqueAssetsOriginFiat.push(e.asset.counter_value);
-                    console.log("Value: " + e.asset.counter_value);
+                    //console.log("Value: " + e.asset.counter_value);
                     _this.chartistOriginsData.labels.push(e.asset.origin_name);
                     _this.chartistOriginsData.series.push(parseFloat(parseFloat(e.asset.counter_value).toFixed(2)));
                 }
-                console.log("Value: " + JSON.stringify(_this.chartistOriginsData));
+                //console.log("Value: " + JSON.stringify(this.chartistOriginsData));
 
                 // Locate current coin row in DATATABLE
                 var indexes = _this.portfolioTable.rows().eq(0).filter(function (rowIdx) {
@@ -119153,10 +119163,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
                 _this.portfolioCurrentAssetCount++;
 
-                console.log("Asset Count: " + _this.portfolioCurrentAssetCount);
+                // console.log("Asset Count: " + this.portfolioCurrentAssetCount);
                 if (_this.portfolioCurrentAssetCount == _this.portfolioAssetCount && _this.portfolioCurrentAssetCount != 0) {
-                    console.log(JSON.stringify(_this.chartistTotalsData));
-                    console.log(JSON.stringify(_this.chartistOriginsData));
+                    // console.log(JSON.stringify(this.chartistTotalsData));
+                    // console.log(JSON.stringify(this.chartistOriginsData));
                     _this.showChart = true;
                     _this.chartistTotalsChart = new Chartist.Bar('.ct-chart-totals', _this.chartistTotalsData, _this.chartistTotalsOptions, _this.responsiveOptions);
                     _this.chartistOriginsChart = new Chartist.Bar('.ct-chart-origins', _this.chartistOriginsData, _this.chartistOriginsOptions, _this.responsiveOptions);
@@ -119169,11 +119179,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             // PORTFOLIO LOADED
             // ************
 
-            console.log("Asset count: " + e.assetCount);
+            // console.log("Asset count: " + e.assetCount);
             _this.counterValueSymbol = _this.portfolio.counter_value.toUpperCase();
             _this.portfolioAssetCount = e.assetCount;
             _this.loadingPortfolio = false;
         });
+
         this.loadingPortfolio = false;
         console.log('Component TradeList mounted.');
     },

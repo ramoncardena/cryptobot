@@ -65,7 +65,7 @@ class PortfolioController extends Controller
         $this->origins = $this->portfolio->origins; 
 
         // EVENT:  PortfolioOpened
-        event(new PortfolioOpened($this->portfolio));
+        // event(new PortfolioOpened($this->portfolio));
 
 
         // DATA FOR MODALS (New Asset and New Origin)
