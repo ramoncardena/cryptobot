@@ -37,6 +37,7 @@ class OrdersController extends Controller
 
             $bittrexOpenOrders = collect(Bittrex::getOpenOrders()->result);
             $bittrexOrderHistory = collect(Bittrex::getOrderHistory()->result);
+            
             foreach ($bittrexOpenOrders as $order) {
             	$order->Limit = number_format($order->Limit,8);
             	if ($order->OrderType == "LIMIT_SELL") $order->OrderType = "Limit Sell";

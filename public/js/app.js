@@ -118975,10 +118975,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     props: ['portfolio'],
     data: function data() {
         return {
+            totalBtc: 0,
+            totalFiat: 0,
             portfolioAssetCount: 0,
             portfolioCurrentAssetCount: 0,
             showChart: false,
-            assets: [],
             uniqueAssetsBtc: [],
             uniqueAssetsFiat: [],
             uniqueAssetsName: [],
@@ -118986,11 +118987,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             uniqueAssetsOriginFiat: [],
             mostValuableName: "",
             mostValuableValue: "",
-            balance: 0,
-            counter_value: 0,
-            price: 0,
-            totalBtc: 0,
-            totalFiat: 0,
             counterValueSymbol: '',
             portfolioTable: {},
             loadingPortfolio: false,
@@ -119010,8 +119006,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         var _this = this;
 
         this.loadingPortfolio = true;
+
+        // Variables initizalization
         this.totalBtc = 0;
         this.totalFiat = 0;
+        this.uniqueAssetsOriginFiat = [];
+        this.uniqueAssetsOriginName = [];
 
         // Setup DATATABLE
         this.portfolioTable = $('#portfolioTable').DataTable({
@@ -119035,7 +119035,33 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 });
             }
         });
+
+        // Clear Datatable in case of reloading
         this.portfolioTable.clear();
+
+        // Set Chart options
+        this.responsiveOptions = [['screen and (min-width: 200px)', {
+            horizontalBars: true,
+            seriesBarDistance: 5
+        }],
+        // Options override for media > 800px
+        ['screen and (min-width: 800px)', {
+            stackBars: false,
+            seriesBarDistance: 10
+        }],
+        // Options override for media > 1000px
+        ['screen and (min-width: 1000px)', {
+            horizontalBars: false,
+            seriesBarDistance: 15
+        }]];
+        this.chartistTotalsOptions = {
+            distributeSeries: true
+        };
+        this.chartistOriginsOptions = {
+            distributeSeries: true
+        };
+
+        // Call the LoadPortfolio event asyncronously
         var uri = '/api/portfolio/refresh';
         axios(uri, {
             method: 'GET'
@@ -119047,8 +119073,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             console.log("Error: " + e.message);
         });
 
-        // Setup CHART3
-
+        // Listen to ASSETS events
         Echo.private('assets.' + this.portfolio.id).listen('PortfolioAssetLoaded', function (e) {
             // ************
             // ASSET LOADED
@@ -119056,55 +119081,35 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             // console.log("Portfolio UpdateID: " + this.portfolio.update_id  + " Asset UpdateID: " + e.asset.update_id);
             if (_this.portfolio.update_id == e.asset.update_id) {
-                _this.balance = e.asset.balance;
-                _this.counter_value = e.asset.counter_value;
-                _this.price = e.asset.price;
 
-                _this.responsiveOptions = [['screen and (min-width: 200px)', {
-                    horizontalBars: true,
-                    seriesBarDistance: 5
-                }],
-                // Options override for media > 800px
-                ['screen and (min-width: 800px)', {
-                    stackBars: false,
-                    seriesBarDistance: 10
-                }],
-                // Options override for media > 1000px
-                ['screen and (min-width: 1000px)', {
-                    horizontalBars: false,
-                    seriesBarDistance: 15
-                }]];
-                _this.chartistTotalsOptions = {
-                    distributeSeries: true
-                };
-                _this.chartistOriginsOptions = {
-                    distributeSeries: true
-                };
-
+                // Set coin url, logo, name and symbol
                 var coin = '<div class="asset-info nowrap"><a href="' + e.asset.info_url + '" target="_blank"><img class="asset-img" src="' + e.asset.logo_url + '" width="20"></a> <span class="show-for-medium asset-name">' + e.asset.full_name + '</span> <span class="asset-symbol">' + e.asset.symbol + '</span></div>';
 
+                // Set coin amount
                 var amount = '<div class="asset-amount  nowrap">' + parseFloat(e.asset.amount).toFixed(8) + '</div>';
+
+                // Set coin origin
                 var origin = '<div class="asset-origin  nowrap">' + e.asset.origin_name + '</div>';
 
                 // Add row to the table with the new asset
-                _this.portfolioTable.row.add([coin, parseFloat(_this.counter_value).toFixed(2), parseFloat(_this.balance).toFixed(8), amount, parseFloat(_this.price).toFixed(8), e.asset.id, origin]).order([6, 'asc']).invalidate().draw();
+                _this.portfolioTable.row.add([coin, parseFloat(e.asset.counter_value).toFixed(2), parseFloat(e.asset.balance).toFixed(8), amount, parseFloat(e.asset.price).toFixed(8), e.asset.id, origin]).order([6, 'asc']).invalidate().draw();
             }
         }).listen('PortfolioAssetUpdated', function (e) {
             // ************
             // ASSET UPDATED
             // ************
 
-
             if (_this.portfolio.update_id == e.asset.update_id) {
                 //console.log(e.asset.symbol);
+
                 // Calculate current TOTAL balances (btc and fiat)
                 _this.totalBtc = (parseFloat(_this.totalBtc) + parseFloat(e.asset.balance)).toFixed(8);
                 _this.totalFiat = (parseFloat(_this.totalFiat) + parseFloat(e.asset.counter_value)).toFixed(2);
 
-                // Store and show TOTAL balances
-                _this.balance = parseFloat(e.asset.balance).toFixed(8);
-                _this.price = parseFloat(e.asset.price).toFixed(8);
-                _this.counter_value = parseFloat(e.asset.counter_value).toFixed(2);
+                // Store TOTAL balances
+                var balance = parseFloat(e.asset.balance).toFixed(8);
+                var price = parseFloat(e.asset.price).toFixed(8);
+                var counter_value = parseFloat(e.asset.counter_value).toFixed(2);
 
                 // Store a consolidated array by VALUE
                 var indexRepeatedAsset = _this.uniqueAssetsName.indexOf(e.asset.symbol);
@@ -119116,6 +119121,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     _this.uniqueAssetsBtc[indexRepeatedAsset] = parseFloat(newBalanceBtc);
                     _this.uniqueAssetsFiat[indexRepeatedAsset] = parseFloat(newBalanceFiat);
 
+                    // Update Chart data
                     _this.chartistTotalsData.series[indexRepeatedAsset] = parseFloat(parseFloat(_this.uniqueAssetsFiat[indexRepeatedAsset]).toFixed(2));
                 } else {
                     // If the asset doesn't exists we push it
@@ -119123,6 +119129,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     _this.uniqueAssetsFiat.push(parseFloat(e.asset.counter_value));
                     _this.uniqueAssetsName.push(e.asset.symbol);
 
+                    // Update Chart data
                     _this.chartistTotalsData.labels.push(e.asset.symbol);
                     _this.chartistTotalsData.series.push(parseFloat(parseFloat(e.asset.counter_value).toFixed(2)));
                 }
@@ -119130,19 +119137,32 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 // Store consolidated array of ORIGINS
                 var indexRepeatedOrigin = _this.uniqueAssetsOriginName.indexOf(e.asset.origin_name);
                 // console.log("Index: " + indexRepeatedOrigin);
+
                 if (indexRepeatedOrigin >= 0) {
                     // If origin is already counted we sum the new value
                     var newBalanceFiat = parseFloat(_this.uniqueAssetsOriginFiat[indexRepeatedOrigin]) + parseFloat(e.asset.counter_value);
                     _this.uniqueAssetsOriginFiat[indexRepeatedOrigin] = parseFloat(newBalanceFiat);
-                    _this.chartistOriginsData.series[indexRepeatedOrigin] = parseFloat(parseFloat(_this.uniqueAssetsFiat[indexRepeatedOrigin]).toFixed(2));
+
+                    // Update Chart data
+                    _this.chartistOriginsData.series[indexRepeatedOrigin] = parseFloat(parseFloat(newBalanceFiat).toFixed(2));
+                    // console.log(this.uniqueAssetsOriginName);
+                    // console.log(this.chartistOriginsData.series);
+                    // console.log(e.asset.symbol + '(' +  e.asset.counter_value + ') - Repe!');
+                    // console.log(e.asset.origin_name + ' - ' + parseFloat( parseFloat(this.uniqueAssetsFiat[indexRepeatedOrigin]).toFixed(2)));
                 } else {
 
                     // If the asset doesn't exists we push it
                     _this.uniqueAssetsOriginName.push(e.asset.origin_name);
                     _this.uniqueAssetsOriginFiat.push(e.asset.counter_value);
                     //console.log("Value: " + e.asset.counter_value);
+
+                    // Update Chart data
                     _this.chartistOriginsData.labels.push(e.asset.origin_name);
                     _this.chartistOriginsData.series.push(parseFloat(parseFloat(e.asset.counter_value).toFixed(2)));
+                    // console.log(this.uniqueAssetsOriginName);
+                    // console.log(this.chartistOriginsData.series);
+                    // console.log(e.asset.symbol + '(' +  e.asset.counter_value + ') - No Repe!');
+                    // console.log(e.asset.origin_name + ' - ' + e.asset.counter_value);
                 }
                 //console.log("Value: " + JSON.stringify(this.chartistOriginsData));
 
@@ -119152,20 +119172,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 });
 
                 // Update DATATABLE values (Price, Balance and Counter Value)
-                _this.portfolioTable.cell(indexes[0], 1).data(_this.counter_value).invalidate();
-                _this.portfolioTable.cell(indexes[0], 2).data(_this.balance).invalidate();
-                _this.portfolioTable.cell(indexes[0], 4).data(_this.price).invalidate();
-
+                _this.portfolioTable.cell(indexes[0], 1).data(counter_value).invalidate();
+                _this.portfolioTable.cell(indexes[0], 2).data(balance).invalidate();
+                _this.portfolioTable.cell(indexes[0], 4).data(price).invalidate();
                 // this.portfolioTable.responsive.rebuild();
                 // this.portfolioTable.responsive.recalc();
                 _this.portfolioTable.draw();
 
+                // Keep count of number of assets
                 _this.portfolioCurrentAssetCount++;
 
                 // console.log("Asset Count: " + this.portfolioCurrentAssetCount);
                 if (_this.portfolioCurrentAssetCount == _this.portfolioAssetCount && _this.portfolioCurrentAssetCount != 0) {
-                    // console.log(JSON.stringify(this.chartistTotalsData));
-                    // console.log(JSON.stringify(this.chartistOriginsData));
+                    console.log(_this.chartistOriginsData.series);
+                    console.log(_this.chartistOriginsData.labels);
                     _this.showChart = true;
                     _this.chartistTotalsChart = new Chartist.Bar('.ct-chart-totals', _this.chartistTotalsData, _this.chartistTotalsOptions, _this.responsiveOptions);
                     _this.chartistOriginsChart = new Chartist.Bar('.ct-chart-origins', _this.chartistOriginsData, _this.chartistOriginsOptions, _this.responsiveOptions);
