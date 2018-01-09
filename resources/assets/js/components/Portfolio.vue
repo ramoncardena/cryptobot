@@ -92,18 +92,7 @@ export default {
         this.loadingPortfolio = true;
         this.totalBtc = 0;
         this.totalFiat = 0;
-        let uri = '/api/portfolio/refresh';
-        axios(uri, {
-            method: 'GET',
-        })
-        .then(response => {
-            console.log("Reloading portfolio...");
-        })
-        .catch(e => {
-            this.errors.push(e);
-            this.loadingPortfolio = false;
-            console.log("Error: " + e.message);
-        });
+        
 
         // Setup DATATABLE
         this.portfolioTable = $('#portfolioTable').DataTable( {
@@ -140,6 +129,18 @@ export default {
             }
         } );
         this.portfolioTable.clear();
+        let uri = '/api/portfolio/refresh';
+        axios(uri, {
+            method: 'GET',
+        })
+        .then(response => {
+            console.log("Reloading portfolio...");
+        })
+        .catch(e => {
+            this.errors.push(e);
+           
+            console.log("Error: " + e.message);
+        });
 
         // Setup CHART3
      
@@ -148,7 +149,7 @@ export default {
             // ************
             // ASSET LOADED
             // ************
-            this.loadingAsset = true;
+            
             // console.log("Portfolio UpdateID: " + this.portfolio.update_id  + " Asset UpdateID: " + e.asset.update_id);
             if (this.portfolio.update_id == e.asset.update_id) {
                 this.balance = e.asset.balance; 
@@ -195,13 +196,13 @@ export default {
                     origin
                 ] ).order( [ 6, 'asc' ] ).invalidate().draw();   
             }
-            this.loadingAsset = false; 
+            
         })
         .listen('PortfolioAssetUpdated', (e) => {
             // ************
             // ASSET UPDATED
             // ************
-            this.updatingAsset = true;
+            
 
             if (this.portfolio.update_id == e.asset.update_id) {
                 //console.log(e.asset.symbol);
@@ -285,12 +286,11 @@ export default {
                     this.showChart = true;
                     this.chartistTotalsChart = new Chartist.Bar('.ct-chart-totals', this.chartistTotalsData, this.chartistTotalsOptions,this.responsiveOptions);
                     this.chartistOriginsChart = new Chartist.Bar('.ct-chart-origins', this.chartistOriginsData, this.chartistOriginsOptions,this.responsiveOptions);
+                    this.loadingPortfolio = false;
                 }
-
-
                 
             }
-            this.updatingAsset = false;
+           
 
         });
         Echo.private('portfolios.' + this.portfolio.id)
@@ -302,15 +302,13 @@ export default {
             // console.log("Asset count: " + e.assetCount);
             this.counterValueSymbol = this.portfolio.counter_value.toUpperCase();
             this.portfolioAssetCount = e.assetCount;
-            this.loadingPortfolio = false;
         });
 
-        this.loadingPortfolio = false;
         console.log('Component TradeList mounted.');
     },
     methods: {
         refreshPortfolio() {
-            this.loadingPortfolio = true;
+            
 
             if (this.portfolioCurrentAssetCount > 0) {
                 this.chartistTotalsChart.detach();
@@ -337,11 +335,9 @@ export default {
             })
             .catch(e => {
                 this.errors.push(e);
-                this.loadingPortfolio = false;
+               
                 console.log("Error: " + e.message);
             });
-            
-
         } 
     }
 }

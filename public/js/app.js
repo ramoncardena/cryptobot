@@ -119012,16 +119012,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.loadingPortfolio = true;
         this.totalBtc = 0;
         this.totalFiat = 0;
-        var uri = '/api/portfolio/refresh';
-        axios(uri, {
-            method: 'GET'
-        }).then(function (response) {
-            console.log("Reloading portfolio...");
-        }).catch(function (e) {
-            _this.errors.push(e);
-            _this.loadingPortfolio = false;
-            console.log("Error: " + e.message);
-        });
 
         // Setup DATATABLE
         this.portfolioTable = $('#portfolioTable').DataTable({
@@ -119046,6 +119036,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
         });
         this.portfolioTable.clear();
+        var uri = '/api/portfolio/refresh';
+        axios(uri, {
+            method: 'GET'
+        }).then(function (response) {
+            console.log("Reloading portfolio...");
+        }).catch(function (e) {
+            _this.errors.push(e);
+
+            console.log("Error: " + e.message);
+        });
 
         // Setup CHART3
 
@@ -119053,7 +119053,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             // ************
             // ASSET LOADED
             // ************
-            _this.loadingAsset = true;
+
             // console.log("Portfolio UpdateID: " + this.portfolio.update_id  + " Asset UpdateID: " + e.asset.update_id);
             if (_this.portfolio.update_id == e.asset.update_id) {
                 _this.balance = e.asset.balance;
@@ -119089,12 +119089,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 // Add row to the table with the new asset
                 _this.portfolioTable.row.add([coin, parseFloat(_this.counter_value).toFixed(2), parseFloat(_this.balance).toFixed(8), amount, parseFloat(_this.price).toFixed(8), e.asset.id, origin]).order([6, 'asc']).invalidate().draw();
             }
-            _this.loadingAsset = false;
         }).listen('PortfolioAssetUpdated', function (e) {
             // ************
             // ASSET UPDATED
             // ************
-            _this.updatingAsset = true;
+
 
             if (_this.portfolio.update_id == e.asset.update_id) {
                 //console.log(e.asset.symbol);
@@ -119170,9 +119169,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     _this.showChart = true;
                     _this.chartistTotalsChart = new Chartist.Bar('.ct-chart-totals', _this.chartistTotalsData, _this.chartistTotalsOptions, _this.responsiveOptions);
                     _this.chartistOriginsChart = new Chartist.Bar('.ct-chart-origins', _this.chartistOriginsData, _this.chartistOriginsOptions, _this.responsiveOptions);
+                    _this.loadingPortfolio = false;
                 }
             }
-            _this.updatingAsset = false;
         });
         Echo.private('portfolios.' + this.portfolio.id).listen('PortfolioLoaded', function (e) {
             // ************
@@ -119182,18 +119181,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             // console.log("Asset count: " + e.assetCount);
             _this.counterValueSymbol = _this.portfolio.counter_value.toUpperCase();
             _this.portfolioAssetCount = e.assetCount;
-            _this.loadingPortfolio = false;
         });
 
-        this.loadingPortfolio = false;
         console.log('Component TradeList mounted.');
     },
 
     methods: {
         refreshPortfolio: function refreshPortfolio() {
             var _this2 = this;
-
-            this.loadingPortfolio = true;
 
             if (this.portfolioCurrentAssetCount > 0) {
                 this.chartistTotalsChart.detach();
@@ -119218,7 +119213,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 console.log("Reloading portfolio...");
             }).catch(function (e) {
                 _this2.errors.push(e);
-                _this2.loadingPortfolio = false;
+
                 console.log("Error: " + e.message);
             });
         }
