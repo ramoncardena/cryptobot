@@ -105,9 +105,9 @@ export default {
             ],
             columns: [
             { title: '<div class="sorting nowrap">Coin</div>'},
+            { title: '<div class="sorting nowrap">Amount</div>' },
             { title: '<div class="sorting nowrap">Value (Fiat)</div>' },
             { title: '<div class="sorting nowrap">Value (BTC)</div>' },
-            { title: '<div class="sorting nowrap">Amount</div>' },
             { title: '<div class="sorting nowrap">Price</div>' },
             { title: '<div class="sorting nowrap">Asset ID</div>' },
             { title: '<div class="sorting_asc nowrap">Origin</div>' }
@@ -184,7 +184,7 @@ export default {
                 var coin = '<div class="asset-info nowrap"><a href="' + e.asset.info_url + '" target="_blank"><img class="asset-img" src="' + e.asset.logo_url + '" width="20"></a> <span class="show-for-medium asset-name">' + e.asset.full_name + '</span> <span class="asset-symbol">' + e.asset.symbol + '</span></div>';
 
                 // Set coin amount
-                var amount = '<div class="asset-amount  nowrap">' + parseFloat(e.asset.amount).toFixed(8) + '</div>'
+                var amount = '<div class="asset-amount  nowrap">' + parseFloat(e.asset.amount).toFixed(4) + '</div>'
 
                 // Set coin origin
                 var origin = '<div class="asset-origin  nowrap">' + e.asset.origin_name + '</div>';
@@ -192,9 +192,9 @@ export default {
                 // Add row to the table with the new asset
                 this.portfolioTable.row.add( [
                     coin,
-                    parseFloat(e.asset.counter_value ).toFixed(2),
-                    parseFloat(e.asset.balance).toFixed(8),
                     amount,
+                    parseFloat(e.asset.counter_value).toFixed(2),
+                    parseFloat(e.asset.balance).toFixed(8),
                     parseFloat(e.asset.price).toFixed(8),
                     e.asset.id,
                     origin
@@ -284,8 +284,8 @@ export default {
                 } );
                 
                 // Update DATATABLE values (Price, Balance and Counter Value)
-                this.portfolioTable.cell(indexes[0], 1).data(counter_value).invalidate();
-                this.portfolioTable.cell(indexes[0], 2).data(balance).invalidate();
+                this.portfolioTable.cell(indexes[0], 2).data(counter_value).invalidate();
+                this.portfolioTable.cell(indexes[0], 3).data(balance).invalidate();
                 this.portfolioTable.cell(indexes[0], 4).data(price).invalidate();
                 // this.portfolioTable.responsive.rebuild();
                 // this.portfolioTable.responsive.recalc();

@@ -103,6 +103,7 @@ class LoadPortfolio implements ShouldQueue
                         $asset->balance = 0;
                         $counterValue = strtoupper($event->portfolio->counter_value);
                         $asset->counter_value = 0;
+                        $asset->initial_price = 0;
                         $asset->update_id = $event->portfolio->update_id;
 
                         $asset->save();

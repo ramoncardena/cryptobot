@@ -65,6 +65,7 @@ class PortfolioAssetController extends Controller
 	        $asset->balance = 0;
 	        $asset->counter_value = 0;
             $asset->update_id = "-";
+            $asset->initial_price = $request->asset_amount;
 	        $asset->save();
 
 	        return redirect('/portfolio');
