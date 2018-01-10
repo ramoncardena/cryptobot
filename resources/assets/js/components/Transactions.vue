@@ -18,7 +18,7 @@
                             <span class="input-group-label">Origin</span>
                             <select v-model="originSelected" name="asset_origin" class="input-group-field" v-on:change="loadAssets()">
                                 <option disabled value="">Select...</option>
-                                <option v-for="origin in origins" :value="origin.id">{{ origin.name }} </option>
+                                <option v-for="origin in noxchgOrigins" :value="origin.id">{{ origin.name }} </option>
                             </select>      
                             <input id="asset-origin-name" name="asset_origin_name" type="hidden" :value="originSelectedName">               
                         </div>
@@ -86,6 +86,7 @@
     data: () => {
         return {
             assets: [],
+            noxchgOrigins: [],
             assetAmount: 0,
             transactionOperation: "",
             transactionAmount: 0,
@@ -103,6 +104,7 @@
     props: [
     'portfolio',
     'origins',
+    'exchanges',
     'validation-errors'
     ],
     computed: {
@@ -112,14 +114,19 @@
 
     },
     mounted() {
-        console.log(this.origins);
+        
         let coins =$.map( this.coins, function( a ) {
           return a.toString(); 
         });
 
+        for (var i = 0; i < this.origins.length; i++) {    
+           if (this.exchanges.indexOf(this.origins[i].name.toLowerCase()) < 0) {
+                this.noxchgOrigins.push(this.origins[i]);
+           }
+        }
 
         this.csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-        console.log('Component EditAsset mounted.');
+        console.log('Component Transactions mounted.');
     },
     methods: {
         loadAssets: (function () {

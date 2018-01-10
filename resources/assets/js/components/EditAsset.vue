@@ -11,8 +11,8 @@
                         <p class="h2">Edit Asset</p>
                     </div>
                     <div class="small-12 cell form-container">
-                        <div v-if="validationErrors.origin_type">
-                           <span class="validation-error" v-for="error in validationErrors.origin_type"> {{ error }} </span>
+                        <div v-if="validationErrors.asset_origin">
+                           <span class="validation-error" v-for="error in validationErrors.asset_origin"> {{ error }} </span>
                         </div>
                         <div class="input-group">
                             <span class="input-group-label">Origin</span>
@@ -26,8 +26,8 @@
                     
 
                     <div class="small-12 cell form-container">
-                        <div v-if="validationErrors.asset_symbol">
-                           <span class="validation-error" v-for="error in validationErrors.asset_symbol"> {{ error }} </span>
+                        <div v-if="validationErrors.asset">
+                           <span class="validation-error" v-for="error in validationErrors.asset"> {{ error }} </span>
                         </div>
                          <div class="input-group">
                             <span class="input-group-label">Asset</span>

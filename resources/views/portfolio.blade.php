@@ -88,7 +88,7 @@
      <!-- MODAL: Transactions -->
     <div class="reveal portfolio-modal" id="transactions-modal" data-reveal>
         
-        <transactions :validation-errors="{{ $errors }}" :portfolio="{{$portfolio}}" :origins="{{$origins}}"></transactions>
+        <transactions :validation-errors="{{ $errors }}" :portfolio="{{$portfolio}}" :origins="{{$origins}}" :exchanges="{{$exchanges}}"></transactions>
 
         <button class="close-button" data-close aria-label="Close modal" type="button">
             <span aria-hidden="true">&times;</span>

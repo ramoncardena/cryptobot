@@ -119144,10 +119144,10 @@ var render = function() {
             _vm._m(0, false, false),
             _vm._v(" "),
             _c("div", { staticClass: "small-12 cell form-container" }, [
-              _vm.validationErrors.origin_type
+              _vm.validationErrors.asset_origin
                 ? _c(
                     "div",
-                    _vm._l(_vm.validationErrors.origin_type, function(error) {
+                    _vm._l(_vm.validationErrors.asset_origin, function(error) {
                       return _c("span", { staticClass: "validation-error" }, [
                         _vm._v(" " + _vm._s(error) + " ")
                       ])
@@ -119220,10 +119220,10 @@ var render = function() {
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "small-12 cell form-container" }, [
-              _vm.validationErrors.asset_symbol
+              _vm.validationErrors.asset
                 ? _c(
                     "div",
-                    _vm._l(_vm.validationErrors.asset_symbol, function(error) {
+                    _vm._l(_vm.validationErrors.asset, function(error) {
                       return _c("span", { staticClass: "validation-error" }, [
                         _vm._v(" " + _vm._s(error) + " ")
                       ])
@@ -120383,6 +120383,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             assets: [],
+            noxchgOrigins: [],
             assetAmount: 0,
             transactionOperation: "",
             transactionAmount: 0,
@@ -120397,17 +120398,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             csrf: ""
         };
     },
-    props: ['portfolio', 'origins', 'validation-errors'],
+    props: ['portfolio', 'origins', 'exchanges', 'validation-errors'],
     computed: {},
     watch: {},
     mounted: function mounted() {
-        console.log(this.origins);
+
         var coins = $.map(this.coins, function (a) {
             return a.toString();
         });
 
+        for (var i = 0; i < this.origins.length; i++) {
+            if (this.exchanges.indexOf(this.origins[i].name.toLowerCase()) < 0) {
+                this.noxchgOrigins.push(this.origins[i]);
+            }
+        }
+
         this.csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-        console.log('Component EditAsset mounted.');
+        console.log('Component Transactions mounted.');
     },
 
     methods: {
@@ -120542,7 +120549,7 @@ var render = function() {
                       _vm._v("Select...")
                     ]),
                     _vm._v(" "),
-                    _vm._l(_vm.origins, function(origin) {
+                    _vm._l(_vm.noxchgOrigins, function(origin) {
                       return _c("option", { domProps: { value: origin.id } }, [
                         _vm._v(_vm._s(origin.name) + " ")
                       ])
