@@ -49,8 +49,8 @@
                             <input name="transaction_amount" v-model="transactionAmount" class="input-group-field price number" type="text">
                              <select name="transaction_type" v-model="transactionOperation" id="transaction-operation">
                                 <option disabled value="">Operation</option>
-                                <option value="last">In</option>
-                                <option value="bid">Out</option>
+                                <option value="in">In</option>
+                                <option value="out">Out</option>
                             </select>
                               
                         </div>

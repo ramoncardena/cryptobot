@@ -119742,10 +119742,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
                 // Keep asset on array of assets
                 _this.assets.push(e.asset);
-                _this.modals['editAsset' + e.asset.id] = new Foundation.Reveal($('editAsset' + e.asset.id), {
-                    // These options can be declarative using the data attributes
-                    animationIn: 'scale-in-up'
-                });
 
                 // var elem = new Foundation.Reveal('editAsset'+e.asset.id, 'open');
                 // $('#editAsset'+e.asset.id).foundation();
@@ -120723,9 +120719,9 @@ var render = function() {
                       _vm._v("Operation")
                     ]),
                     _vm._v(" "),
-                    _c("option", { attrs: { value: "last" } }, [_vm._v("In")]),
+                    _c("option", { attrs: { value: "in" } }, [_vm._v("In")]),
                     _vm._v(" "),
-                    _c("option", { attrs: { value: "bid" } }, [_vm._v("Out")])
+                    _c("option", { attrs: { value: "out" } }, [_vm._v("Out")])
                   ]
                 )
               ])

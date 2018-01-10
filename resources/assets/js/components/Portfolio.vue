@@ -303,11 +303,7 @@ export default {
 
                 // Keep asset on array of assets
                 this.assets.push(e.asset);
-                this.modals['editAsset'+e.asset.id] = new Foundation.Reveal($('editAsset'+e.asset.id), {
-                  // These options can be declarative using the data attributes
-                  animationIn: 'scale-in-up',
-                });
-
+                
                 // var elem = new Foundation.Reveal('editAsset'+e.asset.id, 'open');
                 // $('#editAsset'+e.asset.id).foundation();
 
