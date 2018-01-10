@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class PortfolioAsset extends Model
 {
+    protected  $primaryKey = 'id';
+    
 	protected $fillable = [
         'user_id', 'update_id', 'initial_price'
     ];
@@ -18,5 +20,10 @@ class PortfolioAsset extends Model
     public function user()
     {
         return $this->belongsTo('App\User');
+    }
+
+    public function transactions()
+    {
+        return $this->hasMany('App\Transaction');
     }
 }

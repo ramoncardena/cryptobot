@@ -15854,6 +15854,11 @@ section#portfolio-widget .ct-chart-totals .ct-bar {
   stroke-width: 5px;
 }
 
+section#portfolio-widget .asset-edit-button {
+  margin: 0;
+  padding: 0;
+}
+
 section#portfolio-widget .portfolio-assets {
   font-family: 'Nunito', sans-serif;
   display: block;
@@ -15950,5 +15955,17 @@ section#addasset .easy-autocomplete {
 
 section#addasset .easy-autocomplete input {
   width: 100%;
+}
+
+.input-group #transaction-operation {
+  width: 7rem;
+  margin: 0;
+  height: auto;
+  min-width: 0;
+  color: #009ACE;
+}
+
+.input-group .number {
+  text-align: right;
 }
 

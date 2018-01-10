@@ -6,7 +6,7 @@
                 <div class="grid-x grid-padding-x">
                     <!-- Header -->
                     <div class="small-12 cell form-container">
-                        <p class="h1">Portfolio: New Origin</p>
+                        <p class="h2">New Origin</p>
                         <p class="lead"><b>Add new source to your portfolio</b></p>
                     </div>
                     <div class="small-12 cell form-container">

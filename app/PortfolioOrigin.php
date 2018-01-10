@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class PortfolioOrigin extends Model
 {
+	protected  $primaryKey = 'id';
+	
     public function portfolio()
     {
         return $this->belongsTo('App\Portfolio');

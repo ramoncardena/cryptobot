@@ -33,6 +33,9 @@ Route::post('/portfolio/origin', 'PortfolioOriginController@store');
 Route::post('/portfolio/asset', 'PortfolioAssetController@store');
 
 
+Route::patch('/assets/{id}', 'PortfolioAssetController@update');
+Route::patch('/assets/{id}/transaction', 'PortfolioAssetController@settransaction');
+
 Auth::routes();
 
 

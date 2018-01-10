@@ -42,8 +42,9 @@
                     </div>
                 </div>
             </div>         
-        </div>
+        </div>    
     </section>
+    
 </template>
 
 <script>
@@ -55,6 +56,8 @@ export default {
     ],
     data: () => {
         return {
+            assets: [],
+            modals: [],
             totalBtc: 0,
             totalFiat: 0,
             portfolioAssetCount: 0,
@@ -92,7 +95,6 @@ export default {
         this.totalFiat = 0;
         this.uniqueAssetsOriginFiat = [];
         this.uniqueAssetsOriginName = [];
-        
 
         // Setup DATATABLE
         this.portfolioTable = $('#portfolioTable').DataTable( {
@@ -101,9 +103,10 @@ export default {
             "paging": false,
             "info": false,
             "columnDefs": [
-            { "visible": false, "targets": 5 }
+            { "visible": false, "targets": 6 }
             ],
             columns: [
+            { title: ''},
             { title: '<div class="sorting nowrap">Coin</div>'},
             { title: '<div class="sorting nowrap">Amount</div>' },
             { title: '<div class="sorting nowrap">Value (Fiat)</div>' },
@@ -117,10 +120,10 @@ export default {
                 var rows = api.rows( {page:'current'} ).nodes();
                 var last=null;
 
-                api.column(6, {page:'current'} ).data().each( function ( group, i ) {
+                api.column(7, {page:'current'} ).data().each( function ( group, i ) {
                     if ( last !== group ) {
                         $(rows).eq( i ).before(
-                            '<tr class="group"><td colspan="6">'+group+'</td></tr>'
+                            '<tr class="group"><td colspan="7">'+group+'</td></tr>'
                             );
 
                         last = group;
@@ -180,17 +183,20 @@ export default {
             // console.log("Portfolio UpdateID: " + this.portfolio.update_id  + " Asset UpdateID: " + e.asset.update_id);
             if (this.portfolio.update_id == e.asset.update_id) {
 
+                var tools = '<div class="asset-tools nowrap"><button class="clear button" data-open="edit-asset-modal"><i class="fa fa-pencil edit-icon" aria-hidden="true"></i></button></div>';
+
                 // Set coin url, logo, name and symbol
                 var coin = '<div class="asset-info nowrap"><a href="' + e.asset.info_url + '" target="_blank"><img class="asset-img" src="' + e.asset.logo_url + '" width="20"></a> <span class="show-for-medium asset-name">' + e.asset.full_name + '</span> <span class="asset-symbol">' + e.asset.symbol + '</span></div>';
 
                 // Set coin amount
-                var amount = '<div class="asset-amount  nowrap">' + parseFloat(e.asset.amount).toFixed(4) + '</div>'
+                var amount = '<div class="asset-amount nowrap">' + parseFloat(e.asset.amount).toFixed(4) + '</div>'
 
                 // Set coin origin
                 var origin = '<div class="asset-origin  nowrap">' + e.asset.origin_name + '</div>';
 
                 // Add row to the table with the new asset
                 this.portfolioTable.row.add( [
+                    '',
                     coin,
                     amount,
                     parseFloat(e.asset.counter_value).toFixed(2),
@@ -198,7 +204,7 @@ export default {
                     parseFloat(e.asset.price).toFixed(8),
                     e.asset.id,
                     origin
-                ] ).order( [ 6, 'asc' ] ).invalidate().draw();   
+                ] ).order( [ 7, 'asc' ] ).invalidate().draw();   
             }
             
         })
@@ -280,19 +286,29 @@ export default {
 
                 // Locate current coin row in DATATABLE
                 var indexes = this.portfolioTable.rows().eq( 0 ).filter( rowIdx => {
-                    return this.portfolioTable.cell( rowIdx, 5 ).data() === e.asset.id ? true : false;
+                    return this.portfolioTable.cell( rowIdx, 6 ).data() === e.asset.id ? true : false;
                 } );
                 
                 // Update DATATABLE values (Price, Balance and Counter Value)
-                this.portfolioTable.cell(indexes[0], 2).data(counter_value).invalidate();
-                this.portfolioTable.cell(indexes[0], 3).data(balance).invalidate();
-                this.portfolioTable.cell(indexes[0], 4).data(price).invalidate();
+                this.portfolioTable.cell(indexes[0], 3).data(counter_value).invalidate();
+                this.portfolioTable.cell(indexes[0], 4).data(balance).invalidate();
+                this.portfolioTable.cell(indexes[0], 5).data(price).invalidate();
                 // this.portfolioTable.responsive.rebuild();
                 // this.portfolioTable.responsive.recalc();
                 this.portfolioTable.draw();
 
                 // Keep count of number of assets
                 this.portfolioCurrentAssetCount++;
+
+                // Keep asset on array of assets
+                this.assets.push(e.asset);
+                this.modals['editAsset'+e.asset.id] = new Foundation.Reveal($('editAsset'+e.asset.id), {
+                  // These options can be declarative using the data attributes
+                  animationIn: 'scale-in-up',
+                });
+
+                // var elem = new Foundation.Reveal('editAsset'+e.asset.id, 'open');
+                // $('#editAsset'+e.asset.id).foundation();
 
                 // console.log("Asset Count: " + this.portfolioCurrentAssetCount);
                 if (this.portfolioCurrentAssetCount == this.portfolioAssetCount && this.portfolioCurrentAssetCount!=0) {
@@ -302,6 +318,7 @@ export default {
                     this.chartistTotalsChart = new Chartist.Bar('.ct-chart-totals', this.chartistTotalsData, this.chartistTotalsOptions,this.responsiveOptions);
                     this.chartistOriginsChart = new Chartist.Bar('.ct-chart-origins', this.chartistOriginsData, this.chartistOriginsOptions,this.responsiveOptions);
                     this.loadingPortfolio = false;
+
                 }
                 
             }
@@ -322,14 +339,16 @@ export default {
         console.log('Component TradeList mounted.');
     },
     methods: {
+        openModal (id) {
+             this.modals[id].open();
+        },
         refreshPortfolio() {
-            
-
             if (this.portfolioCurrentAssetCount > 0) {
                 this.chartistTotalsChart.detach();
                 this.chartistOriginsChart.detach();
                 this.portfolioTable.clear().draw();
             };
+            this.assets = [];
             this.totalBtc = 0;
             this.totalFiat = 0;
             this.uniqueAssetsBtc = [];

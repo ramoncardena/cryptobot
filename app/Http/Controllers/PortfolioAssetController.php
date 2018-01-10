@@ -11,6 +11,7 @@ use App\User;
 use App\Portfolio;
 use App\PortfolioOrigin;
 use App\PortfolioAsset;
+use App\Transaction;
 
 class PortfolioAssetController extends Controller
 {
@@ -37,7 +38,8 @@ class PortfolioAssetController extends Controller
     		// Validate form
 	        $validatedData = $request->validate([
 	            'asset_symbol' => 'required',
-	            'asset_amount' => 'required'
+	            'asset_amount' => 'required',
+                'asset_initial_price' => 'required'
 	        ]);
 
 	    	$this->user = Auth::user();
@@ -65,16 +67,145 @@ class PortfolioAssetController extends Controller
 	        $asset->balance = 0;
 	        $asset->counter_value = 0;
             $asset->update_id = "-";
-            $asset->initial_price = $request->asset_amount;
+            $asset->initial_price = $request->asset_initial_price;
 	        $asset->save();
 
 	        return redirect('/portfolio');
     	
     	} catch (Exception $e) {
-            dd($e->getMessage());
+    
     		return response($e->getMessage(), 500)->header('Content-Type', 'text/plain');
     		
     	}
     	
     }
+
+    /**
+    * Show the trades dashboard.
+    *
+    * @return \Illuminate\Http\Response
+    */
+    public function get($id)
+    {
+        try {
+
+            $asset = PortfolioAsset::where('id', $id)->first();
+           
+            if ($asset) {
+                return response($asset, 200);
+            }
+            else {
+                return response("No asset found", 500);
+            }
+
+        } catch (Exception $e) {
+
+            return response($e->getMessage(), 500)->header('Content-Type', 'text/plain');
+
+        }
+
+    }
+
+    /**
+     * Show the trades dashboard.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getall()
+    {
+        try {
+            $this->user = Auth::user();
+
+            $portfolio = Portfolio::where('user_id', $this->user->id)->first();
+
+            if ($portfolio->assets) {
+                return response($portfolio->assets, 200);
+            }
+            else {
+                return response("No assets found", 500);
+            }
+
+        } catch (Exception $e) {
+
+            return response($e->getMessage(), 500)->header('Content-Type', 'text/plain');
+
+        }
+
+    }
+
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+         try {
+
+            $asset = PortfolioAsset::where('id', $id)->first();
+
+            $asset->amount = $request->asset_amount;
+            $asset->initial_price = $request->asset_initial_price;
+            $asset->save();
+
+            return redirect('/portfolio');
+
+
+        } catch (Exception $e) {
+
+            return response($e->getMessage(), 500)->header('Content-Type', 'text/plain');
+
+        }
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function settransaction(Request $request, $id)
+    {
+         try {
+            $this->user = Auth::user();
+
+            $asset = PortfolioAsset::where('id', $id)->first();
+            $transaction = new Transaction;
+
+            $transaction->asset_id = $asset->id;
+            $transaction->portfolio_id = $asset->portfolio->id;
+            $transaction->user_id = $this->user->id;
+            $transaction->amount = $request->transaction_amount;
+            $transaction->label = $request->transaction_label;
+            $transaction->type = $request->transaction_type;
+            $transaction->save();
+
+            switch ( strtolower($request->transaction_type)) {
+                case 'in':
+                    $asset->amount = floatval($asset->amount) + floatval($transaction->amount);
+                    $asset->save();
+                    break;
+                
+                case 'out':
+
+                    $asset->amount = floatval($asset->amount) - floatval($transaction->amount);
+                    $asset->save();
+                    break;
+            }
+
+            return redirect('/portfolio');
+
+
+        } catch (Exception $e) {
+
+            return response($e->getMessage(), 500)->header('Content-Type', 'text/plain');
+
+        }
+    }
+
+
 }

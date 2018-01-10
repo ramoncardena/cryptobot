@@ -39,6 +39,8 @@
  Vue.component('notification-list', require('./components/NotificationList.vue'));
  Vue.component('add-origin', require('./components/AddOrigin.vue'));
  Vue.component('add-asset', require('./components/AddAsset.vue'));
+ Vue.component('edit-asset', require('./components/EditAsset.vue'));
+ Vue.component('transactions', require('./components/Transactions.vue'));
  Vue.component('portfolio', require('./components/Portfolio.vue'));
  Vue.component('asset', require('./components/Asset.vue'));
 

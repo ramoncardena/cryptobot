@@ -44277,7 +44277,7 @@ module.exports = Cancel;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(142);
-module.exports = __webpack_require__(271);
+module.exports = __webpack_require__(274);
 
 
 /***/ }),
@@ -44315,8 +44315,10 @@ Vue.component('tradepanel', __webpack_require__(250));
 Vue.component('notification-list', __webpack_require__(253));
 Vue.component('add-origin', __webpack_require__(256));
 Vue.component('add-asset', __webpack_require__(259));
-Vue.component('portfolio', __webpack_require__(262));
-Vue.component('asset', __webpack_require__(265));
+Vue.component('edit-asset', __webpack_require__(262));
+Vue.component('transactions', __webpack_require__(283));
+Vue.component('portfolio', __webpack_require__(265));
+Vue.component('asset', __webpack_require__(268));
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -44329,9 +44331,9 @@ var app = new Vue({
 
 $(document).ready(function () {
 
-    __webpack_require__(268);
-    __webpack_require__(269);
-    __webpack_require__(270);
+    __webpack_require__(271);
+    __webpack_require__(272);
+    __webpack_require__(273);
 
     $.extend($.fn.dataTable.defaults, {
         responsive: true
@@ -118422,7 +118424,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "small-12 cell form-container" }, [
-      _c("p", { staticClass: "h1" }, [_vm._v("Portfolio: New Origin")]),
+      _c("p", { staticClass: "h2" }, [_vm._v("New Origin")]),
       _vm._v(" "),
       _c("p", { staticClass: "lead" }, [
         _c("b", [_vm._v("Add new source to your portfolio")])
@@ -118535,6 +118537,17 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -118810,7 +118823,24 @@ var render = function() {
             _vm._m(1, false, false)
           ]),
           _vm._v(" "),
-          _vm._m(2, false, false)
+          _c("div", { staticClass: "small-12 cell form-container" }, [
+            _vm.validationErrors.asset_initial_price
+              ? _c(
+                  "div",
+                  _vm._l(_vm.validationErrors.asset_initial_price, function(
+                    error
+                  ) {
+                    return _c("span", { staticClass: "validation-error" }, [
+                      _vm._v(" " + _vm._s(error) + " ")
+                    ])
+                  })
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm._m(2, false, false)
+          ]),
+          _vm._v(" "),
+          _vm._m(3, false, false)
         ])
       ])
     ])
@@ -118841,6 +118871,23 @@ var staticRenderFns = [
       _c("input", {
         staticClass: "input-group-field number",
         attrs: { name: "asset_amount", type: "text" }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-group" }, [
+      _c("span", { staticClass: "input-group-label" }, [
+        _vm._v(
+          "\n                            Initial Price\n                        "
+        )
+      ]),
+      _vm._v(" "),
+      _c("input", {
+        staticClass: "input-group-field number",
+        attrs: { name: "asset_initial_price", type: "text" }
       })
     ])
   },
@@ -118892,7 +118939,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/Portfolio.vue"
+Component.options.__file = "resources/assets/js/components/EditAsset.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
 
 /* hot reload */
@@ -118902,9 +118949,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-2002e121", Component.options)
+    hotAPI.createRecord("data-v-25d6e042", Component.options)
   } else {
-    hotAPI.reload("data-v-2002e121", Component.options)
+    hotAPI.reload("data-v-25d6e042", Component.options)
 ' + '  }
   module.hot.dispose(function (data) {
     disposed = true
@@ -118968,6 +119015,506 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: 'edit-asset',
+    data: function data() {
+        return {
+            assets: [],
+            assetAmount: 0,
+            assetInitialPrice: 0,
+            assetSelected: "",
+            coinSelected: "",
+            coin: "",
+            originSelected: "",
+            originSelectedName: "",
+            updating: false,
+            csrf: ""
+        };
+    },
+    props: ['portfolio', 'origins', 'validation-errors'],
+    computed: {},
+    watch: {},
+    mounted: function mounted() {
+        console.log(this.origins);
+        var coins = $.map(this.coins, function (a) {
+            return a.toString();
+        });
+
+        this.csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        console.log('Component EditAsset mounted.');
+    },
+
+    methods: {
+        loadAssets: function loadAssets() {
+            var _this = this;
+
+            for (var i = 0; i < this.origins.length; i++) {
+                if (this.origins[i].id == this.originSelected) this.originSelectedName = this.origins[i].name;
+            }
+
+            this.assets = [];
+
+            // Call the LoadPortfolio event asyncronously
+            var uri = '/api/assets';
+            axios(uri, {
+                method: 'GET'
+            }).then(function (response) {
+                for (var i = 0; i < response.data.length; i++) {
+                    if (response.data[i].origin_id == _this.originSelected) _this.assets.push(response.data[i]);
+                }
+                console.log("Retieving assets...");
+            }).catch(function (e) {
+                _this.errors.push(e);
+
+                console.log("Error: " + e.message);
+            });
+        },
+        loadAssetData: function loadAssetData(assetId) {
+            var _this2 = this;
+
+            // Call the LoadPortfolio event asyncronously
+            var uri = '/api/assets/' + assetId;
+            axios(uri, {
+                method: 'GET'
+            }).then(function (response) {
+                _this2.assetAmount = response.data.amount;
+                _this2.assetInitialPrice = response.data.initial_price;
+                console.log("Retieving asset...");
+            }).catch(function (e) {
+                _this2.errors.push(e);
+
+                console.log("Error: " + e.message);
+            });
+        }
+    }
+});
+
+/***/ }),
+/* 264 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("section", { attrs: { id: "editasset" } }, [
+    _c("div", { staticClass: "grid-container fluid edit-asset" }, [
+      _c(
+        "form",
+        { attrs: { method: "POST", action: "/assets/" + _vm.assetSelected } },
+        [
+          _c("input", {
+            attrs: { type: "hidden", name: "_token" },
+            domProps: { value: _vm.csrf }
+          }),
+          _vm._v(" "),
+          _c("input", {
+            attrs: { name: "_method", type: "hidden", value: "PATCH" }
+          }),
+          _vm._v(" "),
+          _c("div", { staticClass: "grid-x grid-padding-x" }, [
+            _vm._m(0, false, false),
+            _vm._v(" "),
+            _c("div", { staticClass: "small-12 cell form-container" }, [
+              _vm.validationErrors.origin_type
+                ? _c(
+                    "div",
+                    _vm._l(_vm.validationErrors.origin_type, function(error) {
+                      return _c("span", { staticClass: "validation-error" }, [
+                        _vm._v(" " + _vm._s(error) + " ")
+                      ])
+                    })
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _c("div", { staticClass: "input-group" }, [
+                _c("span", { staticClass: "input-group-label" }, [
+                  _vm._v("Origin")
+                ]),
+                _vm._v(" "),
+                _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.originSelected,
+                        expression: "originSelected"
+                      }
+                    ],
+                    staticClass: "input-group-field",
+                    attrs: { name: "asset_origin" },
+                    on: {
+                      change: [
+                        function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.originSelected = $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        },
+                        function($event) {
+                          _vm.loadAssets()
+                        }
+                      ]
+                    }
+                  },
+                  [
+                    _c("option", { attrs: { disabled: "", value: "" } }, [
+                      _vm._v("Select...")
+                    ]),
+                    _vm._v(" "),
+                    _vm._l(_vm.origins, function(origin) {
+                      return _c("option", { domProps: { value: origin.id } }, [
+                        _vm._v(_vm._s(origin.name) + " ")
+                      ])
+                    })
+                  ],
+                  2
+                ),
+                _vm._v(" "),
+                _c("input", {
+                  attrs: {
+                    id: "asset-origin-name",
+                    name: "asset_origin_name",
+                    type: "hidden"
+                  },
+                  domProps: { value: _vm.originSelectedName }
+                })
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "small-12 cell form-container" }, [
+              _vm.validationErrors.asset_symbol
+                ? _c(
+                    "div",
+                    _vm._l(_vm.validationErrors.asset_symbol, function(error) {
+                      return _c("span", { staticClass: "validation-error" }, [
+                        _vm._v(" " + _vm._s(error) + " ")
+                      ])
+                    })
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _c("div", { staticClass: "input-group" }, [
+                _c("span", { staticClass: "input-group-label" }, [
+                  _vm._v("Asset")
+                ]),
+                _vm._v(" "),
+                _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.assetSelected,
+                        expression: "assetSelected"
+                      }
+                    ],
+                    staticClass: "input-group-field",
+                    attrs: { name: "asset" },
+                    on: {
+                      change: [
+                        function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.assetSelected = $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        },
+                        function($event) {
+                          _vm.loadAssetData(_vm.assetSelected)
+                        }
+                      ]
+                    }
+                  },
+                  [
+                    _c("option", { attrs: { disabled: "", value: "" } }, [
+                      _vm._v("Select...")
+                    ]),
+                    _vm._v(" "),
+                    _vm._l(_vm.assets, function(asset) {
+                      return _c("option", { domProps: { value: asset.id } }, [
+                        _vm._v(" " + _vm._s(asset.symbol) + " ")
+                      ])
+                    })
+                  ],
+                  2
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "small-12 cell form-container" }, [
+              _vm.validationErrors.asset_amount
+                ? _c(
+                    "div",
+                    _vm._l(_vm.validationErrors.asset_amount, function(error) {
+                      return _c("span", { staticClass: "validation-error" }, [
+                        _vm._v(" " + _vm._s(error) + " ")
+                      ])
+                    })
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _c("div", { staticClass: "input-group" }, [
+                _c("span", { staticClass: "input-group-label" }, [
+                  _vm._v(
+                    "\n                            Amount\n                        "
+                  )
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.assetAmount,
+                      expression: "assetAmount"
+                    }
+                  ],
+                  staticClass: "input-group-field number",
+                  attrs: { name: "asset_amount", type: "text" },
+                  domProps: { value: _vm.assetAmount },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.assetAmount = $event.target.value
+                    }
+                  }
+                })
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "small-12 cell form-container" }, [
+              _vm.validationErrors.asset_initial_price
+                ? _c(
+                    "div",
+                    _vm._l(_vm.validationErrors.asset_initial_price, function(
+                      error
+                    ) {
+                      return _c("span", { staticClass: "validation-error" }, [
+                        _vm._v(" " + _vm._s(error) + " ")
+                      ])
+                    })
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _c("div", { staticClass: "input-group" }, [
+                _c("span", { staticClass: "input-group-label" }, [
+                  _vm._v(
+                    "\n                            Purchase Price\n                        "
+                  )
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.assetInitialPrice,
+                      expression: "assetInitialPrice"
+                    }
+                  ],
+                  staticClass: "input-group-field number",
+                  attrs: { name: "asset_initial_price", type: "text" },
+                  domProps: { value: _vm.assetInitialPrice },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.assetInitialPrice = $event.target.value
+                    }
+                  }
+                })
+              ])
+            ]),
+            _vm._v(" "),
+            _vm._m(1, false, false)
+          ])
+        ]
+      )
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "small-12 cell form-container" }, [
+      _c("p", { staticClass: "h2" }, [_vm._v("Edit Asset")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "small-12 cell form-container" }, [
+      _c(
+        "button",
+        { staticClass: "hollow button", attrs: { type: "submit" } },
+        [_vm._v("\n                       Save Asset\n                    ")]
+      )
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-25d6e042", module.exports)
+  }
+}
+
+/***/ }),
+/* 265 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(3)
+/* script */
+var __vue_script__ = __webpack_require__(266)
+/* template */
+var __vue_template__ = __webpack_require__(267)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/Portfolio.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-2002e121", Component.options)
+  } else {
+    hotAPI.reload("data-v-2002e121", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 266 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -118975,6 +119522,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     props: ['portfolio'],
     data: function data() {
         return {
+            assets: [],
+            modals: [],
             totalBtc: 0,
             totalFiat: 0,
             portfolioAssetCount: 0,
@@ -119019,16 +119568,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             "responsive": true,
             "paging": false,
             "info": false,
-            "columnDefs": [{ "visible": false, "targets": 5 }],
-            columns: [{ title: '<div class="sorting nowrap">Coin</div>' }, { title: '<div class="sorting nowrap">Amount</div>' }, { title: '<div class="sorting nowrap">Value (Fiat)</div>' }, { title: '<div class="sorting nowrap">Value (BTC)</div>' }, { title: '<div class="sorting nowrap">Price</div>' }, { title: '<div class="sorting nowrap">Asset ID</div>' }, { title: '<div class="sorting_asc nowrap">Origin</div>' }],
+            "columnDefs": [{ "visible": false, "targets": 6 }],
+            columns: [{ title: '' }, { title: '<div class="sorting nowrap">Coin</div>' }, { title: '<div class="sorting nowrap">Amount</div>' }, { title: '<div class="sorting nowrap">Value (Fiat)</div>' }, { title: '<div class="sorting nowrap">Value (BTC)</div>' }, { title: '<div class="sorting nowrap">Price</div>' }, { title: '<div class="sorting nowrap">Asset ID</div>' }, { title: '<div class="sorting_asc nowrap">Origin</div>' }],
             "drawCallback": function drawCallback(settings) {
                 var api = this.api();
                 var rows = api.rows({ page: 'current' }).nodes();
                 var last = null;
 
-                api.column(6, { page: 'current' }).data().each(function (group, i) {
+                api.column(7, { page: 'current' }).data().each(function (group, i) {
                     if (last !== group) {
-                        $(rows).eq(i).before('<tr class="group"><td colspan="6">' + group + '</td></tr>');
+                        $(rows).eq(i).before('<tr class="group"><td colspan="7">' + group + '</td></tr>');
 
                         last = group;
                     }
@@ -119082,17 +119631,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             // console.log("Portfolio UpdateID: " + this.portfolio.update_id  + " Asset UpdateID: " + e.asset.update_id);
             if (_this.portfolio.update_id == e.asset.update_id) {
 
+                var tools = '<div class="asset-tools nowrap"><button class="clear button" data-open="edit-asset-modal"><i class="fa fa-pencil edit-icon" aria-hidden="true"></i></button></div>';
+
                 // Set coin url, logo, name and symbol
                 var coin = '<div class="asset-info nowrap"><a href="' + e.asset.info_url + '" target="_blank"><img class="asset-img" src="' + e.asset.logo_url + '" width="20"></a> <span class="show-for-medium asset-name">' + e.asset.full_name + '</span> <span class="asset-symbol">' + e.asset.symbol + '</span></div>';
 
                 // Set coin amount
-                var amount = '<div class="asset-amount  nowrap">' + parseFloat(e.asset.amount).toFixed(4) + '</div>';
+                var amount = '<div class="asset-amount nowrap">' + parseFloat(e.asset.amount).toFixed(4) + '</div>';
 
                 // Set coin origin
                 var origin = '<div class="asset-origin  nowrap">' + e.asset.origin_name + '</div>';
 
                 // Add row to the table with the new asset
-                _this.portfolioTable.row.add([coin, amount, parseFloat(e.asset.counter_value).toFixed(2), parseFloat(e.asset.balance).toFixed(8), parseFloat(e.asset.price).toFixed(8), e.asset.id, origin]).order([6, 'asc']).invalidate().draw();
+                _this.portfolioTable.row.add(['', coin, amount, parseFloat(e.asset.counter_value).toFixed(2), parseFloat(e.asset.balance).toFixed(8), parseFloat(e.asset.price).toFixed(8), e.asset.id, origin]).order([7, 'asc']).invalidate().draw();
             }
         }).listen('PortfolioAssetUpdated', function (e) {
             // ************
@@ -119168,19 +119719,29 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
                 // Locate current coin row in DATATABLE
                 var indexes = _this.portfolioTable.rows().eq(0).filter(function (rowIdx) {
-                    return _this.portfolioTable.cell(rowIdx, 5).data() === e.asset.id ? true : false;
+                    return _this.portfolioTable.cell(rowIdx, 6).data() === e.asset.id ? true : false;
                 });
 
                 // Update DATATABLE values (Price, Balance and Counter Value)
-                _this.portfolioTable.cell(indexes[0], 2).data(counter_value).invalidate();
-                _this.portfolioTable.cell(indexes[0], 3).data(balance).invalidate();
-                _this.portfolioTable.cell(indexes[0], 4).data(price).invalidate();
+                _this.portfolioTable.cell(indexes[0], 3).data(counter_value).invalidate();
+                _this.portfolioTable.cell(indexes[0], 4).data(balance).invalidate();
+                _this.portfolioTable.cell(indexes[0], 5).data(price).invalidate();
                 // this.portfolioTable.responsive.rebuild();
                 // this.portfolioTable.responsive.recalc();
                 _this.portfolioTable.draw();
 
                 // Keep count of number of assets
                 _this.portfolioCurrentAssetCount++;
+
+                // Keep asset on array of assets
+                _this.assets.push(e.asset);
+                _this.modals['editAsset' + e.asset.id] = new Foundation.Reveal($('editAsset' + e.asset.id), {
+                    // These options can be declarative using the data attributes
+                    animationIn: 'scale-in-up'
+                });
+
+                // var elem = new Foundation.Reveal('editAsset'+e.asset.id, 'open');
+                // $('#editAsset'+e.asset.id).foundation();
 
                 // console.log("Asset Count: " + this.portfolioCurrentAssetCount);
                 if (_this.portfolioCurrentAssetCount == _this.portfolioAssetCount && _this.portfolioCurrentAssetCount != 0) {
@@ -119207,6 +119768,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     methods: {
+        openModal: function openModal(id) {
+            this.modals[id].open();
+        },
         refreshPortfolio: function refreshPortfolio() {
             var _this2 = this;
 
@@ -119215,6 +119779,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 this.chartistOriginsChart.detach();
                 this.portfolioTable.clear().draw();
             };
+            this.assets = [];
             this.totalBtc = 0;
             this.totalFiat = 0;
             this.uniqueAssetsBtc = [];
@@ -119245,7 +119810,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 264 */
+/* 267 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -119410,15 +119975,15 @@ if (false) {
 }
 
 /***/ }),
-/* 265 */
+/* 268 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(266)
+var __vue_script__ = __webpack_require__(269)
 /* template */
-var __vue_template__ = __webpack_require__(267)
+var __vue_template__ = __webpack_require__(270)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -119458,7 +120023,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 266 */
+/* 269 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -119521,7 +120086,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 267 */
+/* 270 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -119635,7 +120200,7 @@ if (false) {
 }
 
 /***/ }),
-/* 268 */
+/* 271 */
 /***/ (function(module, exports) {
 
 //////////////////////////////////////////////////////////////////
@@ -119651,22 +120216,592 @@ $('#notificationsModal').on('closed.zf.reveal', function () {
 });
 
 /***/ }),
-/* 269 */
+/* 272 */
 /***/ (function(module, exports) {
 
 $('.alerts-callout').hide().delay(1000).fadeIn(2000).delay(5000).fadeOut(1000);
 
 /***/ }),
-/* 270 */
+/* 273 */
 /***/ (function(module, exports) {
 
 
 
 /***/ }),
-/* 271 */
+/* 274 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 275 */,
+/* 276 */,
+/* 277 */,
+/* 278 */,
+/* 279 */,
+/* 280 */,
+/* 281 */,
+/* 282 */,
+/* 283 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(3)
+/* script */
+var __vue_script__ = __webpack_require__(284)
+/* template */
+var __vue_template__ = __webpack_require__(285)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/Transactions.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-2554e88c", Component.options)
+  } else {
+    hotAPI.reload("data-v-2554e88c", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 284 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: 'transactions',
+    data: function data() {
+        return {
+            assets: [],
+            assetAmount: 0,
+            transactionOperation: "",
+            transactionAmount: 0,
+            transactionLabel: "",
+            assetInitialPrice: 0,
+            assetSelected: "",
+            coinSelected: "",
+            coin: "",
+            originSelected: "",
+            originSelectedName: "",
+            updating: false,
+            csrf: ""
+        };
+    },
+    props: ['portfolio', 'origins', 'validation-errors'],
+    computed: {},
+    watch: {},
+    mounted: function mounted() {
+        console.log(this.origins);
+        var coins = $.map(this.coins, function (a) {
+            return a.toString();
+        });
+
+        this.csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        console.log('Component EditAsset mounted.');
+    },
+
+    methods: {
+        loadAssets: function loadAssets() {
+            var _this = this;
+
+            for (var i = 0; i < this.origins.length; i++) {
+                if (this.origins[i].id == this.originSelected) this.originSelectedName = this.origins[i].name;
+            }
+
+            this.assets = [];
+
+            // Call the LoadPortfolio event asyncronously
+            var uri = '/api/assets';
+            axios(uri, {
+                method: 'GET'
+            }).then(function (response) {
+                for (var i = 0; i < response.data.length; i++) {
+                    if (response.data[i].origin_id == _this.originSelected) _this.assets.push(response.data[i]);
+                }
+                console.log("Retieving assets...");
+            }).catch(function (e) {
+                _this.errors.push(e);
+
+                console.log("Error: " + e.message);
+            });
+        },
+        loadAssetData: function loadAssetData(assetId) {
+            var _this2 = this;
+
+            // Call the LoadPortfolio event asyncronously
+            var uri = '/api/assets/' + assetId;
+            axios(uri, {
+                method: 'GET'
+            }).then(function (response) {
+                _this2.assetAmount = response.data.amount;
+                _this2.assetInitialPrice = response.data.initial_price;
+                console.log("Retieving asset...");
+            }).catch(function (e) {
+                _this2.errors.push(e);
+
+                console.log("Error: " + e.message);
+            });
+        }
+    }
+});
+
+/***/ }),
+/* 285 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("section", { attrs: { id: "transactions" } }, [
+    _c("div", { staticClass: "grid-container fluid transactions" }, [
+      _c(
+        "form",
+        {
+          attrs: {
+            method: "POST",
+            action: "/assets/" + _vm.assetSelected + "/transaction"
+          }
+        },
+        [
+          _c("input", {
+            attrs: { type: "hidden", name: "_token" },
+            domProps: { value: _vm.csrf }
+          }),
+          _vm._v(" "),
+          _c("input", {
+            attrs: { name: "_method", type: "hidden", value: "PATCH" }
+          }),
+          _vm._v(" "),
+          _c("div", { staticClass: "grid-x grid-padding-x" }, [
+            _vm._m(0, false, false),
+            _vm._v(" "),
+            _c("div", { staticClass: "small-12 cell form-container" }, [
+              _vm.validationErrors.origin_type
+                ? _c(
+                    "div",
+                    _vm._l(_vm.validationErrors.origin_type, function(error) {
+                      return _c("span", { staticClass: "validation-error" }, [
+                        _vm._v(" " + _vm._s(error) + " ")
+                      ])
+                    })
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _c("div", { staticClass: "input-group" }, [
+                _c("span", { staticClass: "input-group-label" }, [
+                  _vm._v("Origin")
+                ]),
+                _vm._v(" "),
+                _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.originSelected,
+                        expression: "originSelected"
+                      }
+                    ],
+                    staticClass: "input-group-field",
+                    attrs: { name: "asset_origin" },
+                    on: {
+                      change: [
+                        function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.originSelected = $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        },
+                        function($event) {
+                          _vm.loadAssets()
+                        }
+                      ]
+                    }
+                  },
+                  [
+                    _c("option", { attrs: { disabled: "", value: "" } }, [
+                      _vm._v("Select...")
+                    ]),
+                    _vm._v(" "),
+                    _vm._l(_vm.origins, function(origin) {
+                      return _c("option", { domProps: { value: origin.id } }, [
+                        _vm._v(_vm._s(origin.name) + " ")
+                      ])
+                    })
+                  ],
+                  2
+                ),
+                _vm._v(" "),
+                _c("input", {
+                  attrs: {
+                    id: "asset-origin-name",
+                    name: "asset_origin_name",
+                    type: "hidden"
+                  },
+                  domProps: { value: _vm.originSelectedName }
+                })
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "small-12 cell form-container" }, [
+              _vm.validationErrors.asset_symbol
+                ? _c(
+                    "div",
+                    _vm._l(_vm.validationErrors.asset_symbol, function(error) {
+                      return _c("span", { staticClass: "validation-error" }, [
+                        _vm._v(" " + _vm._s(error) + " ")
+                      ])
+                    })
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _c("div", { staticClass: "input-group" }, [
+                _c("span", { staticClass: "input-group-label" }, [
+                  _vm._v("Asset")
+                ]),
+                _vm._v(" "),
+                _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.assetSelected,
+                        expression: "assetSelected"
+                      }
+                    ],
+                    staticClass: "input-group-field",
+                    attrs: { name: "asset" },
+                    on: {
+                      change: [
+                        function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.assetSelected = $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        },
+                        function($event) {
+                          _vm.loadAssetData(_vm.assetSelected)
+                        }
+                      ]
+                    }
+                  },
+                  [
+                    _c("option", { attrs: { disabled: "", value: "" } }, [
+                      _vm._v("Select...")
+                    ]),
+                    _vm._v(" "),
+                    _vm._l(_vm.assets, function(asset) {
+                      return _c("option", { domProps: { value: asset.id } }, [
+                        _vm._v(" " + _vm._s(asset.symbol) + " ")
+                      ])
+                    })
+                  ],
+                  2
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "small-12 cell form-container" }, [
+              _vm.validationErrors.transaction_amount
+                ? _c(
+                    "div",
+                    _vm._l(_vm.validationErrors.transaction_amount, function(
+                      error
+                    ) {
+                      return _c("span", { staticClass: "validation-error" }, [
+                        _vm._v(" " + _vm._s(error) + " ")
+                      ])
+                    })
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _c("div", { staticClass: "input-group" }, [
+                _c("span", { staticClass: "input-group-label" }, [
+                  _vm._v(
+                    "\n                             Amount\n                        "
+                  )
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.transactionAmount,
+                      expression: "transactionAmount"
+                    }
+                  ],
+                  staticClass: "input-group-field price number",
+                  attrs: { name: "transaction_amount", type: "text" },
+                  domProps: { value: _vm.transactionAmount },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.transactionAmount = $event.target.value
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.transactionOperation,
+                        expression: "transactionOperation"
+                      }
+                    ],
+                    attrs: {
+                      name: "transaction_type",
+                      id: "transaction-operation"
+                    },
+                    on: {
+                      change: function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.transactionOperation = $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      }
+                    }
+                  },
+                  [
+                    _c("option", { attrs: { disabled: "", value: "" } }, [
+                      _vm._v("Operation")
+                    ]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "last" } }, [_vm._v("In")]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "bid" } }, [_vm._v("Out")])
+                  ]
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "small-12 cell form-container" }, [
+              _vm.validationErrors.asset_initial_price
+                ? _c(
+                    "div",
+                    _vm._l(_vm.validationErrors.asset_initial_price, function(
+                      error
+                    ) {
+                      return _c("span", { staticClass: "validation-error" }, [
+                        _vm._v(" " + _vm._s(error) + " ")
+                      ])
+                    })
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _c("div", { staticClass: "input-group" }, [
+                _c("span", { staticClass: "input-group-label" }, [
+                  _vm._v(
+                    "\n                            Label\n                        "
+                  )
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.transactionLabel,
+                      expression: "transactionLabel"
+                    }
+                  ],
+                  staticClass: "input-group-field number",
+                  attrs: { name: "transaction_label", type: "text" },
+                  domProps: { value: _vm.transactionLabel },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.transactionLabel = $event.target.value
+                    }
+                  }
+                })
+              ])
+            ]),
+            _vm._v(" "),
+            _vm._m(1, false, false)
+          ])
+        ]
+      )
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "small-12 cell form-container" }, [
+      _c("p", { staticClass: "h2" }, [_vm._v("Add Transaction")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "small-12 cell form-container" }, [
+      _c(
+        "button",
+        { staticClass: "hollow button", attrs: { type: "submit" } },
+        [
+          _vm._v(
+            "\n                       Execute Transaction\n                    "
+          )
+        ]
+      )
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-2554e88c", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

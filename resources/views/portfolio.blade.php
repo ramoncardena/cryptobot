@@ -36,6 +36,8 @@
                         @endempty
                         @isset($portfolio)
                         <div>
+                            <button class="button hollow" data-open="edit-asset-modal"><i class="fa fa-pencil" aria-hidden="true"></i> <span class="show-for-medium">Edit Assets</span> </button>
+                            <button class="button hollow" data-open="transactions-modal"><i class="fa fa-exchange" aria-hidden="true"></i> <span class="show-for-medium">Transactions</span> </button>
                             <button class="button hollow" data-open="new-asset-modal"><span class="show-for-small-only">+ </span><i class="fa fa-btc" aria-hidden="true"></i> <span class="show-for-medium">Add Asset</span> </button>
                             <button class="button hollow" data-open="new-origin-modal"><span class="show-for-small-only">+ </span><i class="fa fa-plug" aria-hidden="true"></i> <span class="show-for-medium">Add Origin</span> </button>
                         </div>
@@ -74,5 +76,25 @@
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
+    <!-- MODAL: Edit Asset -->
+    <div class="reveal portfolio-modal" id="edit-asset-modal" data-reveal>
+        
+        <edit-asset :validation-errors="{{ $errors }}" :portfolio="{{$portfolio}}" :origins="{{$origins}}"></edit-asset>
+
+        <button class="close-button" data-close aria-label="Close modal" type="button">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+     <!-- MODAL: Transactions -->
+    <div class="reveal portfolio-modal" id="transactions-modal" data-reveal>
+        
+        <transactions :validation-errors="{{ $errors }}" :portfolio="{{$portfolio}}" :origins="{{$origins}}"></transactions>
+
+        <button class="close-button" data-close aria-label="Close modal" type="button">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    
 </section>
 @endsection

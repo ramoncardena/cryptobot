@@ -41,6 +41,11 @@ class User extends Authenticatable
         return $this->hasMany('App\PortfolioAsset');
     }
 
+    public function transactions()
+    {
+        return $this->hasMany('App\Transaction');
+    }
+
     public function origins()
     {
         return $this->hasMany('App\PortfolioOrigin');
