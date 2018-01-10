@@ -81,7 +81,8 @@ export default {
             chartistOriginsData: {labels: [], series: []},
             chartistOriginsChart: {},
             chartistOriginsOptions: [],
-            responsiveOptions: []
+            responsiveOptions: [],
+            errors: []
         }
     },
     computed: {

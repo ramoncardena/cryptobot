@@ -78,8 +78,8 @@
     </div>
     <!-- MODAL: Edit Asset -->
     <div class="reveal portfolio-modal" id="edit-asset-modal" data-reveal>
-        
-        <edit-asset :validation-errors="{{ $errors }}" :portfolio="{{$portfolio}}" :origins="{{$origins}}"></edit-asset>
+         
+        <edit-asset :validation-errors="{{ $errors }}" :portfolio="{{$portfolio}}" :origins="{{$origins}}" :exchanges="{{$exchanges}}"></edit-asset>
 
         <button class="close-button" data-close aria-label="Close modal" type="button">
             <span aria-hidden="true">&times;</span>

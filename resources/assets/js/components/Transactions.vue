@@ -98,7 +98,8 @@
             originSelected: "",
             originSelectedName: "",
             updating: false,
-            csrf: ""
+            csrf: "",
+            errors: []
         }
     },
     props: [

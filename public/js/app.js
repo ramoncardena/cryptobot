@@ -119048,6 +119048,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             assets: [],
+            noxchgOrigins: [],
             assetAmount: 0,
             assetInitialPrice: 0,
             assetSelected: "",
@@ -119056,17 +119057,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             originSelected: "",
             originSelectedName: "",
             updating: false,
-            csrf: ""
+            csrf: "",
+            errors: []
         };
     },
-    props: ['portfolio', 'origins', 'validation-errors'],
+    props: ['portfolio', 'origins', 'exchanges', 'validation-errors'],
     computed: {},
     watch: {},
     mounted: function mounted() {
-        console.log(this.origins);
+
         var coins = $.map(this.coins, function (a) {
             return a.toString();
         });
+
+        for (var i = 0; i < this.origins.length; i++) {
+            if (this.exchanges.indexOf(this.origins[i].name.toLowerCase()) < 0) {
+                this.noxchgOrigins.push(this.origins[i]);
+            }
+        }
 
         this.csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         console.log('Component EditAsset mounted.');
@@ -119090,10 +119098,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 for (var i = 0; i < response.data.length; i++) {
                     if (response.data[i].origin_id == _this.originSelected) _this.assets.push(response.data[i]);
                 }
-                console.log("Retieving assets...");
             }).catch(function (e) {
                 _this.errors.push(e);
-
                 console.log("Error: " + e.message);
             });
         },
@@ -119199,7 +119205,7 @@ var render = function() {
                       _vm._v("Select...")
                     ]),
                     _vm._v(" "),
-                    _vm._l(_vm.origins, function(origin) {
+                    _vm._l(_vm.noxchgOrigins, function(origin) {
                       return _c("option", { domProps: { value: origin.id } }, [
                         _vm._v(_vm._s(origin.name) + " ")
                       ])
@@ -119547,7 +119553,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             chartistOriginsData: { labels: [], series: [] },
             chartistOriginsChart: {},
             chartistOriginsOptions: [],
-            responsiveOptions: []
+            responsiveOptions: [],
+            errors: []
         };
     },
     computed: {},
@@ -120395,7 +120402,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             originSelected: "",
             originSelectedName: "",
             updating: false,
-            csrf: ""
+            csrf: "",
+            errors: []
         };
     },
     props: ['portfolio', 'origins', 'exchanges', 'validation-errors'],
