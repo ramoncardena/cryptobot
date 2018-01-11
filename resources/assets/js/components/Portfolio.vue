@@ -307,10 +307,14 @@ export default {
                 } );
 
                 // Update DATATABLE values (Price, Balance and Counter Value)
-                this.portfolioTable.cell(indexes[0], 3).data(counter_value).invalidate();
-                this.portfolioTable.cell(indexes[0], 4).data(balance).invalidate();
-                this.portfolioTable.cell(indexes[0], 5).data(price).invalidate();
-
+                var formated_counter_value = '<span class="nowrap">' + this.counterValueSymbolHtml + parseFloat(counter_value).toFixed(2)  + '</span>';
+                var formated_balance = '<span class="nowrap"><i class="fa fa-btc" aria-hidden="true"></i>' + parseFloat(balance).toFixed(8) + '</span>';
+                var formated_price = '<span class="nowrap"><i class="fa fa-btc" aria-hidden="true"></i>' + parseFloat(price).toFixed(8) + '</span>';
+                this.portfolioTable.cell(indexes[0], 3).data(formated_counter_value).invalidate();
+                this.portfolioTable.cell(indexes[0], 4).data(formated_balance).invalidate();
+                this.portfolioTable.cell(indexes[0], 5).data(formated_price).invalidate();
+                
+                var balance = '<i class="fa fa-btc" aria-hidden="true"></i>' + parseFloat(e.asset.balance).toFixed(8);
                 if (e.asset.initial_price == 0 ) {
                     var profit = "-";
                 }
@@ -360,8 +364,6 @@ export default {
                 }
                 
             }
-           
-
         });
         Echo.private('portfolios.' + this.portfolio.id)
         .listen('PortfolioLoaded', (e) => {
@@ -371,6 +373,7 @@ export default {
             
             // console.log("Asset count: " + e.assetCount);
             this.counterValueSymbol = this.portfolio.counter_value.toUpperCase();
+            this.counterValueSymbolHtml = '<i class="fa fa-' + this.portfolio.counter_value.toLowerCase() + ' aria-hidden="true"></i>';
             this.portfolioAssetCount = e.assetCount;
         });
 

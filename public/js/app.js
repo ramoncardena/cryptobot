@@ -120316,10 +120316,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 });
 
                 // Update DATATABLE values (Price, Balance and Counter Value)
-                _this.portfolioTable.cell(indexes[0], 3).data(counter_value).invalidate();
-                _this.portfolioTable.cell(indexes[0], 4).data(balance).invalidate();
-                _this.portfolioTable.cell(indexes[0], 5).data(price).invalidate();
+                var formated_counter_value = '<span class="nowrap">' + _this.counterValueSymbolHtml + parseFloat(counter_value).toFixed(2) + '</span>';
+                var formated_balance = '<span class="nowrap"><i class="fa fa-btc" aria-hidden="true"></i>' + parseFloat(balance).toFixed(8) + '</span>';
+                var formated_price = '<span class="nowrap"><i class="fa fa-btc" aria-hidden="true"></i>' + parseFloat(price).toFixed(8) + '</span>';
+                _this.portfolioTable.cell(indexes[0], 3).data(formated_counter_value).invalidate();
+                _this.portfolioTable.cell(indexes[0], 4).data(formated_balance).invalidate();
+                _this.portfolioTable.cell(indexes[0], 5).data(formated_price).invalidate();
 
+                var balance = '<i class="fa fa-btc" aria-hidden="true"></i>' + parseFloat(e.asset.balance).toFixed(8);
                 if (e.asset.initial_price == 0) {
                     var profit = "-";
                 } else {
@@ -120372,6 +120376,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             // console.log("Asset count: " + e.assetCount);
             _this.counterValueSymbol = _this.portfolio.counter_value.toUpperCase();
+            _this.counterValueSymbolHtml = '<i class="fa fa-' + _this.portfolio.counter_value.toLowerCase() + ' aria-hidden="true"></i>';
             _this.portfolioAssetCount = e.assetCount;
         });
 
