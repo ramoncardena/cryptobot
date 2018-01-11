@@ -151,10 +151,12 @@ class LoadPortfolio implements ShouldQueue
 
                             // Get exchange asset avarage buy price
                             $brokerResponse = $broker->getPurchasePrice('BTC-' . $coin->Currency, $coin->Balance);
-
-                                var_dump($brokerResponse);
+                        
                             if ($brokerResponse->success) {
                                 $asset->initial_price = $brokerResponse->result->AvaragePrice;
+                            }
+                            else {
+                                $asset->initial_price = 0;
                             }
                             $asset->save();
                         }
