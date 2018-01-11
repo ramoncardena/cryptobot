@@ -16086,6 +16086,12 @@ section#portfolio-widget .loss {
   font-weight: 600;
 }
 
+section#portfolio-widget .biggest {
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  margin-left: 0.2rem;
+}
+
 section#portfolio-widget .ct-chart-totals .ct-bar {
   stroke-width: 5px;
 }

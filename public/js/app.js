@@ -120091,6 +120091,27 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -120101,6 +120122,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             assets: [],
             totalBtc: 0,
             totalFiat: 0,
+            biggestLoser: { symbol: "", profit: 0 },
+            biggestGainer: { symbol: "", profit: 0 },
+            assetsCounter: 0,
+            coinsCounter: 0,
             portfolioAssetCount: 0,
             portfolioCurrentAssetCount: 0,
             showChart: false,
@@ -120251,6 +120276,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     // Update Chart data
                     _this.chartistTotalsData.series[indexRepeatedAsset] = parseFloat(parseFloat(_this.uniqueAssetsFiat[indexRepeatedAsset]).toFixed(2));
                 } else {
+
+                    _this.coinsCounter++;
+
                     // If the asset doesn't exists we push it
                     _this.uniqueAssetsBtc.push(parseFloat(e.asset.balance));
                     _this.uniqueAssetsFiat.push(parseFloat(e.asset.counter_value));
@@ -120298,9 +120326,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     var profit = ((parseFloat(price) - parseFloat(e.asset.initial_price)) / parseFloat(e.asset.initial_price) * 100).toFixed(2);
                 }
                 if (profit >= 0) {
-                    _this.portfolioTable.cell(indexes[0], 0).data('<span class="profit nowrap">' + profit + '%</span>').invalidate();
+                    _this.portfolioTable.cell(indexes[0], 0).data('<span class="profit nowrap">+' + profit + '%</span>').invalidate();
                 } else {
                     _this.portfolioTable.cell(indexes[0], 0).data('<span class="loss nowrap">' + profit + '%</span>').invalidate();
+                }
+
+                // Gainers and losers
+                if (parseFloat(profit) > parseFloat(_this.biggestGainer.profit) && e.asset.symbol != 'BTC' && e.asset.symbol != 'BTG') {
+                    _this.biggestGainer.profit = profit;
+                    _this.biggestGainer.symbol = e.asset.symbol;
+                }
+                if (parseFloat(profit) < parseFloat(_this.biggestLoser.profit) && e.asset.symbol != 'BTC' && e.asset.symbol != 'BTG') {
+                    _this.biggestLoser.profit = profit;
+                    _this.biggestLoser.symbol = e.asset.symbol;
                 }
 
                 // this.portfolioTable.responsive.rebuild();
@@ -120320,6 +120358,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     _this.showChart = true;
                     _this.chartistTotalsChart = new Chartist.Bar('.ct-chart-totals', _this.chartistTotalsData, _this.chartistTotalsOptions, _this.responsiveOptions);
                     _this.chartistOriginsChart = new Chartist.Bar('.ct-chart-origins', _this.chartistOriginsData, _this.chartistOriginsOptions, _this.responsiveOptions);
+                    _this.assetsCounter = _this.portfolioCurrentAssetCount;
 
                     $(window).trigger('resize');
                     _this.loadingPortfolio = false;
@@ -120351,7 +120390,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.assets = [];
             this.totalBtc = 0;
             this.totalFiat = 0;
-            this.uniqueAssetsBtc = [];
+            this.biggestLoser = { symbol: "", profit: 0 }, this.biggestGainer = { symbol: "", profit: 0 }, this.assetsCounter = 0, this.coinsCounter = 0, this.uniqueAssetsBtc = [];
             this.uniqueAssetsFiat = [];
             this.uniqueAssetsName = [];
             this.uniqueAssetsOriginFiat = [];
@@ -120409,6 +120448,104 @@ var render = function() {
                 _vm._v(" "),
                 _c("div", { staticClass: "counter" }, [
                   _vm._v(_vm._s(_vm.totalFiat))
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "shrink cell" }, [
+              _c("div", { staticClass: "counter-widget text-left" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass: "title",
+                    model: {
+                      value: _vm.assetsCounter,
+                      callback: function($$v) {
+                        _vm.assetsCounter = $$v
+                      },
+                      expression: "assetsCounter"
+                    }
+                  },
+                  [_vm._v("# of Assets ")]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "counter" }, [
+                  _vm._v(_vm._s(_vm.assetsCounter))
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "shrink cell" }, [
+              _c("div", { staticClass: "counter-widget text-left" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass: "title",
+                    model: {
+                      value: _vm.coinsCounter,
+                      callback: function($$v) {
+                        _vm.coinsCounter = $$v
+                      },
+                      expression: "coinsCounter"
+                    }
+                  },
+                  [_vm._v("# of Coins ")]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "counter" }, [
+                  _vm._v(_vm._s(_vm.coinsCounter))
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "shrink cell" }, [
+              _c("div", { staticClass: "counter-widget text-left" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass: "title",
+                    model: {
+                      value: _vm.biggestGainer.symbol,
+                      callback: function($$v) {
+                        _vm.$set(_vm.biggestGainer, "symbol", $$v)
+                      },
+                      expression: "biggestGainer.symbol"
+                    }
+                  },
+                  [_vm._v("Biggest Gainer ")]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "counter" }, [
+                  _vm._v(_vm._s(_vm.biggestGainer.symbol) + " "),
+                  _c("span", { staticClass: "biggest profit" }, [
+                    _vm._v(" (+" + _vm._s(_vm.biggestGainer.profit) + "%)")
+                  ])
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "shrink cell" }, [
+              _c("div", { staticClass: "counter-widget text-left" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass: "title",
+                    model: {
+                      value: _vm.biggestLoser.symbol,
+                      callback: function($$v) {
+                        _vm.$set(_vm.biggestLoser, "symbol", $$v)
+                      },
+                      expression: "biggestLoser.symbol"
+                    }
+                  },
+                  [_vm._v("Biggest Loser ")]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "counter" }, [
+                  _vm._v(_vm._s(_vm.biggestLoser.symbol) + " "),
+                  _c("span", { staticClass: "biggest loss" }, [
+                    _vm._v(" (" + _vm._s(_vm.biggestLoser.profit) + "%)")
+                  ])
                 ])
               ])
             ]),

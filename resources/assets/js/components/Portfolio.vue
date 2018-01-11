@@ -14,6 +14,27 @@
                                  <div class="title">Total {{counterValueSymbol}} </div> <div class="counter">{{ totalFiat}}</div>                  
                             </div>
                         </div>
+                        <div class="shrink cell">
+                            <div class="counter-widget text-left">
+                                  <div v-model="assetsCounter" class="title"># of Assets </div> <div class="counter">{{ assetsCounter }}</div>                  
+                            </div>
+                        </div>
+                        <div class="shrink cell">
+                            <div class="counter-widget text-left">
+                                  <div v-model="coinsCounter" class="title"># of Coins </div> <div class="counter">{{ coinsCounter }}</div>                  
+                            </div>
+                        </div>
+                        <div class="shrink cell">
+                            <div class="counter-widget text-left">
+                                 <div v-model="biggestGainer.symbol" class="title">Biggest Gainer </div> <div class="counter">{{ biggestGainer.symbol }} <span class="biggest profit"> (+{{ biggestGainer.profit }}%)</span></div>                  
+                            </div>
+                        </div>
+                        <div class="shrink cell">
+                            <div class="counter-widget text-left">
+                                  <div v-model="biggestLoser.symbol" class="title">Biggest Loser </div> <div class="counter">{{ biggestLoser.symbol }} <span class="biggest loss"> ({{ biggestLoser.profit }}%)</span></div>                  
+                            </div>
+                        </div>
+                        
 
                         <div class="auto cell text-right">
                             <button class="button hollow button-refresh" v-on:click="refreshPortfolio()">
@@ -59,6 +80,10 @@ export default {
             assets: [],
             totalBtc: 0,
             totalFiat: 0,
+            biggestLoser: { symbol:"", profit: 0 },
+            biggestGainer: { symbol:"", profit: 0 },
+            assetsCounter: 0,
+            coinsCounter: 0,
             portfolioAssetCount: 0,
             portfolioCurrentAssetCount: 0,
             showChart: false,
@@ -234,12 +259,15 @@ export default {
                     var newBalanceFiat = (parseFloat(this.uniqueAssetsFiat[indexRepeatedAsset]) + parseFloat(e.asset.counter_value));
                     this.uniqueAssetsBtc[indexRepeatedAsset] = parseFloat(newBalanceBtc);
                     this.uniqueAssetsFiat[indexRepeatedAsset] = parseFloat(newBalanceFiat);
-
+        
                     // Update Chart data
                     this.chartistTotalsData.series[indexRepeatedAsset]= parseFloat( parseFloat( this.uniqueAssetsFiat[indexRepeatedAsset]).toFixed(2) );
                   
                 }
                 else {
+
+                    this.coinsCounter ++;
+
                     // If the asset doesn't exists we push it
                     this.uniqueAssetsBtc.push(parseFloat(e.asset.balance));
                     this.uniqueAssetsFiat.push(parseFloat(e.asset.counter_value));
@@ -290,12 +318,22 @@ export default {
                     var profit = ( ( ( parseFloat(price)-parseFloat(e.asset.initial_price) ) / parseFloat(e.asset.initial_price)) * 100 ).toFixed(2);
                 }
                 if (profit >= 0) {
-                    this.portfolioTable.cell(indexes[0], 0).data('<span class="profit nowrap">' + profit + '%</span>' ).invalidate();
+                    this.portfolioTable.cell(indexes[0], 0).data('<span class="profit nowrap">+' + profit + '%</span>' ).invalidate();
                 }
                 else {
                     this.portfolioTable.cell(indexes[0], 0).data('<span class="loss nowrap">' + profit + '%</span>' ).invalidate();
                 }
                 
+
+                // Gainers and losers
+                if (parseFloat(profit) > parseFloat(this.biggestGainer.profit) && (e.asset.symbol!='BTC' && e.asset.symbol!='BTG')) {
+                    this.biggestGainer.profit = profit;
+                    this.biggestGainer.symbol = e.asset.symbol;
+                }    
+                if (parseFloat(profit) < parseFloat(this.biggestLoser.profit) && (e.asset.symbol!='BTC' && e.asset.symbol!='BTG')) {
+                    this.biggestLoser.profit = profit;
+                    this.biggestLoser.symbol = e.asset.symbol;
+                }  
 
                 // this.portfolioTable.responsive.rebuild();
                 // this.portfolioTable.responsive.recalc();
@@ -314,8 +352,9 @@ export default {
                     this.showChart = true;
                     this.chartistTotalsChart = new Chartist.Bar('.ct-chart-totals', this.chartistTotalsData, this.chartistTotalsOptions,this.responsiveOptions);
                     this.chartistOriginsChart = new Chartist.Bar('.ct-chart-origins', this.chartistOriginsData, this.chartistOriginsOptions,this.responsiveOptions);
-                    
-    $(window).trigger('resize');
+                    this.assetsCounter = this.portfolioCurrentAssetCount;
+
+                    $(window).trigger('resize');
                     this.loadingPortfolio = false;
 
                 }
@@ -347,6 +386,10 @@ export default {
             this.assets = [];
             this.totalBtc = 0;
             this.totalFiat = 0;
+            this.biggestLoser = { symbol:"", profit: 0 },
+            this.biggestGainer = { symbol:"", profit: 0 },
+            this.assetsCounter = 0,
+            this.coinsCounter = 0,
             this.uniqueAssetsBtc = [];
             this.uniqueAssetsFiat = [];
             this.uniqueAssetsName = [];
