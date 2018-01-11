@@ -65,7 +65,7 @@
 // 1. Global
 // ---------
 
-$global-font-size: 16px;
+$global-font-size: 14px;
 $global-width: rem-calc(1200);
 $global-lineheight: 1.5;
 $foundation-palette: (
@@ -77,6 +77,8 @@ $foundation-palette: (
   background-light: #FEFEFA,
   background-medium: #FBFCF9, 
   background-dark: #ECEDEA,
+  profit: #036502,
+  loss: #F1615E
 );
 $light-gray: #e6e6e6;
 $medium-gray: #cacaca;

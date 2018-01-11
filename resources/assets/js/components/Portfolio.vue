@@ -252,7 +252,6 @@ export default {
 
                 // Store consolidated array of ORIGINS
                 var indexRepeatedOrigin = this.uniqueAssetsOriginName.indexOf(e.asset.origin_name);
-                // console.log("Index: " + indexRepeatedOrigin);
                 
                 if ( indexRepeatedOrigin >= 0 ) {
                     // If origin is already counted we sum the new value
@@ -261,10 +260,6 @@ export default {
 
                     // Update Chart data
                     this.chartistOriginsData.series[indexRepeatedOrigin]= parseFloat( parseFloat(newBalanceFiat).toFixed(2) );
-                    // console.log(this.uniqueAssetsOriginName);
-                    // console.log(this.chartistOriginsData.series);
-                    // console.log(e.asset.symbol + '(' +  e.asset.counter_value + ') - Repe!');
-                    // console.log(e.asset.origin_name + ' - ' + parseFloat( parseFloat(this.uniqueAssetsFiat[indexRepeatedOrigin]).toFixed(2)));
 
                 }
                 else {
@@ -272,37 +267,36 @@ export default {
                     // If the asset doesn't exists we push it
                     this.uniqueAssetsOriginName.push(e.asset.origin_name);
                     this.uniqueAssetsOriginFiat.push(e.asset.counter_value);
-                    //console.log("Value: " + e.asset.counter_value);
                    
                     // Update Chart data
                     this.chartistOriginsData.labels.push(e.asset.origin_name);
                     this.chartistOriginsData.series.push( parseFloat( parseFloat(e.asset.counter_value).toFixed(2) ));
-                    // console.log(this.uniqueAssetsOriginName);
-                    // console.log(this.chartistOriginsData.series);
-                    // console.log(e.asset.symbol + '(' +  e.asset.counter_value + ') - No Repe!');
-                    // console.log(e.asset.origin_name + ' - ' + e.asset.counter_value);
                 }
-                //console.log("Value: " + JSON.stringify(this.chartistOriginsData));
 
                 // Locate current coin row in DATATABLE
                 var indexes = this.portfolioTable.rows().eq( 0 ).filter( rowIdx => {
                     return this.portfolioTable.cell( rowIdx, 6 ).data() === e.asset.id ? true : false;
                 } );
 
-
-                
                 // Update DATATABLE values (Price, Balance and Counter Value)
                 this.portfolioTable.cell(indexes[0], 3).data(counter_value).invalidate();
                 this.portfolioTable.cell(indexes[0], 4).data(balance).invalidate();
                 this.portfolioTable.cell(indexes[0], 5).data(price).invalidate();
+
                 if (e.asset.initial_price == 0 ) {
                     var profit = "-";
                 }
                 else {
                     var profit = ( ( ( parseFloat(price)-parseFloat(e.asset.initial_price) ) / parseFloat(e.asset.initial_price)) * 100 ).toFixed(2);
                 }
+                if (profit >= 0) {
+                    this.portfolioTable.cell(indexes[0], 0).data('<span class="profit nowrap">' + profit + '%</span>' ).invalidate();
+                }
+                else {
+                    this.portfolioTable.cell(indexes[0], 0).data('<span class="loss nowrap">' + profit + '%</span>' ).invalidate();
+                }
                 
-                this.portfolioTable.cell(indexes[0], 0).data(profit + '%').invalidate();
+
                 // this.portfolioTable.responsive.rebuild();
                 // this.portfolioTable.responsive.recalc();
                 this.portfolioTable.draw();
@@ -312,9 +306,6 @@ export default {
 
                 // Keep asset on array of assets
                 this.assets.push(e.asset);
-                
-                // var elem = new Foundation.Reveal('editAsset'+e.asset.id, 'open');
-                // $('#editAsset'+e.asset.id).foundation();
 
                 // console.log("Asset Count: " + this.portfolioCurrentAssetCount);
                 if (this.portfolioCurrentAssetCount == this.portfolioAssetCount && this.portfolioCurrentAssetCount!=0) {
@@ -323,6 +314,8 @@ export default {
                     this.showChart = true;
                     this.chartistTotalsChart = new Chartist.Bar('.ct-chart-totals', this.chartistTotalsData, this.chartistTotalsOptions,this.responsiveOptions);
                     this.chartistOriginsChart = new Chartist.Bar('.ct-chart-origins', this.chartistOriginsData, this.chartistOriginsOptions,this.responsiveOptions);
+                    
+    $(window).trigger('resize');
                     this.loadingPortfolio = false;
 
                 }

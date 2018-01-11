@@ -120263,7 +120263,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
                 // Store consolidated array of ORIGINS
                 var indexRepeatedOrigin = _this.uniqueAssetsOriginName.indexOf(e.asset.origin_name);
-                // console.log("Index: " + indexRepeatedOrigin);
 
                 if (indexRepeatedOrigin >= 0) {
                     // If origin is already counted we sum the new value
@@ -120272,26 +120271,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
                     // Update Chart data
                     _this.chartistOriginsData.series[indexRepeatedOrigin] = parseFloat(parseFloat(newBalanceFiat).toFixed(2));
-                    // console.log(this.uniqueAssetsOriginName);
-                    // console.log(this.chartistOriginsData.series);
-                    // console.log(e.asset.symbol + '(' +  e.asset.counter_value + ') - Repe!');
-                    // console.log(e.asset.origin_name + ' - ' + parseFloat( parseFloat(this.uniqueAssetsFiat[indexRepeatedOrigin]).toFixed(2)));
                 } else {
 
                     // If the asset doesn't exists we push it
                     _this.uniqueAssetsOriginName.push(e.asset.origin_name);
                     _this.uniqueAssetsOriginFiat.push(e.asset.counter_value);
-                    //console.log("Value: " + e.asset.counter_value);
 
                     // Update Chart data
                     _this.chartistOriginsData.labels.push(e.asset.origin_name);
                     _this.chartistOriginsData.series.push(parseFloat(parseFloat(e.asset.counter_value).toFixed(2)));
-                    // console.log(this.uniqueAssetsOriginName);
-                    // console.log(this.chartistOriginsData.series);
-                    // console.log(e.asset.symbol + '(' +  e.asset.counter_value + ') - No Repe!');
-                    // console.log(e.asset.origin_name + ' - ' + e.asset.counter_value);
                 }
-                //console.log("Value: " + JSON.stringify(this.chartistOriginsData));
 
                 // Locate current coin row in DATATABLE
                 var indexes = _this.portfolioTable.rows().eq(0).filter(function (rowIdx) {
@@ -120302,13 +120291,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this.portfolioTable.cell(indexes[0], 3).data(counter_value).invalidate();
                 _this.portfolioTable.cell(indexes[0], 4).data(balance).invalidate();
                 _this.portfolioTable.cell(indexes[0], 5).data(price).invalidate();
+
                 if (e.asset.initial_price == 0) {
                     var profit = "-";
                 } else {
                     var profit = ((parseFloat(price) - parseFloat(e.asset.initial_price)) / parseFloat(e.asset.initial_price) * 100).toFixed(2);
                 }
+                if (profit >= 0) {
+                    _this.portfolioTable.cell(indexes[0], 0).data('<span class="profit nowrap">' + profit + '%</span>').invalidate();
+                } else {
+                    _this.portfolioTable.cell(indexes[0], 0).data('<span class="loss nowrap">' + profit + '%</span>').invalidate();
+                }
 
-                _this.portfolioTable.cell(indexes[0], 0).data(profit + '%').invalidate();
                 // this.portfolioTable.responsive.rebuild();
                 // this.portfolioTable.responsive.recalc();
                 _this.portfolioTable.draw();
@@ -120319,9 +120313,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 // Keep asset on array of assets
                 _this.assets.push(e.asset);
 
-                // var elem = new Foundation.Reveal('editAsset'+e.asset.id, 'open');
-                // $('#editAsset'+e.asset.id).foundation();
-
                 // console.log("Asset Count: " + this.portfolioCurrentAssetCount);
                 if (_this.portfolioCurrentAssetCount == _this.portfolioAssetCount && _this.portfolioCurrentAssetCount != 0) {
                     console.log(_this.chartistOriginsData.series);
@@ -120329,6 +120320,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     _this.showChart = true;
                     _this.chartistTotalsChart = new Chartist.Bar('.ct-chart-totals', _this.chartistTotalsData, _this.chartistTotalsOptions, _this.responsiveOptions);
                     _this.chartistOriginsChart = new Chartist.Bar('.ct-chart-origins', _this.chartistOriginsData, _this.chartistOriginsOptions, _this.responsiveOptions);
+
+                    $(window).trigger('resize');
                     _this.loadingPortfolio = false;
                 }
             }

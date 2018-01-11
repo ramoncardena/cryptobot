@@ -1,4 +1,16 @@
 section#portfolio-widget {
+	.profit {
+		color: get-color(profit);
+		font-size: 0.8rem;
+		float: right;
+		font-weight: 600;
+	}
+	.loss {
+		color: get-color(loss);
+		font-size: 0.8rem;
+		float: right;
+		font-weight: 600;
+	}
 	.ct-chart-totals .ct-bar {
 	    stroke-width: 5px
 	}
