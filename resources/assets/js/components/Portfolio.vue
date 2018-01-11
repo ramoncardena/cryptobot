@@ -288,11 +288,21 @@ export default {
                 var indexes = this.portfolioTable.rows().eq( 0 ).filter( rowIdx => {
                     return this.portfolioTable.cell( rowIdx, 6 ).data() === e.asset.id ? true : false;
                 } );
+
+
                 
                 // Update DATATABLE values (Price, Balance and Counter Value)
                 this.portfolioTable.cell(indexes[0], 3).data(counter_value).invalidate();
                 this.portfolioTable.cell(indexes[0], 4).data(balance).invalidate();
                 this.portfolioTable.cell(indexes[0], 5).data(price).invalidate();
+                if (e.asset.initial_price == 0 ) {
+                    var profit = "-";
+                }
+                else {
+                    var profit = ( ( ( parseFloat(price)-parseFloat(e.asset.initial_price) ) / parseFloat(e.asset.initial_price)) * 100 ).toFixed(2);
+                }
+                
+                this.portfolioTable.cell(indexes[0], 0).data(profit + '%').invalidate();
                 // this.portfolioTable.responsive.rebuild();
                 // this.portfolioTable.responsive.recalc();
                 this.portfolioTable.draw();

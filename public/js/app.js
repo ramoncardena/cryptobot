@@ -120302,6 +120302,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this.portfolioTable.cell(indexes[0], 3).data(counter_value).invalidate();
                 _this.portfolioTable.cell(indexes[0], 4).data(balance).invalidate();
                 _this.portfolioTable.cell(indexes[0], 5).data(price).invalidate();
+                if (e.asset.initial_price == 0) {
+                    var profit = "-";
+                } else {
+                    var profit = ((parseFloat(price) - parseFloat(e.asset.initial_price)) / parseFloat(e.asset.initial_price) * 100).toFixed(2);
+                }
+
+                _this.portfolioTable.cell(indexes[0], 0).data(profit + '%').invalidate();
                 // this.portfolioTable.responsive.rebuild();
                 // this.portfolioTable.responsive.recalc();
                 _this.portfolioTable.draw();
