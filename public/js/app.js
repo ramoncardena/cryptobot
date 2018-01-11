@@ -44277,7 +44277,7 @@ module.exports = Cancel;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(142);
-module.exports = __webpack_require__(274);
+module.exports = __webpack_require__(277);
 
 
 /***/ }),
@@ -44316,9 +44316,9 @@ Vue.component('notification-list', __webpack_require__(253));
 Vue.component('add-origin', __webpack_require__(256));
 Vue.component('add-asset', __webpack_require__(259));
 Vue.component('edit-asset', __webpack_require__(262));
-Vue.component('transactions', __webpack_require__(283));
-Vue.component('portfolio', __webpack_require__(265));
-Vue.component('asset', __webpack_require__(268));
+Vue.component('transactions', __webpack_require__(265));
+Vue.component('portfolio', __webpack_require__(268));
+Vue.component('asset', __webpack_require__(271));
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -44331,9 +44331,9 @@ var app = new Vue({
 
 $(document).ready(function () {
 
-    __webpack_require__(271);
-    __webpack_require__(272);
-    __webpack_require__(273);
+    __webpack_require__(274);
+    __webpack_require__(275);
+    __webpack_require__(276);
 
     $.extend($.fn.dataTable.defaults, {
         responsive: true
@@ -119205,7 +119205,7 @@ var render = function() {
                       _vm._v("Select...")
                     ]),
                     _vm._v(" "),
-                    _vm._l(_vm.noxchgOrigins, function(origin) {
+                    _vm._l(_vm.origins, function(origin) {
                       return _c("option", { domProps: { value: origin.id } }, [
                         _vm._v(_vm._s(origin.name) + " ")
                       ])
@@ -119444,832 +119444,6 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/Portfolio.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-2002e121", Component.options)
-  } else {
-    hotAPI.reload("data-v-2002e121", Component.options)
-' + '  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 266 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    name: 'portfolio',
-    props: ['portfolio'],
-    data: function data() {
-        return {
-            assets: [],
-            modals: [],
-            totalBtc: 0,
-            totalFiat: 0,
-            portfolioAssetCount: 0,
-            portfolioCurrentAssetCount: 0,
-            showChart: false,
-            uniqueAssetsBtc: [],
-            uniqueAssetsFiat: [],
-            uniqueAssetsName: [],
-            uniqueAssetsOriginName: [],
-            uniqueAssetsOriginFiat: [],
-            mostValuableName: "",
-            mostValuableValue: "",
-            counterValueSymbol: '',
-            portfolioTable: {},
-            loadingPortfolio: false,
-            loadingAsset: false,
-            updatingAsset: false,
-            chartistTotalsData: { labels: [], series: [] },
-            chartistTotalsChart: {},
-            chartistTotalsOptions: [],
-            chartistOriginsData: { labels: [], series: [] },
-            chartistOriginsChart: {},
-            chartistOriginsOptions: [],
-            responsiveOptions: [],
-            errors: []
-        };
-    },
-    computed: {},
-    mounted: function mounted() {
-        var _this = this;
-
-        this.loadingPortfolio = true;
-
-        // Variables initizalization
-        this.totalBtc = 0;
-        this.totalFiat = 0;
-        this.uniqueAssetsOriginFiat = [];
-        this.uniqueAssetsOriginName = [];
-
-        // Setup DATATABLE
-        this.portfolioTable = $('#portfolioTable').DataTable({
-            "searching": false,
-            "responsive": true,
-            "paging": false,
-            "info": false,
-            "columnDefs": [{ "visible": false, "targets": 6 }],
-            columns: [{ title: '' }, { title: '<div class="sorting nowrap">Coin</div>' }, { title: '<div class="sorting nowrap">Amount</div>' }, { title: '<div class="sorting nowrap">Value (Fiat)</div>' }, { title: '<div class="sorting nowrap">Value (BTC)</div>' }, { title: '<div class="sorting nowrap">Price</div>' }, { title: '<div class="sorting nowrap">Asset ID</div>' }, { title: '<div class="sorting_asc nowrap">Origin</div>' }],
-            "drawCallback": function drawCallback(settings) {
-                var api = this.api();
-                var rows = api.rows({ page: 'current' }).nodes();
-                var last = null;
-
-                api.column(7, { page: 'current' }).data().each(function (group, i) {
-                    if (last !== group) {
-                        $(rows).eq(i).before('<tr class="group"><td colspan="7">' + group + '</td></tr>');
-
-                        last = group;
-                    }
-                });
-            }
-        });
-
-        // Clear Datatable in case of reloading
-        this.portfolioTable.clear();
-
-        // Set Chart options
-        this.responsiveOptions = [['screen and (min-width: 200px)', {
-            horizontalBars: true,
-            seriesBarDistance: 5
-        }],
-        // Options override for media > 800px
-        ['screen and (min-width: 800px)', {
-            stackBars: false,
-            seriesBarDistance: 10
-        }],
-        // Options override for media > 1000px
-        ['screen and (min-width: 1000px)', {
-            horizontalBars: false,
-            seriesBarDistance: 15
-        }]];
-        this.chartistTotalsOptions = {
-            distributeSeries: true
-        };
-        this.chartistOriginsOptions = {
-            distributeSeries: true
-        };
-
-        // Call the LoadPortfolio event asyncronously
-        var uri = '/api/portfolio/refresh';
-        axios(uri, {
-            method: 'GET'
-        }).then(function (response) {
-            console.log("Reloading portfolio...");
-        }).catch(function (e) {
-            _this.errors.push(e);
-
-            console.log("Error: " + e.message);
-        });
-
-        // Listen to ASSETS events
-        Echo.private('assets.' + this.portfolio.id).listen('PortfolioAssetLoaded', function (e) {
-            // ************
-            // ASSET LOADED
-            // ************
-
-            // console.log("Portfolio UpdateID: " + this.portfolio.update_id  + " Asset UpdateID: " + e.asset.update_id);
-            if (_this.portfolio.update_id == e.asset.update_id) {
-
-                var tools = '<div class="asset-tools nowrap"><button class="clear button" data-open="edit-asset-modal"><i class="fa fa-pencil edit-icon" aria-hidden="true"></i></button></div>';
-
-                // Set coin url, logo, name and symbol
-                var coin = '<div class="asset-info nowrap"><a href="' + e.asset.info_url + '" target="_blank"><img class="asset-img" src="' + e.asset.logo_url + '" width="20"></a> <span class="show-for-medium asset-name">' + e.asset.full_name + '</span> <span class="asset-symbol">' + e.asset.symbol + '</span></div>';
-
-                // Set coin amount
-                var amount = '<div class="asset-amount nowrap">' + parseFloat(e.asset.amount).toFixed(4) + '</div>';
-
-                // Set coin origin
-                var origin = '<div class="asset-origin  nowrap">' + e.asset.origin_name + '</div>';
-
-                // Add row to the table with the new asset
-                _this.portfolioTable.row.add(['', coin, amount, parseFloat(e.asset.counter_value).toFixed(2), parseFloat(e.asset.balance).toFixed(8), parseFloat(e.asset.price).toFixed(8), e.asset.id, origin]).order([7, 'asc']).invalidate().draw();
-            }
-        }).listen('PortfolioAssetUpdated', function (e) {
-            // ************
-            // ASSET UPDATED
-            // ************
-
-            if (_this.portfolio.update_id == e.asset.update_id) {
-                //console.log(e.asset.symbol);
-
-                // Calculate current TOTAL balances (btc and fiat)
-                _this.totalBtc = (parseFloat(_this.totalBtc) + parseFloat(e.asset.balance)).toFixed(8);
-                _this.totalFiat = (parseFloat(_this.totalFiat) + parseFloat(e.asset.counter_value)).toFixed(2);
-
-                // Store TOTAL balances
-                var balance = parseFloat(e.asset.balance).toFixed(8);
-                var price = parseFloat(e.asset.price).toFixed(8);
-                var counter_value = parseFloat(e.asset.counter_value).toFixed(2);
-
-                // Store a consolidated array by VALUE
-                var indexRepeatedAsset = _this.uniqueAssetsName.indexOf(e.asset.symbol);
-
-                if (indexRepeatedAsset >= 0) {
-                    // If asset is already counted we sum the new value
-                    var newBalanceBtc = parseFloat(_this.uniqueAssetsBtc[indexRepeatedAsset]) + parseFloat(e.asset.balance);
-                    var newBalanceFiat = parseFloat(_this.uniqueAssetsFiat[indexRepeatedAsset]) + parseFloat(e.asset.counter_value);
-                    _this.uniqueAssetsBtc[indexRepeatedAsset] = parseFloat(newBalanceBtc);
-                    _this.uniqueAssetsFiat[indexRepeatedAsset] = parseFloat(newBalanceFiat);
-
-                    // Update Chart data
-                    _this.chartistTotalsData.series[indexRepeatedAsset] = parseFloat(parseFloat(_this.uniqueAssetsFiat[indexRepeatedAsset]).toFixed(2));
-                } else {
-                    // If the asset doesn't exists we push it
-                    _this.uniqueAssetsBtc.push(parseFloat(e.asset.balance));
-                    _this.uniqueAssetsFiat.push(parseFloat(e.asset.counter_value));
-                    _this.uniqueAssetsName.push(e.asset.symbol);
-
-                    // Update Chart data
-                    _this.chartistTotalsData.labels.push(e.asset.symbol);
-                    _this.chartistTotalsData.series.push(parseFloat(parseFloat(e.asset.counter_value).toFixed(2)));
-                }
-
-                // Store consolidated array of ORIGINS
-                var indexRepeatedOrigin = _this.uniqueAssetsOriginName.indexOf(e.asset.origin_name);
-                // console.log("Index: " + indexRepeatedOrigin);
-
-                if (indexRepeatedOrigin >= 0) {
-                    // If origin is already counted we sum the new value
-                    var newBalanceFiat = parseFloat(_this.uniqueAssetsOriginFiat[indexRepeatedOrigin]) + parseFloat(e.asset.counter_value);
-                    _this.uniqueAssetsOriginFiat[indexRepeatedOrigin] = parseFloat(newBalanceFiat);
-
-                    // Update Chart data
-                    _this.chartistOriginsData.series[indexRepeatedOrigin] = parseFloat(parseFloat(newBalanceFiat).toFixed(2));
-                    // console.log(this.uniqueAssetsOriginName);
-                    // console.log(this.chartistOriginsData.series);
-                    // console.log(e.asset.symbol + '(' +  e.asset.counter_value + ') - Repe!');
-                    // console.log(e.asset.origin_name + ' - ' + parseFloat( parseFloat(this.uniqueAssetsFiat[indexRepeatedOrigin]).toFixed(2)));
-                } else {
-
-                    // If the asset doesn't exists we push it
-                    _this.uniqueAssetsOriginName.push(e.asset.origin_name);
-                    _this.uniqueAssetsOriginFiat.push(e.asset.counter_value);
-                    //console.log("Value: " + e.asset.counter_value);
-
-                    // Update Chart data
-                    _this.chartistOriginsData.labels.push(e.asset.origin_name);
-                    _this.chartistOriginsData.series.push(parseFloat(parseFloat(e.asset.counter_value).toFixed(2)));
-                    // console.log(this.uniqueAssetsOriginName);
-                    // console.log(this.chartistOriginsData.series);
-                    // console.log(e.asset.symbol + '(' +  e.asset.counter_value + ') - No Repe!');
-                    // console.log(e.asset.origin_name + ' - ' + e.asset.counter_value);
-                }
-                //console.log("Value: " + JSON.stringify(this.chartistOriginsData));
-
-                // Locate current coin row in DATATABLE
-                var indexes = _this.portfolioTable.rows().eq(0).filter(function (rowIdx) {
-                    return _this.portfolioTable.cell(rowIdx, 6).data() === e.asset.id ? true : false;
-                });
-
-                // Update DATATABLE values (Price, Balance and Counter Value)
-                _this.portfolioTable.cell(indexes[0], 3).data(counter_value).invalidate();
-                _this.portfolioTable.cell(indexes[0], 4).data(balance).invalidate();
-                _this.portfolioTable.cell(indexes[0], 5).data(price).invalidate();
-                // this.portfolioTable.responsive.rebuild();
-                // this.portfolioTable.responsive.recalc();
-                _this.portfolioTable.draw();
-
-                // Keep count of number of assets
-                _this.portfolioCurrentAssetCount++;
-
-                // Keep asset on array of assets
-                _this.assets.push(e.asset);
-
-                // var elem = new Foundation.Reveal('editAsset'+e.asset.id, 'open');
-                // $('#editAsset'+e.asset.id).foundation();
-
-                // console.log("Asset Count: " + this.portfolioCurrentAssetCount);
-                if (_this.portfolioCurrentAssetCount == _this.portfolioAssetCount && _this.portfolioCurrentAssetCount != 0) {
-                    console.log(_this.chartistOriginsData.series);
-                    console.log(_this.chartistOriginsData.labels);
-                    _this.showChart = true;
-                    _this.chartistTotalsChart = new Chartist.Bar('.ct-chart-totals', _this.chartistTotalsData, _this.chartistTotalsOptions, _this.responsiveOptions);
-                    _this.chartistOriginsChart = new Chartist.Bar('.ct-chart-origins', _this.chartistOriginsData, _this.chartistOriginsOptions, _this.responsiveOptions);
-                    _this.loadingPortfolio = false;
-                }
-            }
-        });
-        Echo.private('portfolios.' + this.portfolio.id).listen('PortfolioLoaded', function (e) {
-            // ************
-            // PORTFOLIO LOADED
-            // ************
-
-            // console.log("Asset count: " + e.assetCount);
-            _this.counterValueSymbol = _this.portfolio.counter_value.toUpperCase();
-            _this.portfolioAssetCount = e.assetCount;
-        });
-
-        console.log('Component TradeList mounted.');
-    },
-
-    methods: {
-        openModal: function openModal(id) {
-            this.modals[id].open();
-        },
-        refreshPortfolio: function refreshPortfolio() {
-            var _this2 = this;
-
-            if (this.portfolioCurrentAssetCount > 0) {
-                this.chartistTotalsChart.detach();
-                this.chartistOriginsChart.detach();
-                this.portfolioTable.clear().draw();
-            };
-            this.assets = [];
-            this.totalBtc = 0;
-            this.totalFiat = 0;
-            this.uniqueAssetsBtc = [];
-            this.uniqueAssetsFiat = [];
-            this.uniqueAssetsName = [];
-            this.uniqueAssetsOriginFiat = [];
-            this.uniqueAssetsOriginName = [];
-            this.chartistTotalsData.labels = [];
-            this.chartistOriginsData.labels = [];
-            this.chartistTotalsData.series = [];
-            this.chartistOriginsData.series = [];
-            this.portfolioCurrentAssetCount = 0;
-            this.portfolioAssetCount = 0;
-            this.showChart = false;
-
-            var uri = '/api/portfolio/refresh';
-            axios(uri, {
-                method: 'GET'
-            }).then(function (response) {
-                console.log("Reloading portfolio...");
-            }).catch(function (e) {
-                _this2.errors.push(e);
-
-                console.log("Error: " + e.message);
-            });
-        }
-    }
-});
-
-/***/ }),
-/* 267 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("section", { attrs: { id: "portfolio-widget" } }, [
-    _c("div", { staticClass: "grid-x grid-padding-x" }, [
-      _c("div", { staticClass: "small-12 cell" }, [
-        _c("div", { staticClass: "grid-container fluid" }, [
-          _c("div", { staticClass: "grid-x grid-padding-x" }, [
-            _c("div", { staticClass: "shrink cell" }, [
-              _c("div", { staticClass: "counter-widget text-left" }, [
-                _c("div", { staticClass: "title" }, [_vm._v("Total BTC ")]),
-                _vm._v(" "),
-                _c("div", { staticClass: "counter" }, [
-                  _vm._v(_vm._s(_vm.totalBtc))
-                ])
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "shrink cell" }, [
-              _c("div", { staticClass: "counter-widget text-left" }, [
-                _c("div", { staticClass: "title" }, [
-                  _vm._v("Total " + _vm._s(_vm.counterValueSymbol) + " ")
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "counter" }, [
-                  _vm._v(_vm._s(_vm.totalFiat))
-                ])
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "auto cell text-right" }, [
-              _c(
-                "button",
-                {
-                  staticClass: "button hollow button-refresh",
-                  on: {
-                    click: function($event) {
-                      _vm.refreshPortfolio()
-                    }
-                  }
-                },
-                [
-                  _c(
-                    "span",
-                    {
-                      directives: [
-                        {
-                          name: "show",
-                          rawName: "v-show",
-                          value: _vm.loadingPortfolio,
-                          expression: "loadingPortfolio"
-                        }
-                      ]
-                    },
-                    [
-                      _c("i", {
-                        staticClass: "fa fa-refresh fa-spin fa-fw",
-                        attrs: { "aria-hidden": "true" }
-                      }),
-                      _vm._v(" "),
-                      _c("span", { staticClass: "show-for-medium" }, [
-                        _vm._v(" Loading...")
-                      ])
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "span",
-                    {
-                      directives: [
-                        {
-                          name: "show",
-                          rawName: "v-show",
-                          value: !_vm.loadingPortfolio,
-                          expression: "!loadingPortfolio"
-                        }
-                      ]
-                    },
-                    [
-                      _c("i", { staticClass: "fa fa-refresh " }),
-                      _vm._v(" "),
-                      _c("span", { staticClass: "show-for-medium" }, [
-                        _vm._v("Reload")
-                      ])
-                    ]
-                  )
-                ]
-              )
-            ])
-          ])
-        ])
-      ]),
-      _vm._v(" "),
-      _vm._m(0, false, false),
-      _vm._v(" "),
-      _c("div", { staticClass: "small-12 large-6 cell" }, [
-        _c(
-          "div",
-          {
-            staticClass:
-              "grid-x grid-padding-x align-center-middle text-center dashboard"
-          },
-          [
-            _c("div", { staticClass: "small-12 cell charts" }, [
-              _c("div", {
-                directives: [
-                  {
-                    name: "show",
-                    rawName: "v-show",
-                    value: _vm.showChart,
-                    expression: "showChart"
-                  }
-                ],
-                staticClass: "ct-chart-totals ct-golden-section"
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "small-12 cell charts" }, [
-              _c("div", {
-                directives: [
-                  {
-                    name: "show",
-                    rawName: "v-show",
-                    value: _vm.showChart,
-                    expression: "showChart"
-                  }
-                ],
-                staticClass: "ct-chart-origins ct-golden-section"
-              })
-            ])
-          ]
-        )
-      ])
-    ])
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "small-12 large-6 cell" }, [
-      _c("div", { staticClass: "portfolio-assets" }, [
-        _c("table", {
-          staticClass: "display unstriped",
-          attrs: { id: "portfolioTable", width: "100%" }
-        })
-      ])
-    ])
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-2002e121", module.exports)
-  }
-}
-
-/***/ }),
-/* 268 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(3)
-/* script */
-var __vue_script__ = __webpack_require__(269)
-/* template */
-var __vue_template__ = __webpack_require__(270)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/Asset.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-d46b096e", Component.options)
-  } else {
-    hotAPI.reload("data-v-d46b096e", Component.options)
-' + '  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 269 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    name: 'asset',
-    data: function data() {
-        return {
-            balance: 0
-        };
-    },
-    props: ['item', 'portfolio-counter-value'],
-    mounted: function mounted() {
-        console.log('Component Asset mounted.');
-    }
-});
-
-/***/ }),
-/* 270 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("tr", [
-    _c("td"),
-    _vm._v(" "),
-    _c("td", [
-      _c("div", { staticClass: "asset-info nowrap" }, [
-        _c("a", { attrs: { href: _vm.item.info_url, target: "_blank" } }, [
-          _c("img", {
-            staticClass: "asset-img",
-            attrs: { src: _vm.item.logo_url, width: "20" }
-          })
-        ]),
-        _vm._v(" "),
-        _c("span", { staticClass: "show-for-medium asset-name" }, [
-          _vm._v(_vm._s(_vm.item.full_name))
-        ]),
-        _vm._v(" "),
-        _c("span", { staticClass: "asset-symbol" }, [
-          _vm._v(_vm._s(_vm.item.symbol))
-        ])
-      ])
-    ]),
-    _vm._v(" "),
-    _vm.portfolioCounterValue == "eur"
-      ? _c("td", [
-          _c("div", { staticClass: "asset-value nowrap" }, [
-            _vm._v(
-              "\n            " +
-                _vm._s(parseFloat(_vm.item.counter_value).toFixed(2)) +
-                " "
-            ),
-            _c("i", {
-              staticClass: "fa fa-eur",
-              attrs: { "aria-hidden": "true" }
-            })
-          ])
-        ])
-      : _vm._e(),
-    _vm._v(" "),
-    _vm.portfolioCounterValue == "usd"
-      ? _c("td", [
-          _c("div", { staticClass: "asset-value  nowrap" }, [
-            _c("i", {
-              staticClass: "fa fa-usd",
-              attrs: { "aria-hidden": "true" }
-            }),
-            _vm._v(
-              " " +
-                _vm._s(parseFloat(_vm.item.counter_value).toFixed(2)) +
-                " \n        "
-            )
-          ])
-        ])
-      : _vm._e(),
-    _vm._v(" "),
-    _vm.portfolioCounterValue == "btc"
-      ? _c("td", [
-          _c("div", { staticClass: "asset-value  nowrap" }, [
-            _c("i", {
-              staticClass: "fa fa-btc",
-              attrs: { "aria-hidden": "true" }
-            }),
-            _vm._v(
-              " " +
-                _vm._s(parseFloat(_vm.item.counter_value).toFixed(2)) +
-                " \n        "
-            )
-          ])
-        ])
-      : _vm._e(),
-    _vm._v(" "),
-    _c("td", [
-      _c("div", { staticClass: "asset-balance  nowrap" }, [
-        _c("i", { staticClass: "fa fa-btc", attrs: { "aria-hidden": "true" } }),
-        _vm._v(
-          " " + _vm._s(parseFloat(_vm.item.balance).toFixed(8)) + "\n        "
-        )
-      ])
-    ]),
-    _vm._v(" "),
-    _c("td", [
-      _c("div", { staticClass: "asset-amount  nowrap" }, [
-        _vm._v(
-          "\n            " +
-            _vm._s(parseFloat(_vm.item.amount).toFixed(8)) +
-            "\n        "
-        )
-      ])
-    ]),
-    _vm._v(" "),
-    _c("td", [
-      _c("div", { staticClass: "asset-origin  nowrap" }, [
-        _vm._v("\n            " + _vm._s(_vm.item.origin_name) + "\n        ")
-      ])
-    ])
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-d46b096e", module.exports)
-  }
-}
-
-/***/ }),
-/* 271 */
-/***/ (function(module, exports) {
-
-//////////////////////////////////////////////////////////////////
-// Cases Carousel 
-$('.reveal').on('open.zf.reveal', function () {
-    console.log('Modal opened!');
-    // Resize window to fit content
-    $(window).trigger('resize');
-});
-
-$('#notificationsModal').on('closed.zf.reveal', function () {
-    console.log('Modal closed!');
-});
-
-/***/ }),
-/* 272 */
-/***/ (function(module, exports) {
-
-$('.alerts-callout').hide().delay(1000).fadeIn(2000).delay(5000).fadeOut(1000);
-
-/***/ }),
-/* 273 */
-/***/ (function(module, exports) {
-
-
-
-/***/ }),
-/* 274 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 275 */,
-/* 276 */,
-/* 277 */,
-/* 278 */,
-/* 279 */,
-/* 280 */,
-/* 281 */,
-/* 282 */,
-/* 283 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(3)
-/* script */
-var __vue_script__ = __webpack_require__(284)
-/* template */
-var __vue_template__ = __webpack_require__(285)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
 Component.options.__file = "resources/assets/js/components/Transactions.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
 
@@ -120293,7 +119467,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 284 */
+/* 266 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -120467,7 +119641,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 285 */
+/* 267 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -120813,6 +119987,820 @@ if (false) {
     require("vue-hot-reload-api")      .rerender("data-v-2554e88c", module.exports)
   }
 }
+
+/***/ }),
+/* 268 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(3)
+/* script */
+var __vue_script__ = __webpack_require__(269)
+/* template */
+var __vue_template__ = __webpack_require__(270)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/Portfolio.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-2002e121", Component.options)
+  } else {
+    hotAPI.reload("data-v-2002e121", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 269 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: 'portfolio',
+    props: ['portfolio'],
+    data: function data() {
+        return {
+            assets: [],
+            totalBtc: 0,
+            totalFiat: 0,
+            portfolioAssetCount: 0,
+            portfolioCurrentAssetCount: 0,
+            showChart: false,
+            uniqueAssetsBtc: [],
+            uniqueAssetsFiat: [],
+            uniqueAssetsName: [],
+            uniqueAssetsOriginName: [],
+            uniqueAssetsOriginFiat: [],
+            mostValuableName: "",
+            mostValuableValue: "",
+            counterValueSymbol: '',
+            portfolioTable: {},
+            loadingPortfolio: false,
+            loadingAsset: false,
+            updatingAsset: false,
+            chartistTotalsData: { labels: [], series: [] },
+            chartistTotalsChart: {},
+            chartistTotalsOptions: [],
+            chartistOriginsData: { labels: [], series: [] },
+            chartistOriginsChart: {},
+            chartistOriginsOptions: [],
+            responsiveOptions: [],
+            errors: []
+        };
+    },
+    computed: {},
+    mounted: function mounted() {
+        var _this = this;
+
+        this.loadingPortfolio = true;
+
+        // Variables initizalization
+        this.totalBtc = 0;
+        this.totalFiat = 0;
+        this.uniqueAssetsOriginFiat = [];
+        this.uniqueAssetsOriginName = [];
+
+        // Setup DATATABLE
+        this.portfolioTable = $('#portfolioTable').DataTable({
+            "searching": false,
+            "responsive": true,
+            "paging": false,
+            "info": false,
+            "columnDefs": [{ "visible": false, "targets": 6 }],
+            columns: [{ title: '' }, { title: '<div class="sorting nowrap">Coin</div>' }, { title: '<div class="sorting nowrap">Amount</div>' }, { title: '<div class="sorting nowrap">Value (Fiat)</div>' }, { title: '<div class="sorting nowrap">Value (BTC)</div>' }, { title: '<div class="sorting nowrap">Price</div>' }, { title: '<div class="sorting nowrap">Asset ID</div>' }, { title: '<div class="sorting_asc nowrap">Origin</div>' }],
+            "drawCallback": function drawCallback(settings) {
+                var api = this.api();
+                var rows = api.rows({ page: 'current' }).nodes();
+                var last = null;
+
+                api.column(7, { page: 'current' }).data().each(function (group, i) {
+                    if (last !== group) {
+                        $(rows).eq(i).before('<tr class="group"><td colspan="7">' + group + '</td></tr>');
+
+                        last = group;
+                    }
+                });
+            }
+        });
+
+        // Clear Datatable in case of reloading
+        this.portfolioTable.clear();
+
+        // Set Chart options
+        this.responsiveOptions = [['screen and (min-width: 200px)', {
+            horizontalBars: true,
+            seriesBarDistance: 5
+        }],
+        // Options override for media > 800px
+        ['screen and (min-width: 800px)', {
+            stackBars: false,
+            seriesBarDistance: 10
+        }],
+        // Options override for media > 1000px
+        ['screen and (min-width: 1000px)', {
+            horizontalBars: false,
+            seriesBarDistance: 15
+        }]];
+        this.chartistTotalsOptions = {
+            distributeSeries: true
+        };
+        this.chartistOriginsOptions = {
+            distributeSeries: true
+        };
+
+        // Call the LoadPortfolio event asyncronously
+        var uri = '/api/portfolio/refresh';
+        axios(uri, {
+            method: 'GET'
+        }).then(function (response) {
+            console.log("Reloading portfolio...");
+        }).catch(function (e) {
+            _this.errors.push(e);
+
+            console.log("Error: " + e.message);
+        });
+
+        // Listen to ASSETS events
+        Echo.private('assets.' + this.portfolio.id).listen('PortfolioAssetLoaded', function (e) {
+            // ************
+            // ASSET LOADED
+            // ************
+
+            // console.log("Portfolio UpdateID: " + this.portfolio.update_id  + " Asset UpdateID: " + e.asset.update_id);
+            if (_this.portfolio.update_id == e.asset.update_id) {
+
+                var tools = '<div class="asset-tools nowrap"><button class="clear button" data-open="edit-asset-modal"><i class="fa fa-pencil edit-icon" aria-hidden="true"></i></button></div>';
+
+                // Set coin url, logo, name and symbol
+                var coin = '<div class="asset-info nowrap"><a href="' + e.asset.info_url + '" target="_blank"><img class="asset-img" src="' + e.asset.logo_url + '" width="20"></a> <span class="show-for-medium asset-name">' + e.asset.full_name + '</span> <span class="asset-symbol">' + e.asset.symbol + '</span></div>';
+
+                // Set coin amount
+                var amount = '<div class="asset-amount nowrap">' + parseFloat(e.asset.amount).toFixed(4) + '</div>';
+
+                // Set coin origin
+                var origin = '<div class="asset-origin  nowrap">' + e.asset.origin_name + '</div>';
+
+                // Add row to the table with the new asset
+                _this.portfolioTable.row.add(['', coin, amount, parseFloat(e.asset.counter_value).toFixed(2), parseFloat(e.asset.balance).toFixed(8), parseFloat(e.asset.price).toFixed(8), e.asset.id, origin]).order([7, 'asc']).invalidate().draw();
+            }
+        }).listen('PortfolioAssetUpdated', function (e) {
+            // ************
+            // ASSET UPDATED
+            // ************
+
+            if (_this.portfolio.update_id == e.asset.update_id) {
+                //console.log(e.asset.symbol);
+
+                // Calculate current TOTAL balances (btc and fiat)
+                _this.totalBtc = (parseFloat(_this.totalBtc) + parseFloat(e.asset.balance)).toFixed(8);
+                _this.totalFiat = (parseFloat(_this.totalFiat) + parseFloat(e.asset.counter_value)).toFixed(2);
+
+                // Store TOTAL balances
+                var balance = parseFloat(e.asset.balance).toFixed(8);
+                var price = parseFloat(e.asset.price).toFixed(8);
+                var counter_value = parseFloat(e.asset.counter_value).toFixed(2);
+
+                // Store a consolidated array by VALUE
+                var indexRepeatedAsset = _this.uniqueAssetsName.indexOf(e.asset.symbol);
+
+                if (indexRepeatedAsset >= 0) {
+                    // If asset is already counted we sum the new value
+                    var newBalanceBtc = parseFloat(_this.uniqueAssetsBtc[indexRepeatedAsset]) + parseFloat(e.asset.balance);
+                    var newBalanceFiat = parseFloat(_this.uniqueAssetsFiat[indexRepeatedAsset]) + parseFloat(e.asset.counter_value);
+                    _this.uniqueAssetsBtc[indexRepeatedAsset] = parseFloat(newBalanceBtc);
+                    _this.uniqueAssetsFiat[indexRepeatedAsset] = parseFloat(newBalanceFiat);
+
+                    // Update Chart data
+                    _this.chartistTotalsData.series[indexRepeatedAsset] = parseFloat(parseFloat(_this.uniqueAssetsFiat[indexRepeatedAsset]).toFixed(2));
+                } else {
+                    // If the asset doesn't exists we push it
+                    _this.uniqueAssetsBtc.push(parseFloat(e.asset.balance));
+                    _this.uniqueAssetsFiat.push(parseFloat(e.asset.counter_value));
+                    _this.uniqueAssetsName.push(e.asset.symbol);
+
+                    // Update Chart data
+                    _this.chartistTotalsData.labels.push(e.asset.symbol);
+                    _this.chartistTotalsData.series.push(parseFloat(parseFloat(e.asset.counter_value).toFixed(2)));
+                }
+
+                // Store consolidated array of ORIGINS
+                var indexRepeatedOrigin = _this.uniqueAssetsOriginName.indexOf(e.asset.origin_name);
+                // console.log("Index: " + indexRepeatedOrigin);
+
+                if (indexRepeatedOrigin >= 0) {
+                    // If origin is already counted we sum the new value
+                    var newBalanceFiat = parseFloat(_this.uniqueAssetsOriginFiat[indexRepeatedOrigin]) + parseFloat(e.asset.counter_value);
+                    _this.uniqueAssetsOriginFiat[indexRepeatedOrigin] = parseFloat(newBalanceFiat);
+
+                    // Update Chart data
+                    _this.chartistOriginsData.series[indexRepeatedOrigin] = parseFloat(parseFloat(newBalanceFiat).toFixed(2));
+                    // console.log(this.uniqueAssetsOriginName);
+                    // console.log(this.chartistOriginsData.series);
+                    // console.log(e.asset.symbol + '(' +  e.asset.counter_value + ') - Repe!');
+                    // console.log(e.asset.origin_name + ' - ' + parseFloat( parseFloat(this.uniqueAssetsFiat[indexRepeatedOrigin]).toFixed(2)));
+                } else {
+
+                    // If the asset doesn't exists we push it
+                    _this.uniqueAssetsOriginName.push(e.asset.origin_name);
+                    _this.uniqueAssetsOriginFiat.push(e.asset.counter_value);
+                    //console.log("Value: " + e.asset.counter_value);
+
+                    // Update Chart data
+                    _this.chartistOriginsData.labels.push(e.asset.origin_name);
+                    _this.chartistOriginsData.series.push(parseFloat(parseFloat(e.asset.counter_value).toFixed(2)));
+                    // console.log(this.uniqueAssetsOriginName);
+                    // console.log(this.chartistOriginsData.series);
+                    // console.log(e.asset.symbol + '(' +  e.asset.counter_value + ') - No Repe!');
+                    // console.log(e.asset.origin_name + ' - ' + e.asset.counter_value);
+                }
+                //console.log("Value: " + JSON.stringify(this.chartistOriginsData));
+
+                // Locate current coin row in DATATABLE
+                var indexes = _this.portfolioTable.rows().eq(0).filter(function (rowIdx) {
+                    return _this.portfolioTable.cell(rowIdx, 6).data() === e.asset.id ? true : false;
+                });
+
+                // Update DATATABLE values (Price, Balance and Counter Value)
+                _this.portfolioTable.cell(indexes[0], 3).data(counter_value).invalidate();
+                _this.portfolioTable.cell(indexes[0], 4).data(balance).invalidate();
+                _this.portfolioTable.cell(indexes[0], 5).data(price).invalidate();
+                // this.portfolioTable.responsive.rebuild();
+                // this.portfolioTable.responsive.recalc();
+                _this.portfolioTable.draw();
+
+                // Keep count of number of assets
+                _this.portfolioCurrentAssetCount++;
+
+                // Keep asset on array of assets
+                _this.assets.push(e.asset);
+
+                // var elem = new Foundation.Reveal('editAsset'+e.asset.id, 'open');
+                // $('#editAsset'+e.asset.id).foundation();
+
+                // console.log("Asset Count: " + this.portfolioCurrentAssetCount);
+                if (_this.portfolioCurrentAssetCount == _this.portfolioAssetCount && _this.portfolioCurrentAssetCount != 0) {
+                    console.log(_this.chartistOriginsData.series);
+                    console.log(_this.chartistOriginsData.labels);
+                    _this.showChart = true;
+                    _this.chartistTotalsChart = new Chartist.Bar('.ct-chart-totals', _this.chartistTotalsData, _this.chartistTotalsOptions, _this.responsiveOptions);
+                    _this.chartistOriginsChart = new Chartist.Bar('.ct-chart-origins', _this.chartistOriginsData, _this.chartistOriginsOptions, _this.responsiveOptions);
+                    _this.loadingPortfolio = false;
+                }
+            }
+        });
+        Echo.private('portfolios.' + this.portfolio.id).listen('PortfolioLoaded', function (e) {
+            // ************
+            // PORTFOLIO LOADED
+            // ************
+
+            // console.log("Asset count: " + e.assetCount);
+            _this.counterValueSymbol = _this.portfolio.counter_value.toUpperCase();
+            _this.portfolioAssetCount = e.assetCount;
+        });
+
+        console.log('Component TradeList mounted.');
+    },
+
+    methods: {
+        refreshPortfolio: function refreshPortfolio() {
+            var _this2 = this;
+
+            if (this.portfolioCurrentAssetCount > 0) {
+                this.chartistTotalsChart.detach();
+                this.chartistOriginsChart.detach();
+                this.portfolioTable.clear().draw();
+            };
+            this.assets = [];
+            this.totalBtc = 0;
+            this.totalFiat = 0;
+            this.uniqueAssetsBtc = [];
+            this.uniqueAssetsFiat = [];
+            this.uniqueAssetsName = [];
+            this.uniqueAssetsOriginFiat = [];
+            this.uniqueAssetsOriginName = [];
+            this.chartistTotalsData.labels = [];
+            this.chartistOriginsData.labels = [];
+            this.chartistTotalsData.series = [];
+            this.chartistOriginsData.series = [];
+            this.portfolioCurrentAssetCount = 0;
+            this.portfolioAssetCount = 0;
+            this.showChart = false;
+
+            var uri = '/api/portfolio/refresh';
+            axios(uri, {
+                method: 'GET'
+            }).then(function (response) {
+                console.log("Reloading portfolio...");
+            }).catch(function (e) {
+                _this2.errors.push(e);
+
+                console.log("Error: " + e.message);
+            });
+        }
+    }
+});
+
+/***/ }),
+/* 270 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("section", { attrs: { id: "portfolio-widget" } }, [
+    _c("div", { staticClass: "grid-x grid-padding-x" }, [
+      _c("div", { staticClass: "small-12 cell" }, [
+        _c("div", { staticClass: "grid-container fluid" }, [
+          _c("div", { staticClass: "grid-x grid-padding-x" }, [
+            _c("div", { staticClass: "shrink cell" }, [
+              _c("div", { staticClass: "counter-widget text-left" }, [
+                _c("div", { staticClass: "title" }, [_vm._v("Total BTC ")]),
+                _vm._v(" "),
+                _c("div", { staticClass: "counter" }, [
+                  _vm._v(_vm._s(_vm.totalBtc))
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "shrink cell" }, [
+              _c("div", { staticClass: "counter-widget text-left" }, [
+                _c("div", { staticClass: "title" }, [
+                  _vm._v("Total " + _vm._s(_vm.counterValueSymbol) + " ")
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "counter" }, [
+                  _vm._v(_vm._s(_vm.totalFiat))
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "auto cell text-right" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "button hollow button-refresh",
+                  on: {
+                    click: function($event) {
+                      _vm.refreshPortfolio()
+                    }
+                  }
+                },
+                [
+                  _c(
+                    "span",
+                    {
+                      directives: [
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value: _vm.loadingPortfolio,
+                          expression: "loadingPortfolio"
+                        }
+                      ]
+                    },
+                    [
+                      _c("i", {
+                        staticClass: "fa fa-refresh fa-spin fa-fw",
+                        attrs: { "aria-hidden": "true" }
+                      }),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "show-for-medium" }, [
+                        _vm._v(" Loading...")
+                      ])
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "span",
+                    {
+                      directives: [
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value: !_vm.loadingPortfolio,
+                          expression: "!loadingPortfolio"
+                        }
+                      ]
+                    },
+                    [
+                      _c("i", { staticClass: "fa fa-refresh " }),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "show-for-medium" }, [
+                        _vm._v("Reload")
+                      ])
+                    ]
+                  )
+                ]
+              )
+            ])
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      _vm._m(0, false, false),
+      _vm._v(" "),
+      _c("div", { staticClass: "small-12 large-6 cell" }, [
+        _c(
+          "div",
+          {
+            staticClass:
+              "grid-x grid-padding-x align-center-middle text-center dashboard"
+          },
+          [
+            _c("div", { staticClass: "small-12 cell charts" }, [
+              _c("div", {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.showChart,
+                    expression: "showChart"
+                  }
+                ],
+                staticClass: "ct-chart-totals ct-golden-section"
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "small-12 cell charts" }, [
+              _c("div", {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.showChart,
+                    expression: "showChart"
+                  }
+                ],
+                staticClass: "ct-chart-origins ct-golden-section"
+              })
+            ])
+          ]
+        )
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "small-12 large-6 cell" }, [
+      _c("div", { staticClass: "portfolio-assets" }, [
+        _c("table", {
+          staticClass: "display unstriped",
+          attrs: { id: "portfolioTable", width: "100%" }
+        })
+      ])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-2002e121", module.exports)
+  }
+}
+
+/***/ }),
+/* 271 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(3)
+/* script */
+var __vue_script__ = __webpack_require__(272)
+/* template */
+var __vue_template__ = __webpack_require__(273)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/Asset.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-d46b096e", Component.options)
+  } else {
+    hotAPI.reload("data-v-d46b096e", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 272 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: 'asset',
+    data: function data() {
+        return {
+            balance: 0
+        };
+    },
+    props: ['item', 'portfolio-counter-value'],
+    mounted: function mounted() {
+        console.log('Component Asset mounted.');
+    }
+});
+
+/***/ }),
+/* 273 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("tr", [
+    _c("td"),
+    _vm._v(" "),
+    _c("td", [
+      _c("div", { staticClass: "asset-info nowrap" }, [
+        _c("a", { attrs: { href: _vm.item.info_url, target: "_blank" } }, [
+          _c("img", {
+            staticClass: "asset-img",
+            attrs: { src: _vm.item.logo_url, width: "20" }
+          })
+        ]),
+        _vm._v(" "),
+        _c("span", { staticClass: "show-for-medium asset-name" }, [
+          _vm._v(_vm._s(_vm.item.full_name))
+        ]),
+        _vm._v(" "),
+        _c("span", { staticClass: "asset-symbol" }, [
+          _vm._v(_vm._s(_vm.item.symbol))
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _vm.portfolioCounterValue == "eur"
+      ? _c("td", [
+          _c("div", { staticClass: "asset-value nowrap" }, [
+            _vm._v(
+              "\n            " +
+                _vm._s(parseFloat(_vm.item.counter_value).toFixed(2)) +
+                " "
+            ),
+            _c("i", {
+              staticClass: "fa fa-eur",
+              attrs: { "aria-hidden": "true" }
+            })
+          ])
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.portfolioCounterValue == "usd"
+      ? _c("td", [
+          _c("div", { staticClass: "asset-value  nowrap" }, [
+            _c("i", {
+              staticClass: "fa fa-usd",
+              attrs: { "aria-hidden": "true" }
+            }),
+            _vm._v(
+              " " +
+                _vm._s(parseFloat(_vm.item.counter_value).toFixed(2)) +
+                " \n        "
+            )
+          ])
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.portfolioCounterValue == "btc"
+      ? _c("td", [
+          _c("div", { staticClass: "asset-value  nowrap" }, [
+            _c("i", {
+              staticClass: "fa fa-btc",
+              attrs: { "aria-hidden": "true" }
+            }),
+            _vm._v(
+              " " +
+                _vm._s(parseFloat(_vm.item.counter_value).toFixed(2)) +
+                " \n        "
+            )
+          ])
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    _c("td", [
+      _c("div", { staticClass: "asset-balance  nowrap" }, [
+        _c("i", { staticClass: "fa fa-btc", attrs: { "aria-hidden": "true" } }),
+        _vm._v(
+          " " + _vm._s(parseFloat(_vm.item.balance).toFixed(8)) + "\n        "
+        )
+      ])
+    ]),
+    _vm._v(" "),
+    _c("td", [
+      _c("div", { staticClass: "asset-amount  nowrap" }, [
+        _vm._v(
+          "\n            " +
+            _vm._s(parseFloat(_vm.item.amount).toFixed(8)) +
+            "\n        "
+        )
+      ])
+    ]),
+    _vm._v(" "),
+    _c("td", [
+      _c("div", { staticClass: "asset-origin  nowrap" }, [
+        _vm._v("\n            " + _vm._s(_vm.item.origin_name) + "\n        ")
+      ])
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-d46b096e", module.exports)
+  }
+}
+
+/***/ }),
+/* 274 */
+/***/ (function(module, exports) {
+
+//////////////////////////////////////////////////////////////////
+// Cases Carousel 
+$('.reveal').on('open.zf.reveal', function () {
+    console.log('Modal opened!');
+    // Resize window to fit content
+    $(window).trigger('resize');
+});
+
+$('#notificationsModal').on('closed.zf.reveal', function () {
+    console.log('Modal closed!');
+});
+
+/***/ }),
+/* 275 */
+/***/ (function(module, exports) {
+
+$('.alerts-callout').hide().delay(1000).fadeIn(2000).delay(5000).fadeOut(1000);
+
+/***/ }),
+/* 276 */
+/***/ (function(module, exports) {
+
+
+
+/***/ }),
+/* 277 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
 
 /***/ })
 /******/ ]);

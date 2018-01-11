@@ -45,6 +45,7 @@ class LoadPortfolio implements ShouldQueue
     public function handle(PortfolioOpened $event)
     {
         try {
+
             if ($event->portfolio) {
 
                 // Get user
@@ -58,7 +59,7 @@ class LoadPortfolio implements ShouldQueue
                 // Get Cryptocompare coin list properties
                 $guru = new CoinGuru;
                 $coinList = $guru->cryptocompareCoingetList();
-                // TODO controlar si retorna errot
+                // TODO controlar si retorna error
                 $logoBaseUrl = $coinList->BaseImageUrl;
                 $infoBaseUrl = $coinList->BaseLinkUrl;
 
@@ -72,44 +73,100 @@ class LoadPortfolio implements ShouldQueue
                 else $exchanges = [];
 
                 foreach ($exchanges as $exchange) {
-
+               
                     // Delete assets from this exchange
-                    foreach ($user->assets->where('origin_name', ucfirst($exchange)) as $asset) {
-                        PortfolioAsset::destroy($asset->id);
-                    }
+                    // foreach ($user->assets->where('origin_name', ucfirst($exchange)) as $asset) {
+                    //     PortfolioAsset::destroy($asset->id);
+                    // }
 
                     // Get balance from this exchange
                     $broker->setExchange($exchange);
                     $balance = $broker->getBalances();
                     // Controlar si retorna error
 
-                    
-                    $origin_id = $user->origins->where('name', ucfirst($exchange))->first()->id;
-                    foreach ($balance->result as $coin) {
-             
-                        $symbol = $coin->Currency;
-                        $coinInfo = $coinList->Data->$symbol;
-                        $asset = new PortfolioAsset;
-                        $asset->portfolio_id = $event->portfolio->id;
-                        $asset->user_id = $user->id;
-                        $asset->origin_id = $origin_id;
-                        $asset->origin_name = ucfirst($exchange);
-                        $asset->symbol = $coin->Currency;
-                        $asset->amount = $coin->Balance;
-                        $asset->full_name = $coinInfo->CoinName;
-                        $asset->logo_url = $logoBaseUrl . $coinInfo->ImageUrl;
-                        $asset->info_url = $infoBaseUrl . $coinInfo->Url;
-                        $asset->price = 0;
-                        $asset->balance = 0;
-                        $counterValue = strtoupper($event->portfolio->counter_value);
-                        $asset->counter_value = 0;
-                        $asset->initial_price = 0;
-                        $asset->update_id = $event->portfolio->update_id;
+                    // Retrieve current asset list
+                    $initialAssets = $user->assets->where('origin_name', ucfirst($exchange));
+                    $finalAssets = [];
 
-                        $asset->save();
+                    // Retrieve origin id to attach to each asset
+                    $origin_id = $user->origins->where('name', ucfirst($exchange))->first()->id;
+
+                    foreach ($balance->result as $coin) {
+                        $repeated = false;
+
+                        // Find if the asset already exists
+                        foreach ($initialAssets as $currentAsset) {
+
+                            if ( strtoupper($currentAsset->symbol) == strtoupper($coin->Currency) ) {
+
+                                // Save the asset if already exists and mark as repeated
+                                $asset =  $currentAsset;
+                                $repeated = true;
+
+                            }
+
+                        }
+                        
+                        if ($repeated) {
+                            $repeated = false;
+                            // If the asset already exist check if the amount has changed
+                            if ( $asset->amount == $coin->Balance) {
+                                var_dump("*********Changed amount");
+                                // If the amount has changed calculate new purchase price
+                                $asset->amount = $coin->Balance;
+
+                                // Get exchange asset avarage buy price
+                                $brokerResponse = $broker->getPurchasePrice('BTC-' . $coin->Currency, $coin->Balance);
+                                
+                                if ($brokerResponse->success) {
+                                    $asset->initial_price = $brokerResponse->result->AvaragePrice;
+                                }
+
+                            }
+                            $asset->update_id = $event->portfolio->update_id;
+                            $asset->save();
+
+                        }
+                        else {
+                            
+                            // Get coin info
+                            $symbol = $coin->Currency;
+                            $coinInfo = $coinList->Data->$symbol;
+
+                            // Create a new asset
+                            $asset = new PortfolioAsset;
+                            $asset->portfolio_id = $event->portfolio->id;
+                            $asset->user_id = $user->id;
+                            $asset->origin_id = $origin_id;
+                            $asset->origin_name = ucfirst($exchange);
+                            $asset->symbol = $coin->Currency;
+                            $asset->full_name = $coinInfo->CoinName;
+                            $asset->logo_url = $logoBaseUrl . $coinInfo->ImageUrl;
+                            $asset->info_url = $infoBaseUrl . $coinInfo->Url;
+                            $asset->price = 0;
+                            $asset->balance = 0;
+                            $counterValue = strtoupper($event->portfolio->counter_value);
+                            $asset->counter_value = 0;
+                            $asset->amount = $coin->Balance;
+                            $asset->update_id = $event->portfolio->update_id;
+
+                            // Get exchange asset avarage buy price
+                            $brokerResponse = $broker->getPurchasePrice('BTC-' . $coin->Currency, $coin->Balance);
+
+                                var_dump($brokerResponse);
+                            if ($brokerResponse->success) {
+                                $asset->initial_price = $brokerResponse->result->AvaragePrice;
+                            }
+                            $asset->save();
+                        }
+
+                        
+
                     }
+
                 }
 
+                // Iterate assets to count them and launch asset loaded event
                 $assets = $event->portfolio->assets;
                 $asset_count = 0;
                 foreach ($assets as $asset) {
@@ -119,9 +176,9 @@ class LoadPortfolio implements ShouldQueue
                     
                     // EVENT:  Portfolio Asset Loaded
                     event(new PortfolioAssetLoaded($asset));
-
                 }
-                
+
+                // Save the number of assets in this portfolio
                 $portfolio = $event->portfolio;
                 $portfolio->asset_count = $asset_count;
                 $portfolio->save();

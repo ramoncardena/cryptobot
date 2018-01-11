@@ -57,7 +57,6 @@ export default {
     data: () => {
         return {
             assets: [],
-            modals: [],
             totalBtc: 0,
             totalFiat: 0,
             portfolioAssetCount: 0,
@@ -336,9 +335,6 @@ export default {
         console.log('Component TradeList mounted.');
     },
     methods: {
-        openModal (id) {
-             this.modals[id].open();
-        },
         refreshPortfolio() {
             if (this.portfolioCurrentAssetCount > 0) {
                 this.chartistTotalsChart.detach();
