@@ -92,11 +92,6 @@
                                         @else
                                              <option value="eur">EUR</option>
                                         @endif
-                                        @if ($portfolio->counter_value === 'btc')
-                                            <option value="btc" selected="selected">BTC</option>
-                                        @else
-                                             <option value="btc">BTC</option>
-                                        @endif
 
                                     </select>
                                 </div>
