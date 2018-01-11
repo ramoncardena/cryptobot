@@ -110,7 +110,7 @@ class LoadPortfolio implements ShouldQueue
                         if ($repeated) {
                             $repeated = false;
                             // If the asset already exist check if the amount has changed
-                            if ( $asset->amount == $coin->Balance) {
+                            if ( $asset->amount != $coin->Balance) {
                                 // If the amount has changed calculate new purchase price
                                 $asset->amount = $coin->Balance;
 
