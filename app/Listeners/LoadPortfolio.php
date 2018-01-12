@@ -172,6 +172,7 @@ class LoadPortfolio implements ShouldQueue
                                 $asset->initial_price = 0;
                             }
                             $asset->save();
+                            
                             array_prepend($finalAssets, $coin->Currency);
                         }
 
