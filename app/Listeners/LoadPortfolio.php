@@ -94,6 +94,8 @@ class LoadPortfolio implements ShouldQueue
 
                     foreach ($latestAssets as $coin) {
                         $repeated = false;
+                        dd($coin);
+                        
 
                         // Find if the asset already exists
                         foreach ($initialAssets as $currentAsset) {
@@ -130,7 +132,7 @@ class LoadPortfolio implements ShouldQueue
                                 
 
                             }
-                            
+
                             $asset->update_id = $event->portfolio->update_id;
                             $asset->save();
                             $finalAssets->push($asset);
