@@ -180,7 +180,7 @@ class LoadPortfolio implements ShouldQueue
                             $keep = in_array($asset->symbol, $finalAssets);
                             var_dump($keep);
                             if (!$keep) {
-                                var_dump('Deleting: ' .$asset->symbol);
+                                var_dump('Deleting');
                                 PortfolioAsset::destroy($asset->id);
                             } 
                         }
