@@ -176,8 +176,7 @@ class LoadPortfolio implements ShouldQueue
                             $finalAssets->push($asset);
                         }
 
-                        $removedAssets = $initialAssets->diff($finalAssets);
-                        var_dump($removedAssets);
+                        $removedAssets = $initialAssets->diffKeys($finalAssets);
 
                         foreach ($removedAssets as $asset) {
                             PortfolioAsset::destroy($asset->id);
