@@ -87,7 +87,7 @@ class LoadPortfolio implements ShouldQueue
 
                     // Retrieve current asset list for this exchange
                     $initialAssets = $user->assets->where('origin_name', ucfirst($exchange));
-                    $finalAssets = new Collection;
+                    $finalAssets = collect([]);
 
                     // Retrieve origin id to attach to each asset
                     $origin_id = $user->origins->where('name', ucfirst($exchange))->first()->id;
