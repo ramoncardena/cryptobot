@@ -177,7 +177,7 @@ class LoadPortfolio implements ShouldQueue
 
                         foreach ($initialAssets as $asset) {
                             var_dump($asset->symbol);
-                            $keep = array_has($finalAssets, $asset->symbol);
+                            $keep = in_array($asset->symbol, $finalAssets);
                             var_dump($keep);
                             if (!$keep) PortfolioAsset::destroy($asset->id);
                         }
