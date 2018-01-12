@@ -111,19 +111,27 @@ class LoadPortfolio implements ShouldQueue
                             $repeated = false;
                             // If the asset already exist check if the amount has changed
                             if ( $asset->amount != $coin->Balance) {
-                                // If the amount has changed calculate new purchase price
-                                $asset->amount = $coin->Balance;
 
-                                // Get exchange asset avarage buy price
-                                $brokerResponse = $broker->getPurchasePrice('BTC-' . $coin->Currency, $coin->Balance);
-                                
-                                if ($brokerResponse->success) {
-                                    $asset->initial_price = $brokerResponse->result->AvaragePrice;
+                                if ($coin->Balance <= 0) {
+                                    PortfolioAsset::destroy($asset->id);
+                                }
+                                else {
+                                    // If the amount has changed calculate new purchase price
+                                    $asset->amount = $coin->Balance;
+
+                                    // Get exchange asset avarage buy price
+                                    $brokerResponse = $broker->getPurchasePrice('BTC-' . $coin->Currency, $coin->Balance);
+                                    
+                                    if ($brokerResponse->success) {
+                                        $asset->initial_price = $brokerResponse->result->AvaragePrice;
+                                    }
                                 }
 
                             }
-                            $asset->update_id = $event->portfolio->update_id;
-                            $asset->save();
+                            if ($coin->Balance > 0) {
+                                $asset->update_id = $event->portfolio->update_id;
+                                $asset->save();
+                            }
 
                         }
                         else {
