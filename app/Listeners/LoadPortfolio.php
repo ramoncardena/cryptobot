@@ -110,6 +110,7 @@ class LoadPortfolio implements ShouldQueue
                         
                         if ($repeated) {
                             $repeated = false;
+
                             // If the asset already exist check if the amount has changed
                             if ( $asset->amount != $coin->Balance) {
 
@@ -125,6 +126,9 @@ class LoadPortfolio implements ShouldQueue
                                     
                                     if ($brokerResponse->success) {
                                         $asset->initial_price = $brokerResponse->result->AvaragePrice;
+                                    }
+                                    else {
+                                        $asset->initial_price = 0;
                                     }
                                 }
 
