@@ -81,17 +81,18 @@ class LoadPortfolio implements ShouldQueue
 
                     // Get balance from this exchange
                     $broker->setExchange($exchange);
-                    $balance = $broker->getBalances();
-                    // Controlar si retorna error
+                    $balance = $broker->getBalances(); // Controlar si retorna error
+                    $latestAssets = $balance->result;
+                   
 
-                    // Retrieve current asset list
+                    // Retrieve current asset list for this exchange
                     $initialAssets = $user->assets->where('origin_name', ucfirst($exchange));
-                    $finalAssets = [];
+                    $finalAssets = new Collection;
 
                     // Retrieve origin id to attach to each asset
                     $origin_id = $user->origins->where('name', ucfirst($exchange))->first()->id;
 
-                    foreach ($balance->result as $coin) {
+                    foreach ($latestAssets as $coin) {
                         $repeated = false;
 
                         // Find if the asset already exists
@@ -131,6 +132,7 @@ class LoadPortfolio implements ShouldQueue
                             if ($coin->Balance > 0) {
                                 $asset->update_id = $event->portfolio->update_id;
                                 $asset->save();
+                                $finalAssets->push($asset);
                             }
 
                         }
@@ -167,9 +169,14 @@ class LoadPortfolio implements ShouldQueue
                                 $asset->initial_price = 0;
                             }
                             $asset->save();
+                            $finalAssets->push($asset);
                         }
 
-                        
+                        $removedAssets = $initialAssets->diff($finalAssets);
+
+                        foreach ($removedAssets as $asset) {
+                            PortfolioAsset::destroy($asset.id);
+                        }
 
                     }
 
