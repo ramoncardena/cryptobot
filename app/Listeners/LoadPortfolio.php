@@ -101,7 +101,7 @@ class LoadPortfolio implements ShouldQueue
                             if ( strtoupper($currentAsset->symbol) == strtoupper($coin->Currency) ) {
 
                                 // Save the asset if already exists and mark as repeated
-                                $asset =  $currentAsset;
+                                $repAsset =  $currentAsset;
                                 $repeated = true;
 
                             }
@@ -111,28 +111,27 @@ class LoadPortfolio implements ShouldQueue
                         if ($repeated) {
                             $repeated = false;
 
-                            // If the asset already exist check if the amount has changed
-                            if ( $asset->amount != $coin->Balance) {
+                            // If the repAsset already exist check if the amount has changed
+                            if ( $repAsset->amount != $coin->Balance) {
 
-                                
                                 // If the amount has changed calculate new purchase price
-                                $asset->amount = $coin->Balance;
+                                $repAsset->amount = $coin->Balance;
 
                                 // Get exchange asset avarage buy price
                                 $brokerResponse = $broker->getPurchasePrice('BTC-' . $coin->Currency, $coin->Balance);
                                 
                                 if ($brokerResponse->success) {
-                                    $asset->initial_price = $brokerResponse->result->AvaragePrice;
+                                    $repAsset->initial_price = $brokerResponse->result->AvaragePrice;
                                 }
                                 else {
-                                    $asset->initial_price = 0;
+                                    $repAsset->initial_price = 0;
                                 }
                                 
 
                             }
 
-                            $asset->update_id = $event->portfolio->update_id;
-                            $asset->save();
+                            $repAsset->update_id = $event->portfolio->update_id;
+                            $repAsset->save();
                             $finalAssets = array_prepend($finalAssets, $coin->Currency);
                             
                         }
@@ -143,48 +142,44 @@ class LoadPortfolio implements ShouldQueue
                             $coinInfo = $coinList->Data->$symbol;
 
                             // Create a new asset
-                            $asset = new PortfolioAsset;
-                            $asset->portfolio_id = $event->portfolio->id;
-                            $asset->user_id = $user->id;
-                            $asset->origin_id = $origin_id;
-                            $asset->origin_name = ucfirst($exchange);
-                            $asset->symbol = $coin->Currency;
-                            $asset->full_name = $coinInfo->CoinName;
-                            $asset->logo_url = $logoBaseUrl . $coinInfo->ImageUrl;
-                            $asset->info_url = $infoBaseUrl . $coinInfo->Url;
-                            $asset->price = 0;
-                            $asset->balance = 0;
+                            $newAsset = new PortfolioAsset;
+                            $newAsset->portfolio_id = $event->portfolio->id;
+                            $newAsset->user_id = $user->id;
+                            $newAsset->origin_id = $origin_id;
+                            $newAsset->origin_name = ucfirst($exchange);
+                            $newAsset->symbol = $coin->Currency;
+                            $newAsset->full_name = $coinInfo->CoinName;
+                            $newAsset->logo_url = $logoBaseUrl . $coinInfo->ImageUrl;
+                            $newAsset->info_url = $infoBaseUrl . $coinInfo->Url;
+                            $newAsset->price = 0;
+                            $newAsset->balance = 0;
                             $counterValue = strtoupper($event->portfolio->counter_value);
-                            $asset->counter_value = 0;
-                            $asset->amount = $coin->Balance;
-                            $asset->update_id = $event->portfolio->update_id;
+                            $newAsset->counter_value = 0;
+                            $newAsset->amount = $coin->Balance;
+                            $newAsset->update_id = $event->portfolio->update_id;
 
                             // Get exchange asset avarage buy price
                             $brokerResponse = $broker->getPurchasePrice('BTC-' . $coin->Currency, $coin->Balance);
                         
                             if ($brokerResponse->success) {
-                                $asset->initial_price = $brokerResponse->result->AvaragePrice;
+                                $newAsset->initial_price = $brokerResponse->result->AvaragePrice;
                             }
                             else {
-                                $asset->initial_price = 0;
+                                $newAsset->initial_price = 0;
                             }
-                            $asset->save();
+                            $newAsset->save();
 
                             $finalAssets = array_prepend($finalAssets, $coin->Currency);
                         }
 
-                        var_dump($finalAssets);
+                    }
 
-                        foreach ($initialAssets as $asset) {
-                            var_dump($asset->symbol);
-                            $keep = in_array($asset->symbol, $finalAssets);
-                            var_dump($keep);
-                            if (!$keep) {
-                                var_dump('Deleting');
-                                PortfolioAsset::destroy($asset->id);
-                            } 
-                        }
-
+                    foreach ($initialAssets as $asset) {
+                        var_dump($asset->symbol);
+                        $keep = in_array($asset->symbol, $finalAssets);
+                        if (!$keep) {
+                            PortfolioAsset::destroy($asset->id);
+                        } 
                     }
 
                 }
