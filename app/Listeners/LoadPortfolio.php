@@ -135,7 +135,7 @@ class LoadPortfolio implements ShouldQueue
 
                             $asset->update_id = $event->portfolio->update_id;
                             $asset->save();
-                            $finalAssets->push($coin->Currency);
+                            array_add($finalAssets, $coin->Currency);
                             
 
                         }
@@ -172,7 +172,7 @@ class LoadPortfolio implements ShouldQueue
                                 $asset->initial_price = 0;
                             }
                             $asset->save();
-                            $finalAssets->push($coin->Currency);
+                            array_add($finalAssets, $coin->Currency);
                         }
 
                         foreach ($initialAssets as $asset) {
