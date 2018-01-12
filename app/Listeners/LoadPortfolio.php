@@ -87,15 +87,15 @@ class LoadPortfolio implements ShouldQueue
 
                     // Retrieve current asset list for this exchange
                     $initialAssets = $user->assets->where('origin_name', ucfirst($exchange));
-                    $finalAssets = collect([]);
+                    $finalAssets = [];
 
                     // Retrieve origin id to attach to each asset
                     $origin_id = $user->origins->where('name', ucfirst($exchange))->first()->id;
 
                     foreach ($latestAssets as $coin) {
                         $repeated = false;
-                        dd($coin);
-                        
+                
+
 
                         // Find if the asset already exists
                         foreach ($initialAssets as $currentAsset) {
@@ -135,7 +135,7 @@ class LoadPortfolio implements ShouldQueue
 
                             $asset->update_id = $event->portfolio->update_id;
                             $asset->save();
-                            $finalAssets->push($asset);
+                            $finalAssets->push($coin->Currency);
                             
 
                         }
@@ -172,14 +172,13 @@ class LoadPortfolio implements ShouldQueue
                                 $asset->initial_price = 0;
                             }
                             $asset->save();
-                            $finalAssets->push($asset);
+                            $finalAssets->push($coin->Currency);
                         }
 
-                        $removedAssets = $initialAssets->diff($finalAssets);
+                        foreach ($initialAssets as $asset) {
 
-                        foreach ($removedAssets as $asset) {
-                            var_dump($asset->symbol);
-                            PortfolioAsset::destroy($asset->id);
+                            if (!array_has($finalAssets, $asset->symbol)) PortfolioAsset::destroy($asset->id);
+                            
                         }
 
                     }
