@@ -114,30 +114,27 @@ class LoadPortfolio implements ShouldQueue
                             // If the asset already exist check if the amount has changed
                             if ( $asset->amount != $coin->Balance) {
 
-                                if ($coin->Balance <= 0) {
-                                    PortfolioAsset::destroy($asset->id);
+                                
+                                // If the amount has changed calculate new purchase price
+                                $asset->amount = $coin->Balance;
+
+                                // Get exchange asset avarage buy price
+                                $brokerResponse = $broker->getPurchasePrice('BTC-' . $coin->Currency, $coin->Balance);
+                                
+                                if ($brokerResponse->success) {
+                                    $asset->initial_price = $brokerResponse->result->AvaragePrice;
                                 }
                                 else {
-                                    // If the amount has changed calculate new purchase price
-                                    $asset->amount = $coin->Balance;
-
-                                    // Get exchange asset avarage buy price
-                                    $brokerResponse = $broker->getPurchasePrice('BTC-' . $coin->Currency, $coin->Balance);
-                                    
-                                    if ($brokerResponse->success) {
-                                        $asset->initial_price = $brokerResponse->result->AvaragePrice;
-                                    }
-                                    else {
-                                        $asset->initial_price = 0;
-                                    }
+                                    $asset->initial_price = 0;
                                 }
+                                
 
                             }
-                            if ($coin->Balance > 0) {
-                                $asset->update_id = $event->portfolio->update_id;
-                                $asset->save();
-                                $finalAssets->push($asset);
-                            }
+                            
+                            $asset->update_id = $event->portfolio->update_id;
+                            $asset->save();
+                            $finalAssets->push($asset);
+                            
 
                         }
                         else {
