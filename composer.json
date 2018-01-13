@@ -16,7 +16,8 @@
         "predis/predis": "^1.1",
         "pusher/pusher-php-server": "~3.0",
         "ratchet/pawl": "^0.2.3",
-        "loeken/cryptocompare-api-php-wrapper": "dev-master"
+        "loeken/cryptocompare-api-php-wrapper": "dev-master",
+        "ccxt/ccxt": "^1.10"
     },
     "require-dev": {
         "filp/whoops": "~2.0",

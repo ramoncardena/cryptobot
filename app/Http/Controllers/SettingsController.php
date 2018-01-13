@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Portfolio;
 use App\PortfolioOrigin;
 use App\User;
+use App\Connection;
 
 class SettingsController extends Controller
 {
@@ -42,12 +43,18 @@ class SettingsController extends Controller
         $bitstamp['bitstamp_fee'] = $settings->get('bitstamp_fee');   
 
         // Get exchange lists
-        $exchanges_active  = $settings->get('exchanges');
+        $exchanges_active  = $settings->get('exchanges');                                                   
 
         // Get portfolio
         $portfolio = Portfolio::where('user_id', Auth::user()->id)->first();
 
-        return view('settings', ['settings' => $settings->all(), 'bittrex' => $bittrex, 'bitstamp' => $bitstamp, 'exchanges_active' => $exchanges_active, 'portfolio' => $portfolio]);
+        // Get exchange connections
+        $connections = Auth::user()->connections;
+
+        // CCTX Exchange list
+        $cctx_exchanges = \ccxt\Exchange::$exchanges;
+
+        return view('settings', ['settings' => $settings->all(), 'bittrex' => $bittrex, 'bitstamp' => $bitstamp, 'exchanges_active' => $exchanges_active, 'portfolio' => $portfolio, 'cctx_exchanges' => $cctx_exchanges, 'connections' => $connections]);
     }
 
     /**
@@ -75,11 +82,32 @@ class SettingsController extends Controller
         $bitstampSwitch=false;
         $bittrexSwitch=false;
 
+        $newExchange = null;
+        $newExchangeApi = null;
+        $newExchangeSecret = null;
+        $newExchangeFee = null;
+
         $user = Auth::user();
 
         foreach ($request->all() as $key => $value) 
         {
             switch ($key) {
+                case 'new_exchange':
+                    $newExchange = $value;
+                    break;
+
+                case 'new_exchange_api_key':
+                    $newExchangeApi = $value;
+                    break;
+
+                case 'new_exchange_api_secret':
+                    $newExchangeSecret = $value;
+                    break;
+
+                case 'new_exchange_fee':
+                    $newExchangeFee = $value;
+                    break;
+
                 case 'bittrex_switch':
                     $settings->addExchange('bittrex');
 
@@ -153,6 +181,17 @@ class SettingsController extends Controller
                     }
                     break;
             }
+        }
+
+        if ($newExchange && $newExchangeApi && $newExchangeSecret) {
+            $connection = new Connection;
+            $connection->user_id = Auth::user()->id;
+            $connection->exchange = $newExchange;
+            $connection->api = $newExchangeApi;
+            $connection->secret = $newExchangeSecret;
+            $newExchangeFee ? $connection->fee = $newExchangeFee : $connection->fee = 0;
+            $connection->active = true;
+            $connection->save();
         }
 
 

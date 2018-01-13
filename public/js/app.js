@@ -44319,6 +44319,7 @@ Vue.component('edit-asset', __webpack_require__(262));
 Vue.component('transactions', __webpack_require__(265));
 Vue.component('portfolio', __webpack_require__(268));
 Vue.component('asset', __webpack_require__(271));
+Vue.component('connections', __webpack_require__(286));
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -120965,6 +120966,486 @@ $('.alerts-callout').hide().delay(1000).fadeIn(2000).delay(5000).fadeOut(1000);
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 278 */,
+/* 279 */,
+/* 280 */,
+/* 281 */,
+/* 282 */,
+/* 283 */,
+/* 284 */,
+/* 285 */,
+/* 286 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(3)
+/* script */
+var __vue_script__ = __webpack_require__(287)
+/* template */
+var __vue_template__ = __webpack_require__(288)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/Connections.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-8da3c324", Component.options)
+  } else {
+    hotAPI.reload("data-v-8da3c324", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 287 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: 'connections',
+    props: ['validation-errors', 'exchanges', 'sources'],
+    data: function data() {
+        return {
+            errors: [],
+            loadingExchanges: false,
+            exchangeSelected: "",
+            newExchangeApi: "",
+            newExchangeSecret: "",
+            newExchangeFee: "",
+            csrf: ""
+        };
+    },
+    computed: {},
+    mounted: function mounted() {
+        this.loadingExchanges = true;
+        this.csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        console.log('Component Connections mounted.');
+
+        this.loadingExchanges = false;
+    },
+
+    methods: {
+        createConnection: function createConnection() {
+            var _this = this;
+
+            var params = "?new_exchange=" + this.exchangeSelected + "&new_exchange_api_key=" + this.newExchangeApi + "&new_exchange_api_secret=" + this.newExchangeSecret + "&new_exchange_fee=" + this.newExchangeFee;
+
+            // Call the LoadPortfolio event asyncronously
+            var uri = '/connections/' + params;
+            axios(uri, {
+                method: 'POST'
+            }).then(function (response) {
+                console.log("Connection created!");
+            }).catch(function (e) {
+                _this.errors.push(e);
+
+                console.log("Error: " + e.message);
+            });
+        }
+    }
+});
+
+/***/ }),
+/* 288 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("section", { attrs: { id: "connections-widget" } }, [
+    _c("div", { staticClass: "grid-x grid-padding-x" }, [
+      _c(
+        "div",
+        { staticClass: "small-12 cell" },
+        [
+          _c("form", { attrs: { method: "POST", action: "/connections" } }, [
+            _c("input", {
+              attrs: { type: "hidden", name: "_token" },
+              domProps: { value: _vm.csrf }
+            }),
+            _vm._v(" "),
+            _c("div", { staticClass: "exchange-settings" }, [
+              _c("span", { staticClass: "h4" }, [_vm._v("Add Exchange")]),
+              _vm._v(" "),
+              _vm.validationErrors.new_exchange
+                ? _c(
+                    "div",
+                    _vm._l(_vm.validationErrors.new_exchange, function(error) {
+                      return _c("span", { staticClass: "validation-error" }, [
+                        _vm._v(" " + _vm._s(error) + " ")
+                      ])
+                    })
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _c("div", { staticClass: "input-group" }, [
+                _c("span", { staticClass: "input-group-label" }, [
+                  _vm._v("Exchanges")
+                ]),
+                _vm._v(" "),
+                _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.exchangeSelected,
+                        expression: "exchangeSelected"
+                      }
+                    ],
+                    staticClass: "input-group-field",
+                    attrs: { name: "new_exchange" },
+                    on: {
+                      change: function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.exchangeSelected = $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      }
+                    }
+                  },
+                  [
+                    _c(
+                      "option",
+                      {
+                        attrs: { disabled: "", value: "", selected: "selected" }
+                      },
+                      [_vm._v("Select...")]
+                    ),
+                    _vm._v(" "),
+                    _vm._l(_vm.exchanges, function(exchange) {
+                      return _c("option", { domProps: { value: exchange } }, [
+                        _vm._v(_vm._s(exchange))
+                      ])
+                    })
+                  ],
+                  2
+                )
+              ]),
+              _vm._v(" "),
+              _vm.validationErrors.new_exchange_api_key
+                ? _c(
+                    "div",
+                    _vm._l(_vm.validationErrors.new_exchange_api_key, function(
+                      error
+                    ) {
+                      return _c("span", { staticClass: "validation-error" }, [
+                        _vm._v(" " + _vm._s(error) + " ")
+                      ])
+                    })
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _c("div", { staticClass: "input-group" }, [
+                _c("span", { staticClass: "input-group-label" }, [
+                  _vm._v("API Key")
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.newExchangeApi,
+                      expression: "newExchangeApi"
+                    }
+                  ],
+                  staticClass: "input-group-field",
+                  attrs: { type: "text", name: "new_exchange_api_key" },
+                  domProps: { value: _vm.newExchangeApi },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.newExchangeApi = $event.target.value
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _vm.validationErrors.new_exchange_api_secret
+                ? _c(
+                    "div",
+                    _vm._l(
+                      _vm.validationErrors.new_exchange_api_secret,
+                      function(error) {
+                        return _c("span", { staticClass: "validation-error" }, [
+                          _vm._v(" " + _vm._s(error) + " ")
+                        ])
+                      }
+                    )
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _c("div", { staticClass: "input-group" }, [
+                _c("span", { staticClass: "input-group-label" }, [
+                  _vm._v("API Secret")
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.newExchangeSecret,
+                      expression: "newExchangeSecret"
+                    }
+                  ],
+                  staticClass: "input-group-field",
+                  attrs: { type: "text", name: "new_exchange_api_secret" },
+                  domProps: { value: _vm.newExchangeSecret },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.newExchangeSecret = $event.target.value
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _vm.validationErrors.new_exchange_fee
+                ? _c(
+                    "div",
+                    _vm._l(_vm.validationErrors.new_exchange_fee, function(
+                      error
+                    ) {
+                      return _c("span", { staticClass: "validation-error" }, [
+                        _vm._v(" " + _vm._s(error) + " ")
+                      ])
+                    })
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _c("div", { staticClass: "input-group" }, [
+                _c("span", { staticClass: "input-group-label" }, [
+                  _vm._v("Exchange Fee")
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.newExchangeFee,
+                      expression: "newExchangeFee"
+                    }
+                  ],
+                  staticClass: "input-group-field",
+                  attrs: { type: "text", name: "new_exchange_fee" },
+                  domProps: { value: _vm.newExchangeFee },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.newExchangeFee = $event.target.value
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c(
+                "button",
+                { staticClass: "button hollow", attrs: { type: "submit" } },
+                [_vm._v("Submit")]
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _vm._l(_vm.sources, function(connection) {
+            return _c("div", { staticClass: "exchange-settings" }, [
+              _vm._m(0, true, false),
+              _vm._v(" "),
+              _c("span", { staticClass: "h4 capitalize" }, [
+                _vm._v(_vm._s(connection.exchange))
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "input-group" }, [
+                _c("span", { staticClass: "input-group-label capitalize" }, [
+                  _vm._v(_vm._s(connection.exchange) + " Key")
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  staticClass: "input-group-field",
+                  attrs: {
+                    type: "text",
+                    name: connection.exchange + "_con_key"
+                  },
+                  domProps: { value: connection.api }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "input-group" }, [
+                _c("span", { staticClass: "input-group-label capitalize" }, [
+                  _vm._v(_vm._s(connection.exchange) + " Secret")
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  staticClass: "input-group-field",
+                  attrs: {
+                    type: "text",
+                    name: connection.exchange + "_con_secret"
+                  },
+                  domProps: { value: connection.secret }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "input-group" }, [
+                _c("span", { staticClass: "input-group-label capitalize" }, [
+                  _vm._v(_vm._s(connection.exchange) + " Fee")
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  staticClass: "input-group-field",
+                  attrs: {
+                    type: "text",
+                    name: connection.exchange + "_con_fee"
+                  },
+                  domProps: { value: connection.fee }
+                })
+              ])
+            ])
+          })
+        ],
+        2
+      )
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      { staticClass: "clear button delete-exchange-button" },
+      [_c("i", { staticClass: "fa fa-times cancel-icon" })]
+    )
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-8da3c324", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

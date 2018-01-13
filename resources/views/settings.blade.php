@@ -102,7 +102,65 @@
                         <li class="accordion-item" data-accordion-item>
                             <a href="#" class="accordion-title">Exchange APIs</a>
                             <div class="accordion-content" data-tab-content>
+                                <span class="h4">Add Exchange</span>
+                                <div class="input-group">
+                                    <span class="input-group-label">Exchanges</span>
+                                    <select name="new_exchange" class="input-group-field"> 
+                                        <option disabled value="" selected="selected">Select...</option>
+                                        @foreach ($cctx_exchanges as $cctx_exchange)
+                                        <option value="{{ $cctx_exchange }}">{{ $cctx_exchange }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
 
+                                <div class="exchange-settings">
+                                    <div class="input-group">
+                                        <span class="input-group-label">API Key</span>
+                                        <input class="input-group-field" type="text" name="new_exchange_api_key">
+                                    </div>
+
+                                    <div class="input-group">
+                                        <span class="input-group-label">API Secret</span>
+                                        <input class="input-group-field" type="text" name="new_exchange_api_secret">
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-label">Exchange Fee</span>
+                                        <input class="input-group-field" type="text" name="new_exchange_fee">
+                                    </div>
+                                </div>
+                                
+                                @foreach($connections as $connection)
+                                <div class="exchange-settings">
+                                    <span class="h4">{{ ucfirst($connection->exchange)}}</span>
+                                    <span class="switch tiny api-switch float-right">
+                                        @isset($connection->active)
+                                        <input checked class="switch-input" id="{{ $connection->exchange }}-con-switch" type="checkbox" name="{{ $connection->exchange }}_con_switch">
+                                        @endisset
+                                        @empty($connection->active)
+                                        <input class="switch-input" id="{{ $connection->exchange }}-con-switch" type="checkbox" name="{{ $connection->exchange }}_con_switch">
+                                        @endempty
+                                        <label class="switch-paddle" for="{{ $connection->exchange }}-con-switch">
+                                        <span class="show-for-sr">{{ ucfirst($connection->exchange)}} API</span>
+                                        <span class="switch-active" aria-hidden="true">On</span>
+                                        <span class="switch-inactive" aria-hidden="true">Off</span>
+                                      </label>
+                                    </span>
+                                    <div class="input-group">
+                                        <span class="input-group-label">{{ ucfirst($connection->exchange)}} Key</span>
+                                        <input class="input-group-field" type="text" name="{{ $connection->exchange }}_con_key" value="{{ $connection->api}}">
+                                    </div>
+
+                                    <div class="input-group">
+                                        <span class="input-group-label">{{ ucfirst($connection->exchange)}} Secret</span>
+                                        <input class="input-group-field" type="text" name="{{ $connection->exchange }}_con_secret" value="{{ $connection->secret}}">
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-label">{{ ucfirst($connection->exchange)}} Fee</span>
+                                        <input class="input-group-field" type="text" name="{{ $connection->exchange }}_con_fee" value="{{ $connection->fee}}">
+                                    </div>
+                                </div>
+                                @endforeach
+                                
                                 <div class="exchange-settings">
                                     <span class="h4">Bittrex</span>
                                     <span class="switch tiny api-switch float-right">

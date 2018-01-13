@@ -47,6 +47,15 @@ class HomeController extends Controller
 
             $fiat = $this->user->settings()->fiat;
 
+            $myexchange = '\\ccxt\\' . 'bittrex';
+
+            date_default_timezone_set ('UTC');
+            $bittrex  = new $myexchange  (array (
+                'apiKey' => $this->user->settings()->get('bittrex_key'),
+                'secret' => $this->user->settings()->get('bittrex_secret'),
+            ));
+
+            // dd(\ccxt\Exchange::$exchanges);
 
             return view('home', ['coins' => $coins, 'totals' => $totals, 'fiat' => $fiat]);
 

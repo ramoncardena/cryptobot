@@ -43,6 +43,7 @@
  Vue.component('transactions', require('./components/Transactions.vue'));
  Vue.component('portfolio', require('./components/Portfolio.vue'));
  Vue.component('asset', require('./components/Asset.vue'));
+ Vue.component('connections', require('./components/Connections.vue'));
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

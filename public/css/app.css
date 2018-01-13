@@ -15420,6 +15420,10 @@ a.thumbnail image {
   white-space: nowrap;
 }
 
+.capitalize {
+  text-transform: capitalize;
+}
+
 .top-bar {
   border-bottom: 1px solid #009ACE;
 }
@@ -15689,6 +15693,15 @@ section#settings .section-title {
 
 section#settings .section-title h1 {
   color: #FF7276;
+}
+
+section#settings .delete-exchange-button {
+  color: #cc4b37;
+  font-size: 1.3rem;
+  position: relative;
+  float: right;
+  margin: 0;
+  padding: 0 0 0 1rem;
 }
 
 section#settings .settings-area {
@@ -16216,5 +16229,60 @@ section#addasset .easy-autocomplete input {
 
 .input-group .number {
   text-align: right;
+}
+
+section#connections .h4 {
+  color: #009ACE;
+}
+
+section#connections .exchange-settings {
+  margin-bottom: 3rem;
+}
+
+section#connections .api-switch {
+  margin-left: 2rem;
+}
+
+section#connections .section-title {
+  background-color: #FBFCF9;
+  border-bottom: 1px solid #e6e6e6;
+  padding: 1rem;
+}
+
+section#connections .section-title h1 {
+  color: #FF7276;
+}
+
+section#connections .delete-exchange-button {
+  color: #cc4b37;
+  font-size: 1.3rem;
+  position: relative;
+  float: right;
+  margin: 0;
+  padding: 0 0 0 1rem;
+}
+
+section#connections .settings-area {
+  margin-top: 20px;
+}
+
+section#connections .align-vertical {
+  display: inline;
+}
+
+section#connections .align-vertical button {
+  margin: 0;
+  display: inline;
+  vertical-align: middle;
+}
+
+section#connections .align-vertical h1 {
+  display: inline;
+  vertical-align: middle;
+}
+
+section#connections .input-group-label {
+  color: #FF7276;
+  background-color: transparent;
 }
 

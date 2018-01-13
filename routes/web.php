@@ -21,6 +21,9 @@ Route::get('/settings/{setting}', 'SettingsController@show');
 Route::patch('/settings', 'SettingsController@update');
 Route::post('/settings', 'SettingsController@store');
 
+Route::get('/connections', 'ConnectionsController@index');
+Route::post('/connections', 'ConnectionsController@store');
+
 Route::get('/orders', 'OrdersController@index');
 Route::get('/trades', 'TradeController@index');
 Route::post('/trades', 'TradeController@store');

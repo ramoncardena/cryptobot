@@ -50,4 +50,9 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\PortfolioOrigin');
     }
+
+    public function connections()
+    {
+        return $this->hasMany('App\Connection');
+    }
 }

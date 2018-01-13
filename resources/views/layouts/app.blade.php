@@ -35,6 +35,7 @@
                 <li><a href="/trades">Trades</a></li>
                 <li><a href="#">Documentation</a></li>
                 <li><a href="#">Support</a></li>
+                <li><a href="/connections">Exchange APIs</a></li>
                 <li><a href="/settings">Settings</a></li>
                 <li>
                     <a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
