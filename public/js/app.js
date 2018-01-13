@@ -120112,6 +120112,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -120122,6 +120124,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             assets: [],
             totalBtc: 0,
             totalFiat: 0,
+            totalExchanges: 0,
             biggestLoser: { symbol: "", profit: 0 },
             biggestGainer: { symbol: "", profit: 0 },
             assetsCounter: 0,
@@ -120169,14 +120172,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             "responsive": true,
             "paging": false,
             "info": false,
-            "columnDefs": [{ "visible": false, "targets": 6 }],
-            columns: [{ title: '' }, { title: '<div class="sorting nowrap">Coin</div>' }, { title: '<div class="sorting nowrap">Amount</div>' }, { title: '<div class="sorting nowrap">Value (Fiat)</div>' }, { title: '<div class="sorting nowrap">Value (BTC)</div>' }, { title: '<div class="sorting nowrap">Price</div>' }, { title: '<div class="sorting nowrap">Asset ID</div>' }, { title: '<div class="sorting_asc nowrap">Origin</div>' }],
+            "columnDefs": [{ "visible": false, "targets": 7 }],
+            columns: [{ title: '' }, { title: '<div class="sorting nowrap">Coin</div>' }, { title: '<div class="sorting nowrap">Amount</div>' }, { title: '<div class="sorting nowrap">Value (Fiat)</div>' }, { title: '<div class="sorting nowrap">Value (BTC)</div>' }, { title: '<div class="sorting nowrap">Last Price</div>' }, { title: '<div class="sorting nowrap">Purchase Price</div>' }, { title: '<div class="sorting nowrap">Asset ID</div>' }, { title: '<div class="sorting_asc nowrap">Origin</div>' }],
             "drawCallback": function drawCallback(settings) {
                 var api = this.api();
                 var rows = api.rows({ page: 'current' }).nodes();
                 var last = null;
 
-                api.column(7, { page: 'current' }).data().each(function (group, i) {
+                api.column(8, { page: 'current' }).data().each(function (group, i) {
                     if (last !== group) {
                         $(rows).eq(i).before('<tr class="group"><td colspan="7">' + group + '</td></tr>');
 
@@ -120244,7 +120247,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 var origin = '<div class="asset-origin  nowrap">' + e.asset.origin_name + '</div>';
 
                 // Add row to the table with the new asset
-                _this.portfolioTable.row.add(['', coin, amount, parseFloat(e.asset.counter_value).toFixed(2), parseFloat(e.asset.balance).toFixed(8), parseFloat(e.asset.price).toFixed(8), e.asset.id, origin]).order([7, 'asc']).invalidate().draw();
+                _this.portfolioTable.row.add(['', coin, amount, parseFloat(e.asset.counter_value).toFixed(2), parseFloat(e.asset.balance).toFixed(8), parseFloat(e.asset.price).toFixed(8), parseFloat(e.asset.initial_price).toFixed(8), e.asset.id, origin]).order([8, 'asc']).invalidate().draw();
             }
         }).listen('PortfolioAssetUpdated', function (e) {
             // ************
@@ -120262,6 +120265,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 var balance = parseFloat(e.asset.balance).toFixed(8);
                 var price = parseFloat(e.asset.price).toFixed(8);
                 var counter_value = parseFloat(e.asset.counter_value).toFixed(2);
+                var purchase_price = parseFloat(e.asset.initial_price).toFixed(8);
 
                 // Store a consolidated array by VALUE
                 var indexRepeatedAsset = _this.uniqueAssetsName.indexOf(e.asset.symbol);
@@ -120312,16 +120316,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
                 // Locate current coin row in DATATABLE
                 var indexes = _this.portfolioTable.rows().eq(0).filter(function (rowIdx) {
-                    return _this.portfolioTable.cell(rowIdx, 6).data() === e.asset.id ? true : false;
+                    return _this.portfolioTable.cell(rowIdx, 7).data() === e.asset.id ? true : false;
                 });
 
                 // Update DATATABLE values (Price, Balance and Counter Value)
                 var formated_counter_value = '<span class="nowrap">' + _this.counterValueSymbolHtml + parseFloat(counter_value).toFixed(2) + '</span>';
                 var formated_balance = '<span class="nowrap"><i class="fa fa-btc" aria-hidden="true"></i>' + parseFloat(balance).toFixed(8) + '</span>';
                 var formated_price = '<span class="nowrap"><i class="fa fa-btc" aria-hidden="true"></i>' + parseFloat(price).toFixed(8) + '</span>';
+
+                var formated_purchase_price = '<span class="nowrap"><i class="fa fa-btc" aria-hidden="true"></i>' + parseFloat(purchase_price).toFixed(8) + '</span>';
+
                 _this.portfolioTable.cell(indexes[0], 3).data(formated_counter_value).invalidate();
                 _this.portfolioTable.cell(indexes[0], 4).data(formated_balance).invalidate();
                 _this.portfolioTable.cell(indexes[0], 5).data(formated_price).invalidate();
+                _this.portfolioTable.cell(indexes[0], 6).data(formated_purchase_price).invalidate();
 
                 var balance = '<i class="fa fa-btc" aria-hidden="true"></i>' + parseFloat(e.asset.balance).toFixed(8);
                 if (e.asset.initial_price == 0) {
@@ -120387,6 +120395,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         refreshPortfolio: function refreshPortfolio() {
             var _this2 = this;
 
+            this.loadingPortfolio = true;
+
             if (this.portfolioCurrentAssetCount > 0) {
                 this.chartistTotalsChart.detach();
                 this.chartistOriginsChart.detach();
@@ -120415,7 +120425,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 console.log("Reloading portfolio...");
             }).catch(function (e) {
                 _this2.errors.push(e);
-
+                _this2.loadingPortfolio = false;
                 console.log("Error: " + e.message);
             });
         }
@@ -120435,34 +120445,46 @@ var render = function() {
       _c("div", { staticClass: "small-12 cell" }, [
         _c("div", { staticClass: "grid-container fluid" }, [
           _c("div", { staticClass: "grid-x grid-padding-x" }, [
-            _c("div", { staticClass: "shrink cell" }, [
+            _c("div", { staticClass: "small-12 medium-shrink cell" }, [
               _c("div", { staticClass: "counter-widget text-left" }, [
                 _c("div", { staticClass: "title" }, [_vm._v("Total BTC ")]),
                 _vm._v(" "),
                 _c("div", { staticClass: "counter" }, [
-                  _vm._v(_vm._s(_vm.totalBtc))
+                  _c("span", { staticClass: "nowrap" }, [
+                    _c("i", {
+                      staticClass: "fa fa-btc",
+                      attrs: { "aria-hidden": "true" }
+                    }),
+                    _vm._v(_vm._s(_vm.totalBtc))
+                  ])
                 ])
               ])
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "shrink cell" }, [
+            _c("div", { staticClass: "small-12 medium-shrink cell" }, [
               _c("div", { staticClass: "counter-widget text-left" }, [
                 _c("div", { staticClass: "title" }, [
                   _vm._v("Total " + _vm._s(_vm.counterValueSymbol) + " ")
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "counter" }, [
-                  _vm._v(_vm._s(_vm.totalFiat))
+                  _c("span", { staticClass: "nowrap" }, [
+                    _c("i", {
+                      class: "fa fa-" + _vm.counterValueSymbol.toLowerCase(),
+                      attrs: { "aria-hidden": "true" }
+                    }),
+                    _vm._v(_vm._s(_vm.totalFiat))
+                  ])
                 ])
               ])
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "shrink cell" }, [
+            _c("div", { staticClass: "small-6 medium-shrink cell" }, [
               _c("div", { staticClass: "counter-widget text-left" }, [
                 _c(
                   "div",
                   {
-                    staticClass: "title",
+                    staticClass: "title nowrap",
                     model: {
                       value: _vm.assetsCounter,
                       callback: function($$v) {
@@ -120480,12 +120502,12 @@ var render = function() {
               ])
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "shrink cell" }, [
+            _c("div", { staticClass: "small-6 medium-shrink cell" }, [
               _c("div", { staticClass: "counter-widget text-left" }, [
                 _c(
                   "div",
                   {
-                    staticClass: "title",
+                    staticClass: "title nowrap",
                     model: {
                       value: _vm.coinsCounter,
                       callback: function($$v) {
@@ -120503,7 +120525,7 @@ var render = function() {
               ])
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "shrink cell" }, [
+            _c("div", { staticClass: "small-6 medium-shrink cell" }, [
               _c("div", { staticClass: "counter-widget text-left" }, [
                 _c(
                   "div",
@@ -120529,7 +120551,7 @@ var render = function() {
               ])
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "shrink cell" }, [
+            _c("div", { staticClass: "small-6 medium-shrink cell" }, [
               _c("div", { staticClass: "counter-widget text-left" }, [
                 _c(
                   "div",
@@ -120555,7 +120577,7 @@ var render = function() {
               ])
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "auto cell text-right" }, [
+            _c("div", { staticClass: "small-12 medium-auto cell text-right" }, [
               _c(
                 "button",
                 {

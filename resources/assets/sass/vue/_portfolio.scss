@@ -54,6 +54,10 @@ section#portfolio-widget {
 		font-family: 'Nunito', sans-serif;
 		padding-right: 0.5rem;
 		
+		.fa-usd, .fa-eur, .fa-btc {
+			font-weight: 200;
+			font-size: 1.4rem;
+		}
 		.title {
 			color:  get-color(secondary);
 			font-size: 0.8rem;

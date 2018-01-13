@@ -4,44 +4,46 @@
             <div class="small-12 cell">
                 <div class="grid-container fluid">
                     <div class="grid-x grid-padding-x"> 
-                        <div class="shrink cell">
+                        <div class="small-12 medium-shrink cell">
                             <div class="counter-widget text-left">
-                                <div class="title">Total BTC </div> <div class="counter">{{ totalBtc }}</div>
+                                <div class="title">Total BTC </div> <div class="counter"><span class="nowrap"><i class="fa fa-btc" aria-hidden="true"></i>{{ totalBtc }}</span></div>
                             </div>
                         </div>
-                        <div class="shrink cell">
+                        <div class="small-12 medium-shrink cell">
                             <div class="counter-widget text-left">
-                                 <div class="title">Total {{counterValueSymbol}} </div> <div class="counter">{{ totalFiat}}</div>                  
+                                 <div class="title">Total {{counterValueSymbol}} </div> <div class="counter"><span class="nowrap"><i :class="'fa fa-' + counterValueSymbol.toLowerCase()" aria-hidden="true"></i>{{ totalFiat}}</span></div>                  
                             </div>
                         </div>
-                        <div class="shrink cell">
+                        <div class="small-6 medium-shrink cell">
                             <div class="counter-widget text-left">
-                                  <div v-model="assetsCounter" class="title"># of Assets </div> <div class="counter">{{ assetsCounter }}</div>                  
+                                  <div v-model="assetsCounter" class="title nowrap"># of Assets </div> <div class="counter">{{ assetsCounter }}</div>                  
                             </div>
                         </div>
-                        <div class="shrink cell">
+
+                        <div class="small-6 medium-shrink cell">
                             <div class="counter-widget text-left">
-                                  <div v-model="coinsCounter" class="title"># of Coins </div> <div class="counter">{{ coinsCounter }}</div>                  
+                                  <div v-model="coinsCounter" class="title nowrap"># of Coins </div> <div class="counter">{{ coinsCounter }}</div>                  
                             </div>
                         </div>
-                        <div class="shrink cell">
+                        <div class="small-6 medium-shrink cell">
                             <div class="counter-widget text-left">
                                  <div v-model="biggestGainer.symbol" class="title">Biggest Gainer </div> <div class="counter">{{ biggestGainer.symbol }} <span class="biggest profit"> (+{{ biggestGainer.profit }}%)</span></div>                  
                             </div>
                         </div>
-                        <div class="shrink cell">
+                        <div class="small-6 medium-shrink cell">
                             <div class="counter-widget text-left">
                                   <div v-model="biggestLoser.symbol" class="title">Biggest Loser </div> <div class="counter">{{ biggestLoser.symbol }} <span class="biggest loss"> ({{ biggestLoser.profit }}%)</span></div>                  
                             </div>
                         </div>
-                        
-
-                        <div class="auto cell text-right">
+                         <div class="small-12 medium-auto cell text-right">
                             <button class="button hollow button-refresh" v-on:click="refreshPortfolio()">
                                <span v-show="loadingPortfolio"><i class="fa fa-refresh fa-spin fa-fw" aria-hidden="true"></i> <span class="show-for-medium"> Loading...</span></span>
                                <span v-show="!loadingPortfolio"><i class="fa fa-refresh "></i> <span class="show-for-medium">Reload</span></span>
                             </button>
                         </div>
+                        
+
+                        
 
                     </div>
                 </div>
@@ -80,6 +82,7 @@ export default {
             assets: [],
             totalBtc: 0,
             totalFiat: 0,
+            totalExchanges: 0,
             biggestLoser: { symbol:"", profit: 0 },
             biggestGainer: { symbol:"", profit: 0 },
             assetsCounter: 0,
@@ -128,7 +131,7 @@ export default {
             "paging": false,
             "info": false,
             "columnDefs": [
-            { "visible": false, "targets": 6 }
+            { "visible": false, "targets": 7 }
             ],
             columns: [
             { title: ''},
@@ -136,7 +139,8 @@ export default {
             { title: '<div class="sorting nowrap">Amount</div>' },
             { title: '<div class="sorting nowrap">Value (Fiat)</div>' },
             { title: '<div class="sorting nowrap">Value (BTC)</div>' },
-            { title: '<div class="sorting nowrap">Price</div>' },
+            { title: '<div class="sorting nowrap">Last Price</div>' },
+            { title: '<div class="sorting nowrap">Purchase Price</div>' },
             { title: '<div class="sorting nowrap">Asset ID</div>' },
             { title: '<div class="sorting_asc nowrap">Origin</div>' }
             ],
@@ -145,7 +149,7 @@ export default {
                 var rows = api.rows( {page:'current'} ).nodes();
                 var last=null;
 
-                api.column(7, {page:'current'} ).data().each( function ( group, i ) {
+                api.column(8, {page:'current'} ).data().each( function ( group, i ) {
                     if ( last !== group ) {
                         $(rows).eq( i ).before(
                             '<tr class="group"><td colspan="7">'+group+'</td></tr>'
@@ -227,9 +231,10 @@ export default {
                     parseFloat(e.asset.counter_value).toFixed(2),
                     parseFloat(e.asset.balance).toFixed(8),
                     parseFloat(e.asset.price).toFixed(8),
+                    parseFloat(e.asset.initial_price).toFixed(8),
                     e.asset.id,
                     origin
-                ] ).order( [ 7, 'asc' ] ).invalidate().draw();   
+                ] ).order( [ 8, 'asc' ] ).invalidate().draw();   
             }
             
         })
@@ -249,6 +254,7 @@ export default {
                 var balance = parseFloat(e.asset.balance).toFixed(8);
                 var price = parseFloat(e.asset.price).toFixed(8);
                 var counter_value = parseFloat(e.asset.counter_value).toFixed(2);
+                var purchase_price = parseFloat(e.asset.initial_price).toFixed(8);
 
                 // Store a consolidated array by VALUE
                 var indexRepeatedAsset = this.uniqueAssetsName.indexOf(e.asset.symbol);
@@ -303,16 +309,20 @@ export default {
 
                 // Locate current coin row in DATATABLE
                 var indexes = this.portfolioTable.rows().eq( 0 ).filter( rowIdx => {
-                    return this.portfolioTable.cell( rowIdx, 6 ).data() === e.asset.id ? true : false;
+                    return this.portfolioTable.cell( rowIdx, 7 ).data() === e.asset.id ? true : false;
                 } );
 
                 // Update DATATABLE values (Price, Balance and Counter Value)
                 var formated_counter_value = '<span class="nowrap">' + this.counterValueSymbolHtml + parseFloat(counter_value).toFixed(2)  + '</span>';
                 var formated_balance = '<span class="nowrap"><i class="fa fa-btc" aria-hidden="true"></i>' + parseFloat(balance).toFixed(8) + '</span>';
                 var formated_price = '<span class="nowrap"><i class="fa fa-btc" aria-hidden="true"></i>' + parseFloat(price).toFixed(8) + '</span>';
+
+                var formated_purchase_price = '<span class="nowrap"><i class="fa fa-btc" aria-hidden="true"></i>' + parseFloat(purchase_price).toFixed(8) + '</span>';
+
                 this.portfolioTable.cell(indexes[0], 3).data(formated_counter_value).invalidate();
                 this.portfolioTable.cell(indexes[0], 4).data(formated_balance).invalidate();
                 this.portfolioTable.cell(indexes[0], 5).data(formated_price).invalidate();
+                this.portfolioTable.cell(indexes[0], 6).data(formated_purchase_price).invalidate();
                 
                 var balance = '<i class="fa fa-btc" aria-hidden="true"></i>' + parseFloat(e.asset.balance).toFixed(8);
                 if (e.asset.initial_price == 0 ) {
@@ -381,6 +391,8 @@ export default {
     },
     methods: {
         refreshPortfolio() {
+            this.loadingPortfolio = true;
+
             if (this.portfolioCurrentAssetCount > 0) {
                 this.chartistTotalsChart.detach();
                 this.chartistOriginsChart.detach();
@@ -415,7 +427,7 @@ export default {
             })
             .catch(e => {
                 this.errors.push(e);
-               
+                this.loadingPortfolio = false;
                 console.log("Error: " + e.message);
             });
         } 

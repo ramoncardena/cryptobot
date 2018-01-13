@@ -16140,6 +16140,13 @@ section#portfolio-widget .counter-widget {
   padding-right: 0.5rem;
 }
 
+section#portfolio-widget .counter-widget .fa-usd,
+section#portfolio-widget .counter-widget .fa-eur,
+section#portfolio-widget .counter-widget .fa-btc {
+  font-weight: 200;
+  font-size: 1.4rem;
+}
+
 section#portfolio-widget .counter-widget .title {
   color: #FF7276;
   font-size: 0.8rem;
