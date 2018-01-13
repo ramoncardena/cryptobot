@@ -1,11 +1,5 @@
 .tradepanel {
-	.validation-error {
-		margin: 0;
-		padding: 0;
-		color: get-color(alert);
-		font-style: oblique;
-		font-size: 0.8rem;
-	}
+	
 	.easy-autocomplete.eac-square input {
 	    border: 1px solid #cacaca;
 	    border-radius: 0;
@@ -19,7 +13,7 @@
 		width:100% !important
 	}
 
-		.easy-autocomplete input{
+	.easy-autocomplete input{
 		width: 100%;
 	}
 

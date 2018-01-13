@@ -1,5 +1,6 @@
 <?php
 use App\Trade;
+use App\Portfolio;
 /*
 |--------------------------------------------------------------------------
 | Broadcast Channels
@@ -17,4 +18,10 @@ Broadcast::channel('App.User.{id}', function ($user, $id) {
 
 Broadcast::channel('trades.{tradeId}', function ($user, $tradeId) {
     return (int) $user->id === (int) Trade::find($tradeId)->user_id;
+});
+Broadcast::channel('portfolios.{portfolioId}', function ($user, $portfolioId) {
+    return (int) $user->id === (int) Portfolio::find($portfolioId)->user_id;
+});
+Broadcast::channel('assets.{portfolioId}', function ($user, $portfolioId) {
+    return (int) $user->id === (int) Portfolio::find($portfolioId)->user_id;
 });

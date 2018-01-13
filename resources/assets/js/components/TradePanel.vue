@@ -527,7 +527,7 @@ export default {
                 })
                 .then(response => {
                     this.bittrexpairs = response.data;  
-
+                    
                     let options = {
                         data:  this.bittrexpairs,
                         list: {

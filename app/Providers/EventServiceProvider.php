@@ -13,6 +13,15 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
+        'App\Events\PortfolioLoaded' => [],
+        'App\Events\PortfolioTotalsCalculated' => [],
+        'App\Events\PortfolioAssetUpdated' => [],
+        'App\Events\PortfolioOpened' => [
+            'App\Listeners\LoadPortfolio'
+        ],
+        'App\Events\PortfolioAssetLoaded' => [
+            'App\Listeners\UpdateAssetData',
+        ],
         'App\Events\TradeCancelled' => [
             'App\Listeners\CancelTrade',
         ],

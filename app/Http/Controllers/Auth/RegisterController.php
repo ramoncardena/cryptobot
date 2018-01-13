@@ -66,7 +66,7 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
-            'settings' => json_decode('{"fiat":"eur","bittrex_key":"","bittrex_secret":""}')
+            'settings' => json_decode('{"fiat": "eur"}')
         ]);
     }
 }

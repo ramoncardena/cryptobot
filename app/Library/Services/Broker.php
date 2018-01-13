@@ -74,6 +74,148 @@ class Broker
 
     }
 
+    /**
+     * Get no-zero balances from the exchange
+     * @return [type] [description]
+     */
+    public function getBalances() {
+
+        try {
+
+            switch (strtolower($this->exchange->name)) {
+                case 'bittrex':
+                    Bittrex::setAPI($this->user->settings()->get('bittrex_key'), $this->user->settings()->get('bittrex_secret'));
+
+                    $exchangeResponse= Bittrex::getBalances();
+
+                    if ($exchangeResponse->success == true) {
+
+                        if ($exchangeResponse->result) {
+                            $response = new \stdClass();
+                            $response->success=true;
+                            $response->message="";
+
+                            $allBalances = collect($exchangeResponse->result);
+                            $nonZeroBalances = $allBalances->filter(function ($item) {
+                                return $item->Balance > 0;
+                            });
+
+                            $nonZeroBalances = $nonZeroBalances->map( function ($balance) {
+                                unset($balance->Available); 
+                                unset($balance->Pending); 
+                                return $balance;
+                            });
+
+                            $response->result = $nonZeroBalances;
+                        }
+                        else {
+                            $response = new \stdClass();
+                            $response->success = false;
+                            $response->message = "";
+                        }
+                        
+                        return $response;
+                    }
+                    else {
+
+                        $response = new \stdClass();
+                        $response->success=false;
+                        $response->message= $exchangeResponse->message;
+
+                        return $response;
+                    }
+
+                    dd($exchangeResponse);
+
+                break;
+            }
+            
+            
+        } catch (Exception $e) {
+
+           // LOG: Exception
+            Log::critical("[Broker] Exception: " . $e->getMessage());
+
+            return $e->getMessage(); 
+        }
+
+        ;
+    }
+
+    public function getPurchasePrice ($market, $amount)
+    {
+        try {
+
+            switch (strtolower($this->exchange->name)) {
+                case 'bittrex':
+                    $exchangeResponse = Bittrex::getOrderHistory($market);
+
+                    if ($exchangeResponse->success == true) {
+
+                        if ($exchangeResponse->result) {
+                            
+                            $initialAmount = $amount;
+                            $amount = 0;
+                            $price = 0;
+                            foreach ($exchangeResponse->result as $order) {
+                                //if ($order->CommissionPaid) $comission = $order->CommissionPaid;
+                            
+                                if ($order->OrderType == "LIMIT_BUY" && $initialAmount > 0) {
+                                      $initialAmount = floatval($initialAmount) - ( floatval($order->Quantity) - floatval($order->QuantityRemaining) );
+                                      $amount = $amount + ( floatval($order->Quantity) - floatval($order->QuantityRemaining));
+                                      $price = $price + ( ( floatval($order->Quantity) - floatval($order->QuantityRemaining)) * ( floatval($order->PricePerUnit) ) );
+                                }
+                                elseif ($order->OrderType == "LIMIT_SELL" && $initialAmount > 0) {
+                                      $initialAmount = floatval($initialAmount) + ( floatval($order->Quantity) - floatval($order->QuantityRemaining) );
+                                }
+
+                            }
+
+                            $response = new \stdClass();
+                            $response->success=true;
+                            $response->message="";
+                            $response->result = new \stdClass();
+
+                            if ( $amount <= 0) {
+                                $response->result->AvaragePrice = 0;
+                            }
+                            else {
+                                $response->result->AvaragePrice = floatval($price)/floatval($amount);
+                            }
+                            
+                        }
+                        else {
+                            $response = new \stdClass();
+                            $response->success = false;
+                            $response->message = "";
+                        }
+
+                        return $response;
+                    }
+                    else {
+
+                        $response = new \stdClass();
+                        $response->success=false;
+                        $response->message= $exchangeResponse->message;
+
+                        return $response;
+                    }
+
+                    break;
+            }
+
+            return $exchangeResponse;
+            
+        } catch (Exception $e) {
+
+            // LOG: Exception trying to show trades
+            Log::critical("[Broker] Exception: " . $e->getMessage());
+
+            return $e->getMessage();
+
+        }
+    }
+
     public function getTicker ($market)
     {
     	try {

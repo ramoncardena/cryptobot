@@ -31,5 +31,9 @@ Route::middleware('auth:api')->get('/notifications/{id}/markasread', 'Notificati
 Route::middleware('auth:api')->delete('/notifications/{id}', 'NotificationsController@delete');
 Route::middleware('auth:api')->delete('/notifications', 'NotificationsController@deleteall');
 
+Route::middleware('auth:api')->get('/portfolio/refresh', 'PortfolioController@refresh');
+Route::middleware('auth:api')->get('/assets', 'PortfolioAssetController@getall');
+Route::middleware('auth:api')->get('/assets/{id}', 'PortfolioAssetController@get');
+
 
 

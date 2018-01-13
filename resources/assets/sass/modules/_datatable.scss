@@ -1,3 +1,13 @@
+.dataTables_empty {
+  display:none;
+}
+.group {
+	background-color:  get-color(background-dark);
+	color: get-color(primary);
+	font-size: 1.3rem;
+	text-transform: uppercase;
+}
+
 .dataTable {
 	margin-bottom: 2rem !important;
 	margin-top: 1rem !important;

@@ -1,0 +1,43 @@
+section#portfolio {
+
+	.section-title {
+		background-color: $title-background;
+		border-bottom: 1px solid $light-gray;
+		padding: 1rem;
+		h1 {
+			color: get-color(secondary);
+		}	
+	}
+	
+	.accordion-title {
+		color: get-color(secondary);
+	}
+
+	.portfolio-area {
+		margin-top: 2rem;
+	}
+
+	
+
+}
+
+.portfolio-modal {
+
+	.input-group-label {
+		color: get-color(primary);
+		background-color: transparent;
+	}
+
+	#close-price-select {
+		width: 6rem;
+		margin: 0;
+		height: auto;
+		min-width: 0;
+		color: get-color(primary);
+	}
+
+	.number {
+		text-align: right;
+	} 
+
+}

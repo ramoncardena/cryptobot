@@ -37,6 +37,12 @@
  Vue.component('tradelist', require('./components/TradeList.vue'));
  Vue.component('tradepanel', require('./components/TradePanel.vue'));
  Vue.component('notification-list', require('./components/NotificationList.vue'));
+ Vue.component('add-origin', require('./components/AddOrigin.vue'));
+ Vue.component('add-asset', require('./components/AddAsset.vue'));
+ Vue.component('edit-asset', require('./components/EditAsset.vue'));
+ Vue.component('transactions', require('./components/Transactions.vue'));
+ Vue.component('portfolio', require('./components/Portfolio.vue'));
+ Vue.component('asset', require('./components/Asset.vue'));
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -51,37 +57,22 @@
 
     require('./partials/notifications');
     require('./partials/alerts');
+    require('./partials/portfolio');
+
     
     $.extend( $.fn.dataTable.defaults, {
-     responsive: true
- } );
+       responsive: true
+   } );
 
 
+    // var portfolioTable = $('#portfolioTable').DataTable( {
+    //     "searching": false,
+    //     "paging": false,
+    //     "info": false,
+    // } );
 
     $('#activeTradesTable').DataTable();
-    // $('#historyTradesTable').DataTable( {
-    //     initComplete: function () {
-    //         this.api().columns().every( function () {
-    //             var column = this;
-    //             var select = $('<select><option value=""></option></select>')
-    //                 .appendTo( $(column.header()).empty() )
-    //                 .on( 'change', function () {
-    //                     var val = $.fn.dataTable.util.escapeRegex(
-    //                         $(this).val()
-    //                     );
 
-    //                     column
-    //                         .search( val ? '^'+val+'$' : '', true, false )
-    //                         .draw();
-    //                 } );
-
-    //             column.data().unique().sort().each( function ( d, j ) {
-    //                 select.append( '<option value="'+d+'">'+d+'</option>' )
-    //             } );
-    //         } );
-    //     }
-    // } );
-    
     var historyTable = $('#historyTradesTable').DataTable();
     $("#historyTradesTable tfoot th").each( function ( i ) {
         if (i==2 || i==3 || i==4 || i==5) {
@@ -98,7 +89,5 @@
             } );
         }
     } );
-
-
-
+    
 });

@@ -1,0 +1,75 @@
+section#portfolio-widget {
+	.profit {
+		color: get-color(profit);
+		font-size: 0.8rem;
+		float: right;
+		font-weight: 600;
+	}
+	.loss {
+		color: get-color(loss);
+		font-size: 0.8rem;
+		float: right;
+		font-weight: 600;
+	}
+	.biggest {
+		font-size: 0.9rem;
+		margin-top: 0.5rem;
+		margin-left: 0.2rem;
+	}
+	.ct-chart-totals .ct-bar {
+	    stroke-width: 5px
+	}
+	.asset-edit-button {
+		margin: 0;
+		padding: 0;
+	}
+	.portfolio-assets {
+		font-family: 'Nunito', sans-serif;
+		display: block;
+
+		.asset-img, .asset-name, .asset-type{
+			margin-right: 0.5rem;
+		}
+
+		.asset-info, .asset-balance, .asset-value, .column-title-wrapper {
+			margin-right: 0.5rem;
+		}
+
+		.fa-btc, .fa-eur, .fa-usd {
+			color: $dark-gray;
+		}
+	}
+	.data {
+		border-bottom: 1px solid gray;
+	}
+	.charts {
+		@include breakpoint(medium only) {
+            padding: 2rem;
+        }
+	}
+	.button-refresh {
+
+	}
+	.counter-widget {
+		font-family: 'Nunito', sans-serif;
+		padding-right: 0.5rem;
+		
+		.fa-usd, .fa-eur, .fa-btc {
+			font-weight: 200;
+			font-size: 1.4rem;
+		}
+		.title {
+			color:  get-color(secondary);
+			font-size: 0.8rem;
+			margin: 0;
+			padding: 0;
+		}
+		.counter {
+			color:  get-color(primary);
+			font-size: 1.5rem;
+			margin: 0;
+			padding: 0;
+		}
+
+	}
+}

@@ -133,7 +133,7 @@ class Settings
 		if ($this->has($key)) {
 			return $this->get($key);
 	    }
-		throw new Exception ("The {$key} setting doesn't exist.");
+		throw new \Exception ("The {$key} setting doesn't exist.");
 	}
 
 }

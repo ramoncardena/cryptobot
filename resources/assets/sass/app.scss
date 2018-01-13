@@ -4,8 +4,6 @@
 @import url('https://fonts.googleapis.com/css?family=Nunito:200,300,400,700,800');
 
 @import "node_modules/font-awesome/scss/font-awesome";
-// @import "node_modules/easy-autocomplete/src/sass/easy-autocomplete";
-// @import "node_modules/easy-autocomplete/src/sass/easy-autocomplete.themes";
 
 // Variables
 @import "settings";
@@ -14,11 +12,16 @@
 @import "foundation";
 
 // Modules
+@import "vendor/chartist";
+
+// Modules
 @import "modules/offcanvas";
 @import "modules/global";
 @import "modules/nav";
 @import "modules/alerts";
+@import "modules/errors";
 @import "modules/datatable";
+@import "modules/autocomplete";
 
 // Partials
 @import "partials/home";
@@ -28,11 +31,15 @@
 @import "partials/settings";
 @import "partials/orders";
 @import "partials/trades";
+@import "partials/portfolio";
 
 // Vue Components
 @import "vue/balance";
 @import "vue/order";
 @import "vue/trade";
 @import "vue/tradepanel";
+@import "vue/portfolio";
 @import "vue/notificationlist";
+@import "vue/addasset";
+@import "vue/transactions";
 
