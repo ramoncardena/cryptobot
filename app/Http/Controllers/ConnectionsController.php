@@ -72,7 +72,7 @@ class ConnectionsController extends Controller
             $user = Auth::user();
 
             $existingConnections = $user->connections->pluck('exchange');
-            if ($existingConnections->search($request->new_exchange)) {
+            if (in_array($request->new_exchange, $existingConnections->all())) {
                 // SESSION FLASH: New Trade
                 $request->session()->flash('status-text', 'Exchange ' . ucfirst($request->new_exchange) . ' already exists!');
                 $request->session()->flash('status-class', 'alert');
@@ -105,6 +105,66 @@ class ConnectionsController extends Controller
     }
 
     /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        try {
+
+            $user = Auth::user();
+            $connections = $user->connections;
+
+            $connection = $connections->find($id);
+            Connection::destroy($connection->id);
+
+            return response("OK", 200)->header('Content-Type', 'text/plain');
+        
+        } catch (Exception $e) {
+    
+            return response($e->getMessage(), 500)->header('Content-Type', 'text/plain');
+            
+        }
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        try {
+
+            // Validate form
+            $validatedData = $request->validate([
+                'new_exchange_api_key' => 'required',
+                'new_exchange_api_secret' => 'required'
+            ]);
+
+            $user = Auth::user();
+            $connections = $user->connections;
+
+            $connection = $connections->find($id);
+            $connection->api = encrypt($request->new_exchange_api_key);
+            $connection->secret = encrypt($request->new_exchange_api_secret);
+            $request->new_exchange_fee ? $connection->fee = $request->new_exchange_fee : $connection->fee = 0;
+            $connection->save();
+
+            return response("OK", 200)->header('Content-Type', 'text/plain');
+        
+        } catch (Exception $e) {
+    
+            return response($e->getMessage(), 500)->header('Content-Type', 'text/plain');
+            
+        }
+    }
+
+    /**
      * Display the specified resource.
      *
      * @param  int  $id
@@ -126,26 +186,7 @@ class ConnectionsController extends Controller
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
+
+    
 }

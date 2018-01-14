@@ -16254,12 +16254,15 @@ section#connections .section-title h1 {
 }
 
 section#connections .delete-exchange-button {
-  color: #cc4b37;
-  font-size: 1.3rem;
+  margin-left: 1rem;
   position: relative;
   float: right;
-  margin: 0;
-  padding: 0 0 0 1rem;
+}
+
+section#connections .update-exchange-button {
+  margin-left: 1rem;
+  position: relative;
+  float: right;
 }
 
 section#connections .settings-area {

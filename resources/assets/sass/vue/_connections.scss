@@ -18,12 +18,14 @@ section#connections{
 		}	
 	}
 	.delete-exchange-button {
-		color: get-color(alert);
-		font-size: 1.3rem;
+		margin-left: 1rem;
 		position: relative;
 		float: right;
-		margin: 0;
-		padding: 0 0 0 1rem;
+	}
+	.update-exchange-button {
+		margin-left: 1rem;
+		position: relative;
+		float: right;
 	}
 	.settings-area {
 		margin-top: 20px;

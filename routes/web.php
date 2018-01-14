@@ -23,6 +23,8 @@ Route::post('/settings', 'SettingsController@store');
 
 Route::get('/connections', 'ConnectionsController@index');
 Route::post('/connections', 'ConnectionsController@store');
+Route::delete('/connections/{id}', 'ConnectionsController@destroy');
+Route::patch('/connections/{id}', 'ConnectionsController@update');
 
 Route::get('/orders', 'OrdersController@index');
 Route::get('/trades', 'TradeController@index');

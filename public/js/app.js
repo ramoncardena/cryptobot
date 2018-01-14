@@ -121101,6 +121101,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -121109,6 +121111,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             errors: [],
+            connections: [],
             loadingExchanges: false,
             exchangeSelected: "",
             newExchangeApi: "",
@@ -121132,7 +121135,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             var params = "?new_exchange=" + this.exchangeSelected + "&new_exchange_api_key=" + this.newExchangeApi + "&new_exchange_api_secret=" + this.newExchangeSecret + "&new_exchange_fee=" + this.newExchangeFee;
 
-            // Call the LoadPortfolio event asyncronously
             var uri = '/connections/' + params;
             axios(uri, {
                 method: 'POST'
@@ -121141,6 +121143,33 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }).catch(function (e) {
                 _this.errors.push(e);
 
+                console.log("Error: " + e.message);
+            });
+        },
+        deleteConnection: function deleteConnection(id) {
+            var _this2 = this;
+
+            var uri = '/connections/' + id;
+            axios.delete(uri).then(function (response) {
+                window.location.replace("/connections");
+                console.log("Connection deleted!");
+            }).catch(function (e) {
+                _this2.errors.push(e);
+
+                console.log("Error: " + e.message);
+            });
+        },
+        updateConnection: function updateConnection(id, key, secret, fee) {
+            var _this3 = this;
+
+            var params = "?new_exchange_api_key=" + key + "&new_exchange_api_secret=" + secret + "&new_exchange_fee=" + fee;
+
+            var uri = '/connections/' + id + '/' + params;
+            axios.patch(uri).then(function (response) {
+                window.location.replace("/connections");
+                console.log("Connection updated!");
+            }).catch(function (e) {
+                _this3.errors.push(e);
                 console.log("Error: " + e.message);
             });
         }
@@ -121368,11 +121397,40 @@ var render = function() {
           _vm._v(" "),
           _vm._l(_vm.sources, function(connection) {
             return _c("div", { staticClass: "exchange-settings" }, [
-              _vm._m(0, true, false),
-              _vm._v(" "),
               _c("span", { staticClass: "h4 capitalize" }, [
                 _vm._v(_vm._s(connection.exchange))
               ]),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "hollow button update-exchange-button",
+                  on: {
+                    click: function($event) {
+                      _vm.updateConnection(
+                        connection.id,
+                        connection.api,
+                        connection.secret,
+                        connection.fee
+                      )
+                    }
+                  }
+                },
+                [_vm._v("Update")]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "hollow button alert delete-exchange-button",
+                  on: {
+                    click: function($event) {
+                      _vm.deleteConnection(connection.id)
+                    }
+                  }
+                },
+                [_vm._v("Delete")]
+              ),
               _vm._v(" "),
               _c("div", { staticClass: "input-group" }, [
                 _c("span", { staticClass: "input-group-label capitalize" }, [
@@ -121426,18 +121484,7 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "button",
-      { staticClass: "clear button delete-exchange-button" },
-      [_c("i", { staticClass: "fa fa-times cancel-icon" })]
-    )
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
