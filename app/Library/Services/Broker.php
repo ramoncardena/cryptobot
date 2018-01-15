@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Log;
 use App\Library\Services\Facades\Bittrex;
 use App\Exchange;
 use App\User;
+use App\Connection;
 
 /**
  * Summary
@@ -23,56 +24,53 @@ class Broker
 
     public function __construct()
     {
-        $exchanges = Exchange::all();
+        $this->exchanges = \ccxt\Exchange::$exchanges;
 
-        foreach ($exchanges as $exchange) {
-		    $this->exchanges[$exchange->name] = $exchange;
-		}
+  }
+
+  public function setExchange($exchangeName) {
+
+     if (in_array($exchangeName, $this->exchanges)) {
+
+        $this->exchange = $exchangeName;
+
+        return $this->exchange;
 
     }
- 
- 	public function setExchange($exchangeName) {
+    else {
 
- 		if (array_key_exists($exchangeName, $this->exchanges)) {
+        return  false;
 
- 			$this->exchange = $this->exchanges[$exchangeName];
- 			return $this->exchange;
+    }
 
- 		}
- 		else {
+}
 
- 			return  false;
+public function setUser($user) {
 
- 		}
+ $this->user = $user;
 
- 	}
+}
 
- 	public function setUser($user) {
+public function getFee() {
 
- 		$this->user = $user;
+    try {
 
- 	}
+        switch (strtolower($this->exchange)) {
+            case 'bittrex':
+            return $this->user->settings()->get('bittrex_fee');
+            break;
+        } 
 
-     public function getFee() {
-
-        try {
-            
-            switch (strtolower($this->exchange->name)) {
-                case 'bittrex':
-                    return $this->user->settings()->get('bittrex_fee');
-                    break;
-            } 
-
-        } catch (Exception $e) {
+    } catch (\Exception $e) {
 
             // LOG: Exception trying to show trades
-            Log::critical("[Broker] Exception: " . $e->getMessage());
+        Log::critical("[Broker] Exception: " . $e->getMessage());
 
-            return $e->getMessage();
-
-        }
+        return $e->getMessage();
 
     }
+
+}
 
     /**
      * Get no-zero balances from the exchange
@@ -82,56 +80,56 @@ class Broker
 
         try {
 
-            switch (strtolower($this->exchange->name)) {
+            switch (strtolower($this->exchange)) {
                 case 'bittrex':
-                    Bittrex::setAPI($this->user->settings()->get('bittrex_key'), $this->user->settings()->get('bittrex_secret'));
+                Bittrex::setAPI($this->user->settings()->get('bittrex_key'), $this->user->settings()->get('bittrex_secret'));
 
-                    $exchangeResponse= Bittrex::getBalances();
+                $exchangeResponse= Bittrex::getBalances();
 
-                    if ($exchangeResponse->success == true) {
+                if ($exchangeResponse->success == true) {
 
-                        if ($exchangeResponse->result) {
-                            $response = new \stdClass();
-                            $response->success=true;
-                            $response->message="";
+                    if ($exchangeResponse->result) {
+                        $response = new \stdClass();
+                        $response->success=true;
+                        $response->message="";
 
-                            $allBalances = collect($exchangeResponse->result);
-                            $nonZeroBalances = $allBalances->filter(function ($item) {
-                                return $item->Balance > 0;
-                            });
+                        $allBalances = collect($exchangeResponse->result);
+                        $nonZeroBalances = $allBalances->filter(function ($item) {
+                            return $item->Balance > 0;
+                        });
 
-                            $nonZeroBalances = $nonZeroBalances->map( function ($balance) {
-                                unset($balance->Available); 
-                                unset($balance->Pending); 
-                                return $balance;
-                            });
+                        $nonZeroBalances = $nonZeroBalances->map( function ($balance) {
+                            unset($balance->Available); 
+                            unset($balance->Pending); 
+                            return $balance;
+                        });
 
-                            $response->result = $nonZeroBalances;
-                        }
-                        else {
-                            $response = new \stdClass();
-                            $response->success = false;
-                            $response->message = "";
-                        }
-                        
-                        return $response;
+                        $response->result = $nonZeroBalances;
                     }
                     else {
-
                         $response = new \stdClass();
-                        $response->success=false;
-                        $response->message= $exchangeResponse->message;
-
-                        return $response;
+                        $response->success = false;
+                        $response->message = "";
                     }
 
-                    dd($exchangeResponse);
+                    return $response;
+                }
+                else {
+
+                    $response = new \stdClass();
+                    $response->success=false;
+                    $response->message= $exchangeResponse->message;
+
+                    return $response;
+                }
+
+                dd($exchangeResponse);
 
                 break;
             }
             
             
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
 
            // LOG: Exception
             Log::critical("[Broker] Exception: " . $e->getMessage());
@@ -139,329 +137,475 @@ class Broker
             return $e->getMessage(); 
         }
 
-        ;
+    }
+
+    /**
+     * Get no-zero balances from the exchange
+     * @return [type] [description]
+     */
+    public function getBalances2() {
+
+        try {
+
+            $exchangeName = $this->exchange;
+            $connections = $this->user->connections;
+            $connection = $connections->where('exchange', $exchangeName)->first();
+            $api = decrypt($connection->api);
+            $secret =decrypt($connection->secret);
+
+            $myexchange = '\\ccxt\\' . $exchangeName;
+            
+            date_default_timezone_set ('UTC');
+            $exchangeConnection  = new $myexchange  (array (
+                'apiKey' => $api,
+                'secret' => $secret,
+            ));
+
+            $balance = $exchangeConnection->fetch_balance();
+
+            $allBalances = $balance['total'];
+            
+            $nonZeroBalances = array_where($allBalances, function ($value, $key) {
+                return $value > 0;
+            });
+
+            $response = new \stdClass();
+            $response->success=true;
+            $response->message="";
+            $response->result = $nonZeroBalances;
+
+            return $response;
+
+        } catch (\Exception $e) {
+
+           // LOG: Exception
+            Log::critical("[Broker] Exception: " . $e->getMessage());
+
+            $response = new \stdClass();
+            $response->success = false;
+            $response->message = $e->getMessage();
+            return $response; 
+        }
+        
     }
 
     public function getPurchasePrice ($market, $amount)
     {
         try {
 
-            switch (strtolower($this->exchange->name)) {
+            switch (strtolower($this->exchange)) {
                 case 'bittrex':
-                    $exchangeResponse = Bittrex::getOrderHistory($market);
 
-                    if ($exchangeResponse->success == true) {
+                Bittrex::setAPI($this->user->settings()->get('bittrex_key'), $this->user->settings()->get('bittrex_secret'));
+                $exchangeResponse = Bittrex::getOrderHistory($market);
 
-                        if ($exchangeResponse->result) {
-                            
-                            $initialAmount = $amount;
-                            $amount = 0;
-                            $price = 0;
-                            foreach ($exchangeResponse->result as $order) {
+                if ($exchangeResponse->success == true) {
+
+                    if ($exchangeResponse->result) {
+
+                        $initialAmount = $amount;
+                        $amount = 0;
+                        $price = 0;
+                        foreach ($exchangeResponse->result as $order) {
                                 //if ($order->CommissionPaid) $comission = $order->CommissionPaid;
-                            
-                                if ($order->OrderType == "LIMIT_BUY" && $initialAmount > 0) {
-                                      $initialAmount = floatval($initialAmount) - ( floatval($order->Quantity) - floatval($order->QuantityRemaining) );
-                                      $amount = $amount + ( floatval($order->Quantity) - floatval($order->QuantityRemaining));
-                                      $price = $price + ( ( floatval($order->Quantity) - floatval($order->QuantityRemaining)) * ( floatval($order->PricePerUnit) ) );
-                                }
-                                elseif ($order->OrderType == "LIMIT_SELL" && $initialAmount > 0) {
-                                      $initialAmount = floatval($initialAmount) + ( floatval($order->Quantity) - floatval($order->QuantityRemaining) );
-                                }
 
-                            }
+                            if ($order->OrderType == "LIMIT_BUY" && $initialAmount > 0) {
+                              $initialAmount = floatval($initialAmount) - ( floatval($order->Quantity) - floatval($order->QuantityRemaining) );
+                              $amount = $amount + ( floatval($order->Quantity) - floatval($order->QuantityRemaining));
+                              $price = $price + ( ( floatval($order->Quantity) - floatval($order->QuantityRemaining)) * ( floatval($order->PricePerUnit) ) );
+                          }
+                          elseif ($order->OrderType == "LIMIT_SELL" && $initialAmount > 0) {
+                              $initialAmount = floatval($initialAmount) + ( floatval($order->Quantity) - floatval($order->QuantityRemaining) );
+                          }
 
-                            $response = new \stdClass();
-                            $response->success=true;
-                            $response->message="";
-                            $response->result = new \stdClass();
+                      }
 
-                            if ( $amount <= 0) {
-                                $response->result->AvaragePrice = 0;
-                            }
-                            else {
-                                $response->result->AvaragePrice = floatval($price)/floatval($amount);
-                            }
-                            
-                        }
-                        else {
-                            $response = new \stdClass();
-                            $response->success = false;
-                            $response->message = "";
-                        }
+                      $response = new \stdClass();
+                      $response->success=true;
+                      $response->message="";
+                      $response->result = new \stdClass();
 
-                        return $response;
+                      if ( $amount <= 0) {
+                        $response->result->AvaragePrice = 0;
                     }
                     else {
-
-                        $response = new \stdClass();
-                        $response->success=false;
-                        $response->message= $exchangeResponse->message;
-
-                        return $response;
+                        $response->result->AvaragePrice = floatval($price)/floatval($amount);
                     }
 
-                    break;
+                }
+                else {
+                    $response = new \stdClass();
+                    $response->success = false;
+                    $response->message = "";
+                }
+
+                return $response;
+            }
+            else {
+
+                $response = new \stdClass();
+                $response->success=false;
+                $response->message= $exchangeResponse->message;
+
+                return $response;
             }
 
-            return $exchangeResponse;
-            
-        } catch (Exception $e) {
+            break;
+
+            default: 
+                    $response = new \stdClass();
+                    $response->success = false;
+                    $response->message = "Exchange not available";
+                    break;
+        }
+
+        return $response;
+
+    } catch (\Exception $e) {
 
             // LOG: Exception trying to show trades
-            Log::critical("[Broker] Exception: " . $e->getMessage());
+        Log::critical("[Broker] Exception: " . $e->getMessage());
 
-            return $e->getMessage();
+        return $e->getMessage();
 
+    }
+}
+
+public function getPurchasePrice2 ($market, $amount)
+{
+    try {
+
+        if($market=='BTC/BTC') {
+            $response = new \stdClass();
+            $response->success=true;
+            $response->message="";
+            $response->result = new \stdClass();
+            $response->result->AvaragePrice = 0;
+            return $response;
         }
-    }
+        elseif ($market == 'IOT/BTC') {
+            $market = 'IOTA/BTC';
+        }
 
-    public function getTicker ($market)
-    {
-    	try {
+        $exchangeName = $this->exchange;
+        $connections = $this->user->connections;
+        $connection = $connections->where('exchange', $exchangeName)->first();
+        $api = decrypt($connection->api);
+        $secret =decrypt($connection->secret);
 
-    		switch (strtolower($this->exchange->name)) {
-    			case 'bittrex':
-    				$exchangeResponse = Bittrex::getTicker($market);
-
-    				if ($exchangeResponse->success == true) {
-
-                        if ($exchangeResponse->result) {
-        					$response = new \stdClass();
-    				        $response->success=true;
-    				        $response->message="";
-    				        $response->result = new \stdClass();
-    				        $response->result->Bid = $exchangeResponse->result->Bid;
-    				        $response->result->Ask = $exchangeResponse->result->Ask;
-    				        $response->result->Last = $exchangeResponse->result->Last;
-                        }
-                        else {
-                            $response = new \stdClass();
-                            $response->success = false;
-                            $response->message = "";
-                        }
-
-    					return $response;
-    				}
-    				else {
-
-    					$response = new \stdClass();
-				        $response->success=false;
-				        $response->message= $exchangeResponse->message;
-
-    					return $response;
-    				}
-
-    				break;
-    		}
-
-    		return $exchangeResponse;
-    		
-    	} catch (Exception $e) {
-
-    		// LOG: Exception trying to show trades
-            Log::critical("[Broker] Exception: " . $e->getMessage());
-
-            return $e->getMessage();
-
-    	}
-    }
-
-    public function buyLimit($currency, $amount, $price)
-    {
-    	try {
-
-    		switch (strtolower($this->exchange->name)) {
-    			case 'bittrex':
-    				Bittrex::setAPI($this->user->settings()->get('bittrex_key'), $this->user->settings()->get('bittrex_secret'));
-    				$exchangeResponse = Bittrex::buyLimit($currency, $amount, $price);
-    			
-	    			if ($exchangeResponse->success) {
-
-    					$response = new \stdClass();
-				        $response->success=true;
-				        $response->message="";
-				        $response->result = new \stdClass();
-				        $response->result->uuid = $exchangeResponse->result->uuid;
-
-    					return $response;
-    				}
-    				else {
-
-    					$response = new \stdClass();
-				        $response->success=false;
-				        $response->message= $exchangeResponse->message;
-
-    					return $response;
-    				}
-    			break;
-
-    		}
-    		
-    	} catch (Exception $e) {
-    		
-    		// LOG: Exception trying to show trades
-            Log::critical("[Broker] Exception: " . $e->getMessage());
-
-            return $e->getMessage();
-
-    	}
-
-    }
-
-    public function sellLimit($currency, $amount, $price)
-    {
-    	try {
-
-    		switch (strtolower($this->exchange->name)) {
-    			case 'bittrex':
-    				Bittrex::setAPI($this->user->settings()->get('bittrex_key'), $this->user->settings()->get('bittrex_secret'));
-    				$exchangeResponse = Bittrex::sellLimit($currency, $amount, $price);
-    			
-	    			if ($exchangeResponse->success) {
-	    
-    					$response = new \stdClass();
-				        $response->success=true;
-				        $response->message="";
-				        $response->result = new \stdClass();
-				        $response->result->uuid = $exchangeResponse->result->uuid;
-
-    					return $response;
-    				}
-    				else {
-
-    					$response = new \stdClass();
-				        $response->success=false;
-				        $response->message= $exchangeResponse->message;
-
-    					return $response;
-    				}
-    			break;
-
-    		}
-    		
-    	} catch (Exception $e) {
-    		
-    		// LOG: Exception trying to show trades
-            Log::critical("[Broker] Exception: " . $e->getMessage());
-
-            return $e->getMessage();
-
-    	}
-
-    }
-    public function cancelOrder($orderId) {
+        $myexchange = '\\ccxt\\' . $exchangeName;
+        
+        date_default_timezone_set ('UTC');
+        $exchangeConnection  = new $myexchange  (array (
+            'apiKey' => $api,
+            'secret' => $secret,
+        ));
 
         try {
+            // Get orders from exchange for this market
+            $orders = $exchangeConnection->fetchOrders ($market);    
 
-            switch (strtolower($this->exchange->name)) {
-                case 'bittrex':
-                    Bittrex::setAPI($this->user->settings()->get('bittrex_key'), $this->user->settings()->get('bittrex_secret'));
-                    $exchangeResponse = Bittrex::cancel($orderId);
-
-                    if ($exchangeResponse->success) {
-
-                        $response = new \stdClass();
-                        $response->success=true;
-                        $response->message="";
-                        $response->result = new \stdClass();
-
-                        return $response;
-                    }
-                    else {
-
-                        $response = new \stdClass();
-                        $response->success=false;
-                        $response->message= $exchangeResponse->message;
-
-                        return $response;
-                    }
-                break;
-            }
-        } catch (Exception $e) {
-        
-            // LOG: Exception trying to show trades
+        } catch (\Exception $e) {
+            // If we can't get orders from exchange 
+            // we intitalize $orders to empty
+            $orders = [];
             Log::critical("[Broker] Exception: " . $e->getMessage());
+        }
+       
 
-            return $e->getMessage();
+        // if ($market=="EOS/BTC") var_dump($orders);
+        $initialAmount = $amount;
+        $amount = 0;
+        $price = 0;
+        foreach ($orders as $order) {
+            //if ($order->CommissionPaid) $comission = $order->CommissionPaid;
+            
+            array_key_exists('average', $order) ? $orderPrice = $order['average'] : $orderPrice = $order['price'];
+
+            if (strtolower($order['side']) == "buy" && $initialAmount > 0) {
+                $initialAmount = floatval($initialAmount) - ( floatval($order['amount']) - floatval($order['remaining']) );
+                $amount = $amount + ( floatval($order['amount']) - floatval($order['remaining']));
+                $price = $price + ( ( floatval($order['amount']) - floatval($order['remaining'])) * ( floatval($orderPrice) ) );
+            }
+            elseif (strtolower($order['side']) == "sell" && $initialAmount > 0) {
+                $initialAmount = floatval($initialAmount) + ( floatval($order['amount']) - floatval($orderPrice) );
+            }
         }
 
+        $response = new \stdClass();
+        $response->success=true;
+        $response->message="";
+        $response->result = new \stdClass();
+
+        if ( $amount <= 0) {
+            $response->result->AvaragePrice = 0;
+        }
+        else {
+            $response->result->AvaragePrice = floatval($price)/floatval($amount);
+        }
+
+        return $response;
+
+    } catch (\Exception $e) {
+
+        // LOG: Exception trying to show trades
+        Log::critical("[Broker] Exception: " . $e->getMessage());
+  
+        $response = new \stdClass();
+        $response->success=false;
+        $response->message= $e->getMessage();
+
+        return $response;
 
     }
+}
 
+public function getTicker ($market)
+{
+   try {
 
-    public function getOrder($orderId)
-    {
-    	try {
+      switch (strtolower($this->exchange)) {
+         case 'bittrex':
+         $exchangeResponse = Bittrex::getTicker($market);
 
-    		switch (strtolower($this->exchange->name)) {
-    			case 'bittrex':
-    				Bittrex::setAPI($this->user->settings()->get('bittrex_key'), $this->user->settings()->get('bittrex_secret'));
-    				$exchangeResponse = Bittrex::getOrder($orderId);
-    			
-	    			if ($exchangeResponse->success) {
+         if ($exchangeResponse->success == true) {
 
-    					$response = new \stdClass();
-				        $response->success=true;
-				        $response->message="";
-				        $response->result = new \stdClass();
-				        $response->result->PricePerUnit = $exchangeResponse->result->PricePerUnit;
-				        $response->result->Closed = $exchangeResponse->result->Closed;
-				        $response->result->OrderUuid = $exchangeResponse->result->OrderUuid;
+            if ($exchangeResponse->result) {
+               $response = new \stdClass();
+               $response->success=true;
+               $response->message="";
+               $response->result = new \stdClass();
+               $response->result->Bid = $exchangeResponse->result->Bid;
+               $response->result->Ask = $exchangeResponse->result->Ask;
+               $response->result->Last = $exchangeResponse->result->Last;
+           }
+           else {
+            $response = new \stdClass();
+            $response->success = false;
+            $response->message = "";
+        }
 
-    					return $response;
-    				}
-    				else {
+        return $response;
+    }
+    else {
 
-    					$response = new \stdClass();
-				        $response->success=false;
-				        $response->message= $exchangeResponse->message;
+       $response = new \stdClass();
+       $response->success=false;
+       $response->message= $exchangeResponse->message;
 
-    					return $response;
-    				}
-    			break;
+       return $response;
+   }
 
-    		}
-    		
-    	} catch (Exception $e) {
-    		
+   break;
+}
+
+return $exchangeResponse;
+
+} catch (\Exception $e) {
+
     		// LOG: Exception trying to show trades
-            Log::critical("[Broker] Exception: " . $e->getMessage());
+    Log::critical("[Broker] Exception: " . $e->getMessage());
 
-            return $e->getMessage();
+    return $e->getMessage();
 
-    	}
+}
+}
 
-    }
-    public function getOrderHistory()
-    {
-    	try {
+public function buyLimit($currency, $amount, $price)
+{
+   try {
 
-    		switch (strtolower($this->exchange->name)) {
-    			case 'bittrex':
+      switch (strtolower($this->exchange)) {
+         case 'bittrex':
+         Bittrex::setAPI($this->user->settings()->get('bittrex_key'), $this->user->settings()->get('bittrex_secret'));
+         $exchangeResponse = Bittrex::buyLimit($currency, $amount, $price);
 
-    	 			Bittrex::setAPI($this->user->settings()->get('bittrex_key'), $this->user->settings()->get('bittrex_secret'));
-    				$exchangeResponse = Bittrex::getOrderHistory();
+         if ($exchangeResponse->success) {
 
-    				if ($exchangeResponse->success) {
-    					return $exchangeResponse->result;
-    				}
-    				else {
-    					return ["success" => false, "message" => $exchangeResponse->message];
-    				}
-    				break;
-    		}
+           $response = new \stdClass();
+           $response->success=true;
+           $response->message="";
+           $response->result = new \stdClass();
+           $response->result->uuid = $exchangeResponse->result->uuid;
 
-    	} catch (Exception $e) {
+           return $response;
+       }
+       else {
+
+           $response = new \stdClass();
+           $response->success=false;
+           $response->message= $exchangeResponse->message;
+
+           return $response;
+       }
+       break;
+
+   }
+
+} catch (\Exception $e) {
 
     		// LOG: Exception trying to show trades
-            Log::critical("[Broker] Exception: " . $e->getMessage());
+    Log::critical("[Broker] Exception: " . $e->getMessage());
 
-            return $e->getMessage();
+    return $e->getMessage();
 
-    	}
+}
 
+}
+
+public function sellLimit($currency, $amount, $price)
+{
+   try {
+
+      switch (strtolower($this->exchange)) {
+         case 'bittrex':
+         Bittrex::setAPI($this->user->settings()->get('bittrex_key'), $this->user->settings()->get('bittrex_secret'));
+         $exchangeResponse = Bittrex::sellLimit($currency, $amount, $price);
+
+         if ($exchangeResponse->success) {
+
+           $response = new \stdClass();
+           $response->success=true;
+           $response->message="";
+           $response->result = new \stdClass();
+           $response->result->uuid = $exchangeResponse->result->uuid;
+
+           return $response;
+       }
+       else {
+
+           $response = new \stdClass();
+           $response->success=false;
+           $response->message= $exchangeResponse->message;
+
+           return $response;
+       }
+       break;
+
+   }
+
+} catch (\Exception $e) {
+
+    		// LOG: Exception trying to show trades
+    Log::critical("[Broker] Exception: " . $e->getMessage());
+
+    return $e->getMessage();
+
+}
+
+}
+public function cancelOrder($orderId) {
+
+    try {
+
+        switch (strtolower($this->exchange)) {
+            case 'bittrex':
+            Bittrex::setAPI($this->user->settings()->get('bittrex_key'), $this->user->settings()->get('bittrex_secret'));
+            $exchangeResponse = Bittrex::cancel($orderId);
+
+            if ($exchangeResponse->success) {
+
+                $response = new \stdClass();
+                $response->success=true;
+                $response->message="";
+                $response->result = new \stdClass();
+
+                return $response;
+            }
+            else {
+
+                $response = new \stdClass();
+                $response->success=false;
+                $response->message= $exchangeResponse->message;
+
+                return $response;
+            }
+            break;
+        }
+    } catch (\Exception $e) {
+
+            // LOG: Exception trying to show trades
+        Log::critical("[Broker] Exception: " . $e->getMessage());
+
+        return $e->getMessage();
     }
+
+
+}
+
+
+public function getOrder($orderId)
+{
+   try {
+
+      switch (strtolower($this->exchange)) {
+         case 'bittrex':
+         Bittrex::setAPI($this->user->settings()->get('bittrex_key'), $this->user->settings()->get('bittrex_secret'));
+         $exchangeResponse = Bittrex::getOrder($orderId);
+
+         if ($exchangeResponse->success) {
+
+           $response = new \stdClass();
+           $response->success=true;
+           $response->message="";
+           $response->result = new \stdClass();
+           $response->result->PricePerUnit = $exchangeResponse->result->PricePerUnit;
+           $response->result->Closed = $exchangeResponse->result->Closed;
+           $response->result->OrderUuid = $exchangeResponse->result->OrderUuid;
+
+           return $response;
+       }
+       else {
+
+           $response = new \stdClass();
+           $response->success=false;
+           $response->message= $exchangeResponse->message;
+
+           return $response;
+       }
+       break;
+
+   }
+
+} catch (\Exception $e) {
+
+    		// LOG: Exception trying to show trades
+    Log::critical("[Broker] Exception: " . $e->getMessage());
+
+    return $e->getMessage();
+
+}
+
+}
+public function getOrderHistory()
+{
+   try {
+
+      switch (strtolower($this->exchange)) {
+         case 'bittrex':
+
+         Bittrex::setAPI($this->user->settings()->get('bittrex_key'), $this->user->settings()->get('bittrex_secret'));
+         $exchangeResponse = Bittrex::getOrderHistory();
+
+         if ($exchangeResponse->success) {
+           return $exchangeResponse->result;
+       }
+       else {
+           return ["success" => false, "message" => $exchangeResponse->message];
+       }
+       break;
+   }
+
+} catch (\Exception $e) {
+
+    		// LOG: Exception trying to show trades
+    Log::critical("[Broker] Exception: " . $e->getMessage());
+
+    return $e->getMessage();
+
+}
+
+}
 
 
 

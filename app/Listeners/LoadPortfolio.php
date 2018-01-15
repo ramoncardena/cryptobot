@@ -68,22 +68,25 @@ class LoadPortfolio implements ShouldQueue
                 $broker->setUser($user);
 
                 // Get the user's exchanges
-                $exchanges = $user->settings()->get('exchanges');
-                if ($exchanges) $exchanges = array_divide($exchanges)[0];
+                // $exchanges = $user->settings()->get('exchanges');
+                // if ($exchanges) $exchanges = array_divide($exchanges)[0];
+                // else $exchanges = [];
+
+                $exchanges = $user->connections;
+                if ($exchanges) $exchanges = $exchanges->pluck('exchange');
                 else $exchanges = [];
+
+                //var_dump($exchanges);
 
                 foreach ($exchanges as $exchange) {
                
-                    // Delete assets from this exchange
-                    // foreach ($user->assets->where('origin_name', ucfirst($exchange)) as $asset) {
-                    //     PortfolioAsset::destroy($asset->id);
-                    // }
 
                     // Get balance from this exchange
                     $broker->setExchange($exchange);
-                    $balance = $broker->getBalances(); // Controlar si retorna error
+                    $balance = $broker->getBalances2(); // Controlar si retorna error
                     $latestAssets = $balance->result;
                    
+                    //var_dump($latestAssets);
 
                     // Retrieve current asset list for this exchange
                     $initialAssets = $user->assets->where('origin_name', ucfirst($exchange));
@@ -92,34 +95,48 @@ class LoadPortfolio implements ShouldQueue
                     // Retrieve origin id to attach to each asset
                     $origin_id = $user->origins->where('name', ucfirst($exchange))->first()->id;
 
-                    foreach ($latestAssets as $coin) {
+                    $initalAssetsSymbols = $initialAssets->pluck('symbol')->all();
+
+                    foreach ($latestAssets as $symbol => $coin) {
                         $repeated = false;
 
+                        // Special case of IOTA that is called IOT in CryptoCompare
+                        $symbol = strtoupper($symbol);
+                        if ($symbol == "IOTA") $symbol = "IOT"; 
+
+
                         // Find if the asset already exists
-                        foreach ($initialAssets as $currentAsset) {
+                        // foreach ($initialAssets as $currentAsset) {
 
-                            if ( strtoupper($currentAsset->symbol) == strtoupper($coin->Currency) ) {
+                        //     if ( strtoupper($currentAsset->symbol) == strtoupper($symbol) ) {
 
-                                // Save the asset if already exists and mark as repeated
-                                $repAsset =  $currentAsset;
-                                $repeated = true;
+                        //         // Save the asset if already exists and mark as repeated
+                        //         $repAsset =  $currentAsset;
+                        //         $repeated = true;
 
-                            }
+                        //     }
 
-                        }
+                        // }
                         
+                        if (in_array($symbol, $initalAssetsSymbols)) {
+                            $repAsset =  $initialAssets->where('symbol', $symbol)->first();
+                            $repeated = true;
+                        }
+
                         if ($repeated) {
                             $repeated = false;
 
                             // If the repAsset already exist check if the amount has changed
-                            if ( $repAsset->amount != $coin->Balance) {
+                            if ( $repAsset->amount != $coin) {
 
                                 // If the amount has changed calculate new purchase price
-                                $repAsset->amount = $coin->Balance;
+                                $repAsset->amount = $coin;
 
                                 // Get exchange asset avarage buy price
-                                $brokerResponse = $broker->getPurchasePrice('BTC-' . $coin->Currency, $coin->Balance);
+                               
+                                $brokerResponse = $broker->getPurchasePrice2(strtoupper($symbol) . '/BTC', $coin);
                                 
+
                                 if ($brokerResponse->success) {
                                     $repAsset->initial_price = $brokerResponse->result->AvaragePrice;
                                 }
@@ -132,13 +149,14 @@ class LoadPortfolio implements ShouldQueue
 
                             $repAsset->update_id = $event->portfolio->update_id;
                             $repAsset->save();
-                            $finalAssets = array_prepend($finalAssets, $coin->Currency);
+                            $finalAssets = array_prepend($finalAssets, strtoupper($symbol));
                             
                         }
                         else {
                             
                             // Get coin info
-                            $symbol = $coin->Currency;
+                            // $symbol = strtoupper($symbol);
+                            // if ($symbol == "IOTA") $symbol = "IOT"; 
                             $coinInfo = $coinList->Data->$symbol;
 
                             // Create a new asset
@@ -147,7 +165,7 @@ class LoadPortfolio implements ShouldQueue
                             $newAsset->user_id = $user->id;
                             $newAsset->origin_id = $origin_id;
                             $newAsset->origin_name = ucfirst($exchange);
-                            $newAsset->symbol = $coin->Currency;
+                            $newAsset->symbol = strtoupper($symbol);
                             $newAsset->full_name = $coinInfo->CoinName;
                             $newAsset->logo_url = $logoBaseUrl . $coinInfo->ImageUrl;
                             $newAsset->info_url = $infoBaseUrl . $coinInfo->Url;
@@ -155,11 +173,13 @@ class LoadPortfolio implements ShouldQueue
                             $newAsset->balance = 0;
                             $counterValue = strtoupper($event->portfolio->counter_value);
                             $newAsset->counter_value = 0;
-                            $newAsset->amount = $coin->Balance;
+                            $newAsset->amount = $coin;
                             $newAsset->update_id = $event->portfolio->update_id;
 
                             // Get exchange asset avarage buy price
-                            $brokerResponse = $broker->getPurchasePrice('BTC-' . $coin->Currency, $coin->Balance);
+                            // var_dump("New: " . strtoupper($symbol) . '/BTC');
+                            
+                            $brokerResponse = $broker->getPurchasePrice2(strtoupper($symbol) . '/BTC', $coin);
                         
                             if ($brokerResponse->success) {
                                 $newAsset->initial_price = $brokerResponse->result->AvaragePrice;
@@ -169,7 +189,7 @@ class LoadPortfolio implements ShouldQueue
                             }
                             $newAsset->save();
 
-                            $finalAssets = array_prepend($finalAssets, $coin->Currency);
+                            $finalAssets = array_prepend($finalAssets, strtoupper($symbol));
                         }
 
                     }
@@ -204,7 +224,7 @@ class LoadPortfolio implements ShouldQueue
                 event(new PortfolioLoaded($portfolio, $asset_count));
             } 
 
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             // Log CRITICAL: Exception
             Log::critical("[LoadPortfolio] Exception: " . $e->getMessage());
         }

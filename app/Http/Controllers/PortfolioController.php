@@ -50,8 +50,12 @@ class PortfolioController extends Controller
         $this->user = Auth::user();
 
         // Get the user's exchanges
-        $exchanges = $this->user->settings()->get('exchanges');
-        if ($exchanges) $this->exchanges = array_divide($exchanges)[0];
+        // $exchanges = $this->user->settings()->get('exchanges');
+        // if ($exchanges) $this->exchanges = array_divide($exchanges)[0];
+        // else $this->exchanges = [];
+
+        $exchanges = $this->user->connections;
+        if ($exchanges) $this->exchanges = $exchanges->pluck('exchange');
         else $this->exchanges = [];
 
         // Get user's portfolio
@@ -63,10 +67,6 @@ class PortfolioController extends Controller
 
         // Get portfolio origins
         $this->origins = $this->portfolio->origins; 
-
-        // EVENT:  PortfolioOpened
-        // event(new PortfolioOpened($this->portfolio));
-
 
         // DATA FOR MODALS (New Asset and New Origin)
         // Coin list

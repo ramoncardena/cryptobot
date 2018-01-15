@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 use App\Connection;
+use App\PortfolioOrigin;
+use App\Portfolio;
 
 class ConnectionsController extends Controller
 {
@@ -87,6 +89,20 @@ class ConnectionsController extends Controller
                 $connection->active = true;
                 $connection->save();
 
+                $origins = $user->origins;
+                if ($origins->firstWhere('name', $request->new_exchange) == null) {
+                    $portfolio = Portfolio::where('user_id', $user->id)->first();
+                    if ($portfolio){
+                        $origin = new PortfolioOrigin;
+                        $origin->portfolio_id = $portfolio->id;
+                        $origin->user_id = $user->id;
+                        $origin->type ='Exchange';
+                        $origin->name = ucfirst($request->new_exchange);
+                        $origin->address = "-";
+                        $origin->save();
+                    }
+                }
+
                 // SESSION FLASH: New Trade
                 $request->session()->flash('status-text', 'Exchange ' . ucfirst($connection->exchange) . ' added!');
                 $request->session()->flash('status-class', 'success');
@@ -116,9 +132,12 @@ class ConnectionsController extends Controller
 
             $user = Auth::user();
             $connections = $user->connections;
-
             $connection = $connections->find($id);
+
+            $origin = PortfolioOrigin::where('name', ucfirst($connection->name))->first();
+            PortfolioOrigin::destroy($origin->id);
             Connection::destroy($connection->id);
+
 
             return response("OK", 200)->header('Content-Type', 'text/plain');
         

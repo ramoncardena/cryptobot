@@ -44277,7 +44277,7 @@ module.exports = Cancel;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(142);
-module.exports = __webpack_require__(277);
+module.exports = __webpack_require__(280);
 
 
 /***/ }),
@@ -44319,7 +44319,7 @@ Vue.component('edit-asset', __webpack_require__(262));
 Vue.component('transactions', __webpack_require__(265));
 Vue.component('portfolio', __webpack_require__(268));
 Vue.component('asset', __webpack_require__(271));
-Vue.component('connections', __webpack_require__(286));
+Vue.component('connections', __webpack_require__(274));
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -44332,9 +44332,9 @@ var app = new Vue({
 
 $(document).ready(function () {
 
-    __webpack_require__(274);
-    __webpack_require__(275);
-    __webpack_require__(276);
+    __webpack_require__(277);
+    __webpack_require__(278);
+    __webpack_require__(279);
 
     $.extend($.fn.dataTable.defaults, {
         responsive: true
@@ -120935,56 +120935,14 @@ if (false) {
 
 /***/ }),
 /* 274 */
-/***/ (function(module, exports) {
-
-//////////////////////////////////////////////////////////////////
-// Cases Carousel 
-$('.reveal').on('open.zf.reveal', function () {
-    console.log('Modal opened!');
-    // Resize window to fit content
-    $(window).trigger('resize');
-});
-
-$('#notificationsModal').on('closed.zf.reveal', function () {
-    console.log('Modal closed!');
-});
-
-/***/ }),
-/* 275 */
-/***/ (function(module, exports) {
-
-$('.alerts-callout').hide().delay(1000).fadeIn(2000).delay(5000).fadeOut(1000);
-
-/***/ }),
-/* 276 */
-/***/ (function(module, exports) {
-
-
-
-/***/ }),
-/* 277 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 278 */,
-/* 279 */,
-/* 280 */,
-/* 281 */,
-/* 282 */,
-/* 283 */,
-/* 284 */,
-/* 285 */,
-/* 286 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(287)
+var __vue_script__ = __webpack_require__(275)
 /* template */
-var __vue_template__ = __webpack_require__(288)
+var __vue_template__ = __webpack_require__(276)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -121024,7 +120982,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 287 */
+/* 275 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -121177,7 +121135,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 288 */
+/* 276 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -121493,6 +121451,40 @@ if (false) {
     require("vue-hot-reload-api")      .rerender("data-v-8da3c324", module.exports)
   }
 }
+
+/***/ }),
+/* 277 */
+/***/ (function(module, exports) {
+
+//////////////////////////////////////////////////////////////////
+// Cases Carousel 
+$('.reveal').on('open.zf.reveal', function () {
+    console.log('Modal opened!');
+    // Resize window to fit content
+    $(window).trigger('resize');
+});
+
+$('#notificationsModal').on('closed.zf.reveal', function () {
+    console.log('Modal closed!');
+});
+
+/***/ }),
+/* 278 */
+/***/ (function(module, exports) {
+
+$('.alerts-callout').hide().delay(1000).fadeIn(2000).delay(5000).fadeOut(1000);
+
+/***/ }),
+/* 279 */
+/***/ (function(module, exports) {
+
+
+
+/***/ }),
+/* 280 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
 
 /***/ })
 /******/ ]);
