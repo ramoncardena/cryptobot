@@ -23,6 +23,7 @@ use App\Profit;
 use App\Stop;
 use App\Trade;
 use App\User;
+use App\Connection;
 
 class TradeController extends Controller
 {
@@ -62,55 +63,47 @@ class TradeController extends Controller
     public function index()
     {
         try {
-            // Double check for user to be authenticated
-            if (Auth::check()) 
-            {
-                
-                // Get current authenticated user
-                $this->user = Auth::user();
 
-                $historyMatch1 = [ ['user_id', '=',  Auth::id()],  ['status', '=', 'Closed'] ];
-                $historyMatch2 = [ ['user_id', '=',  Auth::id()],  ['status', '=', 'Cancelled'] ];
-                $historyMatch3 = [ ['user_id', '=',  Auth::id()],  ['status', '=', 'Aborted'] ];
-                $historyMatch4 = [ ['user_id', '=',  Auth::id()],  ['status', '=', 'Cancelling'] ];
-                $historyMatch5 = [ ['user_id', '=',  Auth::id()],  ['status', '=', 'Closing'] ];
-                $historyMatch6 = [ ['user_id', '=',  Auth::id()],  ['status', '=', 'Kept'] ];
-                // Retrieve trade history
-                $tradesHistory = Trade::where($historyMatch1)
-                    ->orWhere($historyMatch2)
-                    ->orWhere($historyMatch3)
-                    ->orWhere($historyMatch4)
-                    ->orWhere($historyMatch5)
-                    ->orWhere($historyMatch6)
-                    ->orderBy('updated_at', 'desc')
-                    ->get();
+            // Get current authenticated user
+            $this->user = Auth::user();
 
-                // Retrieve active trades
-                $activeMatch1 = [ ['user_id', '=',  Auth::id()],  ['status', '=', 'Opening'] ];
-                $activeMatch3 = [ ['user_id', '=',  Auth::id()],  ['status', '=', 'Waiting'] ];
-                $activeMatch2 = [ ['user_id', '=',  Auth::id()],  ['status', '=', 'Opened'] ];
-                $tradesActive = Trade::where($activeMatch1)
-                    ->orWhere($activeMatch2)
-                    ->orWhere($activeMatch3)
-                    ->orderBy('updated_at', 'desc')
-                    ->get();
+            // Set the SQL queries to retrieve trades history
+            $historyMatch1 = [ ['user_id', '=',  Auth::id()],  ['status', '=', 'Closed'] ];
+            $historyMatch2 = [ ['user_id', '=',  Auth::id()],  ['status', '=', 'Cancelled'] ];
+            $historyMatch3 = [ ['user_id', '=',  Auth::id()],  ['status', '=', 'Aborted'] ];
+            $historyMatch4 = [ ['user_id', '=',  Auth::id()],  ['status', '=', 'Cancelling'] ];
+            $historyMatch5 = [ ['user_id', '=',  Auth::id()],  ['status', '=', 'Closing'] ];
+            $historyMatch6 = [ ['user_id', '=',  Auth::id()],  ['status', '=', 'Kept'] ];
 
-                // Get exchanges for the user
-                $exchanges = $this->user->settings()->get('exchanges');
+            // Retrieve trade history
+            $tradesHistory = Trade::where($historyMatch1)
+                ->orWhere($historyMatch2)
+                ->orWhere($historyMatch3)
+                ->orWhere($historyMatch4)
+                ->orWhere($historyMatch5)
+                ->orWhere($historyMatch6)
+                ->orderBy('updated_at', 'desc')
+                ->get();
 
-                if ($exchanges) $exchanges = array_divide($exchanges)[0];
-                else $exchanges = [];
-                
-                // Return 'trades' view passing trade history and open trades objects
-                return view('trades', ['tradesActive' => $tradesActive, 'tradesHistory' => $tradesHistory, 'exchanges' => json_encode($exchanges)]);
-            }
-            else {
+            // Retrieve active trades
+            $activeMatch1 = [ ['user_id', '=',  Auth::id()],  ['status', '=', 'Opening'] ];
+            $activeMatch3 = [ ['user_id', '=',  Auth::id()],  ['status', '=', 'Waiting'] ];
+            $activeMatch2 = [ ['user_id', '=',  Auth::id()],  ['status', '=', 'Opened'] ];
+            $tradesActive = Trade::where($activeMatch1)
+                ->orWhere($activeMatch2)
+                ->orWhere($activeMatch3)
+                ->orderBy('updated_at', 'desc')
+                ->get();
 
-                // LOG: Not authorized
-                Log::error("User not authorized trying to retieve trades.");
+            // Get echange names from curren user's connections
+            $exchanges = $this->user->connections;
+            if ($exchanges) $this->exchanges = $exchanges->pluck('exchange')->all();
+            else $this->exchanges = [];
+            
+            // Return 'trades' view passing trade history and open trades objects
+            return view('trades', ['tradesActive' => $tradesActive, 'tradesHistory' => $tradesHistory, 'exchanges' => json_encode($this->exchanges)]);
 
-            }
-        }catch(Exception $e) {
+        }catch(\Exception $e) {
 
                 // LOG: Exception trying to show trades
                 Log::critical("[TradeController] Exception: " . $e->getMessage());
@@ -184,7 +177,7 @@ class TradeController extends Controller
 
                         // SESSION FLASH: New Trade
                         $request->session()->flash('status-text', 'New trade for ' . $this->trade->pair . ' launched!');
-                         $request->session()->flash('status-class', 'success');
+                        $request->session()->flash('status-class', 'success');
 
                         // Send the new trade to the client in json
                         //return response($this->trade->toJson(), 200)->header('Content-Type', 'application/json');
@@ -240,7 +233,7 @@ class TradeController extends Controller
                     }
                 }
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             
             // LOG: Exception trying to create trade
             Log::critical("[TradeController] Exception: " . $e->getMessage());
@@ -432,7 +425,7 @@ class TradeController extends Controller
 
             return redirect('/trades');
 
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
 
             // Log CRITICAL: Exception
             Log::critical("[TradeController] Exception: " . $e->message());
@@ -625,7 +618,7 @@ class TradeController extends Controller
         
             }
             
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
 
             // Log CRITICAL: Exception
             Log::critical("[TradeController] Exception: " . $e->message());
@@ -708,7 +701,7 @@ class TradeController extends Controller
 
             }
             
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
 
             // Log CRITICAL: Exception
             Log::critical("[TradeController] Exception: " . $e->message());
@@ -765,7 +758,7 @@ class TradeController extends Controller
 
             }
             
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
 
             // Log CRITICAL: Exception
             Log::critical("[TradeController] Exception: " . $e->message());

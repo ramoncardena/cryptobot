@@ -5,6 +5,7 @@ namespace App\Library\Services;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
+use App\Library\Services\CoinGuru;
 use App\Library\Services\Facades\Bittrex;
 use App\Exchange;
 use App\User;
@@ -53,16 +54,19 @@ class Broker
 
     }
 
+    // Multi
     public function getFee() 
     {
 
         try {
 
-            switch (strtolower($this->exchange)) {
-                case 'bittrex':
-                return $this->user->settings()->get('bittrex_fee');
-                break;
-            } 
+            $exchangeName = $this->exchange;
+            $connections = $this->user->connections;
+            $connection = $connections->where('exchange', $exchangeName)->first();
+
+            $fee = $connection->fee;
+
+            return $fee;
 
         } catch (\Exception $e) {
 
@@ -147,6 +151,7 @@ class Broker
     * Get no-zero balances from the exchange
     * @return [type] [description]
     */
+   // Multi
     public function getBalances2() 
     {
 
@@ -277,6 +282,7 @@ class Broker
     
     }
 
+    // Multi
     public function getPurchasePrice2 ($market, $amount)
     {
         try {
@@ -365,6 +371,148 @@ class Broker
 
         }
     
+    }
+
+    // Multi
+    public function getPairs()
+    {
+        try {
+
+            $exchangeName = $this->exchange;
+            $connections = $this->user->connections;
+            $connection = $connections->where('exchange', $exchangeName)->first();
+            $api = decrypt($connection->api);
+            $secret =decrypt($connection->secret);
+
+            $myexchange = '\\ccxt\\' . $exchangeName;
+
+            date_default_timezone_set ('UTC');
+            $exchangeConnection  = new $myexchange  (array (
+                'apiKey' => $api,
+                'secret' => $secret,
+            ));
+
+            try {
+                // Get pairs from exchange
+                $exchangeConnection->loadMarkets(); 
+                $pairs = $exchangeConnection->symbols;
+
+            } catch (\Exception $e) {
+                // If we can't get pairs from exchange 
+                // we intitalize $pairs to empty
+                $pairs = [];
+                Log::critical("[Broker] Exception getting pairs: " . $e->getMessage());
+            }
+
+            $response = new \stdClass();
+            $response->success=true;
+            $response->message="";
+            $response->result = new \stdClass();
+            $response->result->pairs = $pairs;            
+
+            return response()->json($response);
+
+
+            
+        } catch (\Exception $e) {
+            // LOG: Exception trying to show trades
+            Log::critical("[Broker] Exception getting pairs: " . $e->getMessage());
+
+            $response = new \stdClass();
+            $response->success=false;
+            $response->message= $e->getMessage();
+
+            return response()->json($response);
+        }
+    }
+
+    // Multi
+    public function getSymbolTicker($market)
+    {
+        try {
+
+            $exchangeName = $this->exchange;
+
+            $myexchange = '\\ccxt\\' . $exchangeName;
+
+            date_default_timezone_set ('UTC');
+            $exchangeConnection  = new $myexchange();
+
+            try {
+                // Get pairs from exchange
+                $ticker = $exchangeConnection->fetchTicker($market); 
+
+            } catch (\Exception $e) {
+                // If we can't get pairs from exchange 
+                // we intitalize $pairs to empty
+                $ticker = [];
+                Log::critical("[Broker] Exception getting pairs: " . $e->getMessage());
+            }
+
+            $response = new \stdClass();
+            $response->success=true;
+            $response->message="";
+            $response->result = new \stdClass();
+            $response->result->ticker = $ticker;            
+
+            return response()->json($response);
+
+
+            
+        } catch (\Exception $e) {
+            // LOG: Exception trying to show trades
+            Log::critical("[Broker] Exception getting pairs: " . $e->getMessage());
+
+            $response = new \stdClass();
+            $response->success=false;
+            $response->message= $e->getMessage();
+
+            return response()->json($response);
+        }
+    }
+
+    // Multi
+    public function getCoinInfo($coin)
+    {
+        try {
+
+            // Get Cryptocompare coin list properties
+            $guru = new CoinGuru;
+            $coinList = $guru->cryptocompareCoingetList();
+            // TODO controlar si retorna error
+            $logoBaseUrl = $coinList->BaseImageUrl;
+            $infoBaseUrl = $coinList->BaseLinkUrl;
+
+            $symbol = strtoupper($coin);
+            if ($symbol == "IOTA") $symbol = "IOT"; 
+            $coinInfo = $coinList->Data->$symbol;
+
+            $logoUrl = $logoBaseUrl . $coinInfo->ImageUrl;
+            $infoUrl = $infoBaseUrl . $coinInfo->Url;
+            $fullName = $coinInfo->CoinName;
+
+            $response = new \stdClass();
+            $response->success=true;
+            $response->message="";
+            $response->result = new \stdClass();
+            $response->result->FullName = $fullName;
+            $response->result->LogoUrl = $logoUrl;
+            $response->result->InfoUrl = $infoUrl;
+
+            return $response;
+
+
+            
+        } catch (\Exception $e) {
+            // LOG: Exception trying to show trades
+            Log::critical("[Broker] Exception getting pairs: " . $e->getMessage());
+
+            $response = new \stdClass();
+            $response->success=false;
+            $response->message= $e->getMessage();
+
+            return $response;
+        }
     }
 
     public function getTicker ($market)
@@ -615,5 +763,7 @@ class Broker
         }
 
     }
+
+
 
 }

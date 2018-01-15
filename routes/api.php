@@ -17,6 +17,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::middleware('auth:api')->get('broker/getpairs/{exchange}', 'BrokerController@getPairs');
+Route::middleware('auth:api')->get('broker/getfee/{exchange}', 'BrokerController@getFee');
+Route::middleware('auth:api')->get('broker/getticker/{exchange}/{coin}/{base}', 'BrokerController@getTicker');
+Route::middleware('auth:api')->get('broker/getbalances/{exchange}', 'BrokerController@getBalances');
+Route::middleware('auth:api')->get('broker/getcoininfo/{coin}', 'BrokerController@getCoinInfo');
+
 Route::middleware('auth:api')->get('bittrexapi/getpairs', 'BittrexApiController@getpairs');
 Route::middleware('auth:api')->get('bittrexapi/getmarketsummary/{pair}', 'BittrexApiController@getmarketsummary');
 Route::middleware('auth:api')->get('bittrexapi/getmarkets/{coin}', 'BittrexApiController@getmarkets');

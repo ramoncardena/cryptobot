@@ -116375,9 +116375,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'tradepanel',
@@ -116392,6 +116389,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             stopAtTotal: false,
             stopAtAmount: false,
             loadingpairs: false,
+            loadingexchange: false,
             loadingprice: false,
             loadinginfo: false,
             marketLoaded: false,
@@ -116414,6 +116412,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             basecurrency: "",
             coinname: { 'long': '', 'short': '' },
             coinlogo: "",
+            coinurl: "",
             volume: 0.0000,
             price: 0.00000000,
             last: 0.00000000,
@@ -116566,208 +116565,188 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             this.loadingprice = true;
 
-            if (exchange.toLowerCase() == 'bittrex') {
-                var uri = '/api/bittrexapi/getmarketsummary/' + pair;
-                axios(uri, {
-                    method: 'GET'
-                }).then(function (response) {
-                    _this.marketsummary = response.data[0];
-                    _this.last = parseFloat(_this.marketsummary.Last);
-                    _this.bid = parseFloat(_this.marketsummary.Bid);
-                    _this.ask = parseFloat(_this.marketsummary.Ask);
-                    _this.volume = parseFloat(_this.marketsummary.BaseVolume);
+            var params = "?coin=" + pair.split("/")[0] + "&base=" + pair.split("/")[1];
+            var uri = '/api/broker/getticker/' + exchange + '/' + pair.split("/")[0] + "/" + pair.split("/")[1];
+            axios.get(uri).then(function (response) {
 
-                    if (pricetype.toLowerCase() == "last") {
-                        _this.price = parseFloat(_this.last);
-                    } else if (pricetype.toLowerCase() == "bid") {
-                        _this.price = parseFloat(_this.bid);
-                    } else if (pricetype.toLowerCase() == "ask") {
-                        _this.price = parseFloat(_this.ask);
-                    }
-                    _this.loadingprice = false;
-                }).catch(function (e) {
-                    _this.errors.push(e);
-                    _this.loadingprice = false;
-                    console.log("Error: " + e.message);
-                });
-            } else {
-                this.loadingprice = false;
-            }
+                _this.marketsummary = response.data[0];
+                _this.last = parseFloat(response.data.result.ticker.last);
+                _this.bid = parseFloat(response.data.result.ticker.bid);
+                _this.ask = parseFloat(response.data.result.ticker.ask);
+                _this.volume = parseFloat(response.data.result.ticker.baseVolume);
+
+                if (pricetype.toLowerCase() == "last") {
+
+                    _this.price = parseFloat(_this.last);
+                } else if (pricetype.toLowerCase() == "bid") {
+
+                    _this.price = parseFloat(_this.bid);
+                } else if (pricetype.toLowerCase() == "ask") {
+
+                    _this.price = parseFloat(_this.ask);
+                }
+                _this.loadingprice = false;
+            }).catch(function (e) {
+
+                _this.errors.push(e);
+                _this.loadingprice = false;
+                console.log("Error: " + e.message);
+            });
         },
         getmarketsummary: function getmarketsummary(exchange, pair) {
             var _this2 = this;
 
             this.loadingpairs = true;
-            if (exchange.toLowerCase() == 'bittrex') {
-                var uri = '/api/bittrexapi/getmarketsummary/' + pair;
-                axios(uri, {
-                    method: 'GET'
-                }).then(function (response) {
-                    _this2.marketsummary = response.data[0];
-                    _this2.priceselected = "";
-                    _this2.last = parseFloat(_this2.marketsummary.Last);
-                    _this2.bid = parseFloat(_this2.marketsummary.Bid);
-                    _this2.ask = parseFloat(_this2.marketsummary.Ask);
-                    _this2.high = parseFloat(_this2.marketsummary.High);
-                    _this2.low = parseFloat(_this2.marketsummary.Low);
-                    _this2.volume = parseFloat(_this2.marketsummary.BaseVolume);
 
-                    // Set price for current pair to 0
-                    _this2.stopAtTotal = true;
-                    _this2.price = parseFloat(0.00000000);
+            var params = "?coin=" + pair.split("/")[0] + "&base=" + pair.split("/")[1];
+            var uri = '/api/broker/getticker/' + exchange + '/' + pair.split("/")[0] + "/" + pair.split("/")[1];
+            axios.get(uri).then(function (response) {
 
-                    // TODO Get balance for the selected base currency
-                    _this2.getbalance(exchange, pair);
+                _this2.priceselected = "";
+                _this2.last = parseFloat(response.data.result.ticker.last);
+                _this2.bid = parseFloat(response.data.result.ticker.bid);
+                _this2.ask = parseFloat(response.data.result.ticker.ask);
+                _this2.high = parseFloat(response.data.result.ticker.high);
+                _this2.low = parseFloat(response.data.result.ticker.low);
+                _this2.volume = parseFloat(response.data.result.ticker.baseVolume);
 
-                    // Get coin info from api call getmarkets
-                    _this2.getmarkets(exchange, pair);
+                // Set price for current pair to 0
+                _this2.stopAtTotal = true;
+                _this2.price = parseFloat(0.00000000);
 
-                    _this2.loadingpairs = false;
-                    console.log("Success: " + _this2.marketsummary.MarketName);
-                }).catch(function (e) {
-                    _this2.errors.push(e);
-                    _this2.loadingpairs = false;
-                    console.log("Error: " + e.message);
-                });
-            }
+                // TODO Get balance for the selected base currency
+                _this2.getbalance(exchange, pair);
+
+                // Get coin info from api call getcoininfo
+                _this2.getcoininfo(exchange, pair);
+
+                _this2.loadingpairs = false;
+                console.log("Success: " + _this2.marketsummary.MarketName);
+            }).catch(function (e) {
+
+                _this2.errors.push(e);
+                _this2.loadingpairs = false;
+                console.log("Error: " + e.message);
+            });
         },
         getpairs: function getpairs(exchange) {
             var _this3 = this;
 
-            this.loadingpairs = true;
+            this.loadingexchange = true;
             this.pairselected = "";
 
-            //Bittrex
-            if (exchange.toLowerCase() == 'bittrex') {
-                axios('/api/bittrexapi/getpairs', {
-                    method: 'GET'
-                }).then(function (response) {
-                    _this3.bittrexpairs = response.data;
+            axios.get('/api/broker/getpairs/' + exchange).then(function (response) {
 
-                    var options = {
-                        data: _this3.bittrexpairs,
-                        list: {
-                            onClickEvent: function onClickEvent() {
-                                _this3.pairselected = $("#pairs").getSelectedItemData();
-                                _this3.getmarketsummary(exchange, _this3.pairselected);
-                            },
-                            maxNumberOfElements: 999,
-                            match: {
-                                enabled: true
-                            },
-                            showAnimation: {
-                                type: "fade", //normal|slide|fade
-                                time: 400,
-                                callback: function callback() {}
-                            },
-                            hideAnimation: {
-                                type: "fade s", //normal|slide|fade
-                                time: 400,
-                                callback: function callback() {}
-                            }
+                _this3.bittrexpairs = response.data.result.pairs;
+
+                var options = {
+                    data: _this3.bittrexpairs,
+                    list: {
+                        onClickEvent: function onClickEvent() {
+                            _this3.pairselected = $("#pairs").getSelectedItemData();
+                            _this3.getmarketsummary(exchange, _this3.pairselected);
                         },
-                        theme: "square"
-                    };
+                        maxNumberOfElements: 999,
+                        match: {
+                            enabled: true
+                        },
+                        showAnimation: {
+                            type: "fade", //normal|slide|fade
+                            time: 400,
+                            callback: function callback() {}
+                        },
+                        hideAnimation: {
+                            type: "fade", //normal|slide|fade
+                            time: 400,
+                            callback: function callback() {}
+                        }
+                    },
+                    theme: "square"
+                };
 
-                    $("#pairs").easyAutocomplete(options);
+                $("#pairs").easyAutocomplete(options);
 
-                    console.log("Success: " + exchange + " pairs!");
+                // Get fee fot the exchange
+                axios.get('/api/broker/getfee/' + exchange.toLowerCase()).then(function (response) {
 
-                    // Get fee fot the exchange
-                    axios('/api/exchange/' + exchange.toLowerCase() + '/fee', {
-                        method: 'GET'
-                    }).then(function (response) {
-                        _this3.fee = parseFloat(response.data);
-                        console.log("Success: " + exchange + " fee! (" + _this3.fee + ")");
-                        _this3.loadingpairs = false;
-                    }).catch(function (e) {
-                        _this3.errors.push(e);
-                        _this3.loadingpairs = false;
-                        console.log("Error: " + e.message);
-                    });
+                    _this3.fee = parseFloat(response.data);
+                    _this3.loadingexchange = false;
                 }).catch(function (e) {
+
                     _this3.errors.push(e);
-                    _this3.loadingpairs = false;
+                    _this3.loadingexchange = false;
                     console.log("Error: " + e.message);
                 });
-            } else {
-                this.loadingpairs = false;
-            }
+            }).catch(function (e) {
+
+                _this3.errors.push(e);
+                _this3.loadingexchange = false;
+                console.log("Error: " + e.message);
+            });
         },
         refreshInfopanel: function refreshInfopanel(exchange, pair) {
             var _this4 = this;
 
             this.loadinginfo = true;
-            if (exchange.toLowerCase() == 'bittrex') {
-                var uri = '/api/bittrexapi/getmarketsummary/' + pair;
-                axios(uri, {
-                    method: 'GET'
-                }).then(function (response) {
-                    _this4.marketsummary = response.data[0];
-                    _this4.last = parseFloat(_this4.marketsummary.Last);
-                    _this4.bid = parseFloat(_this4.marketsummary.Bid);
-                    _this4.ask = parseFloat(_this4.marketsummary.Ask);
-                    _this4.high = parseFloat(_this4.marketsummary.High);
-                    _this4.low = parseFloat(_this4.marketsummary.Low);
-                    _this4.volume = parseFloat(_this4.marketsummary.BaseVolume);
 
-                    _this4.loadinginfo = false;
-                    console.log("Success loading info!");
-                }).catch(function (e) {
-                    _this4.errors.push(e);
-                    _this4.loadinginfo = false;
-                    console.log("Error: " + e.message);
-                });
-            }
+            var params = "?coin=" + pair.split("/")[0] + "&base=" + pair.split("/")[1];
+            var uri = '/api/broker/getticker/' + exchange + '/' + pair.split("/")[0] + "/" + pair.split("/")[1];
+            axios.get(uri).then(function (response) {
+
+                _this4.last = parseFloat(response.data.result.ticker.last);
+                _this4.bid = parseFloat(response.data.result.ticker.bid);
+                _this4.ask = parseFloat(response.data.result.ticker.ask);
+                _this4.high = parseFloat(response.data.result.ticker.high);
+                _this4.low = parseFloat(response.data.result.ticker.low);
+                _this4.volume = parseFloat(response.data.result.ticker.baseVolume);
+
+                _this4.loadinginfo = false;
+            }).catch(function (e) {
+
+                _this4.errors.push(e);
+                _this4.loadinginfo = false;
+                console.log("Error: " + e.message);
+            });
         },
-        getmarkets: function getmarkets(exchange, pair) {
+        getcoininfo: function getcoininfo(exchange, pair) {
             var _this5 = this;
 
             this.loadingpairs = true;
             this.coinname = { 'long': 'loading', 'short': '...' };
             this.coinlogo = "";
 
-            if (exchange.toLowerCase() == 'bittrex') {
-                var coin = pair.split("-");
-                axios('/api/bittrexapi/getmarkets/' + coin[1], {
-                    method: 'GET'
-                }).then(function (response) {
-                    var res = response.data[0];
-                    _this5.coinname = { 'long': res.MarketCurrencyLong, 'short': res.MarketCurrency };
-                    _this5.coinlogo = res.LogoUrl;
-                    _this5.basecurrency = res.BaseCurrency;
-                    _this5.marketLoaded = true;
-                    _this5.loadingpairs = false;
-                    // console.log("Success coin info: " + this.coinname );
-                }).catch(function (e) {
-                    _this5.errors.push(e);
-                    _this5.loadingpairs = false;
-                    console.log("Error: " + e.message);
-                });
-            }
+            var coin = pair.split("/")[0];
+            axios.get('/api/broker/getcoininfo/' + coin).then(function (response) {
+
+                _this5.coinname = { 'long': response.data.result['FullName'], 'short': coin };
+                _this5.coinlogo = response.data.result['LogoUrl'];
+                _this5.coinurl = response.data.result['InfoUrl'];
+                _this5.marketLoaded = true;
+                _this5.loadingpairs = false;
+            }).catch(function (e) {
+
+                _this5.errors.push(e);
+                _this5.loadingpairs = false;
+                console.log("Error: " + e.message);
+            });
         },
         getbalance: function getbalance(exchange, pair) {
             var _this6 = this;
 
             this.loadingpairs = true;
 
-            if (exchange.toLowerCase() == 'bittrex') {
-                var coin = pair.split("-");
+            var base = pair.split("/")[1];
 
-                axios('/api/bittrexapi/getbalance/' + coin[0], {
-                    method: 'GET'
-                }).then(function (response) {
-                    console.log("Success balance: " + response.data.Available);
-                    var res = response.data[0];
-                    response.data.Available ? _this6.availableBalance = response.data.Available + " " + response.data.Currency : _this6.availableBalance = "0 ";
-                    _this6.loadingpairs = false;
-                    // console.log("Success balance");
-                }).catch(function (e) {
-                    _this6.errors.push(e);
-                    _this6.loadingpairs = false;
-                    console.log("Error: " + e.message);
-                });
-            }
+            axios.get('/api/broker/getbalances/' + exchange.toLowerCase()).then(function (response) {
+
+                response.data.result[base] ? _this6.availableBalance = response.data.result[base] + " " + base : _this6.availableBalance = "0 " + base;
+                _this6.loadingpairs = false;
+            }).catch(function (e) {
+
+                _this6.errors.push(e);
+                _this6.loadingpairs = false;
+                console.log("Error: " + e.message);
+            });
         }
     }
 });
@@ -116803,6 +116782,17 @@ var render = function() {
             _vm._v(" "),
             _c("div", { staticClass: "input-group" }, [
               _c("span", { staticClass: "input-group-label" }, [
+                _c("i", {
+                  directives: [
+                    {
+                      name: "show",
+                      rawName: "v-show",
+                      value: _vm.loadingexchange,
+                      expression: "loadingexchange"
+                    }
+                  ],
+                  staticClass: "fa fa-cog fa-spin fa-fw"
+                }),
                 _vm._v("Exchange")
               ]),
               _vm._v(" "),
