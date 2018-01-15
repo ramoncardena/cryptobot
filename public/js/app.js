@@ -121362,24 +121362,6 @@ var render = function() {
               _c(
                 "button",
                 {
-                  staticClass: "hollow button update-exchange-button",
-                  on: {
-                    click: function($event) {
-                      _vm.updateConnection(
-                        connection.id,
-                        connection.api,
-                        connection.secret,
-                        connection.fee
-                      )
-                    }
-                  }
-                },
-                [_vm._v("Update")]
-              ),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
                   staticClass: "hollow button alert delete-exchange-button",
                   on: {
                     click: function($event) {

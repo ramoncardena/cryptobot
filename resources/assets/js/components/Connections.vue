@@ -50,7 +50,7 @@
                 <div v-for="connection in sources" class="exchange-settings">
 
                     <span class="h4 capitalize">{{ connection.exchange }}</span>
-                    <button class="hollow button update-exchange-button" v-on:click="updateConnection(connection.id, connection.api, connection.secret, connection.fee)">Update</i></button>
+                    <!-- <button class="hollow button update-exchange-button" v-on:click="updateConnection(connection.id, connection.api, connection.secret, connection.fee)">Update</i></button> -->
                     <button class="hollow button alert delete-exchange-button" v-on:click="deleteConnection(connection.id)">Delete</i></button>
                     <div class="input-group">
                         <span class="input-group-label capitalize">{{ connection.exchange }} Key</span>

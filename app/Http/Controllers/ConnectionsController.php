@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Connection;
 use App\PortfolioOrigin;
 use App\Portfolio;
+use App\PortfolioAsset;
 
 class ConnectionsController extends Controller
 {
@@ -63,14 +64,14 @@ class ConnectionsController extends Controller
      */
     public function store(Request $request)
     {
-        try {
         // Validate form
-            $validatedData = $request->validate([
-                'new_exchange' => 'required',
-                'new_exchange_api_key' => 'required',
-                'new_exchange_api_secret' => 'required'
-            ]);
+        $validatedData = $request->validate([
+            'new_exchange' => 'required',
+            'new_exchange_api_key' => 'required',
+            'new_exchange_api_secret' => 'required'
+        ]);
 
+        try {
             $user = Auth::user();
 
             $existingConnections = $user->connections->pluck('exchange');
@@ -108,12 +109,9 @@ class ConnectionsController extends Controller
                 $request->session()->flash('status-class', 'success');
             }
 
-
-            
-
             return redirect('/connections');
         
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
     
             return response($e->getMessage(), 500)->header('Content-Type', 'text/plain');
             
@@ -133,15 +131,20 @@ class ConnectionsController extends Controller
             $user = Auth::user();
             $connections = $user->connections;
             $connection = $connections->find($id);
+            $origin = PortfolioOrigin::where('name', ucfirst($connection->exchange))->first();
+            $assets = $user->assets->where('origin_id', $origin->id);
 
-            $origin = PortfolioOrigin::where('name', ucfirst($connection->name))->first();
+            foreach ($assets as $asset) {
+                PortfolioAsset::destroy($asset->id);
+            }
+
             PortfolioOrigin::destroy($origin->id);
             Connection::destroy($connection->id);
 
 
             return response("OK", 200)->header('Content-Type', 'text/plain');
         
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
     
             return response($e->getMessage(), 500)->header('Content-Type', 'text/plain');
             
@@ -176,7 +179,7 @@ class ConnectionsController extends Controller
 
             return response("OK", 200)->header('Content-Type', 'text/plain');
         
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
     
             return response($e->getMessage(), 500)->header('Content-Type', 'text/plain');
             
