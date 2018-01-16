@@ -111,28 +111,29 @@
         update(exchange, pair, price) {
             let percent = 0;
             this.updating = true;
-            if (exchange.toLowerCase() == 'bittrex') {
-                let uri = '/api/bittrexapi/getmarketsummary/' + pair;
-                axios(uri, {
-                    method: 'GET',
-                })
-                .then(response => {
-                    this.marketsummary=response.data[0];  
-                    this.last = this.marketsummary.Last;
-                    
-                    // Calculate percentual diference
-                    let decreaseValue = this.last - price;
-                    decreaseValue = (decreaseValue / price) * 100;
-                    this.profit = decreaseValue.toFixed(2) + "%";
 
-                    this.updating = false;
-                    //console.log("Last: " + this.last + " - " + (decreaseValue / price) * 100);
-                })
-                .catch(e => {
-                    this.updating = false;
-                    console.log("Error: " +  e.message);
-                })
-            }
+            let params = "?coin=" + pair.split("/")[0] + "&base=" + pair.split("/")[1];
+            let uri = '/api/broker/getticker/' + exchange + '/' + pair.split("/")[0] + "/" + pair.split("/")[1];
+            axios.get(uri)
+            .then(response => {
+
+                this.last = parseFloat(response.data.result.ticker.last);
+                
+                // Calculate percentual diference
+                let decreaseValue = this.last - price;
+                decreaseValue = (decreaseValue / price) * 100;
+                this.profit = decreaseValue.toFixed(2) + "%";
+
+                this.updating = false;
+                
+            })
+            .catch(e => {
+
+                this.updating = false;
+                console.log("Error: " +  e.message);
+
+            })
+            
         }
 
     }

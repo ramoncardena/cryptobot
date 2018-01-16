@@ -113680,26 +113680,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             var percent = 0;
             this.updating = true;
-            if (exchange.toLowerCase() == 'bittrex') {
-                var uri = '/api/bittrexapi/getmarketsummary/' + pair;
-                axios(uri, {
-                    method: 'GET'
-                }).then(function (response) {
-                    _this2.marketsummary = response.data[0];
-                    _this2.last = _this2.marketsummary.Last;
 
-                    // Calculate percentual diference
-                    var decreaseValue = _this2.last - price;
-                    decreaseValue = decreaseValue / price * 100;
-                    _this2.profit = decreaseValue.toFixed(2) + "%";
+            var params = "?coin=" + pair.split("/")[0] + "&base=" + pair.split("/")[1];
+            var uri = '/api/broker/getticker/' + exchange + '/' + pair.split("/")[0] + "/" + pair.split("/")[1];
+            axios.get(uri).then(function (response) {
 
-                    _this2.updating = false;
-                    //console.log("Last: " + this.last + " - " + (decreaseValue / price) * 100);
-                }).catch(function (e) {
-                    _this2.updating = false;
-                    console.log("Error: " + e.message);
-                });
-            }
+                _this2.last = parseFloat(response.data.result.ticker.last);
+
+                // Calculate percentual diference
+                var decreaseValue = _this2.last - price;
+                decreaseValue = decreaseValue / price * 100;
+                _this2.profit = decreaseValue.toFixed(2) + "%";
+
+                _this2.updating = false;
+            }).catch(function (e) {
+
+                _this2.updating = false;
+                console.log("Error: " + e.message);
+            });
         }
     }
 });
@@ -114277,7 +114275,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             low: 0.00000000,
             stoploss: 0,
             takeprofit: 0,
-            csrf: ""
+            csrf: "",
+            errors: []
         };
     },
     computed: {
@@ -114310,60 +114309,55 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             this.loadingprice = true;
 
-            if (exchange.toLowerCase() == 'bittrex') {
-                var uri = '/api/bittrexapi/getmarketsummary/' + pair;
-                axios(uri, {
-                    method: 'GET'
-                }).then(function (response) {
-                    _this.marketsummary = response.data[0];
-                    _this.last = parseFloat(_this.marketsummary.Last);
-                    _this.bid = parseFloat(_this.marketsummary.Bid);
-                    _this.ask = parseFloat(_this.marketsummary.Ask);
-                    _this.high = parseFloat(_this.marketsummary.High);
-                    _this.low = parseFloat(_this.marketsummary.Low);
-                    _this.loadingprice = false;
-                }).catch(function (e) {
-                    _this.errors.push(e);
-                    _this.loadingprice = false;
-                    console.log("Error: " + e.message);
-                });
-            } else {
-                this.loadingprice = false;
-            }
+            var params = "?coin=" + pair.split("/")[0] + "&base=" + pair.split("/")[1];
+            var uri = '/api/broker/getticker/' + exchange + '/' + pair.split("/")[0] + "/" + pair.split("/")[1];
+            axios.get(uri).then(function (response) {
+
+                _this.last = parseFloat(response.data.result.ticker.last);
+                _this.bid = parseFloat(response.data.result.ticker.bid);
+                _this.ask = parseFloat(response.data.result.ticker.ask);
+                _this.high = parseFloat(response.data.result.ticker.high);
+                _this.low = parseFloat(response.data.result.ticker.low);
+                _this.loadingprice = false;
+            }).catch(function (e) {
+
+                _this.errors.push(e);
+                _this.loadingprice = false;
+                console.log("Error: " + e.message);
+            });
         },
         updateprice: function updateprice(exchange, pair, pricetype) {
             var _this2 = this;
 
             this.loadingprice = true;
 
-            if (exchange.toLowerCase() == 'bittrex') {
-                var uri = '/api/bittrexapi/getmarketsummary/' + pair;
-                axios(uri, {
-                    method: 'GET'
-                }).then(function (response) {
-                    _this2.marketsummary = response.data[0];
-                    _this2.last = parseFloat(_this2.marketsummary.Last);
-                    _this2.bid = parseFloat(_this2.marketsummary.Bid);
-                    _this2.ask = parseFloat(_this2.marketsummary.Ask);
-                    _this2.high = parseFloat(_this2.marketsummary.High);
-                    _this2.low = parseFloat(_this2.marketsummary.Low);
+            var params = "?coin=" + pair.split("/")[0] + "&base=" + pair.split("/")[1];
+            var uri = '/api/broker/getticker/' + exchange + '/' + pair.split("/")[0] + "/" + pair.split("/")[1];
+            axios.get(uri).then(function (response) {
 
-                    if (pricetype.toLowerCase() == "last") {
-                        _this2.closingprice = parseFloat(_this2.last);
-                    } else if (pricetype.toLowerCase() == "bid") {
-                        _this2.closingprice = parseFloat(_this2.bid);
-                    } else if (pricetype.toLowerCase() == "ask") {
-                        _this2.closingprice = parseFloat(_this2.ask);
-                    }
-                    _this2.loadingprice = false;
-                }).catch(function (e) {
-                    _this2.errors.push(e);
-                    _this2.loadingprice = false;
-                    console.log("Error: " + e.message);
-                });
-            } else {
-                this.loadingprice = false;
-            }
+                _this2.last = parseFloat(response.data.result.ticker.last);
+                _this2.bid = parseFloat(response.data.result.ticker.bid);
+                _this2.ask = parseFloat(response.data.result.ticker.ask);
+                _this2.high = parseFloat(response.data.result.ticker.high);
+                _this2.low = parseFloat(response.data.result.ticker.low);
+
+                if (pricetype.toLowerCase() == "last") {
+
+                    _this2.closingprice = parseFloat(_this2.last);
+                } else if (pricetype.toLowerCase() == "bid") {
+
+                    _this2.closingprice = parseFloat(_this2.bid);
+                } else if (pricetype.toLowerCase() == "ask") {
+
+                    _this2.closingprice = parseFloat(_this2.ask);
+                }
+                _this2.loadingprice = false;
+            }).catch(function (e) {
+
+                _this2.errors.push(e);
+                _this2.loadingprice = false;
+                console.log("Error: " + e.message);
+            });
         },
         calculateProfit: function calculateProfit(price) {
             if (this.closingprice != 0) {
@@ -115681,7 +115675,8 @@ var render = function() {
                                     " " +
                                     _vm._s(
                                       trade.pair.substr(
-                                        trade.pair.indexOf("-") + 1
+                                        0,
+                                        trade.pair.indexOf("/")
                                       )
                                     ) +
                                     ". Are you sure?"
@@ -116048,7 +116043,7 @@ var staticRenderFns = [
         { staticClass: "hollow button", attrs: { type: "submit" } },
         [
           _vm._v(
-            "\n                                   Yes, keep\n                                "
+            "\n                                   HODL!\n                                "
           )
         ]
       )
@@ -116404,7 +116399,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             pairselected: "",
             bittrexpairs: [],
             bittrexcoin: [],
-            marketsummary: [],
             conditionselected: "now",
             conditionprice: 0.00000000,
             conditionalSwitch: false,
@@ -116569,7 +116563,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var uri = '/api/broker/getticker/' + exchange + '/' + pair.split("/")[0] + "/" + pair.split("/")[1];
             axios.get(uri).then(function (response) {
 
-                _this.marketsummary = response.data[0];
                 _this.last = parseFloat(response.data.result.ticker.last);
                 _this.bid = parseFloat(response.data.result.ticker.bid);
                 _this.ask = parseFloat(response.data.result.ticker.ask);
@@ -116609,6 +116602,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this2.high = parseFloat(response.data.result.ticker.high);
                 _this2.low = parseFloat(response.data.result.ticker.low);
                 _this2.volume = parseFloat(response.data.result.ticker.baseVolume);
+                _this2.basecurrency = pair.split("/")[1];
 
                 // Set price for current pair to 0
                 _this2.stopAtTotal = true;
@@ -116621,7 +116615,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this2.getcoininfo(exchange, pair);
 
                 _this2.loadingpairs = false;
-                console.log("Success: " + _this2.marketsummary.MarketName);
             }).catch(function (e) {
 
                 _this2.errors.push(e);
@@ -116699,6 +116692,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this4.high = parseFloat(response.data.result.ticker.high);
                 _this4.low = parseFloat(response.data.result.ticker.low);
                 _this4.volume = parseFloat(response.data.result.ticker.baseVolume);
+                _this4.basecurrency = pair.split("/")[1];
 
                 _this4.loadinginfo = false;
             }).catch(function (e) {
@@ -117642,12 +117636,12 @@ var render = function() {
                 }
               },
               [
-                _vm._v(" Vol: "),
-                _c("i", {
-                  staticClass: "fa fa-btc",
-                  attrs: { "aria-hidden": "true" }
-                }),
-                _vm._v(" " + _vm._s(_vm.volumeC))
+                _vm._v(
+                  " Vol: " +
+                    _vm._s(_vm.volumeC) +
+                    " " +
+                    _vm._s(_vm.basecurrency)
+                )
               ]
             )
           ]),
@@ -117666,12 +117660,9 @@ var render = function() {
                 }
               },
               [
-                _vm._v(" H: "),
-                _c("i", {
-                  staticClass: "fa fa-btc",
-                  attrs: { "aria-hidden": "true" }
-                }),
-                _vm._v(" " + _vm._s(_vm.highC))
+                _vm._v(
+                  " H: " + _vm._s(_vm.highC) + " " + _vm._s(_vm.basecurrency)
+                )
               ]
             )
           ]),
@@ -117690,12 +117681,13 @@ var render = function() {
                 }
               },
               [
-                _vm._v(" L: "),
-                _c("i", {
-                  staticClass: "fa fa-btc",
-                  attrs: { "aria-hidden": "true" }
-                }),
-                _vm._v(" " + _vm._s(_vm.lowC) + " ")
+                _vm._v(
+                  " L: " +
+                    _vm._s(_vm.lowC) +
+                    " " +
+                    _vm._s(_vm.basecurrency) +
+                    " "
+                )
               ]
             )
           ]),
@@ -117713,12 +117705,9 @@ var render = function() {
                 }
               },
               [
-                _vm._v(" BID: "),
-                _c("i", {
-                  staticClass: "fa fa-btc",
-                  attrs: { "aria-hidden": "true" }
-                }),
-                _vm._v(" " + _vm._s(_vm.bidC))
+                _vm._v(
+                  " BID: " + _vm._s(_vm.bidC) + " " + _vm._s(_vm.basecurrency)
+                )
               ]
             )
           ]),
@@ -117736,12 +117725,13 @@ var render = function() {
                 }
               },
               [
-                _vm._v(" ASK: "),
-                _c("i", {
-                  staticClass: "fa fa-btc",
-                  attrs: { "aria-hidden": "true" }
-                }),
-                _vm._v(" " + _vm._s(_vm.askC) + " ")
+                _vm._v(
+                  " ASK: " +
+                    _vm._s(_vm.askC) +
+                    " " +
+                    _vm._s(_vm.basecurrency) +
+                    " "
+                )
               ]
             )
           ]),
@@ -117759,12 +117749,13 @@ var render = function() {
                 }
               },
               [
-                _vm._v(" LAST: "),
-                _c("i", {
-                  staticClass: "fa fa-btc",
-                  attrs: { "aria-hidden": "true" }
-                }),
-                _vm._v(" " + _vm._s(_vm.lastC) + " ")
+                _vm._v(
+                  " LAST: " +
+                    _vm._s(_vm.lastC) +
+                    " " +
+                    _vm._s(_vm.basecurrency) +
+                    " "
+                )
               ]
             )
           ])

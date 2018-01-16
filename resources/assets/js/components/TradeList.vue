@@ -232,12 +232,12 @@
                                     <div v-model="high"> <b>High:</b> {{ high.toFixed(8) }}</div>
                                 </div>
                                 <div class="small-12 cell form-container">
-                                    <p>You are going to keep a trade, if you proceed the trade will be closed and no order will be launched, so you'll keep {{ trade.amount }} {{ trade.pair.substr(trade.pair.indexOf("-") + 1) }}. Are you sure?</p>
+                                    <p>You are going to keep a trade, if you proceed the trade will be closed and no order will be launched, so you'll keep {{ trade.amount }} {{ trade.pair.substr(0,trade.pair.indexOf("/")) }}. Are you sure?</p>
                                 </div>
                                 <div class="small-12 cell form-container">
                                     
                                     <button class="hollow button"  type="submit">
-                                       Yes, keep
+                                       HODL!
                                     </button>
 
                                 </div>
@@ -342,7 +342,8 @@
             low: 0.00000000,
             stoploss: 0,
             takeprofit: 0,
-            csrf: ""
+            csrf: "",
+            errors: []
         }
     },
     computed: {
@@ -372,68 +373,71 @@
     },
     methods: {
         loadinfo(exchange, pair) {
+
             this.loadingprice = true;
-            
-            if (exchange.toLowerCase() == 'bittrex') {
-                let uri = '/api/bittrexapi/getmarketsummary/' + pair;
-                axios(uri, {
-                    method: 'GET',
-                })
-                .then(response => {
-                    this.marketsummary=response.data[0];  
-                    this.last = parseFloat(this.marketsummary.Last);
-                    this.bid = parseFloat(this.marketsummary.Bid);
-                    this.ask = parseFloat(this.marketsummary.Ask);
-                    this.high = parseFloat(this.marketsummary.High);
-                    this.low = parseFloat(this.marketsummary.Low);
-                    this.loadingprice = false;
-                })
-                .catch(e => {
-                    this.errors.push(e);
-                    this.loadingprice = false;
-                    console.log("Error: " + e.message);
-                })
-            }
-            else {
+                   
+            let params = "?coin=" + pair.split("/")[0] + "&base=" + pair.split("/")[1];
+            let uri = '/api/broker/getticker/' + exchange + '/' + pair.split("/")[0] + "/" + pair.split("/")[1];
+            axios.get(uri)
+            .then(response => {
+
+                this.last = parseFloat(response.data.result.ticker.last);
+                this.bid = parseFloat(response.data.result.ticker.bid);
+                this.ask = parseFloat(response.data.result.ticker.ask);
+                this.high = parseFloat(response.data.result.ticker.high);
+                this.low = parseFloat(response.data.result.ticker.low);
                 this.loadingprice = false;
-            }
+
+            })
+            .catch(e => {
+
+                this.errors.push(e);
+                this.loadingprice = false;
+                console.log("Error: " + e.message);
+
+            })
+           
         },
         updateprice(exchange, pair, pricetype) {
             this.loadingprice = true;
-            
-            if (exchange.toLowerCase() == 'bittrex') {
-                let uri = '/api/bittrexapi/getmarketsummary/' + pair;
-                axios(uri, {
-                    method: 'GET',
-                })
-                .then(response => {
-                    this.marketsummary=response.data[0];  
-                    this.last = parseFloat(this.marketsummary.Last);
-                    this.bid = parseFloat(this.marketsummary.Bid);
-                    this.ask = parseFloat(this.marketsummary.Ask);
-                    this.high = parseFloat(this.marketsummary.High);
-                    this.low = parseFloat(this.marketsummary.Low);
 
-                    if (pricetype.toLowerCase() == "last") {
-                        this.closingprice =  parseFloat(this.last);
-                    }
-                    else if (pricetype.toLowerCase() == "bid") {
-                        this.closingprice =  parseFloat(this.bid);
-                    }
-                    else if (pricetype.toLowerCase() == "ask") {
-                        this.closingprice =  parseFloat(this.ask);
-                    }
-                    this.loadingprice = false;
-                })
-                .catch(e => {
-                    this.errors.push(e);
-                    this.loadingprice = false;
-                    console.log("Error: " + e.message);
-                })
-            }
-            else {
+            let params = "?coin=" + pair.split("/")[0] + "&base=" + pair.split("/")[1];
+            let uri = '/api/broker/getticker/' + exchange + '/' + pair.split("/")[0] + "/" + pair.split("/")[1];
+            axios.get(uri)
+            .then(response => {
+
+                this.last = parseFloat(response.data.result.ticker.last);
+                this.bid = parseFloat(response.data.result.ticker.bid);
+                this.ask = parseFloat(response.data.result.ticker.ask);
+                this.high = parseFloat(response.data.result.ticker.high);
+                this.low = parseFloat(response.data.result.ticker.low);
+
+                if (pricetype.toLowerCase() == "last") {
+
+                    this.closingprice =  parseFloat(this.last);
+
+                }
+                else if (pricetype.toLowerCase() == "bid") {
+
+                    this.closingprice =  parseFloat(this.bid);
+
+                }
+                else if (pricetype.toLowerCase() == "ask") {
+
+                    this.closingprice =  parseFloat(this.ask);
+
+                }
                 this.loadingprice = false;
-            }
+
+            })
+            .catch(e => {
+
+                this.errors.push(e);
+                this.loadingprice = false;
+                console.log("Error: " + e.message);
+
+            })
+            
         },
         calculateProfit(price) {
             if (this.closingprice!=0) {

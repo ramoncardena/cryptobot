@@ -23,11 +23,6 @@ Route::middleware('auth:api')->get('broker/getticker/{exchange}/{coin}/{base}', 
 Route::middleware('auth:api')->get('broker/getbalances/{exchange}', 'BrokerController@getBalances');
 Route::middleware('auth:api')->get('broker/getcoininfo/{coin}', 'BrokerController@getCoinInfo');
 
-Route::middleware('auth:api')->get('bittrexapi/getpairs', 'BittrexApiController@getpairs');
-Route::middleware('auth:api')->get('bittrexapi/getmarketsummary/{pair}', 'BittrexApiController@getmarketsummary');
-Route::middleware('auth:api')->get('bittrexapi/getmarkets/{coin}', 'BittrexApiController@getmarkets');
-Route::middleware('auth:api')->get('bittrexapi/getbalance/{coin}', 'BittrexApiController@getbalance');
-
 Route::middleware('auth:api')->get('exchange/{name}/fee', 'ExchangeController@getfee');
 
 Route::middleware('auth:api')->get('/notifications', 'NotificationsController@index');

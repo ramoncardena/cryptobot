@@ -205,32 +205,32 @@
                 
                 <!-- Volume -->
                 <div class="cell small-12 text-center volume">
-                    <div v-model="volumeC"> Vol: <i class="fa fa-btc" aria-hidden="true"></i> {{ volumeC }}</div>
+                    <div v-model="volumeC"> Vol: {{ volumeC }} {{ basecurrency}}</div>
                 </div>
                
                 <!-- 24h High -->
                 <div class="cell small-6 text-center">
-                    <div v-model="highC" class="high-low"> H: <i class="fa fa-btc" aria-hidden="true"></i> {{ highC }}</div>
+                    <div v-model="highC" class="high-low"> H: {{ highC }} {{ basecurrency}}</div>
                 </div>
                 
                 <!-- 24h Low -->
                 <div class="cell small-6 text-center">
-                    <div v-model="lowC" class="high-low"> L: <i class="fa fa-btc" aria-hidden="true"></i> {{ lowC }} </div>
+                    <div v-model="lowC" class="high-low"> L: {{ lowC }} {{ basecurrency}} </div>
                 </div>
                 
                 <!-- Bid -->
                 <div class="cell small-6 text-center bid">
-                    <div v-model="bidC"> BID: <i class="fa fa-btc" aria-hidden="true"></i> {{ bidC }}</div>
+                    <div v-model="bidC"> BID: {{ bidC }} {{ basecurrency}}</div>
                 </div>
                
                 <!-- Ask -->
                 <div class="cell small-6 text-center ask">
-                    <div v-model="askC"> ASK: <i class="fa fa-btc" aria-hidden="true"></i> {{ askC }} </div> 
+                    <div v-model="askC"> ASK: {{ askC }} {{ basecurrency}} </div> 
                 </div>
                
                 <!-- Last -->
                 <div class="cell small-12 text-center last">
-                    <div v-model="lastC"> LAST: <i class="fa fa-btc" aria-hidden="true"></i> {{ lastC }} </div>
+                    <div v-model="lastC"> LAST: {{ lastC }} {{ basecurrency}} </div>
                 </div>
 
             </div>
@@ -271,7 +271,6 @@ export default {
             pairselected: "",
             bittrexpairs: [],
             bittrexcoin: [],
-            marketsummary: [],
             conditionselected: "now",
             conditionprice: 0.00000000,
             conditionalSwitch: false,
@@ -441,7 +440,7 @@ export default {
             return this.slpercent = parseFloat(percent).toFixed(2);
         }),
         updateprice(exchange, pair, pricetype) {
-           
+            
             this.loadingprice = true;
 
             let params = "?coin=" + pair.split("/")[0] + "&base=" + pair.split("/")[1];
@@ -449,7 +448,6 @@ export default {
             axios.get(uri)
             .then(response => {
 
-                this.marketsummary=response.data[0];  
                 this.last = parseFloat(response.data.result.ticker.last);
                 this.bid = parseFloat(response.data.result.ticker.bid);
                 this.ask = parseFloat(response.data.result.ticker.ask);
@@ -497,6 +495,7 @@ export default {
                 this.high =  parseFloat(response.data.result.ticker.high);
                 this.low =  parseFloat(response.data.result.ticker.low);
                 this.volume =  parseFloat(response.data.result.ticker.baseVolume);
+                this.basecurrency = pair.split("/")[1];
 
                 // Set price for current pair to 0
                 this.stopAtTotal = true;
@@ -511,7 +510,6 @@ export default {
 
                 
                 this.loadingpairs = false;
-                console.log("Success: " + this.marketsummary.MarketName);
 
             })
             .catch(e => {
@@ -600,6 +598,7 @@ export default {
                 this.high =  parseFloat(response.data.result.ticker.high);
                 this.low =  parseFloat(response.data.result.ticker.low);
                 this.volume =  parseFloat(response.data.result.ticker.baseVolume);
+                this.basecurrency = pair.split("/")[1];
                 
                 this.loadinginfo = false;
 
