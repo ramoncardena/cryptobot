@@ -19,15 +19,15 @@
             <td :class="'status-' + tradeStatus" v-model="tradeStatus">{{ tradeStatus }}</td>
             <td>{{ exchange }}</td>
             <td>{{ position }}</td>
-            <td>{{ last.toFixed(8) }}</td>
-            <td>{{ parseFloat(price).toFixed(8) }}</td>
-            <td>{{ parseFloat(closingPrice).toFixed(8) }}</td>
+            <td><span class="nowarp">{{ last.toFixed(8) }}{{ baseCurrency }}</span></td>
+            <td>{{ parseFloat(price).toFixed(8) }}{{ baseCurrency }}</td>
+            <td>{{ parseFloat(closingPrice).toFixed(8) }}{{ baseCurrency }}</td>
             <td>{{ parseFloat(amount).toFixed(4) }}</td>
-            <td>{{ parseFloat(total).toFixed(8) }}</td>
-            <td>{{ parseFloat(stopLoss).toFixed(8) }}</td>
-            <td>{{ parseFloat(takeProfit).toFixed(8) }}</td>
+            <td>{{ parseFloat(total).toFixed(8) }}{{ baseCurrency }}</td>
+            <td>{{ parseFloat(stopLoss).toFixed(8) }}{{ baseCurrency }}</td>
+            <td>{{ parseFloat(takeProfit).toFixed(8) }}{{ baseCurrency }}</td>
             <td>{{ (condition == 'now') ? 'none' : condition + ' than' }} </td>
-            <td> {{ parseFloat(conditionPrice).toFixed(8) }}</td>
+            <td> {{ parseFloat(conditionPrice).toFixed(8) }}{{ baseCurrency }}</td>
             <td> {{ date }}</td>
         </tr>
         
@@ -41,7 +41,8 @@
             updating: false,
             profit: 0,
             last: 0,
-            tradeStatus: ""
+            tradeStatus: "",
+            baseCurrency: ""
         }
     },
     props: [
@@ -89,6 +90,9 @@
     },
     mounted() {
         this.tradeStatus = this.status;
+
+        this.baseCurrency = this.pair.split('/')[1];
+
         this.update(this.exchange, this.pair, this.price); 
 
         Echo.private('trades.' + this.id)

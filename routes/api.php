@@ -23,7 +23,7 @@ Route::middleware('auth:api')->get('broker/getticker/{exchange}/{coin}/{base}', 
 Route::middleware('auth:api')->get('broker/getbalances/{exchange}', 'BrokerController@getBalances');
 Route::middleware('auth:api')->get('broker/getcoininfo/{coin}', 'BrokerController@getCoinInfo');
 
-Route::middleware('auth:api')->get('exchange/{name}/fee', 'ExchangeController@getfee');
+// Route::middleware('auth:api')->get('exchange/{name}/fee', 'ExchangeController@getfee');
 
 Route::middleware('auth:api')->get('/notifications', 'NotificationsController@index');
 Route::middleware('auth:api')->get('/notifications/{id}', 'NotificationsController@show');

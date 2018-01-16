@@ -113627,7 +113627,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             updating: false,
             profit: 0,
             last: 0,
-            tradeStatus: ""
+            tradeStatus: "",
+            baseCurrency: ""
         };
     },
     props: ['status', 'exchange', 'position', 'pair', 'price', 'amount', 'total', 'stop-loss', 'take-profit', 'condition', 'condition-price', "final-profit", "type", "closing-price", "timestamp", "id"],
@@ -113658,6 +113659,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         var _this = this;
 
         this.tradeStatus = this.status;
+
+        this.baseCurrency = this.pair.split('/')[1];
+
         this.update(this.exchange, this.pair, this.price);
 
         Echo.private('trades.' + this.id).listen('TradeOpened', function (e) {
@@ -113846,19 +113850,44 @@ var render = function() {
     _vm._v(" "),
     _c("td", [_vm._v(_vm._s(_vm.position))]),
     _vm._v(" "),
-    _c("td", [_vm._v(_vm._s(_vm.last.toFixed(8)))]),
+    _c("td", [
+      _c("span", { staticClass: "nowarp" }, [
+        _vm._v(_vm._s(_vm.last.toFixed(8)) + _vm._s(_vm.baseCurrency))
+      ])
+    ]),
     _vm._v(" "),
-    _c("td", [_vm._v(_vm._s(parseFloat(_vm.price).toFixed(8)))]),
+    _c("td", [
+      _vm._v(
+        _vm._s(parseFloat(_vm.price).toFixed(8)) + _vm._s(_vm.baseCurrency)
+      )
+    ]),
     _vm._v(" "),
-    _c("td", [_vm._v(_vm._s(parseFloat(_vm.closingPrice).toFixed(8)))]),
+    _c("td", [
+      _vm._v(
+        _vm._s(parseFloat(_vm.closingPrice).toFixed(8)) +
+          _vm._s(_vm.baseCurrency)
+      )
+    ]),
     _vm._v(" "),
     _c("td", [_vm._v(_vm._s(parseFloat(_vm.amount).toFixed(4)))]),
     _vm._v(" "),
-    _c("td", [_vm._v(_vm._s(parseFloat(_vm.total).toFixed(8)))]),
+    _c("td", [
+      _vm._v(
+        _vm._s(parseFloat(_vm.total).toFixed(8)) + _vm._s(_vm.baseCurrency)
+      )
+    ]),
     _vm._v(" "),
-    _c("td", [_vm._v(_vm._s(parseFloat(_vm.stopLoss).toFixed(8)))]),
+    _c("td", [
+      _vm._v(
+        _vm._s(parseFloat(_vm.stopLoss).toFixed(8)) + _vm._s(_vm.baseCurrency)
+      )
+    ]),
     _vm._v(" "),
-    _c("td", [_vm._v(_vm._s(parseFloat(_vm.takeProfit).toFixed(8)))]),
+    _c("td", [
+      _vm._v(
+        _vm._s(parseFloat(_vm.takeProfit).toFixed(8)) + _vm._s(_vm.baseCurrency)
+      )
+    ]),
     _vm._v(" "),
     _c("td", [
       _vm._v(
@@ -113866,7 +113895,13 @@ var render = function() {
       )
     ]),
     _vm._v(" "),
-    _c("td", [_vm._v(" " + _vm._s(parseFloat(_vm.conditionPrice).toFixed(8)))]),
+    _c("td", [
+      _vm._v(
+        " " +
+          _vm._s(parseFloat(_vm.conditionPrice).toFixed(8)) +
+          _vm._s(_vm.baseCurrency)
+      )
+    ]),
     _vm._v(" "),
     _c("td", [_vm._v(" " + _vm._s(_vm.date))])
   ])
