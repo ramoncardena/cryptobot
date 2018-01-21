@@ -61,22 +61,28 @@ class PortfolioController extends Controller
         // Get user's portfolio
         $this->portfolio = Portfolio::where('user_id', $this->user->id)->first();
 
-        // Set update id in portfolio
-        $this->portfolio->update_id = uniqid();
-        $this->portfolio->save();
+        if ($this->portfolio) {
 
-        // Get portfolio origins
-        $this->origins = $this->portfolio->origins; 
+            // Set update id in portfolio
+            $this->portfolio->update_id = uniqid();
+            $this->portfolio->save();
 
-        // DATA FOR MODALS (New Asset and New Origin)
-        // Coin list
-        $guru = new CoinGuru;
-        $coins = array_divide((array)$guru->cryptocompareCoingetList()->Data)[0];
+            // Get portfolio origins
+            $this->origins = $this->portfolio->origins; 
 
-        // Set origin types for new Portfolio Origins
-        $originTypes = ['Online Wallet', 'Mobile Wallet', 'Desktop Wallet', 'Hardware Wallet', 'Paper Wallet'];
+            // DATA FOR MODALS (New Asset and New Origin)
+            // Coin list
+            $guru = new CoinGuru;
+            $coins = array_divide((array)$guru->cryptocompareCoingetList()->Data)[0];
 
-        return view('portfolio', ['originTypes' => json_encode($originTypes), 'exchanges' => json_encode($this->exchanges), 'portfolio' => $this->portfolio, 'origins' => $this->origins, 'coins' => json_encode($coins)]);
+            // Set origin types for new Portfolio Origins
+            $originTypes = ['Online Wallet', 'Mobile Wallet', 'Desktop Wallet', 'Hardware Wallet', 'Paper Wallet'];
+
+            return view('portfolio', ['originTypes' => json_encode($originTypes), 'exchanges' => json_encode($this->exchanges), 'portfolio' => $this->portfolio, 'origins' => $this->origins, 'coins' => json_encode($coins)]);
+        }
+        else {
+            return redirect('/settings');
+        }
     }
     
     public function refresh() {
