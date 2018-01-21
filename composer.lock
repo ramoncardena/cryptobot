@@ -65,16 +65,16 @@
         },
         {
             "name": "ccxt/ccxt",
-            "version": "1.10.713",
+            "version": "1.10.792",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ccxt/ccxt.git",
-                "reference": "29421793e9746602f8ec09cba34bf9a830fbcf62"
+                "reference": "51aed0c31f6ac76e2787d4eb4c70917fce50c3fd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ccxt/ccxt/zipball/29421793e9746602f8ec09cba34bf9a830fbcf62",
-                "reference": "29421793e9746602f8ec09cba34bf9a830fbcf62",
+                "url": "https://api.github.com/repos/ccxt/ccxt/zipball/51aed0c31f6ac76e2787d4eb4c70917fce50c3fd",
+                "reference": "51aed0c31f6ac76e2787d4eb4c70917fce50c3fd",
                 "shasum": ""
             },
             "require": {
@@ -311,7 +311,7 @@
                 "zec",
                 "zerocoin"
             ],
-            "time": "2018-01-14T21:16:55+00:00"
+            "time": "2018-01-21T00:44:38+00:00"
         },
         {
             "name": "defuse/php-encryption",
@@ -1096,16 +1096,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v5.5.28",
+            "version": "v5.5.32",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "cfafae1f2043208390a7c984e3070696f4969605"
+                "reference": "254e4c3e133f5bc8d6068cdf28ea062abc10adf2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/cfafae1f2043208390a7c984e3070696f4969605",
-                "reference": "cfafae1f2043208390a7c984e3070696f4969605",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/254e4c3e133f5bc8d6068cdf28ea062abc10adf2",
+                "reference": "254e4c3e133f5bc8d6068cdf28ea062abc10adf2",
                 "shasum": ""
             },
             "require": {
@@ -1226,20 +1226,20 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2017-12-26T16:24:40+00:00"
+            "time": "2018-01-18T13:27:23+00:00"
         },
         {
             "name": "laravel/horizon",
-            "version": "v1.0.9",
+            "version": "v1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/horizon.git",
-                "reference": "0979469b0b8290dc7e01c0207aad7f49c805ee70"
+                "reference": "b8685baf4720565bd79fdf9ba187cd973b6df9c2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/horizon/zipball/0979469b0b8290dc7e01c0207aad7f49c805ee70",
-                "reference": "0979469b0b8290dc7e01c0207aad7f49c805ee70",
+                "url": "https://api.github.com/repos/laravel/horizon/zipball/b8685baf4720565bd79fdf9ba187cd973b6df9c2",
+                "reference": "b8685baf4720565bd79fdf9ba187cd973b6df9c2",
                 "shasum": ""
             },
             "require": {
@@ -1294,7 +1294,7 @@
                 "laravel",
                 "queue"
             ],
-            "time": "2018-01-03T18:00:20+00:00"
+            "time": "2018-01-17T14:33:51+00:00"
         },
         {
             "name": "laravel/passport",
@@ -2462,16 +2462,16 @@
         },
         {
             "name": "ramsey/uuid",
-            "version": "3.7.2",
+            "version": "3.7.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ramsey/uuid.git",
-                "reference": "bba83ad77bb9deb6d3c352a7361b818e415b221d"
+                "reference": "44abcdad877d9a46685a3a4d221e3b2c4b87cb76"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ramsey/uuid/zipball/bba83ad77bb9deb6d3c352a7361b818e415b221d",
-                "reference": "bba83ad77bb9deb6d3c352a7361b818e415b221d",
+                "url": "https://api.github.com/repos/ramsey/uuid/zipball/44abcdad877d9a46685a3a4d221e3b2c4b87cb76",
+                "reference": "44abcdad877d9a46685a3a4d221e3b2c4b87cb76",
                 "shasum": ""
             },
             "require": {
@@ -2482,17 +2482,15 @@
                 "rhumsaa/uuid": "self.version"
             },
             "require-dev": {
-                "apigen/apigen": "^4.1",
                 "codeception/aspect-mock": "^1.0 | ~2.0.0",
                 "doctrine/annotations": "~1.2.0",
                 "goaop/framework": "1.0.0-alpha.2 | ^1.0 | ^2.1",
                 "ircmaxell/random-lib": "^1.1",
                 "jakub-onderka/php-parallel-lint": "^0.9.0",
-                "mockery/mockery": "^0.9.4",
+                "mockery/mockery": "^0.9.9",
                 "moontoast/math": "^1.1",
                 "php-mock/php-mock-phpunit": "^0.3|^1.1",
                 "phpunit/phpunit": "^4.7|^5.0",
-                "satooshi/php-coveralls": "^0.6.1",
                 "squizlabs/php_codesniffer": "^2.3"
             },
             "suggest": {
@@ -2540,7 +2538,7 @@
                 "identifier",
                 "uuid"
             ],
-            "time": "2018-01-13T22:22:03+00:00"
+            "time": "2018-01-20T00:28:24+00:00"
         },
         {
             "name": "ratchet/pawl",

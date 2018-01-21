@@ -13,81 +13,43 @@ class Settings
 	public function get($key)
 	{
 
-		$value = array_get($this->settings, $key);
+		return array_get($this->settings, $key);
 
-		if ( $key == 'bittrex_key' || $key == 'bittrex_secret') {
-			if ( $value == "" ) {
-            		return array_get($this->settings, $key);
-            	}
-            	else {
-                	return decrypt(array_get($this->settings, $key));
-                }
-		}
-		elseif ( $key == 'bitstamp_key' || $key == 'bitstamp_secret') {
-
-			if ( $value == "") {
-            		return array_get($this->settings, $key);
-            	}
-            	else {
-                	return decrypt(array_get($this->settings, $key));
-                }
-		}
-		else {
-			return array_get($this->settings, $key);
-		}
 	}
 
 	public function set($key, $value)
 	{
-		if ($key == 'bittrex_key' || $key == 'bittrex_secret') {
-
-			if ( $value == "" ) {
-				$this->settings[$key] = $value;
-			}
-			else {
-				$this->settings[$key] = encrypt($value);
-			}
-		}
-		elseif ($key == 'bitstamp_key' || $key == 'bitstamp_secret') {
-			if ( $value == "" ) {
-				$this->settings[$key] = $value;
-			}
-			else {
-				$this->settings[$key] = encrypt($value);
-			}
-		}
-		else {
-			$this->settings[$key] = $value;
-		}
-
-		$this->persist();
-
-	}
-
-	public function addExchange($exchange) {
-
-		$exchanges = $this->get('exchanges');
-		$exchanges ? $exchanges = array_add($exchanges, $exchange, 'active') : $exchanges=[$exchange => 'active'];
 		
-		$this->settings['exchanges'] = $exchanges;
+		$this->settings[$key] = $value;
 
 		$this->persist();
 
 	}
 
-	public function removeExchange($exchange) {
+	// public function addExchange($exchange) {
 
-		$exchanges = $this->get('exchanges');
-
-		if ($exchanges) {
-			array_pull($exchanges, $exchange);
-		}
-
-		$this->settings['exchanges'] = $exchanges;
-
-		$this->persist();
+	// 	$exchanges = $this->get('exchanges');
+	// 	$exchanges ? $exchanges = array_add($exchanges, $exchange, 'active') : $exchanges=[$exchange => 'active'];
 		
-	}
+	// 	$this->settings['exchanges'] = $exchanges;
+
+	// 	$this->persist();
+
+	// }
+
+	// public function removeExchange($exchange) {
+
+	// 	$exchanges = $this->get('exchanges');
+
+	// 	if ($exchanges) {
+	// 		array_pull($exchanges, $exchange);
+	// 	}
+
+	// 	$this->settings['exchanges'] = $exchanges;
+
+	// 	$this->persist();
+		
+	// }
 
 	public function has($key) 
 	{

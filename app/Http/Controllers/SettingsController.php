@@ -34,16 +34,16 @@ class SettingsController extends Controller
         $settings = settings();
 
         // Decrypt exchange keys
-        $bittrex['bittrex_key'] = $settings->get('bittrex_key');
-        $bittrex['bittrex_secret'] = $settings->get('bittrex_secret');    
-        $bittrex['bittrex_fee'] = $settings->get('bittrex_fee');      
+        // $bittrex['bittrex_key'] = $settings->get('bittrex_key');
+        // $bittrex['bittrex_secret'] = $settings->get('bittrex_secret');    
+        // $bittrex['bittrex_fee'] = $settings->get('bittrex_fee');      
 
-        $bitstamp['bitstamp_key'] = $settings->get('bitstamp_key');
-        $bitstamp['bitstamp_secret'] = $settings->get('bitstamp_secret');    
-        $bitstamp['bitstamp_fee'] = $settings->get('bitstamp_fee');   
+        // $bitstamp['bitstamp_key'] = $settings->get('bitstamp_key');
+        // $bitstamp['bitstamp_secret'] = $settings->get('bitstamp_secret');    
+        // $bitstamp['bitstamp_fee'] = $settings->get('bitstamp_fee');   
 
         // Get exchange lists
-        $exchanges_active  = $settings->get('exchanges');                                                   
+        // $exchanges_active  = $settings->get('exchanges');                                                   
 
         // Get portfolio
         $portfolio = Portfolio::where('user_id', Auth::user()->id)->first();
@@ -54,7 +54,7 @@ class SettingsController extends Controller
         // CCTX Exchange list
         $cctx_exchanges = \ccxt\Exchange::$exchanges;
 
-        return view('settings', ['settings' => $settings->all(), 'bittrex' => $bittrex, 'bitstamp' => $bitstamp, 'exchanges_active' => $exchanges_active, 'portfolio' => $portfolio, 'cctx_exchanges' => $cctx_exchanges, 'connections' => $connections]);
+        return view('settings', ['settings' => $settings->all(), 'portfolio' => $portfolio, 'cctx_exchanges' => $cctx_exchanges, 'connections' => $connections]);
     }
 
     /**
@@ -79,74 +79,74 @@ class SettingsController extends Controller
 
         $settings->set('exchanges', null);
 
-        $bitstampSwitch=false;
-        $bittrexSwitch=false;
+        // $bitstampSwitch=false;
+        // $bittrexSwitch=false;
 
-        $newExchange = null;
-        $newExchangeApi = null;
-        $newExchangeSecret = null;
-        $newExchangeFee = null;
+        // $newExchange = null;
+        // $newExchangeApi = null;
+        // $newExchangeSecret = null;
+        // $newExchangeFee = null;
 
         $user = Auth::user();
 
         foreach ($request->all() as $key => $value) 
         {
             switch ($key) {
-                case 'new_exchange':
-                    $newExchange = $value;
-                    break;
+                // case 'new_exchange':
+                //     $newExchange = $value;
+                //     break;
 
-                case 'new_exchange_api_key':
-                    $newExchangeApi = $value;
-                    break;
+                // case 'new_exchange_api_key':
+                //     $newExchangeApi = $value;
+                //     break;
 
-                case 'new_exchange_api_secret':
-                    $newExchangeSecret = $value;
-                    break;
+                // case 'new_exchange_api_secret':
+                //     $newExchangeSecret = $value;
+                //     break;
 
-                case 'new_exchange_fee':
-                    $newExchangeFee = $value;
-                    break;
+                // case 'new_exchange_fee':
+                //     $newExchangeFee = $value;
+                //     break;
 
-                case 'bittrex_switch':
-                    $settings->addExchange('bittrex');
+                // case 'bittrex_switch':
+                //     $settings->addExchange('bittrex');
 
-                    $origins =  $user->origins;
+                //     $origins =  $user->origins;
 
-                    if ($origins->firstWhere('name', 'Bittrex') == null) {
-                        $portfolio = Portfolio::where('user_id', $user->id)->first();
-                        $origin = new PortfolioOrigin;
-                        $origin->portfolio_id = $portfolio->id;
-                        $origin->user_id = $user->id;
-                        $origin->type ='Exchange';
-                        $origin->name = 'Bittrex';
-                        $origin->address = "-";
-                        $origin->save();
-                    }
+                //     if ($origins->firstWhere('name', 'Bittrex') == null) {
+                //         $portfolio = Portfolio::where('user_id', $user->id)->first();
+                //         $origin = new PortfolioOrigin;
+                //         $origin->portfolio_id = $portfolio->id;
+                //         $origin->user_id = $user->id;
+                //         $origin->type ='Exchange';
+                //         $origin->name = 'Bittrex';
+                //         $origin->address = "-";
+                //         $origin->save();
+                //     }
 
-                    $bittrexSwitch = true;
+                //     $bittrexSwitch = true;
 
-                    break;
+                //     break;
 
-                case 'bitstamp_switch':
-                    $settings->addExchange('bitstamp');
+                // case 'bitstamp_switch':
+                //     $settings->addExchange('bitstamp');
 
-                    $origins =  $user->origins;
+                //     $origins =  $user->origins;
 
-                    if ($origins->firstWhere('name', 'Bitstamp') == null) {
-                        $portfolio = Portfolio::where('user_id', $user->id)->first();
-                        $origin = new PortfolioOrigin;
-                        $origin->portfolio_id = $portfolio->id;
-                        $origin->user_id = $user->id;
-                        $origin->type ='Exchange';
-                        $origin->name = 'Bitstamp';
-                        $origin->address = "-";
-                        $origin->save();
-                    }   
+                //     if ($origins->firstWhere('name', 'Bitstamp') == null) {
+                //         $portfolio = Portfolio::where('user_id', $user->id)->first();
+                //         $origin = new PortfolioOrigin;
+                //         $origin->portfolio_id = $portfolio->id;
+                //         $origin->user_id = $user->id;
+                //         $origin->type ='Exchange';
+                //         $origin->name = 'Bitstamp';
+                //         $origin->address = "-";
+                //         $origin->save();
+                //     }   
 
-                    $bitstampSwitch = true;
+                //     $bitstampSwitch = true;
 
-                    break;
+                //     break;
 
                 case 'initialize_portfolio':
                     $portfolio = new Portfolio;
@@ -183,38 +183,38 @@ class SettingsController extends Controller
             }
         }
 
-        if ($newExchange && $newExchangeApi && $newExchangeSecret) {
-            $connection = new Connection;
-            $connection->user_id = Auth::user()->id;
-            $connection->exchange = $newExchange;
-            $connection->api = $newExchangeApi;
-            $connection->secret = $newExchangeSecret;
-            $newExchangeFee ? $connection->fee = $newExchangeFee : $connection->fee = 0;
-            $connection->active = true;
-            $connection->save();
-        }
+        // if ($newExchange && $newExchangeApi && $newExchangeSecret) {
+        //     $connection = new Connection;
+        //     $connection->user_id = Auth::user()->id;
+        //     $connection->exchange = $newExchange;
+        //     $connection->api = $newExchangeApi;
+        //     $connection->secret = $newExchangeSecret;
+        //     $newExchangeFee ? $connection->fee = $newExchangeFee : $connection->fee = 0;
+        //     $connection->active = true;
+        //     $connection->save();
+        // }
 
 
-        if ($bittrexSwitch == false) {
-            if ($user->origins->firstWhere('name', 'Bittrex')) {
-                // BORRAR ASSETS ASOCIADOS
-                $assets = $user->assets->where('origin_name', 'Bittrex');
-                foreach ($assets as $asset) {
-                    $asset->delete();  
-                }
-                $user->origins->firstWhere('name', 'Bittrex')->delete();
-            }
-        }
-        if ($bitstampSwitch == false) {
-            if ($user->origins->firstWhere('name', 'Bitstamp')) {
-                // BORRAR ASSETS ASOCIADOS
-                $assets = $user->assets->where('origin_name', 'Bitstamp');
-                foreach ($assets as $asset) {
-                    $asset->delete();  
-                }
-                $user->origins->firstWhere('name', 'Bitstamp')->delete();
-            }
-        }
+        // if ($bittrexSwitch == false) {
+        //     if ($user->origins->firstWhere('name', 'Bittrex')) {
+        //         // BORRAR ASSETS ASOCIADOS
+        //         $assets = $user->assets->where('origin_name', 'Bittrex');
+        //         foreach ($assets as $asset) {
+        //             $asset->delete();  
+        //         }
+        //         $user->origins->firstWhere('name', 'Bittrex')->delete();
+        //     }
+        // }
+        // if ($bitstampSwitch == false) {
+        //     if ($user->origins->firstWhere('name', 'Bitstamp')) {
+        //         // BORRAR ASSETS ASOCIADOS
+        //         $assets = $user->assets->where('origin_name', 'Bitstamp');
+        //         foreach ($assets as $asset) {
+        //             $asset->delete();  
+        //         }
+        //         $user->origins->firstWhere('name', 'Bitstamp')->delete();
+        //     }
+        // }
 
         return redirect('/settings');
     }
