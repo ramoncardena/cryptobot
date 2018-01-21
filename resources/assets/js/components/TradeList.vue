@@ -8,21 +8,21 @@
 
                     <th></th>
                     <th v-if="history==false" class="sorting" tabindex="0" rowspan="1" colspan="1"></th>
-                    <th class="sorting" tabindex="0" rowspan="1" colspan="1">P/L (%)</th>
-                    <th class="sorting" tabindex="0" rowspan="1" colspan="1">Pair</th>
-                    <th class="sorting_asc" tabindex="0" rowspan="1" colspan="1" >Status</th>
-                    <th class="sorting" tabindex="0" rowspan="1" colspan="1">Exchange</th>
-                    <th class="sorting" tabindex="0" rowspan="1" colspan="1">Position</th>
-                    <th class="sorting" tabindex="0" rowspan="1" colspan="1">Last Price</th>
-                    <th class="sorting" tabindex="0" rowspan="1" colspan="1">Open Price</th>
-                    <th class="sorting" tabindex="0" rowspan="1" colspan="1">Close Price</th>
-                    <th class="sorting" tabindex="0" rowspan="1" colspan="1">Amount</th>
-                    <th class="sorting" tabindex="0" rowspan="1" colspan="1">Total</th>
-                    <th class="sorting" tabindex="0" rowspan="1" colspan="1">Stop-Loss</th>
-                    <th class="sorting" tabindex="0" rowspan="1" colspan="1">Take-Profit</th>
-                    <th class="sorting" tabindex="0" rowspan="1" colspan="1">Condition</th>
-                    <th class="sorting" tabindex="0" rowspan="1" colspan="1">Cond. Price</th>
-                    <th class="sorting" tabindex="0" rowspan="1" colspan="1">Date</th>
+                    <th class="sorting nowrap" tabindex="0" rowspan="1" colspan="1">P/L (%)</th>
+                    <th class="sorting nowrap" tabindex="0" rowspan="1" colspan="1">Pair</th>
+                    <th class="sorting_asc nowrap" tabindex="0" rowspan="1" colspan="1" >Status</th>
+                    <th class="sorting nowrap" tabindex="0" rowspan="1" colspan="1">Exchange</th>
+                    <th class="sorting nowrap" tabindex="0" rowspan="1" colspan="1">Position</th>
+                    <th class="sorting nowrap" tabindex="0" rowspan="1" colspan="1">Last Price</th>
+                    <th class="sorting nowrap" tabindex="0" rowspan="1" colspan="1">Open Price</th>
+                    <th class="sorting nowrap" tabindex="0" rowspan="1" colspan="1">Close Price</th>
+                    <th class="sorting nowrap" tabindex="0" rowspan="1" colspan="1">Amount</th>
+                    <th class="sorting nowrap" tabindex="0" rowspan="1" colspan="1">Total</th>
+                    <th class="sorting nowrap" tabindex="0" rowspan="1" colspan="1">Stop-Loss</th>
+                    <th class="sorting nowrap" tabindex="0" rowspan="1" colspan="1">Take-Profit</th>
+                    <th class="sorting nowrap" tabindex="0" rowspan="1" colspan="1">Condition</th>
+                    <th class="sorting nowrap" tabindex="0" rowspan="1" colspan="1">Cond. Price</th>
+                    <th class="sorting nowrap" tabindex="0" rowspan="1" colspan="1">Date</th>
 
                 </tr>
             </thead>

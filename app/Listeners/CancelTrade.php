@@ -54,10 +54,10 @@ class CancelTrade
             // Log INFO: Event cancelled
             Log::info("Trade #" . $trade->id . ": Cancelled.");
             
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
 
             // Log CRITICAL: Exception
-            Log::critical("[CancelTrade] Exception: " . $e->getMessage());
+            Log::critical("[User " . $trade->user_id . "] CancelTrade Exception: " . $e->getMessage());
 
         }
 

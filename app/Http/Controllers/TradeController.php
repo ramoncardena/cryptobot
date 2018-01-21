@@ -552,7 +552,7 @@ class TradeController extends Controller
                     // Check for order type
                     if ($this->trade->position == "long") {
        
-                        // Call to exchange API or a fakeOrder based on ENV->ORDERS_TEST
+                        // Call to exchange or a fakeOrder based on ENV->ORDERS_TEST
                         if ( env('ORDERS_TEST', true) == true ) {
 
                             // TESTING SUCCESS
@@ -568,7 +568,7 @@ class TradeController extends Controller
                             $broker = new Broker;
                             $broker->setUser($user);
                             $broker->setExchange($this->trade->exchange);
-                            $remoteOrder = $broker->sellLimit($this->trade->pair, $this->trade->amount, $request->closingprice);
+                            $remoteOrder = $broker->sellLimit2($this->trade->pair, $this->trade->amount, $request->closingprice);
                             
                         }
                         
@@ -579,7 +579,7 @@ class TradeController extends Controller
                             $order = new Order;
                             $order->user_id = $this->trade->user_id;
                             $order->trade_id = $this->trade->id;
-                            $order->exchange = 'bittrex';
+                            $order->exchange = $this->trade->exchange;
                             $order->order_id = $remoteOrder->result->uuid;
                             $order->type = 'close';
                             $order->cancel = false;
@@ -601,8 +601,8 @@ class TradeController extends Controller
                         }
                         else {
 
-                            // Log ERROR: Bittrex API returned error
-                            Log::error("[TradeController] Bittrex API: " . $remoteOrder->message);
+                            // Log ERROR: Broker returned error
+                            Log::error("[TradeController] Broker: " . $remoteOrder->message);
 
                             // SESSION FLASH: New Trade Fails
                             $request->session()->flash('status-text', 'Error launching cancel order for trade on pair ' . $this->trade->pair . ': ' . $remoteOrder->message);
@@ -647,7 +647,7 @@ class TradeController extends Controller
             // Get the current user
             $user = User::find(Auth::id());
 
-            // Call to exchange API or a fakeOrder based on ENV->ORDERS_TEST
+            // Call to exchange or a fakeOrder based on ENV->ORDERS_TEST
             if ( env('ORDERS_TEST', true) == true ) {
 
                 // TESTING SUCCESS
@@ -663,7 +663,7 @@ class TradeController extends Controller
                 $broker = new Broker;
                 $broker->setExchange($trade->exchange);
                 $broker->setUser($user);
-                $order = $broker->buyLimit($trade->pair, $trade->amount, $trade->price);
+                $order = $broker->buyLimit2($trade->pair, $trade->amount, $trade->price);
                 
             }
            

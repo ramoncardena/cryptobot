@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'CryptoBot') }}</title>
+    <title>{{ config('app.name', 'CryptoBot') }} [Beta]</title>
 
     <!-- Styles -->
     <link href="node_modules/open-iconic/font/css/open-iconic-foundation.css" rel="stylesheet">

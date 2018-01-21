@@ -72,7 +72,7 @@ class PortfolioAssetController extends Controller
 
 	        return redirect('/portfolio');
     	
-    	} catch (Exception $e) {
+    	} catch (\Exception $e) {
     
     		return response($e->getMessage(), 500)->header('Content-Type', 'text/plain');
     		
@@ -98,7 +98,7 @@ class PortfolioAssetController extends Controller
                 return response("No asset found", 500);
             }
 
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
 
             return response($e->getMessage(), 500)->header('Content-Type', 'text/plain');
 
@@ -125,7 +125,7 @@ class PortfolioAssetController extends Controller
                 return response("No assets found", 500);
             }
 
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
 
             return response($e->getMessage(), 500)->header('Content-Type', 'text/plain');
 
@@ -154,7 +154,7 @@ class PortfolioAssetController extends Controller
             return redirect('/portfolio');
 
 
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
 
             return response($e->getMessage(), 500)->header('Content-Type', 'text/plain');
 
@@ -200,7 +200,7 @@ class PortfolioAssetController extends Controller
             return redirect('/portfolio');
 
 
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
 
             return response($e->getMessage(), 500)->header('Content-Type', 'text/plain');
 

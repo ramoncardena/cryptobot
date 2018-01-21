@@ -56,7 +56,7 @@ class UpdateAssetData implements ShouldQueue
                 event(new PortfolioAssetUpdated($asset));
             }
 
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
 
             // Log CRITICAL: Exception
             Log::critical("[UpdateAssetData] Exception: " . $e->getMessage());

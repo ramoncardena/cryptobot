@@ -56,7 +56,7 @@ class KeepTrackingOrder implements ShouldQueue
 
             if ($order->cancel) {
 
-                // Call to exchange API or a fakeOrder based on ENV->ORDERS_TEST
+                // Call to Broker or a fakeOrder based on ENV->ORDERS_TEST
                 if ( env('ORDERS_TEST', true) == true ) {
 
                     // TESTING SUCCESS
@@ -72,7 +72,7 @@ class KeepTrackingOrder implements ShouldQueue
                     $broker = new Broker;
                     $broker->setUser($user);
                     $broker->setExchange($event->order->exchange);
-                    $remoteOrder = $broker->cancelOrder($event->order->order_id);
+                    $remoteOrder = $broker->cancelOrder2($event->order->order_id);
                     
                 }
                 
@@ -92,15 +92,15 @@ class KeepTrackingOrder implements ShouldQueue
                 }
                 else {
 
-                    // Log ERROR: Bittrex API returned error
-                    Log::error("[KeepTrackingOrder] Bittrex API: " . $remoteOrder->message);
+                    // Log ERROR: Broker returned error
+                    Log::error("[KeepTrackingOrder] Broker: " . $remoteOrder->message);
 
                 }
 
             }
             else {
 
-                // Call to exchange API or a fakeOrder based on ENV->ORDERS_TEST
+                // Call to exchange or a fakeOrder based on ENV->ORDERS_TEST
                 if (env('ORDERS_TEST', true) == true) {
 
                     if( rand() % 2 == 0) {
@@ -123,15 +123,15 @@ class KeepTrackingOrder implements ShouldQueue
                     $broker = new Broker;
                     $broker->setUser($user);
                     $broker->setExchange($event->order->exchange);
-                    $onlineOrder = $broker->getOrder($event->order->order_id);
+                    $onlineOrder = $broker->getOrder2($event->order->order_id);
                     
                 }
 
-                // Check for success on API call
+                // Check for success on call
                 if (! $onlineOrder->success) {
 
-                    // Log ERROR: Bittrex API returned error
-                    Log::error("[KeepTrackingOrder] Bittrex API: " . $onlineOrder->message);
+                    // Log ERROR: Broker returned error
+                    Log::error("[User " . $user->id . "] KeepTrackingOrder Broker: " . $onlineOrder->message);
 
                     // Add delay before requeueing
                     sleep(env('FAILED_ORDER_DELAY', 5));
@@ -173,10 +173,10 @@ class KeepTrackingOrder implements ShouldQueue
                 }    
             }  
 
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
 
             // Log CRITICAL: Exception
-            Log::critical("[KeepTrackingOrder] Exception: " . $e->getMessage());
+            Log::critical("[User " . $user->id . "] KeepTrackingOrder Exception: " . $e->getMessage());
 
             // Add delay before requeueing
             sleep(env('FAILED_ORDER_DELAY', 5));

@@ -64,13 +64,13 @@ class KeepTrackingTakeProfit implements ShouldQueue
                 // TICKER
                 $broker = new Broker;
                 $broker->setExchange($profit->exchange);
-                $ticker = $broker->getTicker($profit->pair);
+                $ticker = $broker->getTicker2($profit->pair);
 
                 // Check for success on API call
                 if (! $ticker->success) {
 
-                    // Log ERROR: Bittrex API returned error
-                    Log::error("[KeepTrakingTakeProfit] Bittrex API: " . $ticker->message);
+                    // Log ERROR: Broker returned error
+                    Log::error("[KeepTrakingTakeProfit] Broker: " . $ticker->message);
 
                     // Add delay before requeueing
                     sleep(env('FAILED_TAKEPROFIT_DELAY', 5));
@@ -106,7 +106,7 @@ class KeepTrackingTakeProfit implements ShouldQueue
 
             }
             
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
 
             // Log CRITICAL: Exception
             Log::critical("KeepTrakingTakeProfit Exception: " . $e->getMessage());

@@ -51,7 +51,7 @@ class EmailTradeOpened
             // Log INFO: Event cancelled
              Log::info("Trade Opened EVENT!!");
             
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
 
             // Log CRITICAL: Exception
             Log::critical("[EmailTradeOpened] Exception: " . $e->getMessage());

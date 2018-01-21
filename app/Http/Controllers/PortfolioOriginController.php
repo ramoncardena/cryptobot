@@ -52,7 +52,7 @@ class PortfolioOriginController extends Controller
 
 	        return redirect('/portfolio');
     	
-    	} catch (Exception $e) {
+    	} catch (\Exception $e) {
 
     		return response($e->getMessage(), 500)->header('Content-Type', 'text/plain');
     		

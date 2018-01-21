@@ -113857,36 +113857,47 @@ var render = function() {
     ]),
     _vm._v(" "),
     _c("td", [
-      _vm._v(
-        _vm._s(parseFloat(_vm.price).toFixed(8)) + _vm._s(_vm.baseCurrency)
-      )
+      _c("span", { staticClass: "nowarp" }, [
+        _vm._v(
+          _vm._s(parseFloat(_vm.price).toFixed(8)) + _vm._s(_vm.baseCurrency)
+        )
+      ])
     ]),
     _vm._v(" "),
     _c("td", [
-      _vm._v(
-        _vm._s(parseFloat(_vm.closingPrice).toFixed(8)) +
-          _vm._s(_vm.baseCurrency)
-      )
+      _c("span", { staticClass: "nowarp" }, [
+        _vm._v(
+          _vm._s(parseFloat(_vm.closingPrice).toFixed(8)) +
+            _vm._s(_vm.baseCurrency)
+        )
+      ])
     ]),
     _vm._v(" "),
     _c("td", [_vm._v(_vm._s(parseFloat(_vm.amount).toFixed(4)))]),
     _vm._v(" "),
     _c("td", [
-      _vm._v(
-        _vm._s(parseFloat(_vm.total).toFixed(8)) + _vm._s(_vm.baseCurrency)
-      )
+      _c("span", { staticClass: "nowarp" }, [
+        _vm._v(
+          _vm._s(parseFloat(_vm.total).toFixed(8)) + _vm._s(_vm.baseCurrency)
+        )
+      ])
     ]),
     _vm._v(" "),
     _c("td", [
-      _vm._v(
-        _vm._s(parseFloat(_vm.stopLoss).toFixed(8)) + _vm._s(_vm.baseCurrency)
-      )
+      _c("span", { staticClass: "nowarp" }, [
+        _vm._v(
+          _vm._s(parseFloat(_vm.stopLoss).toFixed(8)) + _vm._s(_vm.baseCurrency)
+        )
+      ])
     ]),
     _vm._v(" "),
     _c("td", [
-      _vm._v(
-        _vm._s(parseFloat(_vm.takeProfit).toFixed(8)) + _vm._s(_vm.baseCurrency)
-      )
+      _c("span", { staticClass: "nowarp" }, [
+        _vm._v(
+          _vm._s(parseFloat(_vm.takeProfit).toFixed(8)) +
+            _vm._s(_vm.baseCurrency)
+        )
+      ])
     ]),
     _vm._v(" "),
     _c("td", [
@@ -113896,11 +113907,12 @@ var render = function() {
     ]),
     _vm._v(" "),
     _c("td", [
-      _vm._v(
-        " " +
+      _c("span", { staticClass: "nowarp" }, [
+        _vm._v(
           _vm._s(parseFloat(_vm.conditionPrice).toFixed(8)) +
-          _vm._s(_vm.baseCurrency)
-      )
+            _vm._s(_vm.baseCurrency)
+        )
+      ])
     ]),
     _vm._v(" "),
     _c("td", [_vm._v(" " + _vm._s(_vm.date))])
@@ -114442,7 +114454,7 @@ var render = function() {
               _c(
                 "th",
                 {
-                  staticClass: "sorting",
+                  staticClass: "sorting nowrap",
                   attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
                 },
                 [_vm._v("P/L (%)")]
@@ -114451,7 +114463,7 @@ var render = function() {
               _c(
                 "th",
                 {
-                  staticClass: "sorting",
+                  staticClass: "sorting nowrap",
                   attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
                 },
                 [_vm._v("Pair")]
@@ -114460,7 +114472,7 @@ var render = function() {
               _c(
                 "th",
                 {
-                  staticClass: "sorting_asc",
+                  staticClass: "sorting_asc nowrap",
                   attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
                 },
                 [_vm._v("Status")]
@@ -114469,7 +114481,7 @@ var render = function() {
               _c(
                 "th",
                 {
-                  staticClass: "sorting",
+                  staticClass: "sorting nowrap",
                   attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
                 },
                 [_vm._v("Exchange")]
@@ -114478,7 +114490,7 @@ var render = function() {
               _c(
                 "th",
                 {
-                  staticClass: "sorting",
+                  staticClass: "sorting nowrap",
                   attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
                 },
                 [_vm._v("Position")]
@@ -114487,7 +114499,7 @@ var render = function() {
               _c(
                 "th",
                 {
-                  staticClass: "sorting",
+                  staticClass: "sorting nowrap",
                   attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
                 },
                 [_vm._v("Last Price")]
@@ -114496,7 +114508,7 @@ var render = function() {
               _c(
                 "th",
                 {
-                  staticClass: "sorting",
+                  staticClass: "sorting nowrap",
                   attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
                 },
                 [_vm._v("Open Price")]
@@ -114505,7 +114517,7 @@ var render = function() {
               _c(
                 "th",
                 {
-                  staticClass: "sorting",
+                  staticClass: "sorting nowrap",
                   attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
                 },
                 [_vm._v("Close Price")]
@@ -114514,7 +114526,7 @@ var render = function() {
               _c(
                 "th",
                 {
-                  staticClass: "sorting",
+                  staticClass: "sorting nowrap",
                   attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
                 },
                 [_vm._v("Amount")]
@@ -114523,7 +114535,7 @@ var render = function() {
               _c(
                 "th",
                 {
-                  staticClass: "sorting",
+                  staticClass: "sorting nowrap",
                   attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
                 },
                 [_vm._v("Total")]
@@ -114532,7 +114544,7 @@ var render = function() {
               _c(
                 "th",
                 {
-                  staticClass: "sorting",
+                  staticClass: "sorting nowrap",
                   attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
                 },
                 [_vm._v("Stop-Loss")]
@@ -114541,7 +114553,7 @@ var render = function() {
               _c(
                 "th",
                 {
-                  staticClass: "sorting",
+                  staticClass: "sorting nowrap",
                   attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
                 },
                 [_vm._v("Take-Profit")]
@@ -114550,7 +114562,7 @@ var render = function() {
               _c(
                 "th",
                 {
-                  staticClass: "sorting",
+                  staticClass: "sorting nowrap",
                   attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
                 },
                 [_vm._v("Condition")]
@@ -114559,7 +114571,7 @@ var render = function() {
               _c(
                 "th",
                 {
-                  staticClass: "sorting",
+                  staticClass: "sorting nowrap",
                   attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
                 },
                 [_vm._v("Cond. Price")]
@@ -114568,7 +114580,7 @@ var render = function() {
               _c(
                 "th",
                 {
-                  staticClass: "sorting",
+                  staticClass: "sorting nowrap",
                   attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
                 },
                 [_vm._v("Date")]

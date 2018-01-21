@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 use App\Library\Services\Facades\Bittrex;
-use App\Exchange;
 use App\User;
 
 /**
@@ -35,6 +34,7 @@ class CoinGuru
         }
         else {
 
+            return [];
 
         }
 

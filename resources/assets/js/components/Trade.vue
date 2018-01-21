@@ -20,14 +20,14 @@
             <td>{{ exchange }}</td>
             <td>{{ position }}</td>
             <td><span class="nowarp">{{ last.toFixed(8) }}{{ baseCurrency }}</span></td>
-            <td>{{ parseFloat(price).toFixed(8) }}{{ baseCurrency }}</td>
-            <td>{{ parseFloat(closingPrice).toFixed(8) }}{{ baseCurrency }}</td>
+            <td><span class="nowarp">{{ parseFloat(price).toFixed(8) }}{{ baseCurrency }}</span></td>
+            <td><span class="nowarp">{{ parseFloat(closingPrice).toFixed(8) }}{{ baseCurrency }}</span></td>
             <td>{{ parseFloat(amount).toFixed(4) }}</td>
-            <td>{{ parseFloat(total).toFixed(8) }}{{ baseCurrency }}</td>
-            <td>{{ parseFloat(stopLoss).toFixed(8) }}{{ baseCurrency }}</td>
-            <td>{{ parseFloat(takeProfit).toFixed(8) }}{{ baseCurrency }}</td>
+            <td><span class="nowarp">{{ parseFloat(total).toFixed(8) }}{{ baseCurrency }}</span></td>
+            <td><span class="nowarp">{{ parseFloat(stopLoss).toFixed(8) }}{{ baseCurrency }}</span></td>
+            <td><span class="nowarp">{{ parseFloat(takeProfit).toFixed(8) }}{{ baseCurrency }}</span></td>
             <td>{{ (condition == 'now') ? 'none' : condition + ' than' }} </td>
-            <td> {{ parseFloat(conditionPrice).toFixed(8) }}{{ baseCurrency }}</td>
+            <td><span class="nowarp">{{ parseFloat(conditionPrice).toFixed(8) }}{{ baseCurrency }}</span></td>
             <td> {{ date }}</td>
         </tr>
         

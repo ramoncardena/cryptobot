@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Log;
 
 use App\Library\Services\CoinGuru;
 use App\Library\Services\Facades\Bittrex;
-use App\Exchange;
 use App\User;
 use App\Connection;
 
@@ -22,13 +21,14 @@ class Broker
 
     public $user;
 
-
+    // Mulit
     public function __construct()
     {
         $this->exchanges = \ccxt\Exchange::$exchanges;
 
     }
 
+    // Mulit
     public function setExchange($exchangeName) 
     {
 
@@ -47,6 +47,7 @@ class Broker
 
     }
 
+    // Mulit
     public function setUser($user) 
     {
 
@@ -79,10 +80,7 @@ class Broker
 
     }
 
-    /**
-    * Get no-zero balances from the exchange
-    * @return [type] [description]
-    */
+    // Old
     public function getBalances() 
     {
 
@@ -147,14 +145,10 @@ class Broker
 
     }
 
-    /**
-    * Get no-zero balances from the exchange
-    * @return [type] [description]
-    */
-   // Multi
+
+    // Multi
     public function getBalances2() 
     {
-
         try {
 
             $exchangeName = $this->exchange;
@@ -164,7 +158,6 @@ class Broker
             $secret =decrypt($connection->secret);
 
             $myexchange = '\\ccxt\\' . $exchangeName;
-
             date_default_timezone_set ('UTC');
             $exchangeConnection  = new $myexchange  (array (
                 'apiKey' => $api,
@@ -185,20 +178,23 @@ class Broker
             $response->result = $nonZeroBalances;
 
             return $response;
+            
 
         } catch (\Exception $e) {
 
-        // LOG: Exception
-            Log::critical("[Broker] Exception: " . $e->getMessage());
+            // LOG: Exception
+            Log::critical("[Broker getBalances] Exception: " . $e->getMessage());
 
             $response = new \stdClass();
             $response->success = false;
             $response->message = $e->getMessage();
+
             return $response; 
         }
 
     }
 
+    // Old
     public function getPurchasePrice ($market, $amount)
     {
         try {
@@ -301,31 +297,21 @@ class Broker
 
             $exchangeName = $this->exchange;
             $connections = $this->user->connections;
+
             $connection = $connections->where('exchange', $exchangeName)->first();
             $api = decrypt($connection->api);
             $secret =decrypt($connection->secret);
 
             $myexchange = '\\ccxt\\' . $exchangeName;
-
             date_default_timezone_set ('UTC');
             $exchangeConnection  = new $myexchange  (array (
                 'apiKey' => $api,
                 'secret' => $secret,
             ));
 
-            try {
-                // Get orders from exchange for this market
-                $orders = $exchangeConnection->fetchOrders ($market);    
+            // Get orders from exchange for this market
+            $orders = $exchangeConnection->fetchOrders($market);    
 
-            } catch (\Exception $e) {
-                // If we can't get orders from exchange 
-                // we intitalize $orders to empty
-                $orders = [];
-                Log::critical("[Broker] Exception: " . $e->getMessage());
-            }
-
-
-            // if ($market=="EOS/BTC") var_dump($orders);
             $initialAmount = $amount;
             $amount = 0;
             $price = 0;
@@ -361,7 +347,7 @@ class Broker
         } catch (\Exception $e) {
 
             // LOG: Exception trying to show trades
-            Log::critical("[Broker] Exception: " . $e->getMessage());
+            Log::critical("[Broker getPurchasePrice] Exception: " . $e->getMessage());
 
             $response = new \stdClass();
             $response->success=false;
@@ -380,29 +366,21 @@ class Broker
 
             $exchangeName = $this->exchange;
             $connections = $this->user->connections;
+
             $connection = $connections->where('exchange', $exchangeName)->first();
             $api = decrypt($connection->api);
             $secret =decrypt($connection->secret);
 
             $myexchange = '\\ccxt\\' . $exchangeName;
-
             date_default_timezone_set ('UTC');
             $exchangeConnection  = new $myexchange  (array (
                 'apiKey' => $api,
                 'secret' => $secret,
             ));
-
-            try {
-                // Get pairs from exchange
-                $exchangeConnection->loadMarkets(); 
-                $pairs = $exchangeConnection->symbols;
-
-            } catch (\Exception $e) {
-                // If we can't get pairs from exchange 
-                // we intitalize $pairs to empty
-                $pairs = [];
-                Log::critical("[Broker] Exception getting pairs: " . $e->getMessage());
-            }
+      
+            // Get pairs from exchange
+            $exchangeConnection->loadMarkets(); 
+            $pairs = $exchangeConnection->symbols;
 
             $response = new \stdClass();
             $response->success=true;
@@ -412,11 +390,10 @@ class Broker
 
             return response()->json($response);
 
-
             
         } catch (\Exception $e) {
             // LOG: Exception trying to show trades
-            Log::critical("[Broker] Exception getting pairs: " . $e->getMessage());
+            Log::critical("[Broker getPairs] Exception: " . $e->getMessage());
 
             $response = new \stdClass();
             $response->success=false;
@@ -434,20 +411,11 @@ class Broker
             $exchangeName = $this->exchange;
 
             $myexchange = '\\ccxt\\' . $exchangeName;
-
             date_default_timezone_set ('UTC');
             $exchangeConnection  = new $myexchange();
 
-            try {
-                // Get pairs from exchange
-                $ticker = $exchangeConnection->fetchTicker($market); 
-
-            } catch (\Exception $e) {
-                // If we can't get pairs from exchange 
-                // we intitalize $pairs to empty
-                $ticker = [];
-                Log::critical("[Broker] Exception getting pairs: " . $e->getMessage());
-            }
+            // Get pairs from exchange
+            $ticker = $exchangeConnection->fetchTicker($market); 
 
             $response = new \stdClass();
             $response->success=true;
@@ -456,12 +424,10 @@ class Broker
             $response->result->ticker = $ticker;            
 
             return response()->json($response);
-
-
             
         } catch (\Exception $e) {
             // LOG: Exception trying to show trades
-            Log::critical("[Broker] Exception getting pairs: " . $e->getMessage());
+            Log::critical("[Broker getSymbolTicker] Exception: " . $e->getMessage());
 
             $response = new \stdClass();
             $response->success=false;
@@ -479,6 +445,7 @@ class Broker
             // Get Cryptocompare coin list properties
             $guru = new CoinGuru;
             $coinList = $guru->cryptocompareCoingetList();
+
             // TODO controlar si retorna error
             $logoBaseUrl = $coinList->BaseImageUrl;
             $infoBaseUrl = $coinList->BaseLinkUrl;
@@ -501,11 +468,9 @@ class Broker
 
             return $response;
 
-
-            
         } catch (\Exception $e) {
             // LOG: Exception trying to show trades
-            Log::critical("[Broker] Exception getting pairs: " . $e->getMessage());
+            Log::critical("[Broker getCoinInfo] Exception: " . $e->getMessage());
 
             $response = new \stdClass();
             $response->success=false;
@@ -515,6 +480,7 @@ class Broker
         }
     }
 
+    // Old
     public function getTicker ($market)
     {
         try {
@@ -567,6 +533,92 @@ class Broker
     
     }
 
+    // Multi
+    public function getTicker2 ($market)
+    {
+        try {
+
+            $exchangeName = $this->exchange;
+
+            $myexchange = '\\ccxt\\' . $exchangeName;
+            date_default_timezone_set ('UTC');
+            $exchangeConnection  = new $myexchange();
+
+            $ticker = $exchangeConnection->fetchTicker($market); 
+
+            $response = new \stdClass();
+            $response->success=true;
+            $response->message="";
+            $response->result = new \stdClass();
+
+            $response->result->Bid = $ticker['bid'];
+            $response->result->Ask = $ticker['ask'];
+            $response->result->Last = $ticker['last'];    
+
+            return $response;
+
+        } catch (\Exception $e) {
+
+            // LOG: Exception trying to show trades
+            Log::critical("[Broker getTicker] Exception: " . $e->getMessage());
+
+            $response = new \stdClass();
+            $response->success=false;
+            $response->message= $exchangeResponse->message;
+
+            return $response;
+
+        }
+    
+    }
+
+    // Multi
+    public function buyLimit2($currency, $amount, $price)
+    {
+        try {
+
+            $exchangeName = $this->exchange;
+            $connections = $this->user->connections;
+
+            $connection = $connections->where('exchange', $exchangeName)->first();
+            
+            $api = decrypt($connection->api);
+            $secret =decrypt($connection->secret);
+
+            $myexchange = '\\ccxt\\' . $exchangeName;
+            date_default_timezone_set ('UTC');
+            $exchangeConnection  = new $myexchange  (array (
+                'apiKey' => $api,
+                'secret' => $secret,
+            ));
+
+            $order = $exchangeConnection->createLimitBuyOrder($currency, $amount, $price);
+
+ 
+            $response = new \stdClass();
+            $response->success=true;
+            $response->message="";
+            $response->result = new \stdClass();
+            $response->result->uuid = $order['id'];
+
+            return $response;
+                
+
+        } catch (\Exception $e) {
+
+            // LOG: Exception trying to show trades
+            Log::critical("[Broker buyLimit] Exception Buying: " . $e->getMessage());
+
+            $response = new \stdClass();
+            $response->success = false;
+            $response->message = $e->getMessage();
+            return $response; 
+
+        }
+
+    }
+
+    // Old
     public function buyLimit($currency, $amount, $price)
     {
         try {
@@ -609,6 +661,51 @@ class Broker
 
     }
 
+    // Multi
+    public function sellLimit2($currency, $amount, $price)
+    {
+        try {
+
+            $exchangeName = $this->exchange;
+            $connections = $this->user->connections;
+
+            $connection = $connections->where('exchange', $exchangeName)->first();
+            $api = decrypt($connection->api);
+            $secret =decrypt($connection->secret);
+
+            $myexchange = '\\ccxt\\' . $exchangeName;
+            date_default_timezone_set ('UTC');
+            $exchangeConnection  = new $myexchange  (array (
+                'apiKey' => $api,
+                'secret' => $secret,
+            ));
+
+            $order = $exchangeConnection->createLimitSellOrder($currency, $amount, $price);
+
+            $response = new \stdClass();
+            $response->success=true;
+            $response->message="";
+            $response->result = new \stdClass();
+            $response->result->uuid = $order['id'];
+
+            return $response;
+         
+
+        } catch (\Exception $e) {
+
+            // LOG: Exception trying to show trades
+            Log::critical("[Broker sellLimit] Exception: " . $e->getMessage());
+
+            $response = new \stdClass();
+            $response->success = false;
+            $response->message = $e->getMessage();
+            return $response; 
+
+        }
+
+    }
+
+    // Old
     public function sellLimit($currency, $amount, $price)
     {
         try {
@@ -651,6 +748,50 @@ class Broker
 
     }
 
+    // Multi
+    public function cancelOrder2($orderId) 
+    {
+
+        try {
+
+            $exchangeName = $this->exchange;
+            $connections = $this->user->connections;
+
+            $connection = $connections->where('exchange', $exchangeName)->first();
+            $api = decrypt($connection->api);
+            $secret =decrypt($connection->secret);
+
+            $myexchange = '\\ccxt\\' . $exchangeName;
+            date_default_timezone_set ('UTC');
+            $exchangeConnection  = new $myexchange  (array (
+                'apiKey' => $api,
+                'secret' => $secret,
+            ));
+
+            $exchangeResponse = $exchangeConnection->cancelOrder($orderId);
+
+            $response = new \stdClass();
+            $response->success=true;
+            $response->message="";
+            $response->result = new \stdClass();
+            $response->response = $exchangeResponse;
+            return $response;
+           
+
+        } catch (\Exception $e) {
+
+            // LOG: Exception trying to show trades
+            Log::critical("[Broker cancelOrder] Exception: " . $e->getMessage());
+
+            $response = new \stdClass();
+            $response->success=false;
+            $response->message= $exchangeResponse->message;
+
+            return $response;
+        }
+
+    }
+    // Old
     public function cancelOrder($orderId) 
     {
 
@@ -690,6 +831,7 @@ class Broker
 
     }
 
+    // Old
     public function getOrder($orderId)
     {
         try {
@@ -734,6 +876,66 @@ class Broker
 
     }
 
+    // Multi
+    public function getOrder2($orderId)
+    {
+        try {
+
+            $exchangeName = $this->exchange;
+            $connections = $this->user->connections;
+
+            $connection = $connections->where('exchange', $exchangeName)->first();
+            $api = decrypt($connection->api);
+            $secret =decrypt($connection->secret);
+
+            $myexchange = '\\ccxt\\' . $exchangeName;
+            date_default_timezone_set ('UTC');
+            $exchangeConnection  = new $myexchange  (array (
+                'apiKey' => $api,
+                'secret' => $secret,
+            ));
+
+
+            // Get orders from exchange for this market
+            $order = $exchangeConnection->fetchOrder($orderId);    
+
+
+            ($order['status'] == 'closed') ? $orderIsClosed = true :  $orderIsClosed = false;
+
+            if ($orderIsClosed) {
+                array_key_exists('average', $order) ? $pricePerUnit = $order['average'] : $pricePerUnit = $order['price'];
+             
+            }
+            else {
+                $pricePerUnit = 0;
+            }
+
+            $response = new \stdClass();
+            $response->success=true;
+            $response->message="";
+            $response->result = new \stdClass();
+            $response->result->OrderUuid = $order['id'];
+            $response->result->PricePerUnit = $pricePerUnit;
+            $response->result->Closed = $orderIsClosed;
+
+            return $response;
+
+
+        } catch (\Exception $e) {
+
+        // LOG: Exception trying to show trades
+            Log::critical("[Broker getORder] Exception: " . $e->getMessage());
+            
+            $response = new \stdClass();
+            $response->success=false;
+            $response->message= $exchangeResponse->message;
+
+            return $response;
+
+        }
+
+    }
+
     public function getOrderHistory()
     {
         try {
@@ -763,7 +965,5 @@ class Broker
         }
 
     }
-
-
 
 }
