@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Library\Services\Facades\Bittrex;
 use App\Library\Services\Facades\Bitcoin;
 
+use App\Library\Services\CoinGuru;
+
 class HomeController extends Controller
 {
     protected $user;
@@ -46,6 +48,10 @@ class HomeController extends Controller
             $totals = $this->getTotals($coins);
 
             $fiat = $this->user->settings()->fiat;
+
+            $guru = new CoinGuru;
+                $coinList = $guru->cryptocompareCoingetList();
+                dd($coinList->Data->ROS);
 
             // $myexchange = '\\ccxt\\' . 'bittrex';
 

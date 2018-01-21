@@ -49,11 +49,7 @@ class PortfolioController extends Controller
         // Get current user
         $this->user = Auth::user();
 
-        // Get the user's exchanges
-        // $exchanges = $this->user->settings()->get('exchanges');
-        // if ($exchanges) $this->exchanges = array_divide($exchanges)[0];
-        // else $this->exchanges = [];
-
+        // Get exchanges
         $exchanges = $this->user->connections;
         if ($exchanges) $this->exchanges = $exchanges->pluck('exchange');
         else $this->exchanges = [];

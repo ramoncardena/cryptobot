@@ -4,6 +4,7 @@ namespace App\Listeners;
 
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Log;
 
 use App\Events\PortfolioOpened;
 use App\Events\PortfolioAssetLoaded;
@@ -48,20 +49,26 @@ class LoadPortfolio implements ShouldQueue
 
             if ($event->portfolio) {
 
+                $start = microtime(true);
                 // Get user
                 $user = User::find($event->portfolio->user_id);
+                $time_elapsed_secs = microtime(true) - $start;
+                var_dump("Get user: " . $time_elapsed_secs . "s");
 
                 // RESET PORTFOLIO TOTALS
                 $event->portfolio->balance = 0;
                 $event->portfolio->balance_counter_value = 0;
                 $event->portfolio->save();
                 
+                $start = microtime(true);
                 // Get Cryptocompare coin list properties
                 $guru = new CoinGuru;
                 $coinList = $guru->cryptocompareCoingetList();
                 // TODO controlar si retorna error
                 $logoBaseUrl = $coinList->BaseImageUrl;
                 $infoBaseUrl = $coinList->BaseLinkUrl;
+                $time_elapsed_secs = microtime(true) - $start;
+                var_dump("Get coin list: " . $time_elapsed_secs . "s");
 
                 // New Broker
                 $broker = new Broker;
@@ -72,12 +79,16 @@ class LoadPortfolio implements ShouldQueue
                 // if ($exchanges) $exchanges = array_divide($exchanges)[0];
                 // else $exchanges = [];
 
+                $start = microtime(true);
                 $exchanges = $user->connections;
                 if ($exchanges) $exchanges = $exchanges->pluck('exchange');
                 else $exchanges = [];
+                $time_elapsed_secs = microtime(true) - $start;
+                var_dump("Get exchanges: " . $time_elapsed_secs . "s");
 
                 //var_dump($exchanges);
 
+                $start = microtime(true);
                 foreach ($exchanges as $exchange) {
                
 
@@ -202,7 +213,10 @@ class LoadPortfolio implements ShouldQueue
                     }
 
                 }
-
+                $time_elapsed_secs = microtime(true) - $start;
+                var_dump("Process exchanges: " . $time_elapsed_secs . "s");
+                
+                $start = microtime(true);
                 // Iterate assets to count them and launch asset loaded event
                 $assets = $event->portfolio->assets;
                 $asset_count = 0;
@@ -214,6 +228,8 @@ class LoadPortfolio implements ShouldQueue
                     // EVENT:  Portfolio Asset Loaded
                     event(new PortfolioAssetLoaded($asset));
                 }
+                $time_elapsed_secs = microtime(true) - $start;
+                var_dump("Count assets: " . $time_elapsed_secs . "s");
 
                 // Save the number of assets in this portfolio
                 $portfolio = $event->portfolio;
@@ -226,7 +242,7 @@ class LoadPortfolio implements ShouldQueue
 
         } catch (\Exception $e) {
             // Log CRITICAL: Exception
-            Log::critical("[LoadPortfolio] Exception: " . $e->getMessage());
+            Log::critical("[LoadPortfolio] Exception: " . $e->getMessage() . " " . $e->getCode() . " " . $e->getFile() . ":" . $e->getLine());
         }
     }
 }
