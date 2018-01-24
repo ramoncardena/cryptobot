@@ -1,14 +1,14 @@
 <template>
-    <section id="editasset">
-        <div class="grid-container fluid edit-asset">
+    <section id="deleteasset">
+        <div class="grid-container fluid delete-asset">
             <form method="POST" :action="'/portfolio/asset/' + assetSelected">
                 <input type="hidden" name="_token" :value="csrf">
-                <input name="_method" type="hidden" value="PATCH">
+                <input name="_method" type="hidden" value="DELETE">
 
                 <div class="grid-x grid-padding-x">
                     <!-- Header -->
                     <div class="small-12 cell form-container">
-                        <p class="h2">Edit Asset</p>
+                        <p class="h2">Delete Asset</p>
                     </div>
                     <div class="small-12 cell form-container">
                         <div v-if="validationErrors.asset_origin">
@@ -16,9 +16,9 @@
                         </div>
                         <div class="input-group">
                             <span class="input-group-label">Origin</span>
-                            <select v-model="originSelected" name="asset_origin" class="input-group-field" v-on:change="loadAssets()">
+                            <select v-model="originSelected" name="asset_origin" class="input-group-field" v-on:change="loadAssets();assetSelected=''">
                                 <option disabled value="">Select...</option>
-                                <option v-for="origin in origins" :value="origin.id">{{ origin.name }} </option>
+                                <option v-for="origin in noxchgOrigins" :value="origin.id">{{ origin.name }} </option>
                             </select>      
                             <input id="asset-origin-name" name="asset_origin_name" type="hidden" :value="originSelectedName">               
                         </div>
@@ -37,32 +37,10 @@
                             </select>                   
                         </div>
                     </div>
-                    <div class="small-12 cell form-container">
-                        <div v-if="validationErrors.asset_amount">
-                           <span class="validation-error" v-for="error in validationErrors.asset_amount"> {{ error }} </span>
-                        </div>
-                         <div class="input-group">
-                            <span class="input-group-label">
-                                Amount
-                            </span>
-                            <input v-model="assetAmount" name="asset_amount"  class="input-group-field number" type="text" >
-                        </div>
-                    </div>
-                    <div class="small-12 cell form-container">
-                        <div v-if="validationErrors.asset_initial_price">
-                           <span class="validation-error" v-for="error in validationErrors.asset_initial_price"> {{ error }} </span>
-                        </div>
-                         <div class="input-group">
-                            <span class="input-group-label">
-                                Purchase Price
-                            </span>
-                            <input v-model="assetInitialPrice" name="asset_initial_price"  class="input-group-field number" type="text" >
-                        </div>
-                    </div>
 
-                    <div class="small-12 cell form-container">
+                    <div v-if="assetSelected != ''" class="small-12 cell form-container">
                         <button class="hollow button" type="submit">
-                           Save Asset
+                           Delete Asset
                         </button>
                     </div>
                     
@@ -75,7 +53,7 @@
 
 <script>
    export default {
-    name: 'edit-asset',
+    name: 'delete-asset',
     data: () => {
         return {
             assets: [],

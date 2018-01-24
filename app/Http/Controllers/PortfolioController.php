@@ -69,7 +69,7 @@ class PortfolioController extends Controller
             // DATA FOR MODALS (New Asset and New Origin)
             // Coin list
             $guru = new CoinGuru;
-            $coins = array_divide((array)$guru->cryptocompareCoingetList()->Data)[0];
+            $coins = $guru->getCoinList();
 
             // Set origin types for new Portfolio Origins
             $originTypes = ['Online Wallet', 'Mobile Wallet', 'Desktop Wallet', 'Hardware Wallet', 'Paper Wallet'];

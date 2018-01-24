@@ -49,56 +49,36 @@ class LoadPortfolio implements ShouldQueue
 
             if ($event->portfolio) {
 
-                $start = microtime(true);
+              
                 // Get user
                 $user = User::find($event->portfolio->user_id);
-                $time_elapsed_secs = microtime(true) - $start;
-                var_dump("Get user: " . $time_elapsed_secs . "s");
+               
 
                 // RESET PORTFOLIO TOTALS
                 $event->portfolio->balance = 0;
                 $event->portfolio->balance_counter_value = 0;
                 $event->portfolio->save();
                 
-                $start = microtime(true);
-                // Get Cryptocompare coin list properties
                 $guru = new CoinGuru;
-                $coinList = $guru->cryptocompareCoingetList();
-                // TODO controlar si retorna error
-                $logoBaseUrl = $coinList->BaseImageUrl;
-                $infoBaseUrl = $coinList->BaseLinkUrl;
-                $time_elapsed_secs = microtime(true) - $start;
-                var_dump("Get coin list: " . $time_elapsed_secs . "s");
 
                 // New Broker
                 $broker = new Broker;
                 $broker->setUser($user);
 
-                // Get the user's exchanges
-                // $exchanges = $user->settings()->get('exchanges');
-                // if ($exchanges) $exchanges = array_divide($exchanges)[0];
-                // else $exchanges = [];
-
-                $start = microtime(true);
+            
                 $exchanges = $user->connections;
                 if ($exchanges) $exchanges = $exchanges->pluck('exchange');
                 else $exchanges = [];
-                $time_elapsed_secs = microtime(true) - $start;
-                var_dump("Get exchanges: " . $time_elapsed_secs . "s");
 
-                //var_dump($exchanges);
 
                 $start = microtime(true);
                 foreach ($exchanges as $exchange) {
                
-
                     // Get balance from this exchange
                     $broker->setExchange($exchange);
                     $balance = $broker->getBalances2(); // Controlar si retorna error
                     $latestAssets = $balance->result;
                    
-                    //var_dump($latestAssets);
-
                     // Retrieve current asset list for this exchange
                     $initialAssets = $user->assets->where('origin_name', ucfirst($exchange));
                     $finalAssets = [];
@@ -108,6 +88,7 @@ class LoadPortfolio implements ShouldQueue
 
                     $initalAssetsSymbols = $initialAssets->pluck('symbol')->all();
 
+                    $start = microtime(true);
                     foreach ($latestAssets as $symbol => $coin) {
                         $repeated = false;
 
@@ -168,7 +149,7 @@ class LoadPortfolio implements ShouldQueue
                             // Get coin info
                             // $symbol = strtoupper($symbol);
                             // if ($symbol == "IOTA") $symbol = "IOT"; 
-                            $coinInfo = $coinList->Data->$symbol;
+                            //$coinInfo = $coinList->Data->$symbol;
 
                             // Create a new asset
                             $newAsset = new PortfolioAsset;
@@ -177,9 +158,11 @@ class LoadPortfolio implements ShouldQueue
                             $newAsset->origin_id = $origin_id;
                             $newAsset->origin_name = ucfirst($exchange);
                             $newAsset->symbol = strtoupper($symbol);
-                            $newAsset->full_name = $coinInfo->CoinName;
-                            $newAsset->logo_url = $logoBaseUrl . $coinInfo->ImageUrl;
-                            $newAsset->info_url = $infoBaseUrl . $coinInfo->Url;
+                            $newAsset->full_name = $guru->getCoinInfo(strtoupper($symbol))->coinname;
+                            // $newAsset->logo_url = $logoBaseUrl . $coinInfo->ImageUrl;
+                            // $newAsset->info_url = $infoBaseUrl . $coinInfo->Url;
+                            $newAsset->logo_url = $guru->getCoinInfo(strtoupper($symbol))->imageurl;
+                            $newAsset->info_url = $guru->getCoinInfo(strtoupper($symbol))->url;
                             $newAsset->price = 0;
                             $newAsset->balance = 0;
                             $counterValue = strtoupper($event->portfolio->counter_value);
@@ -204,6 +187,8 @@ class LoadPortfolio implements ShouldQueue
                         }
 
                     }
+                    $time_elapsed_secs = microtime(true) - $start;
+                    var_dump("Iterate " . $exchange . ": " . $time_elapsed_secs . "s");
 
                     foreach ($initialAssets as $asset) {
                         $keep = in_array($asset->symbol, $finalAssets);
@@ -213,10 +198,11 @@ class LoadPortfolio implements ShouldQueue
                     }
 
                 }
+
                 $time_elapsed_secs = microtime(true) - $start;
                 var_dump("Process exchanges: " . $time_elapsed_secs . "s");
                 
-                $start = microtime(true);
+                
                 // Iterate assets to count them and launch asset loaded event
                 $assets = $event->portfolio->assets;
                 $asset_count = 0;
@@ -228,8 +214,6 @@ class LoadPortfolio implements ShouldQueue
                     // EVENT:  Portfolio Asset Loaded
                     event(new PortfolioAssetLoaded($asset));
                 }
-                $time_elapsed_secs = microtime(true) - $start;
-                var_dump("Count assets: " . $time_elapsed_secs . "s");
 
                 // Save the number of assets in this portfolio
                 $portfolio = $event->portfolio;

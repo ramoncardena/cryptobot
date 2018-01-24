@@ -161,6 +161,24 @@ class PortfolioAssetController extends Controller
         }
     }
 
+    public function destroy($id)
+    {
+         try {
+            $user = Auth::user();
+
+            $asset = $user->assets->where('id', $id)->first();
+            PortfolioAsset::destroy($asset->id);
+
+            return redirect('/portfolio');
+
+
+        } catch (\Exception $e) {
+
+            return response($e->getMessage(), 500)->header('Content-Type', 'text/plain');
+
+        }
+    }
+
     /**
      * Update the specified resource in storage.
      *

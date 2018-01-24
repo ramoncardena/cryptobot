@@ -49,9 +49,9 @@ class HomeController extends Controller
 
             $fiat = $this->user->settings()->fiat;
 
-            $guru = new CoinGuru;
-                $coinList = $guru->cryptocompareCoingetList();
-                dd($coinList->Data->ROS);
+            //$guru = new CoinGuru;
+            //$coinList = $guru->cryptocompareCoingetList();
+            //dd($coinList->Data->ROS);
 
             // $myexchange = '\\ccxt\\' . 'bittrex';
 

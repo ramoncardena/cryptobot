@@ -65,6 +65,7 @@ class CryptocompareFetcher extends Command {
 	            $infoBaseUrl = $coinList->BaseLinkUrl;
 
 	            CryptocompareAsset::truncate();
+	            sleep(5);
 
 				// Iterate through all coins to save info
 				foreach ($coinList->Data as $coin) {

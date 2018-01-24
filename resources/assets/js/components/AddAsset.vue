@@ -18,7 +18,7 @@
                             <span class="input-group-label">Origin</span>
                             <select v-model="originSelected" name="asset_origin" class="input-group-field" v-on:change="saveName()">
                                 <option disabled value="">Select...</option>
-                                <option v-for="origin in origins" :value="origin.id">{{ origin.name }} </option>
+                                <option v-for="origin in noxchgOrigins" :value="origin.id">{{ origin.name }} </option>
                             </select>      
                             <input id="asset-origin-name" name="asset_origin_name" type="hidden" :value="originSelectedName">               
                         </div>
@@ -77,6 +77,7 @@
         return {
             coinSelected: "",
             coin: "",
+            noxchgOrigins: [],
             originSelected: "",
             originSelectedName: "",
             updating: false,
@@ -86,7 +87,8 @@
     props: [
     'coins',
     'origins',
-    'validation-errors'
+    'validation-errors',
+    'exchanges'
     ],
     computed: {
 
@@ -99,6 +101,12 @@
         let coins =$.map( this.coins, function( a ) {
           return a.toString(); 
         });
+
+        for (var i = 0; i < this.origins.length; i++) {    
+           if (this.exchanges.indexOf(this.origins[i].name.toLowerCase()) < 0) {
+                this.noxchgOrigins.push(this.origins[i]);
+           }
+        }
 
         let options = {
             data:  coins,
