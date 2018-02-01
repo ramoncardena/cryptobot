@@ -18,7 +18,6 @@ use App\Profit;
 use App\Trade;
 use App\User;
 use App\Order;
-use App\Exchange;
 
 
 class CloseTrade implements ShouldQueue
@@ -54,7 +53,7 @@ class CloseTrade implements ShouldQueue
             // Get trade linked to the order
             $trade = Trade::find($event->order->trade_id);
 
-            $exchange =Exchange::where('name', $trade->exchange)->first();
+            $exchange = $trade->exchange;
 
             $user = User::find($trade->user_id);
             
@@ -67,7 +66,7 @@ class CloseTrade implements ShouldQueue
             // Get fee for the exchange
             $broker = new Broker;
             $broker->setUser($user);
-            $broker->setExchange($exchange->name);
+            $broker->setExchange($exchange);
             $exchangeFee = $broker->getFee();
 
             // Calculate fee
@@ -89,10 +88,10 @@ class CloseTrade implements ShouldQueue
             // NOTIFY: TradeClosed
             User::find($trade->user_id)->notify(new TradeClosedNotification($trade));
             
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
 
             // Log CRITICAL: Exception
-            Log::critical("[CloseTrade] Exception: " . $e->getMessage());
+            Log::critical("[User " . $user->id . "] CloseTrade Exception: " . $e->getMessage());
 
         }
     }

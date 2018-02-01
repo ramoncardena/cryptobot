@@ -21,6 +21,11 @@ Route::get('/settings/{setting}', 'SettingsController@show');
 Route::patch('/settings', 'SettingsController@update');
 Route::post('/settings', 'SettingsController@store');
 
+Route::get('/connections', 'ConnectionsController@index');
+Route::post('/connections', 'ConnectionsController@store');
+Route::delete('/connections/{id}', 'ConnectionsController@destroy');
+Route::patch('/connections/{id}', 'ConnectionsController@update');
+
 Route::get('/orders', 'OrdersController@index');
 Route::get('/trades', 'TradeController@index');
 Route::post('/trades', 'TradeController@store');
@@ -30,10 +35,13 @@ Route::patch('/trades/{id}', 'TradeController@update');
 Route::get('/portfolio', 'PortfolioController@index');
 
 Route::post('/portfolio/origin', 'PortfolioOriginController@store');
+Route::patch('/portfolio/origin/{id}', 'PortfolioOriginController@update');
+Route::delete('/portfolio/origin/{id}', 'PortfolioOriginController@destroy');
+
 Route::post('/portfolio/asset', 'PortfolioAssetController@store');
+Route::patch('/portfolio/asset/{id}', 'PortfolioAssetController@update');
+Route::delete('/portfolio/asset/{id}', 'PortfolioAssetController@destroy');
 
-
-Route::patch('/assets/{id}', 'PortfolioAssetController@update');
 Route::patch('/assets/{id}/transaction', 'PortfolioAssetController@settransaction');
 
 Auth::routes();

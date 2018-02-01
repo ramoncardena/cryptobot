@@ -17,12 +17,13 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::middleware('auth:api')->get('bittrexapi/getpairs', 'BittrexApiController@getpairs');
-Route::middleware('auth:api')->get('bittrexapi/getmarketsummary/{pair}', 'BittrexApiController@getmarketsummary');
-Route::middleware('auth:api')->get('bittrexapi/getmarkets/{coin}', 'BittrexApiController@getmarkets');
-Route::middleware('auth:api')->get('bittrexapi/getbalance/{coin}', 'BittrexApiController@getbalance');
+Route::middleware('auth:api')->get('broker/getpairs/{exchange}', 'BrokerController@getPairs');
+Route::middleware('auth:api')->get('broker/getfee/{exchange}', 'BrokerController@getFee');
+Route::middleware('auth:api')->get('broker/getticker/{exchange}/{coin}/{base}', 'BrokerController@getTicker');
+Route::middleware('auth:api')->get('broker/getbalances/{exchange}', 'BrokerController@getBalances');
+Route::middleware('auth:api')->get('broker/getcoininfo/{coin}', 'BrokerController@getCoinInfo');
 
-Route::middleware('auth:api')->get('exchange/{name}/fee', 'ExchangeController@getfee');
+// Route::middleware('auth:api')->get('exchange/{name}/fee', 'ExchangeController@getfee');
 
 Route::middleware('auth:api')->get('/notifications', 'NotificationsController@index');
 Route::middleware('auth:api')->get('/notifications/{id}', 'NotificationsController@show');
@@ -34,6 +35,8 @@ Route::middleware('auth:api')->delete('/notifications', 'NotificationsController
 Route::middleware('auth:api')->get('/portfolio/refresh', 'PortfolioController@refresh');
 Route::middleware('auth:api')->get('/assets', 'PortfolioAssetController@getall');
 Route::middleware('auth:api')->get('/assets/{id}', 'PortfolioAssetController@get');
+Route::middleware('auth:api')->get('/transactions/{origin}/{asset}', 'PortfolioAssetController@gettransactions');
+Route::middleware('auth:api')->delete('/transactions/{id}', 'PortfolioAssetController@deletetransaction');
 
 
 

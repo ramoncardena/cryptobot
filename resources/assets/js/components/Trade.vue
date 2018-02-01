@@ -19,15 +19,15 @@
             <td :class="'status-' + tradeStatus" v-model="tradeStatus">{{ tradeStatus }}</td>
             <td>{{ exchange }}</td>
             <td>{{ position }}</td>
-            <td>{{ last.toFixed(8) }}</td>
-            <td>{{ parseFloat(price).toFixed(8) }}</td>
-            <td>{{ parseFloat(closingPrice).toFixed(8) }}</td>
+            <td><span class="nowarp">{{ last.toFixed(8) }}{{ baseCurrency }}</span></td>
+            <td><span class="nowarp">{{ parseFloat(price).toFixed(8) }}{{ baseCurrency }}</span></td>
+            <td><span class="nowarp">{{ parseFloat(closingPrice).toFixed(8) }}{{ baseCurrency }}</span></td>
             <td>{{ parseFloat(amount).toFixed(4) }}</td>
-            <td>{{ parseFloat(total).toFixed(8) }}</td>
-            <td>{{ parseFloat(stopLoss).toFixed(8) }}</td>
-            <td>{{ parseFloat(takeProfit).toFixed(8) }}</td>
+            <td><span class="nowarp">{{ parseFloat(total).toFixed(8) }}{{ baseCurrency }}</span></td>
+            <td><span class="nowarp">{{ parseFloat(stopLoss).toFixed(8) }}{{ baseCurrency }}</span></td>
+            <td><span class="nowarp">{{ parseFloat(takeProfit).toFixed(8) }}{{ baseCurrency }}</span></td>
             <td>{{ (condition == 'now') ? 'none' : condition + ' than' }} </td>
-            <td> {{ parseFloat(conditionPrice).toFixed(8) }}</td>
+            <td><span class="nowarp">{{ parseFloat(conditionPrice).toFixed(8) }}{{ baseCurrency }}</span></td>
             <td> {{ date }}</td>
         </tr>
         
@@ -41,7 +41,8 @@
             updating: false,
             profit: 0,
             last: 0,
-            tradeStatus: ""
+            tradeStatus: "",
+            baseCurrency: ""
         }
     },
     props: [
@@ -89,6 +90,9 @@
     },
     mounted() {
         this.tradeStatus = this.status;
+
+        this.baseCurrency = this.pair.split('/')[1];
+
         this.update(this.exchange, this.pair, this.price); 
 
         Echo.private('trades.' + this.id)
@@ -111,28 +115,29 @@
         update(exchange, pair, price) {
             let percent = 0;
             this.updating = true;
-            if (exchange.toLowerCase() == 'bittrex') {
-                let uri = '/api/bittrexapi/getmarketsummary/' + pair;
-                axios(uri, {
-                    method: 'GET',
-                })
-                .then(response => {
-                    this.marketsummary=response.data[0];  
-                    this.last = this.marketsummary.Last;
-                    
-                    // Calculate percentual diference
-                    let decreaseValue = this.last - price;
-                    decreaseValue = (decreaseValue / price) * 100;
-                    this.profit = decreaseValue.toFixed(2) + "%";
 
-                    this.updating = false;
-                    //console.log("Last: " + this.last + " - " + (decreaseValue / price) * 100);
-                })
-                .catch(e => {
-                    this.updating = false;
-                    console.log("Error: " +  e.message);
-                })
-            }
+            let params = "?coin=" + pair.split("/")[0] + "&base=" + pair.split("/")[1];
+            let uri = '/api/broker/getticker/' + exchange + '/' + pair.split("/")[0] + "/" + pair.split("/")[1];
+            axios.get(uri)
+            .then(response => {
+
+                this.last = parseFloat(response.data.result.ticker.last);
+                
+                // Calculate percentual diference
+                let decreaseValue = this.last - price;
+                decreaseValue = (decreaseValue / price) * 100;
+                this.profit = decreaseValue.toFixed(2) + "%";
+
+                this.updating = false;
+                
+            })
+            .catch(e => {
+
+                this.updating = false;
+                console.log("Error: " +  e.message);
+
+            })
+            
         }
 
     }

@@ -61,59 +61,51 @@ class KeepTrackingStopLoss implements ShouldQueue
             }
             else {
 
-                // Select exchange
-                switch ($stop->exchange) {
-                    // BITTREX
-                    case "bittrex":
+                // TICKER
+                $broker = new Broker;
+                $broker->setExchange($stop->exchange);
+                $ticker = $broker->getTicker2($stop->pair);
 
-                        // TICKER
-                        $broker = new Broker;
-                        $broker->setExchange($stop->exchange);
-                        $ticker = $broker->getTicker($stop->pair);
+                // Check for success on call
+                if (! $ticker->success) {
 
-                        // Check for success on API call
-                        if (! $ticker->success) {
+                    // Log ERROR: Broker returned error
+                    Log::error("[KeepTrackingStopLoss] Broker: " . $ticker->message);
 
-                            // Log ERROR: Bittrex API returned error
-                            Log::error("[KeepTrackingStopLoss] Bittrex API: " . $ticker->message);
+                    // Add delay before requeueing
+                    sleep(env('FAILED_STOPLOSS_DELAY', 5));
 
-                            // Add delay before requeueing
-                            sleep(env('FAILED_STOPLOSS_DELAY', 5));
+                    // EVENT: StopLossNotReached
+                    event(new StopLossNotReached($stop));
 
-                            // EVENT: StopLossNotReached
-                            event(new StopLossNotReached($stop));
+                }
+                else {
 
-                        }
-                        else {
+                    $ticker= $ticker->result;
 
-                            $ticker= $ticker->result;
+                    if ( floatval($ticker->Last) <= floatval($stop->price)) {
 
-                            if ( floatval($ticker->Last) <= floatval($stop->price)) {
+                        // EVENT: StopLossReached
+                        event(new StopLossReached($stop, $ticker->Last));
 
-                                // EVENT: StopLossReached
-                                event(new StopLossReached($stop, $ticker->Last));
+                        // Log NOTICE: Take-Profit reached
+                        Log::notice("Stop-Loss: Trade #" . $stop->trade_id . " reached its stop-loss at " . $stop->price . " for the pair " . $stop->pair . " at " . $stop->exchange . " (last price: " . $ticker->Last . ")");
 
-                                // Log NOTICE: Take-Profit reached
-                                Log::notice("Stop-Loss: Trade #" . $stop->trade_id . " reached its stop-loss at " . $stop->price . " for the pair " . $stop->pair . " at " . $stop->exchange . " (last price: " . $ticker->Last . ")");
+                    }
+                    else {
+                        
+                        // Add delay before requeueing
+                        sleep(env('STOPLOSS_DELAY', 5));
 
-                            }
-                            else {
-                                
-                                // Add delay before requeueing
-                                sleep(env('STOPLOSS_DELAY', 5));
+                        // EVENT: StopLossNotReached
+                        event(new StopLossNotReached($stop));
+                    }
 
-                                // EVENT: StopLossNotReached
-                                event(new StopLossNotReached($stop));
-                            }
-
-                        }
-
-                    break;
                 }
 
             }
 
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
 
             // Log CRITICAL: Exception
             Log::critical("[KeepTrackingStopLoss] Exception: " . $e->getMessage());

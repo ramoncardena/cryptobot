@@ -55,10 +55,10 @@ class KeepTrade implements ShouldQueue
             // Log INFO: Event cancelled
             Log::info("Trade #" . $event->trade->id . ": Kept.");
             
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
 
             // Log CRITICAL: Exception
-            Log::critical("[EmailTradeClosed] Exception: " . $e->getMessage());
+            Log::critical("[User " . $event->trade->id . "] KeepTrade Exception: " . $e->getMessage());
 
         }
     }

@@ -8,6 +8,7 @@
 	background: url('/storage/icons/loading.gif') 50% 50% no-repeat rgb(249,249,249);
 }
 
+
 .badge {
 	font-weight: bold;
 }
@@ -15,3 +16,14 @@
 .nowrap {
 	white-space: nowrap;
 }
+
+ .capitalize { 
+ 	text-transform:capitalize; 
+ }
+ .green {
+	color: get-color(profit);
+ }
+
+ .red {
+	color: get-color(loss);	
+ }

@@ -1,8 +1,18 @@
 <template>
     <section id="portfolio-widget">
+
         <div class="grid-x grid-padding-x">
             <div class="small-12 cell">
-                <div class="grid-container fluid">
+                <div v-if="loadingPortfolio==true"  class="grid-container fluid">
+                    <div class="grid-x grid-padding-x"> 
+                        <div class="small-12 medium-shrink cell">
+                            <div class="portfolio-loader">
+                                <i class="fa fa-spinner fa-spin" aria-hidden="true"></i> Loading assets...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div v-else class="grid-container fluid">
                     <div class="grid-x grid-padding-x"> 
                         <div class="small-12 medium-shrink cell">
                             <div class="counter-widget text-left">
@@ -47,6 +57,8 @@
 
                     </div>
                 </div>
+
+                
             </div>
 
             <div class="small-12 large-6 cell">

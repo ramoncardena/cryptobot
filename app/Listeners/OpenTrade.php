@@ -53,6 +53,9 @@ class OpenTrade implements ShouldQueue
             // Get trade linked to the order
             $trade = Trade::find($event->order->trade_id);
 
+            // Get user
+            $user = User::find($event->order->user_id);
+
             // Update price with the final price from the order
             if (env('ORDERS_TEST', true) == false) {
                 $trade->price = $event->price;
@@ -146,10 +149,10 @@ class OpenTrade implements ShouldQueue
             Log::notice("Trade #" . $trade->id . ": Opened.  Exchange: " . $trade->exchange . " Pair: " . $trade->pair . " Price per unit: " . $trade->price);
 
            
-       } catch (Exception $e) {
+       } catch (\Exception $e) {
 
             // Log CRITICAL: Exception
-            Log::critical("[OpenTrade] Exception: " . $e->getMessage());
+            Log::critical("[User " . $user->id . "] OpenTrade Exception: " . $e->getMessage());
        }
     }
 }

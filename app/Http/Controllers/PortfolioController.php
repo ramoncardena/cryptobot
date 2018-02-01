@@ -49,34 +49,36 @@ class PortfolioController extends Controller
         // Get current user
         $this->user = Auth::user();
 
-        // Get the user's exchanges
-        $exchanges = $this->user->settings()->get('exchanges');
-        if ($exchanges) $this->exchanges = array_divide($exchanges)[0];
+        // Get exchanges
+        $exchanges = $this->user->connections;
+        if ($exchanges) $this->exchanges = $exchanges->pluck('exchange');
         else $this->exchanges = [];
 
         // Get user's portfolio
         $this->portfolio = Portfolio::where('user_id', $this->user->id)->first();
 
-        // Set update id in portfolio
-        $this->portfolio->update_id = uniqid();
-        $this->portfolio->save();
+        if ($this->portfolio) {
 
-        // Get portfolio origins
-        $this->origins = $this->portfolio->origins; 
+            // Set update id in portfolio
+            $this->portfolio->update_id = uniqid();
+            $this->portfolio->save();
 
-        // EVENT:  PortfolioOpened
-        // event(new PortfolioOpened($this->portfolio));
+            // Get portfolio origins
+            $this->origins = $this->portfolio->origins; 
 
+            // DATA FOR MODALS (New Asset and New Origin)
+            // Coin list
+            $guru = new CoinGuru;
+            $coins = $guru->getCoinList();
 
-        // DATA FOR MODALS (New Asset and New Origin)
-        // Coin list
-        $guru = new CoinGuru;
-        $coins = array_divide((array)$guru->cryptocompareCoingetList()->Data)[0];
+            // Set origin types for new Portfolio Origins
+            $originTypes = ['Online Wallet', 'Mobile Wallet', 'Desktop Wallet', 'Hardware Wallet', 'Paper Wallet'];
 
-        // Set origin types for new Portfolio Origins
-        $originTypes = ['Online Wallet', 'Mobile Wallet', 'Desktop Wallet', 'Hardware Wallet', 'Paper Wallet'];
-
-        return view('portfolio', ['originTypes' => json_encode($originTypes), 'exchanges' => json_encode($this->exchanges), 'portfolio' => $this->portfolio, 'origins' => $this->origins, 'coins' => json_encode($coins)]);
+            return view('portfolio', ['originTypes' => json_encode($originTypes), 'exchanges' => json_encode($this->exchanges), 'portfolio' => $this->portfolio, 'origins' => $this->origins, 'coins' => json_encode($coins)]);
+        }
+        else {
+            return redirect('/settings');
+        }
     }
     
     public function refresh() {

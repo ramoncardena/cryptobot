@@ -51,7 +51,7 @@ class EmailTradeClosed
             // Log INFO: Event cancelled
             // Log::info("Trade #" . $event->trade_id . ": Cancelled.");
             
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
 
             // Log CRITICAL: Exception
             Log::critical("[EmailTradeClosed] Exception: " . $e->getMessage());

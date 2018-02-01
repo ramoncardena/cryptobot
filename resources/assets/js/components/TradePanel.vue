@@ -15,7 +15,7 @@
                            <span class="validation-error" v-for="error in validationErrors.exchange"> {{ error }} </span>
                         </div>
                         <div class="input-group">
-                            <span class="input-group-label">Exchange</span>
+                            <span class="input-group-label"><i v-show="loadingexchange" class="fa fa-cog fa-spin fa-fw"></i>Exchange</span>
                             <select name="exchange" v-model="exchange" class="input-group-field" v-on:change="getpairs(exchange)">
                                 <option disabled value="">Select...</option>
                                 <option v-for="exchange in exchanges" :value="exchange" selected="true">{{ exchange }} </option>
@@ -32,10 +32,7 @@
                         <div class="input-group">
                             <span class="input-group-label"><i v-show="loadingpairs" class="fa fa-cog fa-spin fa-fw"></i> Pair</span>
                             <input name="pair" id="pairs" v-model="pairselected" class="input-group-field number" type="text">
-                            <!-- <select name="pair" v-model="pairselected" class="input-group-field" v-on:change="getmarketsummary(exchange, pairselected)">
-                                <option disabled value="">Select...</option>
-                                <option v-for="pair in bittrexpairs" :value="pair"> {{ pair }}</option>
-                            </select> -->
+
                         </div>
                     </div>
 
@@ -208,32 +205,32 @@
                 
                 <!-- Volume -->
                 <div class="cell small-12 text-center volume">
-                    <div v-model="volumeC"> Vol: <i class="fa fa-btc" aria-hidden="true"></i> {{ volumeC }}</div>
+                    <div v-model="volumeC"> Vol: {{ volumeC }} {{ basecurrency}}</div>
                 </div>
                
                 <!-- 24h High -->
                 <div class="cell small-6 text-center">
-                    <div v-model="highC" class="high-low"> H: <i class="fa fa-btc" aria-hidden="true"></i> {{ highC }}</div>
+                    <div v-model="highC" class="high-low"> H: {{ highC }} {{ basecurrency}}</div>
                 </div>
                 
                 <!-- 24h Low -->
                 <div class="cell small-6 text-center">
-                    <div v-model="lowC" class="high-low"> L: <i class="fa fa-btc" aria-hidden="true"></i> {{ lowC }} </div>
+                    <div v-model="lowC" class="high-low"> L: {{ lowC }} {{ basecurrency}} </div>
                 </div>
                 
                 <!-- Bid -->
                 <div class="cell small-6 text-center bid">
-                    <div v-model="bidC"> BID: <i class="fa fa-btc" aria-hidden="true"></i> {{ bidC }}</div>
+                    <div v-model="bidC"> BID: {{ bidC }} {{ basecurrency}}</div>
                 </div>
                
                 <!-- Ask -->
                 <div class="cell small-6 text-center ask">
-                    <div v-model="askC"> ASK: <i class="fa fa-btc" aria-hidden="true"></i> {{ askC }} </div> 
+                    <div v-model="askC"> ASK: {{ askC }} {{ basecurrency}} </div> 
                 </div>
                
                 <!-- Last -->
                 <div class="cell small-12 text-center last">
-                    <div v-model="lastC"> LAST: <i class="fa fa-btc" aria-hidden="true"></i> {{ lastC }} </div>
+                    <div v-model="lastC"> LAST: {{ lastC }} {{ basecurrency}} </div>
                 </div>
 
             </div>
@@ -259,6 +256,7 @@ export default {
             stopAtTotal: false,
             stopAtAmount: false,
             loadingpairs: false,
+            loadingexchange: false,
             loadingprice: false,
             loadinginfo: false,
             marketLoaded: false,
@@ -273,7 +271,6 @@ export default {
             pairselected: "",
             bittrexpairs: [],
             bittrexcoin: [],
-            marketsummary: [],
             conditionselected: "now",
             conditionprice: 0.00000000,
             conditionalSwitch: false,
@@ -281,6 +278,7 @@ export default {
             basecurrency: "",
             coinname: { 'long':'','short':''},
             coinlogo: "",
+            coinurl: "",
             volume: 0.0000,
             price: 0.00000000,
             last: 0.00000000,
@@ -442,222 +440,224 @@ export default {
             return this.slpercent = parseFloat(percent).toFixed(2);
         }),
         updateprice(exchange, pair, pricetype) {
-            this.loadingprice = true;
             
-            if (exchange.toLowerCase() == 'bittrex') {
-                let uri = '/api/bittrexapi/getmarketsummary/' + pair;
-                axios(uri, {
-                    method: 'GET',
-                })
-                .then(response => {
-                    this.marketsummary=response.data[0];  
-                    this.last = parseFloat(this.marketsummary.Last);
-                    this.bid = parseFloat(this.marketsummary.Bid);
-                    this.ask = parseFloat(this.marketsummary.Ask);
-                    this.volume = parseFloat(this.marketsummary.BaseVolume);
+            this.loadingprice = true;
 
-                    if (pricetype.toLowerCase() == "last") {
-                        this.price =  parseFloat(this.last);
-                    }
-                    else if (pricetype.toLowerCase() == "bid") {
-                        this.price =  parseFloat(this.bid);
-                    }
-                    else if (pricetype.toLowerCase() == "ask") {
-                        this.price =  parseFloat(this.ask);
-                    }
-                    this.loadingprice = false;
-                })
-                .catch(e => {
-                    this.errors.push(e);
-                    this.loadingprice = false;
-                    console.log("Error: " + e.message);
-                })
-            }
-            else {
+            let params = "?coin=" + pair.split("/")[0] + "&base=" + pair.split("/")[1];
+            let uri = '/api/broker/getticker/' + exchange + '/' + pair.split("/")[0] + "/" + pair.split("/")[1];
+            axios.get(uri)
+            .then(response => {
+
+                this.last = parseFloat(response.data.result.ticker.last);
+                this.bid = parseFloat(response.data.result.ticker.bid);
+                this.ask = parseFloat(response.data.result.ticker.ask);
+                this.volume = parseFloat(response.data.result.ticker.baseVolume);
+
+                if (pricetype.toLowerCase() == "last") {
+
+                    this.price =  parseFloat(this.last);
+
+                }
+                else if (pricetype.toLowerCase() == "bid") {
+
+                    this.price =  parseFloat(this.bid);
+
+                }
+                else if (pricetype.toLowerCase() == "ask") {
+
+                    this.price =  parseFloat(this.ask);
+
+                }
                 this.loadingprice = false;
-            }
+            })
+            .catch(e => {
+
+                this.errors.push(e);
+                this.loadingprice = false;
+                console.log("Error: " + e.message);
+
+            })    
+
         },
         getmarketsummary(exchange, pair) {
+
             this.loadingpairs = true;
-            if (exchange.toLowerCase() == 'bittrex') {
-                let uri = '/api/bittrexapi/getmarketsummary/' + pair;
-                axios(uri, {
-                    method: 'GET',
-                })
-                .then(response => {
-                    this.marketsummary=response.data[0];  
-                    this.priceselected = "";
-                    this.last =  parseFloat(this.marketsummary.Last);
-                    this.bid =  parseFloat(this.marketsummary.Bid);
-                    this.ask =  parseFloat(this.marketsummary.Ask);
-                    this.high =  parseFloat(this.marketsummary.High);
-                    this.low =  parseFloat(this.marketsummary.Low);
-                    this.volume =  parseFloat(this.marketsummary.BaseVolume);
+            
+            let params = "?coin=" + pair.split("/")[0] + "&base=" + pair.split("/")[1];
+            let uri = '/api/broker/getticker/' + exchange + '/' + pair.split("/")[0] + "/" + pair.split("/")[1];
+            axios.get(uri)
+            .then(response => {
 
-                    // Set price for current pair to 0
-                    this.stopAtTotal = true;
-                    this.price = parseFloat(0.00000000);
+                this.priceselected = "";
+                this.last =  parseFloat(response.data.result.ticker.last);
+                this.bid =  parseFloat(response.data.result.ticker.bid);
+                this.ask =  parseFloat(response.data.result.ticker.ask);
+                this.high =  parseFloat(response.data.result.ticker.high);
+                this.low =  parseFloat(response.data.result.ticker.low);
+                this.volume =  parseFloat(response.data.result.ticker.baseVolume);
+                this.basecurrency = pair.split("/")[1];
+
+                // Set price for current pair to 0
+                this.stopAtTotal = true;
+                this.price = parseFloat(0.00000000);
 
 
-                    // TODO Get balance for the selected base currency
-                    this.getbalance(exchange, pair);
-                    
-                    // Get coin info from api call getmarkets
-                    this.getmarkets(exchange, pair);
+                // TODO Get balance for the selected base currency
+                this.getbalance(exchange, pair);
+                
+                // Get coin info from api call getcoininfo
+                this.getcoininfo(exchange, pair);
 
-                    
-                    this.loadingpairs = false;
-                    console.log("Success: " + this.marketsummary.MarketName);
-                })
-                .catch(e => {
-                    this.errors.push(e);
-                    this.loadingpairs = false;
-                    console.log("Error: " +  e.message);
-                })
-            }
+                
+                this.loadingpairs = false;
+
+            })
+            .catch(e => {
+
+                this.errors.push(e);
+                this.loadingpairs = false;
+                console.log("Error: " +  e.message);
+
+            })
+
         },
         getpairs(exchange) {
-            this.loadingpairs = true;
+
+            this.loadingexchange = true;
             this.pairselected = "";
+     
+            axios.get('/api/broker/getpairs/' + exchange)
+            .then(response => {
 
-            //Bittrex
-            if (exchange.toLowerCase() == 'bittrex') {
-                axios('/api/bittrexapi/getpairs', {
-                    method: 'GET'
-                })
-                .then(response => {
-                    this.bittrexpairs = response.data;  
-                    
-                    let options = {
-                        data:  this.bittrexpairs,
-                        list: {
-                            onClickEvent: () => {
-                                this.pairselected = $("#pairs").getSelectedItemData();
-                                this.getmarketsummary(exchange,this.pairselected)
-                            },   
-                            maxNumberOfElements: 999,
-                            match: {
-                                enabled: true
-                            },
-                            showAnimation: {
-                                type: "fade", //normal|slide|fade
-                                time: 400,
-                                callback: function() {}
-                            },
-                            hideAnimation: {
-                                type: "fade s", //normal|slide|fade
-                                time: 400,
-                                callback: function() {}
-                            }
+                this.bittrexpairs = response.data.result.pairs;  
+                
+                let options = {
+                    data:  this.bittrexpairs,
+                    list: {
+                        onClickEvent: () => {
+                            this.pairselected = $("#pairs").getSelectedItemData();
+                            this.getmarketsummary(exchange,this.pairselected)
+                        },   
+                        maxNumberOfElements: 999,
+                        match: {
+                            enabled: true
                         },
-                        theme: "square"
-                    };
+                        showAnimation: {
+                            type: "fade", //normal|slide|fade
+                            time: 400,
+                            callback: function() {}
+                        },
+                        hideAnimation: {
+                            type: "fade", //normal|slide|fade
+                            time: 400,
+                            callback: function() {}
+                        }
+                    },
+                    theme: "square"
+                };
 
-                    $("#pairs").easyAutocomplete(options);
+                $("#pairs").easyAutocomplete(options);
 
+                // Get fee fot the exchange
+                axios.get('/api/broker/getfee/' + exchange.toLowerCase())
+                .then(response => {
 
-                    console.log("Success: " + exchange + " pairs!");
-
-                    // Get fee fot the exchange
-                    axios('/api/exchange/' + exchange.toLowerCase() + '/fee', {
-                        method: 'GET',
-                    })
-                    .then(response => {
-                        this.fee = parseFloat(response.data);
-                        console.log("Success: " + exchange + " fee! (" + this.fee + ")");
-                        this.loadingpairs = false;
-                    })
-                    .catch(e => {
-                        this.errors.push(e);
-                        this.loadingpairs = false;
-                        console.log("Error: " +  e.message);
-                    });
+                    this.fee = parseFloat(response.data);
+                    this.loadingexchange = false;
 
                 })
                 .catch(e => {
+
                     this.errors.push(e);
-                    this.loadingpairs = false;
+                    this.loadingexchange = false;
                     console.log("Error: " +  e.message);
+
                 });
-            }
-            else {
-                this.loadingpairs = false;
-            }
+
+            })
+            .catch(e => {
+
+                this.errors.push(e);
+                this.loadingexchange = false;
+                console.log("Error: " +  e.message);
+
+            });
+
         },
         refreshInfopanel(exchange, pair){
             this.loadinginfo = true;
-            if (exchange.toLowerCase() == 'bittrex') {
-                let uri = '/api/bittrexapi/getmarketsummary/' + pair;
-                axios(uri, {
-                    method: 'GET',
-                })
-                .then(response => {
-                    this.marketsummary=response.data[0];  
-                    this.last =  parseFloat(this.marketsummary.Last);
-                    this.bid =  parseFloat(this.marketsummary.Bid);
-                    this.ask =  parseFloat(this.marketsummary.Ask);
-                    this.high =  parseFloat(this.marketsummary.High);
-                    this.low =  parseFloat(this.marketsummary.Low);
-                    this.volume =  parseFloat(this.marketsummary.BaseVolume);
-                    
-                    this.loadinginfo = false;
-                    console.log("Success loading info!");
-                })
-                .catch(e => {
-                    this.errors.push(e);
-                    this.loadinginfo = false;
-                    console.log("Error: " +  e.message);
-                })
-            }
+
+            let params = "?coin=" + pair.split("/")[0] + "&base=" + pair.split("/")[1];
+            let uri = '/api/broker/getticker/' + exchange + '/' + pair.split("/")[0] + "/" + pair.split("/")[1];
+            axios.get(uri)
+            .then(response => {
+
+                this.last =  parseFloat(response.data.result.ticker.last);
+                this.bid =  parseFloat(response.data.result.ticker.bid);
+                this.ask =  parseFloat(response.data.result.ticker.ask);
+                this.high =  parseFloat(response.data.result.ticker.high);
+                this.low =  parseFloat(response.data.result.ticker.low);
+                this.volume =  parseFloat(response.data.result.ticker.baseVolume);
+                this.basecurrency = pair.split("/")[1];
+                
+                this.loadinginfo = false;
+
+            })
+            .catch(e => {
+
+                this.errors.push(e);
+                this.loadinginfo = false;
+                console.log("Error: " +  e.message);
+
+            })
+       
         },
-        getmarkets(exchange, pair) {
+        getcoininfo(exchange, pair) {
+
             this.loadingpairs = true;
             this.coinname = {'long': 'loading', 'short':'...'};
             this.coinlogo = "";
+           
+            let coin = pair.split("/")[0];
+            axios.get('/api/broker/getcoininfo/' + coin)
+            .then(response => {
 
-            if (exchange.toLowerCase() == 'bittrex') {
-                let coin = pair.split("-");
-                axios('/api/bittrexapi/getmarkets/' + coin[1], {
-                    method: 'GET',
-                })
-                .then(response => {
-                    let res = response.data[0];  
-                    this.coinname = {'long': res.MarketCurrencyLong, 'short':res.MarketCurrency};
-                    this.coinlogo = res.LogoUrl;
-                    this.basecurrency = res.BaseCurrency;
-                    this.marketLoaded = true;
-                    this.loadingpairs = false;
-                    // console.log("Success coin info: " + this.coinname );
-                })
-                .catch(e => {
-                    this.errors.push(e);
-                    this.loadingpairs = false;
-                    console.log("Error: " +  e.message);
-                })
-            }
+                this.coinname = {'long': response.data.result['FullName'], 'short':coin};
+                this.coinlogo = response.data.result['LogoUrl'];
+                this.coinurl = response.data.result['InfoUrl'];
+                this.marketLoaded = true;
+                this.loadingpairs = false;
+
+            })
+            .catch(e => {
+
+                this.errors.push(e);
+                this.loadingpairs = false;
+                console.log("Error: " +  e.message);
+
+            })           
+
         },
         getbalance (exchange, pair) {
+
             this.loadingpairs = true;
 
-            if (exchange.toLowerCase() == 'bittrex') {
-                let coin = pair.split("-");
+            let base = pair.split("/")[1];
+             
+            axios.get('/api/broker/getbalances/' + exchange.toLowerCase())
+            .then(response => {
                 
-                axios('/api/bittrexapi/getbalance/' + coin[0], {
-                    method: 'GET',
-                })
-                .then(response => {
-                    console.log("Success balance: " + response.data.Available);
-                    let res = response.data[0];  
-                    response.data.Available ? this.availableBalance = response.data.Available + " " + response.data.Currency : this.availableBalance = "0 ";
-                    this.loadingpairs = false;
-                    // console.log("Success balance");
-                })
-                .catch(e => {
-                    this.errors.push(e);
-                    this.loadingpairs = false;
-                    console.log("Error: " +  e.message);
-                })
-            }
+                response.data.result[base] ? this.availableBalance = response.data.result[base] + " " + base : this.availableBalance = "0 " + base;
+                this.loadingpairs = false;
+
+            })
+            .catch(e => {
+
+                this.errors.push(e);
+                this.loadingpairs = false;
+                console.log("Error: " +  e.message);
+
+            })  
         }
     }
 };

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Portfolio;
 use App\PortfolioOrigin;
+use App\PortfolioAsset;
 
 class PortfolioOriginController extends Controller
 {
@@ -52,11 +53,82 @@ class PortfolioOriginController extends Controller
 
 	        return redirect('/portfolio');
     	
-    	} catch (Exception $e) {
+    	} catch (\Exception $e) {
 
     		return response($e->getMessage(), 500)->header('Content-Type', 'text/plain');
     		
     	}
     	
+    }
+
+    public function update(Request $request, $id)
+    {
+        try {
+            // Validate form
+            $validatedData = $request->validate([
+                'origin_type' => 'required',
+                'origin_name' => 'required'
+            ]);
+
+            $this->user = Auth::user();
+
+            $origin = $this->user->origins->where('id', $id)->first();
+
+            if ($origin) {
+
+                // Save old origin name for later
+                $oldName = $origin->name;
+
+                // Update origin data
+                $origin->type = $request->origin_type;
+                $origin->name = $request->origin_name;
+                $request->origin_address ? $origin->address = $request->origin_address : $origin->address = "-";
+                $origin->save();
+
+                // Retrieve user's assets to change the origin there as well
+                $assets = $this->user->assets;
+                $assetsFromOrigin = $assets->where('origin_name', $oldName);
+
+                foreach ($assetsFromOrigin as $asset) {
+                    $asset->origin_name = $request->origin_name;
+                    $asset->save();
+                }
+            }
+
+            return redirect('/portfolio');
+        
+        } catch (\Exception $e) {
+
+            return response($e->getMessage(), 500)->header('Content-Type', 'text/plain');
+            
+        }
+        
+    }
+
+    public function destroy(Request $request, $id)
+    {
+        try {
+
+            $this->user = Auth::user();
+
+            $origin = $this->user->origins->where('id', $id)->first();
+
+            // Retrieve user's assets to change the origin there as well
+            $assets = $this->user->assets;
+            $assetsFromOrigin = $assets->where('origin_name', $origin->name);
+
+            foreach ($assetsFromOrigin as $asset) {
+                PortfolioAsset::destroy($asset->id);
+            }
+
+            PortfolioOrigin::destroy($origin->id);
+
+            return redirect('/portfolio');
+            
+        } catch (\Exception $e) {
+
+             return response($e->getMessage(), 500)->header('Content-Type', 'text/plain');
+
+        }
     }
 }

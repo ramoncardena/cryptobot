@@ -66,13 +66,13 @@ class TrackStopLoss implements ShouldQueue
                 // TICKER
                 $broker = new Broker;
                 $broker->setExchange($stop->exchange);
-                $ticker = $broker->getTicker($stop->pair);
+                $ticker = $broker->getTicker2($stop->pair);
 
-                // Check for success on API call
+                // Check for success on call
                 if (! $ticker->success) {
 
-                    // Log ERROR: Bittrex API returned error
-                    Log::error("[TrackStopLoss] Bittrex API: " . $ticker->message);
+                    // Log ERROR: Broker returned error
+                    Log::error("[TrackStopLoss] Broker: " . $ticker->message);
 
                 }
                 else {
@@ -101,10 +101,16 @@ class TrackStopLoss implements ShouldQueue
 
             }
 
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
 
             // Log CRITICAL: Exception
             Log::critical("[TrackStopLoss] Exception: " . $e->getMessage());
+
+            // Add delay before requeueing
+            sleep(env('STOPLOSS_DELAY', 5));
+
+            // EVENT: StopLossNotReached
+            event(new StopLossNotReached($stop));
             
         }
     }

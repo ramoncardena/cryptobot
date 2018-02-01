@@ -6,8 +6,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 use App\Library\Services\Facades\Bittrex;
-use App\Exchange;
 use App\User;
+use App\CryptocompareAsset;
 
 /**
  * Summary
@@ -25,7 +25,23 @@ class CoinGuru
 
     }
 
-    public function cryptocompareCoinGetList() {
+    public function getCoinInfo($coin) 
+    {
+        $coin = CryptocompareAsset::where('symbol', $coin);
+
+        return  $coin->first();
+
+    }
+    public function getCoinList()
+    {
+        $coins = CryptocompareAsset::pluck('name');
+
+        return $coins->all();
+    }
+
+    
+    public function cryptocompareCoinGetList() 
+    {
 
     	$cryptocompareCoin = new \Cryptocompare\Coin();
 
@@ -35,12 +51,14 @@ class CoinGuru
         }
         else {
 
+            return [];
 
         }
 
     }
 
-    public function cryptocomparePriceGetSinglePrice($symbol, $counterValue) {
+    public function cryptocomparePriceGetSinglePrice($symbol, $counterValue) 
+    {
 
     	$cryptocomparePrice = new \Cryptocompare\Price();
        

@@ -74,13 +74,13 @@ class TrackConditional implements ShouldQueue
                 $broker = new Broker;
                 $broker->setExchange($conditional->exchange);
                 $broker->setUser($user);
-                $ticker = $broker->getTicker($conditional->pair);
+                $ticker = $broker->getTicker2($conditional->pair);
 
-                // Check for success on API call
+                // Check for success on call
                 if (! $ticker->success) {
 
-                    // Log ERROR: Bittrex API returned error
-                    Log::error("[TrackConditional] Bittrex API: " . $ticker->message);
+                    // Log ERROR: Broker returned error
+                    Log::error("[TrackConditional] Broker: " . $ticker->message);
 
                 }
                 else {
@@ -141,10 +141,16 @@ class TrackConditional implements ShouldQueue
 
             }
             
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
 
             // Log CRITICAL: Exception
             Log::critical("[TrackConditional] Exception: " . $e->getMessage());
+
+            // Add delay before requeueing
+            sleep(env('CONDITIONAL_DELAY', 5));
+
+            // EVENT: ConditionNotReached
+            event(new ConditionNotReached($conditional));
 
         }
     }

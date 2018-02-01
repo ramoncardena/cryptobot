@@ -1,7 +1,7 @@
 <template>
     <section id="editasset">
         <div class="grid-container fluid edit-asset">
-            <form method="POST" :action="'/assets/' + assetSelected">
+            <form method="POST" :action="'/portfolio/asset/' + assetSelected">
                 <input type="hidden" name="_token" :value="csrf">
                 <input name="_method" type="hidden" value="PATCH">
 

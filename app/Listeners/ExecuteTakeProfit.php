@@ -110,7 +110,7 @@ class ExecuteTakeProfit
                     $broker = new Broker;
                     $broker->setExchange($this->trade['exchange']);
                     $broker->setUser($user);
-                    $order = $broker->sellLimit($this->trade['pair'], $this->trade['amount'], $event->takeProfit->price);
+                    $order = $broker->sellLimit2($this->trade['pair'], $this->trade['amount'], $event->takeProfit->price);
                     
                 }
                 
@@ -121,7 +121,7 @@ class ExecuteTakeProfit
                     $this->order = new Order;
                     $this->order->user_id = $this->trade['user_id'];
                     $this->order->trade_id = $this->trade['id'];
-                    $this->order->exchange = 'bittrex';
+                    $this->order->exchange = $this->trade['exchange'];
                     $this->order->order_id = $order->result->uuid;
                     $this->order->type = 'close';
                     $this->order->cancel = false;
@@ -130,8 +130,10 @@ class ExecuteTakeProfit
                 }
                 else {
 
-                    // Log ERROR: Bittrex API returned error
-                    Log::error("[ExecuteTakeProfit] Bittrex API: " . $order->message);
+                    // Log ERROR: Broker returned error
+                    Log::error("[User " . $user->id . "] ExecuteTakeProfit Broker: " . $order->message);
+
+                    // TODO Launch event with error
 
                 }
 
@@ -154,10 +156,12 @@ class ExecuteTakeProfit
                 
             }
             
-        } catch(Exception $e) {
+        } catch(\Exception $e) {
               
             // Log CRITICAL: Exception
-            Log::critical("[ExecuteTakeProfit] Exception: " . $e->getMessage());
+            Log::critical("[User " . $user->id . "] ExecuteTakeProfit Exception: " . $e->getMessage());
+
+            // TODO Launch event with error
 
         }
 

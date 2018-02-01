@@ -44277,7 +44277,7 @@ module.exports = Cancel;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(142);
-module.exports = __webpack_require__(277);
+module.exports = __webpack_require__(292);
 
 
 /***/ }),
@@ -44314,11 +44314,16 @@ Vue.component('tradelist', __webpack_require__(247));
 Vue.component('tradepanel', __webpack_require__(250));
 Vue.component('notification-list', __webpack_require__(253));
 Vue.component('add-origin', __webpack_require__(256));
-Vue.component('add-asset', __webpack_require__(259));
-Vue.component('edit-asset', __webpack_require__(262));
-Vue.component('transactions', __webpack_require__(265));
-Vue.component('portfolio', __webpack_require__(268));
-Vue.component('asset', __webpack_require__(271));
+Vue.component('edit-origin', __webpack_require__(259));
+Vue.component('delete-origin', __webpack_require__(262));
+Vue.component('add-asset', __webpack_require__(265));
+Vue.component('edit-asset', __webpack_require__(268));
+Vue.component('delete-asset', __webpack_require__(271));
+Vue.component('add-transaction', __webpack_require__(274));
+Vue.component('delete-transaction', __webpack_require__(277));
+Vue.component('portfolio', __webpack_require__(280));
+Vue.component('asset', __webpack_require__(283));
+Vue.component('connections', __webpack_require__(286));
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -44331,9 +44336,9 @@ var app = new Vue({
 
 $(document).ready(function () {
 
-    __webpack_require__(274);
-    __webpack_require__(275);
-    __webpack_require__(276);
+    __webpack_require__(289);
+    __webpack_require__(290);
+    __webpack_require__(291);
 
     $.extend($.fn.dataTable.defaults, {
         responsive: true
@@ -113626,7 +113631,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             updating: false,
             profit: 0,
             last: 0,
-            tradeStatus: ""
+            tradeStatus: "",
+            baseCurrency: ""
         };
     },
     props: ['status', 'exchange', 'position', 'pair', 'price', 'amount', 'total', 'stop-loss', 'take-profit', 'condition', 'condition-price', "final-profit", "type", "closing-price", "timestamp", "id"],
@@ -113657,6 +113663,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         var _this = this;
 
         this.tradeStatus = this.status;
+
+        this.baseCurrency = this.pair.split('/')[1];
+
         this.update(this.exchange, this.pair, this.price);
 
         Echo.private('trades.' + this.id).listen('TradeOpened', function (e) {
@@ -113679,26 +113688,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             var percent = 0;
             this.updating = true;
-            if (exchange.toLowerCase() == 'bittrex') {
-                var uri = '/api/bittrexapi/getmarketsummary/' + pair;
-                axios(uri, {
-                    method: 'GET'
-                }).then(function (response) {
-                    _this2.marketsummary = response.data[0];
-                    _this2.last = _this2.marketsummary.Last;
 
-                    // Calculate percentual diference
-                    var decreaseValue = _this2.last - price;
-                    decreaseValue = decreaseValue / price * 100;
-                    _this2.profit = decreaseValue.toFixed(2) + "%";
+            var params = "?coin=" + pair.split("/")[0] + "&base=" + pair.split("/")[1];
+            var uri = '/api/broker/getticker/' + exchange + '/' + pair.split("/")[0] + "/" + pair.split("/")[1];
+            axios.get(uri).then(function (response) {
 
-                    _this2.updating = false;
-                    //console.log("Last: " + this.last + " - " + (decreaseValue / price) * 100);
-                }).catch(function (e) {
-                    _this2.updating = false;
-                    console.log("Error: " + e.message);
-                });
-            }
+                _this2.last = parseFloat(response.data.result.ticker.last);
+
+                // Calculate percentual diference
+                var decreaseValue = _this2.last - price;
+                decreaseValue = decreaseValue / price * 100;
+                _this2.profit = decreaseValue.toFixed(2) + "%";
+
+                _this2.updating = false;
+            }).catch(function (e) {
+
+                _this2.updating = false;
+                console.log("Error: " + e.message);
+            });
         }
     }
 });
@@ -113847,19 +113854,55 @@ var render = function() {
     _vm._v(" "),
     _c("td", [_vm._v(_vm._s(_vm.position))]),
     _vm._v(" "),
-    _c("td", [_vm._v(_vm._s(_vm.last.toFixed(8)))]),
+    _c("td", [
+      _c("span", { staticClass: "nowarp" }, [
+        _vm._v(_vm._s(_vm.last.toFixed(8)) + _vm._s(_vm.baseCurrency))
+      ])
+    ]),
     _vm._v(" "),
-    _c("td", [_vm._v(_vm._s(parseFloat(_vm.price).toFixed(8)))]),
+    _c("td", [
+      _c("span", { staticClass: "nowarp" }, [
+        _vm._v(
+          _vm._s(parseFloat(_vm.price).toFixed(8)) + _vm._s(_vm.baseCurrency)
+        )
+      ])
+    ]),
     _vm._v(" "),
-    _c("td", [_vm._v(_vm._s(parseFloat(_vm.closingPrice).toFixed(8)))]),
+    _c("td", [
+      _c("span", { staticClass: "nowarp" }, [
+        _vm._v(
+          _vm._s(parseFloat(_vm.closingPrice).toFixed(8)) +
+            _vm._s(_vm.baseCurrency)
+        )
+      ])
+    ]),
     _vm._v(" "),
     _c("td", [_vm._v(_vm._s(parseFloat(_vm.amount).toFixed(4)))]),
     _vm._v(" "),
-    _c("td", [_vm._v(_vm._s(parseFloat(_vm.total).toFixed(8)))]),
+    _c("td", [
+      _c("span", { staticClass: "nowarp" }, [
+        _vm._v(
+          _vm._s(parseFloat(_vm.total).toFixed(8)) + _vm._s(_vm.baseCurrency)
+        )
+      ])
+    ]),
     _vm._v(" "),
-    _c("td", [_vm._v(_vm._s(parseFloat(_vm.stopLoss).toFixed(8)))]),
+    _c("td", [
+      _c("span", { staticClass: "nowarp" }, [
+        _vm._v(
+          _vm._s(parseFloat(_vm.stopLoss).toFixed(8)) + _vm._s(_vm.baseCurrency)
+        )
+      ])
+    ]),
     _vm._v(" "),
-    _c("td", [_vm._v(_vm._s(parseFloat(_vm.takeProfit).toFixed(8)))]),
+    _c("td", [
+      _c("span", { staticClass: "nowarp" }, [
+        _vm._v(
+          _vm._s(parseFloat(_vm.takeProfit).toFixed(8)) +
+            _vm._s(_vm.baseCurrency)
+        )
+      ])
+    ]),
     _vm._v(" "),
     _c("td", [
       _vm._v(
@@ -113867,7 +113910,14 @@ var render = function() {
       )
     ]),
     _vm._v(" "),
-    _c("td", [_vm._v(" " + _vm._s(parseFloat(_vm.conditionPrice).toFixed(8)))]),
+    _c("td", [
+      _c("span", { staticClass: "nowarp" }, [
+        _vm._v(
+          _vm._s(parseFloat(_vm.conditionPrice).toFixed(8)) +
+            _vm._s(_vm.baseCurrency)
+        )
+      ])
+    ]),
     _vm._v(" "),
     _c("td", [_vm._v(" " + _vm._s(_vm.date))])
   ])
@@ -114276,7 +114326,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             low: 0.00000000,
             stoploss: 0,
             takeprofit: 0,
-            csrf: ""
+            csrf: "",
+            errors: []
         };
     },
     computed: {
@@ -114309,60 +114360,55 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             this.loadingprice = true;
 
-            if (exchange.toLowerCase() == 'bittrex') {
-                var uri = '/api/bittrexapi/getmarketsummary/' + pair;
-                axios(uri, {
-                    method: 'GET'
-                }).then(function (response) {
-                    _this.marketsummary = response.data[0];
-                    _this.last = parseFloat(_this.marketsummary.Last);
-                    _this.bid = parseFloat(_this.marketsummary.Bid);
-                    _this.ask = parseFloat(_this.marketsummary.Ask);
-                    _this.high = parseFloat(_this.marketsummary.High);
-                    _this.low = parseFloat(_this.marketsummary.Low);
-                    _this.loadingprice = false;
-                }).catch(function (e) {
-                    _this.errors.push(e);
-                    _this.loadingprice = false;
-                    console.log("Error: " + e.message);
-                });
-            } else {
-                this.loadingprice = false;
-            }
+            var params = "?coin=" + pair.split("/")[0] + "&base=" + pair.split("/")[1];
+            var uri = '/api/broker/getticker/' + exchange + '/' + pair.split("/")[0] + "/" + pair.split("/")[1];
+            axios.get(uri).then(function (response) {
+
+                _this.last = parseFloat(response.data.result.ticker.last);
+                _this.bid = parseFloat(response.data.result.ticker.bid);
+                _this.ask = parseFloat(response.data.result.ticker.ask);
+                _this.high = parseFloat(response.data.result.ticker.high);
+                _this.low = parseFloat(response.data.result.ticker.low);
+                _this.loadingprice = false;
+            }).catch(function (e) {
+
+                _this.errors.push(e);
+                _this.loadingprice = false;
+                console.log("Error: " + e.message);
+            });
         },
         updateprice: function updateprice(exchange, pair, pricetype) {
             var _this2 = this;
 
             this.loadingprice = true;
 
-            if (exchange.toLowerCase() == 'bittrex') {
-                var uri = '/api/bittrexapi/getmarketsummary/' + pair;
-                axios(uri, {
-                    method: 'GET'
-                }).then(function (response) {
-                    _this2.marketsummary = response.data[0];
-                    _this2.last = parseFloat(_this2.marketsummary.Last);
-                    _this2.bid = parseFloat(_this2.marketsummary.Bid);
-                    _this2.ask = parseFloat(_this2.marketsummary.Ask);
-                    _this2.high = parseFloat(_this2.marketsummary.High);
-                    _this2.low = parseFloat(_this2.marketsummary.Low);
+            var params = "?coin=" + pair.split("/")[0] + "&base=" + pair.split("/")[1];
+            var uri = '/api/broker/getticker/' + exchange + '/' + pair.split("/")[0] + "/" + pair.split("/")[1];
+            axios.get(uri).then(function (response) {
 
-                    if (pricetype.toLowerCase() == "last") {
-                        _this2.closingprice = parseFloat(_this2.last);
-                    } else if (pricetype.toLowerCase() == "bid") {
-                        _this2.closingprice = parseFloat(_this2.bid);
-                    } else if (pricetype.toLowerCase() == "ask") {
-                        _this2.closingprice = parseFloat(_this2.ask);
-                    }
-                    _this2.loadingprice = false;
-                }).catch(function (e) {
-                    _this2.errors.push(e);
-                    _this2.loadingprice = false;
-                    console.log("Error: " + e.message);
-                });
-            } else {
-                this.loadingprice = false;
-            }
+                _this2.last = parseFloat(response.data.result.ticker.last);
+                _this2.bid = parseFloat(response.data.result.ticker.bid);
+                _this2.ask = parseFloat(response.data.result.ticker.ask);
+                _this2.high = parseFloat(response.data.result.ticker.high);
+                _this2.low = parseFloat(response.data.result.ticker.low);
+
+                if (pricetype.toLowerCase() == "last") {
+
+                    _this2.closingprice = parseFloat(_this2.last);
+                } else if (pricetype.toLowerCase() == "bid") {
+
+                    _this2.closingprice = parseFloat(_this2.bid);
+                } else if (pricetype.toLowerCase() == "ask") {
+
+                    _this2.closingprice = parseFloat(_this2.ask);
+                }
+                _this2.loadingprice = false;
+            }).catch(function (e) {
+
+                _this2.errors.push(e);
+                _this2.loadingprice = false;
+                console.log("Error: " + e.message);
+            });
         },
         calculateProfit: function calculateProfit(price) {
             if (this.closingprice != 0) {
@@ -114412,7 +114458,7 @@ var render = function() {
               _c(
                 "th",
                 {
-                  staticClass: "sorting",
+                  staticClass: "sorting nowrap",
                   attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
                 },
                 [_vm._v("P/L (%)")]
@@ -114421,7 +114467,7 @@ var render = function() {
               _c(
                 "th",
                 {
-                  staticClass: "sorting",
+                  staticClass: "sorting nowrap",
                   attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
                 },
                 [_vm._v("Pair")]
@@ -114430,7 +114476,7 @@ var render = function() {
               _c(
                 "th",
                 {
-                  staticClass: "sorting_asc",
+                  staticClass: "sorting_asc nowrap",
                   attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
                 },
                 [_vm._v("Status")]
@@ -114439,7 +114485,7 @@ var render = function() {
               _c(
                 "th",
                 {
-                  staticClass: "sorting",
+                  staticClass: "sorting nowrap",
                   attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
                 },
                 [_vm._v("Exchange")]
@@ -114448,7 +114494,7 @@ var render = function() {
               _c(
                 "th",
                 {
-                  staticClass: "sorting",
+                  staticClass: "sorting nowrap",
                   attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
                 },
                 [_vm._v("Position")]
@@ -114457,7 +114503,7 @@ var render = function() {
               _c(
                 "th",
                 {
-                  staticClass: "sorting",
+                  staticClass: "sorting nowrap",
                   attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
                 },
                 [_vm._v("Last Price")]
@@ -114466,7 +114512,7 @@ var render = function() {
               _c(
                 "th",
                 {
-                  staticClass: "sorting",
+                  staticClass: "sorting nowrap",
                   attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
                 },
                 [_vm._v("Open Price")]
@@ -114475,7 +114521,7 @@ var render = function() {
               _c(
                 "th",
                 {
-                  staticClass: "sorting",
+                  staticClass: "sorting nowrap",
                   attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
                 },
                 [_vm._v("Close Price")]
@@ -114484,7 +114530,7 @@ var render = function() {
               _c(
                 "th",
                 {
-                  staticClass: "sorting",
+                  staticClass: "sorting nowrap",
                   attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
                 },
                 [_vm._v("Amount")]
@@ -114493,7 +114539,7 @@ var render = function() {
               _c(
                 "th",
                 {
-                  staticClass: "sorting",
+                  staticClass: "sorting nowrap",
                   attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
                 },
                 [_vm._v("Total")]
@@ -114502,7 +114548,7 @@ var render = function() {
               _c(
                 "th",
                 {
-                  staticClass: "sorting",
+                  staticClass: "sorting nowrap",
                   attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
                 },
                 [_vm._v("Stop-Loss")]
@@ -114511,7 +114557,7 @@ var render = function() {
               _c(
                 "th",
                 {
-                  staticClass: "sorting",
+                  staticClass: "sorting nowrap",
                   attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
                 },
                 [_vm._v("Take-Profit")]
@@ -114520,7 +114566,7 @@ var render = function() {
               _c(
                 "th",
                 {
-                  staticClass: "sorting",
+                  staticClass: "sorting nowrap",
                   attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
                 },
                 [_vm._v("Condition")]
@@ -114529,7 +114575,7 @@ var render = function() {
               _c(
                 "th",
                 {
-                  staticClass: "sorting",
+                  staticClass: "sorting nowrap",
                   attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
                 },
                 [_vm._v("Cond. Price")]
@@ -114538,7 +114584,7 @@ var render = function() {
               _c(
                 "th",
                 {
-                  staticClass: "sorting",
+                  staticClass: "sorting nowrap",
                   attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
                 },
                 [_vm._v("Date")]
@@ -115680,7 +115726,8 @@ var render = function() {
                                     " " +
                                     _vm._s(
                                       trade.pair.substr(
-                                        trade.pair.indexOf("-") + 1
+                                        0,
+                                        trade.pair.indexOf("/")
                                       )
                                     ) +
                                     ". Are you sure?"
@@ -116047,7 +116094,7 @@ var staticRenderFns = [
         { staticClass: "hollow button", attrs: { type: "submit" } },
         [
           _vm._v(
-            "\n                                   Yes, keep\n                                "
+            "\n                                   HODL!\n                                "
           )
         ]
       )
@@ -116374,9 +116421,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'tradepanel',
@@ -116391,6 +116435,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             stopAtTotal: false,
             stopAtAmount: false,
             loadingpairs: false,
+            loadingexchange: false,
             loadingprice: false,
             loadinginfo: false,
             marketLoaded: false,
@@ -116405,7 +116450,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             pairselected: "",
             bittrexpairs: [],
             bittrexcoin: [],
-            marketsummary: [],
             conditionselected: "now",
             conditionprice: 0.00000000,
             conditionalSwitch: false,
@@ -116413,6 +116457,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             basecurrency: "",
             coinname: { 'long': '', 'short': '' },
             coinlogo: "",
+            coinurl: "",
             volume: 0.0000,
             price: 0.00000000,
             last: 0.00000000,
@@ -116565,208 +116610,188 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             this.loadingprice = true;
 
-            if (exchange.toLowerCase() == 'bittrex') {
-                var uri = '/api/bittrexapi/getmarketsummary/' + pair;
-                axios(uri, {
-                    method: 'GET'
-                }).then(function (response) {
-                    _this.marketsummary = response.data[0];
-                    _this.last = parseFloat(_this.marketsummary.Last);
-                    _this.bid = parseFloat(_this.marketsummary.Bid);
-                    _this.ask = parseFloat(_this.marketsummary.Ask);
-                    _this.volume = parseFloat(_this.marketsummary.BaseVolume);
+            var params = "?coin=" + pair.split("/")[0] + "&base=" + pair.split("/")[1];
+            var uri = '/api/broker/getticker/' + exchange + '/' + pair.split("/")[0] + "/" + pair.split("/")[1];
+            axios.get(uri).then(function (response) {
 
-                    if (pricetype.toLowerCase() == "last") {
-                        _this.price = parseFloat(_this.last);
-                    } else if (pricetype.toLowerCase() == "bid") {
-                        _this.price = parseFloat(_this.bid);
-                    } else if (pricetype.toLowerCase() == "ask") {
-                        _this.price = parseFloat(_this.ask);
-                    }
-                    _this.loadingprice = false;
-                }).catch(function (e) {
-                    _this.errors.push(e);
-                    _this.loadingprice = false;
-                    console.log("Error: " + e.message);
-                });
-            } else {
-                this.loadingprice = false;
-            }
+                _this.last = parseFloat(response.data.result.ticker.last);
+                _this.bid = parseFloat(response.data.result.ticker.bid);
+                _this.ask = parseFloat(response.data.result.ticker.ask);
+                _this.volume = parseFloat(response.data.result.ticker.baseVolume);
+
+                if (pricetype.toLowerCase() == "last") {
+
+                    _this.price = parseFloat(_this.last);
+                } else if (pricetype.toLowerCase() == "bid") {
+
+                    _this.price = parseFloat(_this.bid);
+                } else if (pricetype.toLowerCase() == "ask") {
+
+                    _this.price = parseFloat(_this.ask);
+                }
+                _this.loadingprice = false;
+            }).catch(function (e) {
+
+                _this.errors.push(e);
+                _this.loadingprice = false;
+                console.log("Error: " + e.message);
+            });
         },
         getmarketsummary: function getmarketsummary(exchange, pair) {
             var _this2 = this;
 
             this.loadingpairs = true;
-            if (exchange.toLowerCase() == 'bittrex') {
-                var uri = '/api/bittrexapi/getmarketsummary/' + pair;
-                axios(uri, {
-                    method: 'GET'
-                }).then(function (response) {
-                    _this2.marketsummary = response.data[0];
-                    _this2.priceselected = "";
-                    _this2.last = parseFloat(_this2.marketsummary.Last);
-                    _this2.bid = parseFloat(_this2.marketsummary.Bid);
-                    _this2.ask = parseFloat(_this2.marketsummary.Ask);
-                    _this2.high = parseFloat(_this2.marketsummary.High);
-                    _this2.low = parseFloat(_this2.marketsummary.Low);
-                    _this2.volume = parseFloat(_this2.marketsummary.BaseVolume);
 
-                    // Set price for current pair to 0
-                    _this2.stopAtTotal = true;
-                    _this2.price = parseFloat(0.00000000);
+            var params = "?coin=" + pair.split("/")[0] + "&base=" + pair.split("/")[1];
+            var uri = '/api/broker/getticker/' + exchange + '/' + pair.split("/")[0] + "/" + pair.split("/")[1];
+            axios.get(uri).then(function (response) {
 
-                    // TODO Get balance for the selected base currency
-                    _this2.getbalance(exchange, pair);
+                _this2.priceselected = "";
+                _this2.last = parseFloat(response.data.result.ticker.last);
+                _this2.bid = parseFloat(response.data.result.ticker.bid);
+                _this2.ask = parseFloat(response.data.result.ticker.ask);
+                _this2.high = parseFloat(response.data.result.ticker.high);
+                _this2.low = parseFloat(response.data.result.ticker.low);
+                _this2.volume = parseFloat(response.data.result.ticker.baseVolume);
+                _this2.basecurrency = pair.split("/")[1];
 
-                    // Get coin info from api call getmarkets
-                    _this2.getmarkets(exchange, pair);
+                // Set price for current pair to 0
+                _this2.stopAtTotal = true;
+                _this2.price = parseFloat(0.00000000);
 
-                    _this2.loadingpairs = false;
-                    console.log("Success: " + _this2.marketsummary.MarketName);
-                }).catch(function (e) {
-                    _this2.errors.push(e);
-                    _this2.loadingpairs = false;
-                    console.log("Error: " + e.message);
-                });
-            }
+                // TODO Get balance for the selected base currency
+                _this2.getbalance(exchange, pair);
+
+                // Get coin info from api call getcoininfo
+                _this2.getcoininfo(exchange, pair);
+
+                _this2.loadingpairs = false;
+            }).catch(function (e) {
+
+                _this2.errors.push(e);
+                _this2.loadingpairs = false;
+                console.log("Error: " + e.message);
+            });
         },
         getpairs: function getpairs(exchange) {
             var _this3 = this;
 
-            this.loadingpairs = true;
+            this.loadingexchange = true;
             this.pairselected = "";
 
-            //Bittrex
-            if (exchange.toLowerCase() == 'bittrex') {
-                axios('/api/bittrexapi/getpairs', {
-                    method: 'GET'
-                }).then(function (response) {
-                    _this3.bittrexpairs = response.data;
+            axios.get('/api/broker/getpairs/' + exchange).then(function (response) {
 
-                    var options = {
-                        data: _this3.bittrexpairs,
-                        list: {
-                            onClickEvent: function onClickEvent() {
-                                _this3.pairselected = $("#pairs").getSelectedItemData();
-                                _this3.getmarketsummary(exchange, _this3.pairselected);
-                            },
-                            maxNumberOfElements: 999,
-                            match: {
-                                enabled: true
-                            },
-                            showAnimation: {
-                                type: "fade", //normal|slide|fade
-                                time: 400,
-                                callback: function callback() {}
-                            },
-                            hideAnimation: {
-                                type: "fade s", //normal|slide|fade
-                                time: 400,
-                                callback: function callback() {}
-                            }
+                _this3.bittrexpairs = response.data.result.pairs;
+
+                var options = {
+                    data: _this3.bittrexpairs,
+                    list: {
+                        onClickEvent: function onClickEvent() {
+                            _this3.pairselected = $("#pairs").getSelectedItemData();
+                            _this3.getmarketsummary(exchange, _this3.pairselected);
                         },
-                        theme: "square"
-                    };
+                        maxNumberOfElements: 999,
+                        match: {
+                            enabled: true
+                        },
+                        showAnimation: {
+                            type: "fade", //normal|slide|fade
+                            time: 400,
+                            callback: function callback() {}
+                        },
+                        hideAnimation: {
+                            type: "fade", //normal|slide|fade
+                            time: 400,
+                            callback: function callback() {}
+                        }
+                    },
+                    theme: "square"
+                };
 
-                    $("#pairs").easyAutocomplete(options);
+                $("#pairs").easyAutocomplete(options);
 
-                    console.log("Success: " + exchange + " pairs!");
+                // Get fee fot the exchange
+                axios.get('/api/broker/getfee/' + exchange.toLowerCase()).then(function (response) {
 
-                    // Get fee fot the exchange
-                    axios('/api/exchange/' + exchange.toLowerCase() + '/fee', {
-                        method: 'GET'
-                    }).then(function (response) {
-                        _this3.fee = parseFloat(response.data);
-                        console.log("Success: " + exchange + " fee! (" + _this3.fee + ")");
-                        _this3.loadingpairs = false;
-                    }).catch(function (e) {
-                        _this3.errors.push(e);
-                        _this3.loadingpairs = false;
-                        console.log("Error: " + e.message);
-                    });
+                    _this3.fee = parseFloat(response.data);
+                    _this3.loadingexchange = false;
                 }).catch(function (e) {
+
                     _this3.errors.push(e);
-                    _this3.loadingpairs = false;
+                    _this3.loadingexchange = false;
                     console.log("Error: " + e.message);
                 });
-            } else {
-                this.loadingpairs = false;
-            }
+            }).catch(function (e) {
+
+                _this3.errors.push(e);
+                _this3.loadingexchange = false;
+                console.log("Error: " + e.message);
+            });
         },
         refreshInfopanel: function refreshInfopanel(exchange, pair) {
             var _this4 = this;
 
             this.loadinginfo = true;
-            if (exchange.toLowerCase() == 'bittrex') {
-                var uri = '/api/bittrexapi/getmarketsummary/' + pair;
-                axios(uri, {
-                    method: 'GET'
-                }).then(function (response) {
-                    _this4.marketsummary = response.data[0];
-                    _this4.last = parseFloat(_this4.marketsummary.Last);
-                    _this4.bid = parseFloat(_this4.marketsummary.Bid);
-                    _this4.ask = parseFloat(_this4.marketsummary.Ask);
-                    _this4.high = parseFloat(_this4.marketsummary.High);
-                    _this4.low = parseFloat(_this4.marketsummary.Low);
-                    _this4.volume = parseFloat(_this4.marketsummary.BaseVolume);
 
-                    _this4.loadinginfo = false;
-                    console.log("Success loading info!");
-                }).catch(function (e) {
-                    _this4.errors.push(e);
-                    _this4.loadinginfo = false;
-                    console.log("Error: " + e.message);
-                });
-            }
+            var params = "?coin=" + pair.split("/")[0] + "&base=" + pair.split("/")[1];
+            var uri = '/api/broker/getticker/' + exchange + '/' + pair.split("/")[0] + "/" + pair.split("/")[1];
+            axios.get(uri).then(function (response) {
+
+                _this4.last = parseFloat(response.data.result.ticker.last);
+                _this4.bid = parseFloat(response.data.result.ticker.bid);
+                _this4.ask = parseFloat(response.data.result.ticker.ask);
+                _this4.high = parseFloat(response.data.result.ticker.high);
+                _this4.low = parseFloat(response.data.result.ticker.low);
+                _this4.volume = parseFloat(response.data.result.ticker.baseVolume);
+                _this4.basecurrency = pair.split("/")[1];
+
+                _this4.loadinginfo = false;
+            }).catch(function (e) {
+
+                _this4.errors.push(e);
+                _this4.loadinginfo = false;
+                console.log("Error: " + e.message);
+            });
         },
-        getmarkets: function getmarkets(exchange, pair) {
+        getcoininfo: function getcoininfo(exchange, pair) {
             var _this5 = this;
 
             this.loadingpairs = true;
             this.coinname = { 'long': 'loading', 'short': '...' };
             this.coinlogo = "";
 
-            if (exchange.toLowerCase() == 'bittrex') {
-                var coin = pair.split("-");
-                axios('/api/bittrexapi/getmarkets/' + coin[1], {
-                    method: 'GET'
-                }).then(function (response) {
-                    var res = response.data[0];
-                    _this5.coinname = { 'long': res.MarketCurrencyLong, 'short': res.MarketCurrency };
-                    _this5.coinlogo = res.LogoUrl;
-                    _this5.basecurrency = res.BaseCurrency;
-                    _this5.marketLoaded = true;
-                    _this5.loadingpairs = false;
-                    // console.log("Success coin info: " + this.coinname );
-                }).catch(function (e) {
-                    _this5.errors.push(e);
-                    _this5.loadingpairs = false;
-                    console.log("Error: " + e.message);
-                });
-            }
+            var coin = pair.split("/")[0];
+            axios.get('/api/broker/getcoininfo/' + coin).then(function (response) {
+
+                _this5.coinname = { 'long': response.data.result['FullName'], 'short': coin };
+                _this5.coinlogo = response.data.result['LogoUrl'];
+                _this5.coinurl = response.data.result['InfoUrl'];
+                _this5.marketLoaded = true;
+                _this5.loadingpairs = false;
+            }).catch(function (e) {
+
+                _this5.errors.push(e);
+                _this5.loadingpairs = false;
+                console.log("Error: " + e.message);
+            });
         },
         getbalance: function getbalance(exchange, pair) {
             var _this6 = this;
 
             this.loadingpairs = true;
 
-            if (exchange.toLowerCase() == 'bittrex') {
-                var coin = pair.split("-");
+            var base = pair.split("/")[1];
 
-                axios('/api/bittrexapi/getbalance/' + coin[0], {
-                    method: 'GET'
-                }).then(function (response) {
-                    console.log("Success balance: " + response.data.Available);
-                    var res = response.data[0];
-                    response.data.Available ? _this6.availableBalance = response.data.Available + " " + response.data.Currency : _this6.availableBalance = "0 ";
-                    _this6.loadingpairs = false;
-                    // console.log("Success balance");
-                }).catch(function (e) {
-                    _this6.errors.push(e);
-                    _this6.loadingpairs = false;
-                    console.log("Error: " + e.message);
-                });
-            }
+            axios.get('/api/broker/getbalances/' + exchange.toLowerCase()).then(function (response) {
+
+                response.data.result[base] ? _this6.availableBalance = response.data.result[base] + " " + base : _this6.availableBalance = "0 " + base;
+                _this6.loadingpairs = false;
+            }).catch(function (e) {
+
+                _this6.errors.push(e);
+                _this6.loadingpairs = false;
+                console.log("Error: " + e.message);
+            });
         }
     }
 });
@@ -116802,6 +116827,17 @@ var render = function() {
             _vm._v(" "),
             _c("div", { staticClass: "input-group" }, [
               _c("span", { staticClass: "input-group-label" }, [
+                _c("i", {
+                  directives: [
+                    {
+                      name: "show",
+                      rawName: "v-show",
+                      value: _vm.loadingexchange,
+                      expression: "loadingexchange"
+                    }
+                  ],
+                  staticClass: "fa fa-cog fa-spin fa-fw"
+                }),
                 _vm._v("Exchange")
               ]),
               _vm._v(" "),
@@ -117651,12 +117687,12 @@ var render = function() {
                 }
               },
               [
-                _vm._v(" Vol: "),
-                _c("i", {
-                  staticClass: "fa fa-btc",
-                  attrs: { "aria-hidden": "true" }
-                }),
-                _vm._v(" " + _vm._s(_vm.volumeC))
+                _vm._v(
+                  " Vol: " +
+                    _vm._s(_vm.volumeC) +
+                    " " +
+                    _vm._s(_vm.basecurrency)
+                )
               ]
             )
           ]),
@@ -117675,12 +117711,9 @@ var render = function() {
                 }
               },
               [
-                _vm._v(" H: "),
-                _c("i", {
-                  staticClass: "fa fa-btc",
-                  attrs: { "aria-hidden": "true" }
-                }),
-                _vm._v(" " + _vm._s(_vm.highC))
+                _vm._v(
+                  " H: " + _vm._s(_vm.highC) + " " + _vm._s(_vm.basecurrency)
+                )
               ]
             )
           ]),
@@ -117699,12 +117732,13 @@ var render = function() {
                 }
               },
               [
-                _vm._v(" L: "),
-                _c("i", {
-                  staticClass: "fa fa-btc",
-                  attrs: { "aria-hidden": "true" }
-                }),
-                _vm._v(" " + _vm._s(_vm.lowC) + " ")
+                _vm._v(
+                  " L: " +
+                    _vm._s(_vm.lowC) +
+                    " " +
+                    _vm._s(_vm.basecurrency) +
+                    " "
+                )
               ]
             )
           ]),
@@ -117722,12 +117756,9 @@ var render = function() {
                 }
               },
               [
-                _vm._v(" BID: "),
-                _c("i", {
-                  staticClass: "fa fa-btc",
-                  attrs: { "aria-hidden": "true" }
-                }),
-                _vm._v(" " + _vm._s(_vm.bidC))
+                _vm._v(
+                  " BID: " + _vm._s(_vm.bidC) + " " + _vm._s(_vm.basecurrency)
+                )
               ]
             )
           ]),
@@ -117745,12 +117776,13 @@ var render = function() {
                 }
               },
               [
-                _vm._v(" ASK: "),
-                _c("i", {
-                  staticClass: "fa fa-btc",
-                  attrs: { "aria-hidden": "true" }
-                }),
-                _vm._v(" " + _vm._s(_vm.askC) + " ")
+                _vm._v(
+                  " ASK: " +
+                    _vm._s(_vm.askC) +
+                    " " +
+                    _vm._s(_vm.basecurrency) +
+                    " "
+                )
               ]
             )
           ]),
@@ -117768,12 +117800,13 @@ var render = function() {
                 }
               },
               [
-                _vm._v(" LAST: "),
-                _c("i", {
-                  staticClass: "fa fa-btc",
-                  attrs: { "aria-hidden": "true" }
-                }),
-                _vm._v(" " + _vm._s(_vm.lastC) + " ")
+                _vm._v(
+                  " LAST: " +
+                    _vm._s(_vm.lastC) +
+                    " " +
+                    _vm._s(_vm.basecurrency) +
+                    " "
+                )
               ]
             )
           ])
@@ -118509,7 +118542,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/AddAsset.vue"
+Component.options.__file = "resources/assets/js/components/EditOrigin.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
 
 /* hot reload */
@@ -118519,9 +118552,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-2fb23886", Component.options)
+    hotAPI.createRecord("data-v-6e448172", Component.options)
   } else {
-    hotAPI.reload("data-v-2fb23886", Component.options)
+    hotAPI.reload("data-v-6e448172", Component.options)
 ' + '  }
   module.hot.dispose(function (data) {
     disposed = true
@@ -118609,6 +118642,790 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: 'edit-origin',
+    data: function data() {
+        return {
+            exchange: "",
+            noxchgOrigins: [],
+            origin: {},
+            originSelected: "",
+            originSelectedName: "",
+            originType: "",
+            originName: "",
+            originAddress: "",
+            updating: false,
+            csrf: "",
+            errors: []
+        };
+    },
+    props: ['exchanges', 'origins', 'origin-types', 'validation-errors'],
+    computed: {},
+    mounted: function mounted() {
+
+        for (var i = 0; i < this.origins.length; i++) {
+            if (this.exchanges.indexOf(this.origins[i].name.toLowerCase()) < 0) {
+                this.noxchgOrigins.push(this.origins[i]);
+            }
+        }
+
+        this.csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        console.log('Component AddOrigin mounted.');
+    },
+
+    methods: {
+        loadOrigin: function loadOrigin() {
+            console.log("Loading Origin...");
+            // for (var i = 0; i < this.origins.length; i++) {     
+            //     if (this.origins[i].id == this.originSelected) this.originSelectedName = this.origins[i].name;
+            // }
+
+            for (var i = 0; i < this.origins.length; i++) {
+                if (this.origins[i].id == this.originSelected) this.origin = this.origins[i];
+            }
+            this.originType = this.origin.type;
+            this.originName = this.origin.name;
+            this.originAddress = this.origin.address;
+        },
+        saveName: function saveName() {}
+    }
+});
+
+/***/ }),
+/* 261 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "grid-container fluid" }, [
+    _c(
+      "form",
+      {
+        attrs: {
+          method: "POST",
+          action: "/portfolio/origin/" + _vm.originSelected
+        }
+      },
+      [
+        _c("input", {
+          attrs: { type: "hidden", name: "_token" },
+          domProps: { value: _vm.csrf }
+        }),
+        _vm._v(" "),
+        _c("input", {
+          attrs: { name: "_method", type: "hidden", value: "PATCH" }
+        }),
+        _vm._v(" "),
+        _c("div", { staticClass: "grid-x grid-padding-x" }, [
+          _vm._m(0, false, false),
+          _vm._v(" "),
+          _c("div", { staticClass: "small-12 cell form-container" }, [
+            _vm.validationErrors.origin_type
+              ? _c(
+                  "div",
+                  _vm._l(_vm.validationErrors.origin_type, function(error) {
+                    return _c("span", { staticClass: "validation-error" }, [
+                      _vm._v(" " + _vm._s(error) + " ")
+                    ])
+                  })
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _c("div", { staticClass: "input-group" }, [
+              _c("span", { staticClass: "input-group-label" }, [
+                _vm._v("Origin")
+              ]),
+              _vm._v(" "),
+              _c(
+                "select",
+                {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.originSelected,
+                      expression: "originSelected"
+                    }
+                  ],
+                  staticClass: "input-group-field",
+                  attrs: { name: "origin" },
+                  on: {
+                    change: [
+                      function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.originSelected = $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      },
+                      function($event) {
+                        _vm.loadOrigin()
+                      }
+                    ]
+                  }
+                },
+                [
+                  _c("option", { attrs: { disabled: "", value: "" } }, [
+                    _vm._v("Select...")
+                  ]),
+                  _vm._v(" "),
+                  _vm._l(_vm.noxchgOrigins, function(origin) {
+                    return _c("option", { domProps: { value: origin.id } }, [
+                      _vm._v(_vm._s(origin.name) + " ")
+                    ])
+                  })
+                ],
+                2
+              ),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.originSelectedName,
+                    expression: "originSelectedName"
+                  }
+                ],
+                attrs: {
+                  id: "asset-origin-name",
+                  name: "asset_origin_name",
+                  type: "hidden"
+                },
+                domProps: { value: _vm.originSelectedName },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.originSelectedName = $event.target.value
+                  }
+                }
+              })
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "small-12 cell form-container" }, [
+            _vm.validationErrors.origin_type
+              ? _c(
+                  "div",
+                  _vm._l(_vm.validationErrors.origin_type, function(error) {
+                    return _c("span", { staticClass: "validation-error" }, [
+                      _vm._v(" " + _vm._s(error) + " ")
+                    ])
+                  })
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _c("div", { staticClass: "input-group" }, [
+              _c("span", { staticClass: "input-group-label" }, [
+                _vm._v("Origin Type")
+              ]),
+              _vm._v(" "),
+              _c(
+                "select",
+                {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.originType,
+                      expression: "originType"
+                    }
+                  ],
+                  staticClass: "input-group-field",
+                  attrs: { name: "origin_type" },
+                  on: {
+                    change: function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.originType = $event.target.multiple
+                        ? $$selectedVal
+                        : $$selectedVal[0]
+                    }
+                  }
+                },
+                [
+                  _c("option", { attrs: { disabled: "", value: "" } }, [
+                    _vm._v("Select...")
+                  ]),
+                  _vm._v(" "),
+                  _vm._l(_vm.originTypes, function(originType) {
+                    return _c("option", { domProps: { value: originType } }, [
+                      _vm._v(_vm._s(originType) + " ")
+                    ])
+                  })
+                ],
+                2
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "small-12 cell form-container" }, [
+            _vm.validationErrors.origin_name
+              ? _c(
+                  "div",
+                  _vm._l(_vm.validationErrors.origin_name, function(error) {
+                    return _c("span", { staticClass: "validation-error" }, [
+                      _vm._v(" " + _vm._s(error) + " ")
+                    ])
+                  })
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _c("div", { staticClass: "input-group" }, [
+              _c("span", { staticClass: "input-group-label" }, [
+                _vm._v("\n                        Name\n                    ")
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.originName,
+                    expression: "originName"
+                  }
+                ],
+                staticClass: "input-group-field",
+                attrs: { name: "origin_name", type: "text" },
+                domProps: { value: _vm.originName },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.originName = $event.target.value
+                  }
+                }
+              })
+            ])
+          ]),
+          _vm._v(" "),
+          _vm.originType != "Exchange"
+            ? _c("div", { staticClass: "small-12 cell form-container" }, [
+                _vm.validationErrors.origin_address
+                  ? _c(
+                      "div",
+                      _vm._l(_vm.validationErrors.origin_address, function(
+                        error
+                      ) {
+                        return _c("span", { staticClass: "validation-error" }, [
+                          _vm._v(" " + _vm._s(error) + " ")
+                        ])
+                      })
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _c("div", { staticClass: "input-group" }, [
+                  _c("span", { staticClass: "input-group-label" }, [
+                    _vm._v(
+                      "\n                        Address\n                    "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.originAddress,
+                        expression: "originAddress"
+                      }
+                    ],
+                    staticClass: "input-group-field",
+                    attrs: { name: "origin_address", type: "text" },
+                    domProps: { value: _vm.originAddress },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.originAddress = $event.target.value
+                      }
+                    }
+                  })
+                ])
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _vm._m(1, false, false)
+        ])
+      ]
+    )
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "small-12 cell form-container" }, [
+      _c("p", { staticClass: "h2" }, [_vm._v("Edit Origin")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "small-12 cell form-container" }, [
+      _c(
+        "button",
+        { staticClass: "hollow button", attrs: { type: "submit" } },
+        [_vm._v("\n                   Save Origin\n                ")]
+      )
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-6e448172", module.exports)
+  }
+}
+
+/***/ }),
+/* 262 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(3)
+/* script */
+var __vue_script__ = __webpack_require__(263)
+/* template */
+var __vue_template__ = __webpack_require__(264)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/DeleteOrigin.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-3afd45e8", Component.options)
+  } else {
+    hotAPI.reload("data-v-3afd45e8", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 263 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: 'delete-origin',
+    data: function data() {
+        return {
+            exchange: "",
+            noxchgOrigins: [],
+            origin: {},
+            originSelected: "",
+            originSelectedName: "",
+            originType: "",
+            originName: "",
+            originAddress: "",
+            updating: false,
+            csrf: "",
+            errors: []
+        };
+    },
+    props: ['exchanges', 'origins', 'origin-types', 'validation-errors'],
+    computed: {},
+    mounted: function mounted() {
+
+        for (var i = 0; i < this.origins.length; i++) {
+            if (this.exchanges.indexOf(this.origins[i].name.toLowerCase()) < 0) {
+                this.noxchgOrigins.push(this.origins[i]);
+            }
+        }
+
+        this.csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        console.log('Component AddOrigin mounted.');
+    },
+
+    methods: {
+        loadOrigin: function loadOrigin() {
+
+            for (var i = 0; i < this.origins.length; i++) {
+                if (this.origins[i].id == this.originSelected) this.origin = this.origins[i];
+            }
+            this.originType = this.origin.type;
+            this.originName = this.origin.name;
+            this.originAddress = this.origin.address;
+        },
+        saveName: function saveName() {}
+    }
+});
+
+/***/ }),
+/* 264 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "grid-container fluid" }, [
+    _c(
+      "form",
+      {
+        attrs: {
+          method: "POST",
+          action: "/portfolio/origin/" + _vm.originSelected
+        }
+      },
+      [
+        _c("input", {
+          attrs: { type: "hidden", name: "_token" },
+          domProps: { value: _vm.csrf }
+        }),
+        _vm._v(" "),
+        _c("input", {
+          attrs: { name: "_method", type: "hidden", value: "DELETE" }
+        }),
+        _vm._v(" "),
+        _c("div", { staticClass: "grid-x grid-padding-x" }, [
+          _vm._m(0, false, false),
+          _vm._v(" "),
+          _c("div", { staticClass: "small-12 cell form-container" }, [
+            _vm.validationErrors.origin_type
+              ? _c(
+                  "div",
+                  _vm._l(_vm.validationErrors.origin_type, function(error) {
+                    return _c("span", { staticClass: "validation-error" }, [
+                      _vm._v(" " + _vm._s(error) + " ")
+                    ])
+                  })
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _c("div", { staticClass: "input-group" }, [
+              _c("span", { staticClass: "input-group-label" }, [
+                _vm._v("Origin")
+              ]),
+              _vm._v(" "),
+              _c(
+                "select",
+                {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.originSelected,
+                      expression: "originSelected"
+                    }
+                  ],
+                  staticClass: "input-group-field",
+                  attrs: { name: "origin" },
+                  on: {
+                    change: [
+                      function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.originSelected = $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      },
+                      function($event) {
+                        _vm.loadOrigin()
+                      }
+                    ]
+                  }
+                },
+                [
+                  _c("option", { attrs: { disabled: "", value: "" } }, [
+                    _vm._v("Select...")
+                  ]),
+                  _vm._v(" "),
+                  _vm._l(_vm.noxchgOrigins, function(origin) {
+                    return _c("option", { domProps: { value: origin.id } }, [
+                      _vm._v(_vm._s(origin.name) + " ")
+                    ])
+                  })
+                ],
+                2
+              ),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.originSelectedName,
+                    expression: "originSelectedName"
+                  }
+                ],
+                attrs: {
+                  id: "asset-origin-name",
+                  name: "asset_origin_name",
+                  type: "hidden"
+                },
+                domProps: { value: _vm.originSelectedName },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.originSelectedName = $event.target.value
+                  }
+                }
+              })
+            ])
+          ]),
+          _vm._v(" "),
+          _vm.originSelected != ""
+            ? _c("div", { staticClass: "small-12 cell form-container" }, [
+                _c(
+                  "button",
+                  { staticClass: "hollow button", attrs: { type: "submit" } },
+                  [
+                    _vm._v(
+                      "\n                   Delete Origin\n                "
+                    )
+                  ]
+                )
+              ])
+            : _vm._e()
+        ])
+      ]
+    )
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "small-12 cell form-container" }, [
+      _c("p", { staticClass: "h2" }, [_vm._v("Delete Origin")])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-3afd45e8", module.exports)
+  }
+}
+
+/***/ }),
+/* 265 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(3)
+/* script */
+var __vue_script__ = __webpack_require__(266)
+/* template */
+var __vue_template__ = __webpack_require__(267)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/AddAsset.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-2fb23886", Component.options)
+  } else {
+    hotAPI.reload("data-v-2fb23886", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 266 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'add-asset',
@@ -118616,13 +119433,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return {
             coinSelected: "",
             coin: "",
+            noxchgOrigins: [],
             originSelected: "",
             originSelectedName: "",
             updating: false,
             csrf: ""
         };
     },
-    props: ['coins', 'origins', 'validation-errors'],
+    props: ['coins', 'origins', 'validation-errors', 'exchanges'],
     computed: {},
     watch: {},
     mounted: function mounted() {
@@ -118632,6 +119450,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         var coins = $.map(this.coins, function (a) {
             return a.toString();
         });
+
+        for (var i = 0; i < this.origins.length; i++) {
+            if (this.exchanges.indexOf(this.origins[i].name.toLowerCase()) < 0) {
+                this.noxchgOrigins.push(this.origins[i]);
+            }
+        }
 
         var options = {
             data: coins,
@@ -118673,7 +119497,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 261 */
+/* 267 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -118747,7 +119571,7 @@ var render = function() {
                     _vm._v("Select...")
                   ]),
                   _vm._v(" "),
-                  _vm._l(_vm.origins, function(origin) {
+                  _vm._l(_vm.noxchgOrigins, function(origin) {
                     return _c("option", { domProps: { value: origin.id } }, [
                       _vm._v(_vm._s(origin.name) + " ")
                     ])
@@ -118914,15 +119738,15 @@ if (false) {
 }
 
 /***/ }),
-/* 262 */
+/* 268 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(263)
+var __vue_script__ = __webpack_require__(269)
 /* template */
-var __vue_template__ = __webpack_require__(264)
+var __vue_template__ = __webpack_require__(270)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -118962,7 +119786,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 263 */
+/* 269 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -119124,7 +119948,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 264 */
+/* 270 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -119135,7 +119959,12 @@ var render = function() {
     _c("div", { staticClass: "grid-container fluid edit-asset" }, [
       _c(
         "form",
-        { attrs: { method: "POST", action: "/assets/" + _vm.assetSelected } },
+        {
+          attrs: {
+            method: "POST",
+            action: "/portfolio/asset/" + _vm.assetSelected
+          }
+        },
         [
           _c("input", {
             attrs: { type: "hidden", name: "_token" },
@@ -119419,15 +120248,15 @@ if (false) {
 }
 
 /***/ }),
-/* 265 */
+/* 271 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(266)
+var __vue_script__ = __webpack_require__(272)
 /* template */
-var __vue_template__ = __webpack_require__(267)
+var __vue_template__ = __webpack_require__(273)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -119444,7 +120273,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/Transactions.vue"
+Component.options.__file = "resources/assets/js/components/DeleteAsset.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
 
 /* hot reload */
@@ -119454,9 +120283,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-2554e88c", Component.options)
+    hotAPI.createRecord("data-v-0989311e", Component.options)
   } else {
-    hotAPI.reload("data-v-2554e88c", Component.options)
+    hotAPI.reload("data-v-0989311e", Component.options)
 ' + '  }
   module.hot.dispose(function (data) {
     disposed = true
@@ -119467,7 +120296,408 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 266 */
+/* 272 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: 'delete-asset',
+    data: function data() {
+        return {
+            assets: [],
+            noxchgOrigins: [],
+            assetAmount: 0,
+            assetInitialPrice: 0,
+            assetSelected: "",
+            coinSelected: "",
+            coin: "",
+            originSelected: "",
+            originSelectedName: "",
+            updating: false,
+            csrf: "",
+            errors: []
+        };
+    },
+    props: ['portfolio', 'origins', 'exchanges', 'validation-errors'],
+    computed: {},
+    watch: {},
+    mounted: function mounted() {
+
+        var coins = $.map(this.coins, function (a) {
+            return a.toString();
+        });
+
+        for (var i = 0; i < this.origins.length; i++) {
+            if (this.exchanges.indexOf(this.origins[i].name.toLowerCase()) < 0) {
+                this.noxchgOrigins.push(this.origins[i]);
+            }
+        }
+
+        this.csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        console.log('Component EditAsset mounted.');
+    },
+
+    methods: {
+        loadAssets: function loadAssets() {
+            var _this = this;
+
+            for (var i = 0; i < this.origins.length; i++) {
+                if (this.origins[i].id == this.originSelected) this.originSelectedName = this.origins[i].name;
+            }
+
+            this.assets = [];
+
+            // Call the LoadPortfolio event asyncronously
+            var uri = '/api/assets';
+            axios(uri, {
+                method: 'GET'
+            }).then(function (response) {
+                for (var i = 0; i < response.data.length; i++) {
+                    if (response.data[i].origin_id == _this.originSelected) _this.assets.push(response.data[i]);
+                }
+            }).catch(function (e) {
+                _this.errors.push(e);
+                console.log("Error: " + e.message);
+            });
+        },
+        loadAssetData: function loadAssetData(assetId) {
+            var _this2 = this;
+
+            // Call the LoadPortfolio event asyncronously
+            var uri = '/api/assets/' + assetId;
+            axios(uri, {
+                method: 'GET'
+            }).then(function (response) {
+                _this2.assetAmount = response.data.amount;
+                _this2.assetInitialPrice = response.data.initial_price;
+                console.log("Retieving asset...");
+            }).catch(function (e) {
+                _this2.errors.push(e);
+
+                console.log("Error: " + e.message);
+            });
+        }
+    }
+});
+
+/***/ }),
+/* 273 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("section", { attrs: { id: "deleteasset" } }, [
+    _c("div", { staticClass: "grid-container fluid delete-asset" }, [
+      _c(
+        "form",
+        {
+          attrs: {
+            method: "POST",
+            action: "/portfolio/asset/" + _vm.assetSelected
+          }
+        },
+        [
+          _c("input", {
+            attrs: { type: "hidden", name: "_token" },
+            domProps: { value: _vm.csrf }
+          }),
+          _vm._v(" "),
+          _c("input", {
+            attrs: { name: "_method", type: "hidden", value: "DELETE" }
+          }),
+          _vm._v(" "),
+          _c("div", { staticClass: "grid-x grid-padding-x" }, [
+            _vm._m(0, false, false),
+            _vm._v(" "),
+            _c("div", { staticClass: "small-12 cell form-container" }, [
+              _vm.validationErrors.asset_origin
+                ? _c(
+                    "div",
+                    _vm._l(_vm.validationErrors.asset_origin, function(error) {
+                      return _c("span", { staticClass: "validation-error" }, [
+                        _vm._v(" " + _vm._s(error) + " ")
+                      ])
+                    })
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _c("div", { staticClass: "input-group" }, [
+                _c("span", { staticClass: "input-group-label" }, [
+                  _vm._v("Origin")
+                ]),
+                _vm._v(" "),
+                _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.originSelected,
+                        expression: "originSelected"
+                      }
+                    ],
+                    staticClass: "input-group-field",
+                    attrs: { name: "asset_origin" },
+                    on: {
+                      change: [
+                        function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.originSelected = $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        },
+                        function($event) {
+                          _vm.loadAssets()
+                          _vm.assetSelected = ""
+                        }
+                      ]
+                    }
+                  },
+                  [
+                    _c("option", { attrs: { disabled: "", value: "" } }, [
+                      _vm._v("Select...")
+                    ]),
+                    _vm._v(" "),
+                    _vm._l(_vm.noxchgOrigins, function(origin) {
+                      return _c("option", { domProps: { value: origin.id } }, [
+                        _vm._v(_vm._s(origin.name) + " ")
+                      ])
+                    })
+                  ],
+                  2
+                ),
+                _vm._v(" "),
+                _c("input", {
+                  attrs: {
+                    id: "asset-origin-name",
+                    name: "asset_origin_name",
+                    type: "hidden"
+                  },
+                  domProps: { value: _vm.originSelectedName }
+                })
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "small-12 cell form-container" }, [
+              _vm.validationErrors.asset
+                ? _c(
+                    "div",
+                    _vm._l(_vm.validationErrors.asset, function(error) {
+                      return _c("span", { staticClass: "validation-error" }, [
+                        _vm._v(" " + _vm._s(error) + " ")
+                      ])
+                    })
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _c("div", { staticClass: "input-group" }, [
+                _c("span", { staticClass: "input-group-label" }, [
+                  _vm._v("Asset")
+                ]),
+                _vm._v(" "),
+                _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.assetSelected,
+                        expression: "assetSelected"
+                      }
+                    ],
+                    staticClass: "input-group-field",
+                    attrs: { name: "asset" },
+                    on: {
+                      change: [
+                        function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.assetSelected = $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        },
+                        function($event) {
+                          _vm.loadAssetData(_vm.assetSelected)
+                        }
+                      ]
+                    }
+                  },
+                  [
+                    _c("option", { attrs: { disabled: "", value: "" } }, [
+                      _vm._v("Select...")
+                    ]),
+                    _vm._v(" "),
+                    _vm._l(_vm.assets, function(asset) {
+                      return _c("option", { domProps: { value: asset.id } }, [
+                        _vm._v(" " + _vm._s(asset.symbol) + " ")
+                      ])
+                    })
+                  ],
+                  2
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _vm.assetSelected != ""
+              ? _c("div", { staticClass: "small-12 cell form-container" }, [
+                  _c(
+                    "button",
+                    { staticClass: "hollow button", attrs: { type: "submit" } },
+                    [
+                      _vm._v(
+                        "\n                       Delete Asset\n                    "
+                      )
+                    ]
+                  )
+                ])
+              : _vm._e()
+          ])
+        ]
+      )
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "small-12 cell form-container" }, [
+      _c("p", { staticClass: "h2" }, [_vm._v("Delete Asset")])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-0989311e", module.exports)
+  }
+}
+
+/***/ }),
+/* 274 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(3)
+/* script */
+var __vue_script__ = __webpack_require__(275)
+/* template */
+var __vue_template__ = __webpack_require__(276)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/AddTransaction.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-85e47a18", Component.options)
+  } else {
+    hotAPI.reload("data-v-85e47a18", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 275 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -119554,14 +120784,37 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    name: 'transactions',
+    name: 'add-transaction',
     data: function data() {
         return {
             assets: [],
             noxchgOrigins: [],
             assetAmount: 0,
+            transactions: [],
+            transactionsLoaded: false,
             transactionOperation: "",
             transactionAmount: 0,
             transactionLabel: "",
@@ -119620,7 +120873,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 console.log("Error: " + e.message);
             });
         },
-        loadAssetData: function loadAssetData(assetId) {
+        loadAssetData: function loadAssetData(originId, assetId) {
             var _this2 = this;
 
             // Call the LoadPortfolio event asyncronously
@@ -119630,25 +120883,41 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }).then(function (response) {
                 _this2.assetAmount = response.data.amount;
                 _this2.assetInitialPrice = response.data.initial_price;
-                console.log("Retieving asset...");
+
+                var uri = '/api/transactions/' + originId + '/' + assetId;
+                axios(uri, {
+                    method: 'GET'
+                }).then(function (response) {
+                    console.log(response.data);
+                    _this2.transactions = response.data;
+                    _this2.transactionsLoaded = true;
+
+                    if (response.data.length == 0) {
+                        _this2.transactionsLoaded = false;
+                    }
+                }).catch(function (e) {
+                    _this2.errors.push(e);
+                    console.log("Error: " + e.message);
+                });
             }).catch(function (e) {
                 _this2.errors.push(e);
 
                 console.log("Error: " + e.message);
             });
-        }
+        },
+        deleteTransaction: function deleteTransaction(id) {}
     }
 });
 
 /***/ }),
-/* 267 */
+/* 276 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("section", { attrs: { id: "transactions" } }, [
+  return _c("section", { attrs: { id: "add-transaction" } }, [
     _c("div", { staticClass: "grid-container fluid transactions" }, [
       _c(
         "form",
@@ -119718,6 +120987,7 @@ var render = function() {
                         },
                         function($event) {
                           _vm.loadAssets()
+                          _vm.transactionsLoaded = false
                         }
                       ]
                     }
@@ -119793,7 +121063,10 @@ var render = function() {
                             : $$selectedVal[0]
                         },
                         function($event) {
-                          _vm.loadAssetData(_vm.assetSelected)
+                          _vm.loadAssetData(
+                            _vm.originSelected,
+                            _vm.assetSelected
+                          )
                         }
                       ]
                     }
@@ -119946,7 +121219,44 @@ var render = function() {
               ])
             ]),
             _vm._v(" "),
-            _vm._m(1, false, false)
+            _vm._m(1, false, false),
+            _vm._v(" "),
+            _vm.transactionsLoaded == true
+              ? _c("div", { staticClass: "small-12 cell form-container" }, [
+                  _c("table", { staticClass: "stack" }, [
+                    _vm._m(2, false, false),
+                    _vm._v(" "),
+                    _c(
+                      "tbody",
+                      _vm._l(_vm.transactions, function(transaction) {
+                        return _c("tr", [
+                          transaction.type == "in"
+                            ? _c("td", [
+                                _c("i", {
+                                  staticClass: "fa fa-arrow-right green",
+                                  attrs: { "aria-hidden": "true" }
+                                })
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          transaction.type == "out"
+                            ? _c("td", [
+                                _c("i", {
+                                  staticClass: "fa fa-arrow-left red",
+                                  attrs: { "aria-hidden": "true" }
+                                })
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(transaction.amount))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(transaction.label))])
+                        ])
+                      })
+                    )
+                  ])
+                ])
+              : _vm._e()
           ])
         ]
       )
@@ -119977,6 +121287,20 @@ var staticRenderFns = [
         ]
       )
     ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", { attrs: { width: "50" } }, [_vm._v("Type")]),
+        _vm._v(" "),
+        _c("th", { attrs: { width: "150" } }, [_vm._v("Amount")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Label")])
+      ])
+    ])
   }
 ]
 render._withStripped = true
@@ -119984,20 +121308,495 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-2554e88c", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-85e47a18", module.exports)
   }
 }
 
 /***/ }),
-/* 268 */
+/* 277 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(269)
+var __vue_script__ = __webpack_require__(278)
 /* template */
-var __vue_template__ = __webpack_require__(270)
+var __vue_template__ = __webpack_require__(279)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/DeleteTransaction.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-5f042ce8", Component.options)
+  } else {
+    hotAPI.reload("data-v-5f042ce8", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 278 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: 'delete-transaction',
+    data: function data() {
+        return {
+            assets: [],
+            noxchgOrigins: [],
+            assetAmount: 0,
+            transactions: [],
+            transactionsLoaded: false,
+            transactionOperation: "",
+            transactionAmount: 0,
+            transactionLabel: "",
+            assetInitialPrice: 0,
+            assetSelected: "",
+            coinSelected: "",
+            coin: "",
+            originSelected: "",
+            originSelectedName: "",
+            updating: false,
+            csrf: "",
+            errors: []
+        };
+    },
+    props: ['portfolio', 'origins', 'exchanges', 'validation-errors'],
+    computed: {},
+    watch: {},
+    mounted: function mounted() {
+
+        var coins = $.map(this.coins, function (a) {
+            return a.toString();
+        });
+
+        for (var i = 0; i < this.origins.length; i++) {
+            if (this.exchanges.indexOf(this.origins[i].name.toLowerCase()) < 0) {
+                this.noxchgOrigins.push(this.origins[i]);
+            }
+        }
+
+        this.csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        console.log('Component Transactions mounted.');
+    },
+
+    methods: {
+        loadAssets: function loadAssets() {
+            var _this = this;
+
+            for (var i = 0; i < this.origins.length; i++) {
+                if (this.origins[i].id == this.originSelected) this.originSelectedName = this.origins[i].name;
+            }
+
+            this.assets = [];
+
+            // Call the LoadPortfolio event asyncronously
+            var uri = '/api/assets';
+            axios(uri, {
+                method: 'GET'
+            }).then(function (response) {
+                for (var i = 0; i < response.data.length; i++) {
+                    if (response.data[i].origin_id == _this.originSelected) _this.assets.push(response.data[i]);
+                }
+                console.log("Retieving assets...");
+            }).catch(function (e) {
+                _this.errors.push(e);
+
+                console.log("Error: " + e.message);
+            });
+        },
+        loadAssetData: function loadAssetData(originId, assetId) {
+            var _this2 = this;
+
+            // Call the LoadPortfolio event asyncronously
+            var uri = '/api/assets/' + assetId;
+            axios(uri, {
+                method: 'GET'
+            }).then(function (response) {
+                _this2.assetAmount = response.data.amount;
+                _this2.assetInitialPrice = response.data.initial_price;
+
+                var uri = '/api/transactions/' + originId + '/' + assetId;
+                axios(uri, {
+                    method: 'GET'
+                }).then(function (response) {
+                    console.log(response.data);
+                    _this2.transactions = response.data;
+                    _this2.transactionsLoaded = true;
+
+                    if (response.data.length == 0) {
+                        _this2.transactionsLoaded = false;
+                    }
+                }).catch(function (e) {
+                    _this2.errors.push(e);
+                    console.log("Error: " + e.message);
+                });
+            }).catch(function (e) {
+                _this2.errors.push(e);
+
+                console.log("Error: " + e.message);
+            });
+        },
+        deleteTransaction: function deleteTransaction(id) {
+            var _this3 = this;
+
+            var uri = '/api/transactions/' + id;
+            axios.delete(uri).then(function (response) {
+                console.log(response.data);
+                window.location.replace('/portfolio');
+            }).catch(function (e) {
+                _this3.errors.push(e);
+                console.log("Error: " + e.message);
+            });
+        }
+    }
+});
+
+/***/ }),
+/* 279 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("section", { attrs: { id: "delete-transaction" } }, [
+    _c("div", { staticClass: "grid-container fluid transactions" }, [
+      _c("div", { staticClass: "grid-x grid-padding-x" }, [
+        _vm._m(0, false, false),
+        _vm._v(" "),
+        _c("div", { staticClass: "small-12 cell form-container" }, [
+          _vm.validationErrors.origin_type
+            ? _c(
+                "div",
+                _vm._l(_vm.validationErrors.origin_type, function(error) {
+                  return _c("span", { staticClass: "validation-error" }, [
+                    _vm._v(" " + _vm._s(error) + " ")
+                  ])
+                })
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _c("div", { staticClass: "input-group" }, [
+            _c("span", { staticClass: "input-group-label" }, [
+              _vm._v("Origin")
+            ]),
+            _vm._v(" "),
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.originSelected,
+                    expression: "originSelected"
+                  }
+                ],
+                staticClass: "input-group-field",
+                attrs: { name: "asset_origin" },
+                on: {
+                  change: [
+                    function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.originSelected = $event.target.multiple
+                        ? $$selectedVal
+                        : $$selectedVal[0]
+                    },
+                    function($event) {
+                      _vm.loadAssets()
+                      _vm.transactionsLoaded = false
+                    }
+                  ]
+                }
+              },
+              [
+                _c("option", { attrs: { disabled: "", value: "" } }, [
+                  _vm._v("Select...")
+                ]),
+                _vm._v(" "),
+                _vm._l(_vm.noxchgOrigins, function(origin) {
+                  return _c("option", { domProps: { value: origin.id } }, [
+                    _vm._v(_vm._s(origin.name) + " ")
+                  ])
+                })
+              ],
+              2
+            ),
+            _vm._v(" "),
+            _c("input", {
+              attrs: {
+                id: "asset-origin-name",
+                name: "asset_origin_name",
+                type: "hidden"
+              },
+              domProps: { value: _vm.originSelectedName }
+            })
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "small-12 cell form-container" }, [
+          _vm.validationErrors.asset_symbol
+            ? _c(
+                "div",
+                _vm._l(_vm.validationErrors.asset_symbol, function(error) {
+                  return _c("span", { staticClass: "validation-error" }, [
+                    _vm._v(" " + _vm._s(error) + " ")
+                  ])
+                })
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _c("div", { staticClass: "input-group" }, [
+            _c("span", { staticClass: "input-group-label" }, [_vm._v("Asset")]),
+            _vm._v(" "),
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.assetSelected,
+                    expression: "assetSelected"
+                  }
+                ],
+                staticClass: "input-group-field",
+                attrs: { name: "asset" },
+                on: {
+                  change: [
+                    function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.assetSelected = $event.target.multiple
+                        ? $$selectedVal
+                        : $$selectedVal[0]
+                    },
+                    function($event) {
+                      _vm.loadAssetData(_vm.originSelected, _vm.assetSelected)
+                    }
+                  ]
+                }
+              },
+              [
+                _c("option", { attrs: { disabled: "", value: "" } }, [
+                  _vm._v("Select...")
+                ]),
+                _vm._v(" "),
+                _vm._l(_vm.assets, function(asset) {
+                  return _c("option", { domProps: { value: asset.id } }, [
+                    _vm._v(" " + _vm._s(asset.symbol) + " ")
+                  ])
+                })
+              ],
+              2
+            )
+          ])
+        ]),
+        _vm._v(" "),
+        _vm.transactionsLoaded == true
+          ? _c("div", { staticClass: "small-12 cell form-container" }, [
+              _c("table", { staticClass: "stack" }, [
+                _vm._m(1, false, false),
+                _vm._v(" "),
+                _c(
+                  "tbody",
+                  _vm._l(_vm.transactions, function(transaction) {
+                    return _c("tr", [
+                      transaction.type == "in"
+                        ? _c("td", [
+                            _c("i", {
+                              staticClass: "fa fa-arrow-right green",
+                              attrs: { "aria-hidden": "true" }
+                            })
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      transaction.type == "out"
+                        ? _c("td", [
+                            _c("i", {
+                              staticClass: "fa fa-arrow-left red",
+                              attrs: { "aria-hidden": "true" }
+                            })
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(transaction.amount))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(transaction.label))]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _c("i", {
+                          staticClass: "fa fa-times red",
+                          attrs: { "aria-hidden": "true" },
+                          on: {
+                            click: function($event) {
+                              _vm.deleteTransaction(transaction.id)
+                            }
+                          }
+                        })
+                      ])
+                    ])
+                  })
+                )
+              ])
+            ])
+          : _vm._e()
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "small-12 cell form-container" }, [
+      _c("p", { staticClass: "h2" }, [_vm._v("Delete Transaction")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", { attrs: { width: "50" } }, [_vm._v("Type")]),
+        _vm._v(" "),
+        _c("th", { attrs: { width: "150" } }, [_vm._v("Amount")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Label")]),
+        _vm._v(" "),
+        _c("th")
+      ])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-5f042ce8", module.exports)
+  }
+}
+
+/***/ }),
+/* 280 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(3)
+/* script */
+var __vue_script__ = __webpack_require__(281)
+/* template */
+var __vue_template__ = __webpack_require__(282)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -120037,11 +121836,23 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 269 */
+/* 281 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -120433,7 +122244,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 270 */
+/* 282 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -120443,204 +122254,213 @@ var render = function() {
   return _c("section", { attrs: { id: "portfolio-widget" } }, [
     _c("div", { staticClass: "grid-x grid-padding-x" }, [
       _c("div", { staticClass: "small-12 cell" }, [
-        _c("div", { staticClass: "grid-container fluid" }, [
-          _c("div", { staticClass: "grid-x grid-padding-x" }, [
-            _c("div", { staticClass: "small-12 medium-shrink cell" }, [
-              _c("div", { staticClass: "counter-widget text-left" }, [
-                _c("div", { staticClass: "title" }, [_vm._v("Total BTC ")]),
-                _vm._v(" "),
-                _c("div", { staticClass: "counter" }, [
-                  _c("span", { staticClass: "nowrap" }, [
-                    _c("i", {
-                      staticClass: "fa fa-btc",
-                      attrs: { "aria-hidden": "true" }
-                    }),
-                    _vm._v(_vm._s(_vm.totalBtc))
+        _vm.loadingPortfolio == true
+          ? _c("div", { staticClass: "grid-container fluid" }, [
+              _vm._m(0, false, false)
+            ])
+          : _c("div", { staticClass: "grid-container fluid" }, [
+              _c("div", { staticClass: "grid-x grid-padding-x" }, [
+                _c("div", { staticClass: "small-12 medium-shrink cell" }, [
+                  _c("div", { staticClass: "counter-widget text-left" }, [
+                    _c("div", { staticClass: "title" }, [_vm._v("Total BTC ")]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "counter" }, [
+                      _c("span", { staticClass: "nowrap" }, [
+                        _c("i", {
+                          staticClass: "fa fa-btc",
+                          attrs: { "aria-hidden": "true" }
+                        }),
+                        _vm._v(_vm._s(_vm.totalBtc))
+                      ])
+                    ])
                   ])
-                ])
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "small-12 medium-shrink cell" }, [
-              _c("div", { staticClass: "counter-widget text-left" }, [
-                _c("div", { staticClass: "title" }, [
-                  _vm._v("Total " + _vm._s(_vm.counterValueSymbol) + " ")
                 ]),
                 _vm._v(" "),
-                _c("div", { staticClass: "counter" }, [
-                  _c("span", { staticClass: "nowrap" }, [
-                    _c("i", {
-                      class: "fa fa-" + _vm.counterValueSymbol.toLowerCase(),
-                      attrs: { "aria-hidden": "true" }
-                    }),
-                    _vm._v(_vm._s(_vm.totalFiat))
-                  ])
-                ])
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "small-6 medium-shrink cell" }, [
-              _c("div", { staticClass: "counter-widget text-left" }, [
-                _c(
-                  "div",
-                  {
-                    staticClass: "title nowrap",
-                    model: {
-                      value: _vm.assetsCounter,
-                      callback: function($$v) {
-                        _vm.assetsCounter = $$v
-                      },
-                      expression: "assetsCounter"
-                    }
-                  },
-                  [_vm._v("# of Assets ")]
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "counter" }, [
-                  _vm._v(_vm._s(_vm.assetsCounter))
-                ])
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "small-6 medium-shrink cell" }, [
-              _c("div", { staticClass: "counter-widget text-left" }, [
-                _c(
-                  "div",
-                  {
-                    staticClass: "title nowrap",
-                    model: {
-                      value: _vm.coinsCounter,
-                      callback: function($$v) {
-                        _vm.coinsCounter = $$v
-                      },
-                      expression: "coinsCounter"
-                    }
-                  },
-                  [_vm._v("# of Coins ")]
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "counter" }, [
-                  _vm._v(_vm._s(_vm.coinsCounter))
-                ])
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "small-6 medium-shrink cell" }, [
-              _c("div", { staticClass: "counter-widget text-left" }, [
-                _c(
-                  "div",
-                  {
-                    staticClass: "title",
-                    model: {
-                      value: _vm.biggestGainer.symbol,
-                      callback: function($$v) {
-                        _vm.$set(_vm.biggestGainer, "symbol", $$v)
-                      },
-                      expression: "biggestGainer.symbol"
-                    }
-                  },
-                  [_vm._v("Biggest Gainer ")]
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "counter" }, [
-                  _vm._v(_vm._s(_vm.biggestGainer.symbol) + " "),
-                  _c("span", { staticClass: "biggest profit" }, [
-                    _vm._v(" (+" + _vm._s(_vm.biggestGainer.profit) + "%)")
-                  ])
-                ])
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "small-6 medium-shrink cell" }, [
-              _c("div", { staticClass: "counter-widget text-left" }, [
-                _c(
-                  "div",
-                  {
-                    staticClass: "title",
-                    model: {
-                      value: _vm.biggestLoser.symbol,
-                      callback: function($$v) {
-                        _vm.$set(_vm.biggestLoser, "symbol", $$v)
-                      },
-                      expression: "biggestLoser.symbol"
-                    }
-                  },
-                  [_vm._v("Biggest Loser ")]
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "counter" }, [
-                  _vm._v(_vm._s(_vm.biggestLoser.symbol) + " "),
-                  _c("span", { staticClass: "biggest loss" }, [
-                    _vm._v(" (" + _vm._s(_vm.biggestLoser.profit) + "%)")
-                  ])
-                ])
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "small-12 medium-auto cell text-right" }, [
-              _c(
-                "button",
-                {
-                  staticClass: "button hollow button-refresh",
-                  on: {
-                    click: function($event) {
-                      _vm.refreshPortfolio()
-                    }
-                  }
-                },
-                [
-                  _c(
-                    "span",
-                    {
-                      directives: [
-                        {
-                          name: "show",
-                          rawName: "v-show",
-                          value: _vm.loadingPortfolio,
-                          expression: "loadingPortfolio"
-                        }
-                      ]
-                    },
-                    [
-                      _c("i", {
-                        staticClass: "fa fa-refresh fa-spin fa-fw",
-                        attrs: { "aria-hidden": "true" }
-                      }),
-                      _vm._v(" "),
-                      _c("span", { staticClass: "show-for-medium" }, [
-                        _vm._v(" Loading...")
+                _c("div", { staticClass: "small-12 medium-shrink cell" }, [
+                  _c("div", { staticClass: "counter-widget text-left" }, [
+                    _c("div", { staticClass: "title" }, [
+                      _vm._v("Total " + _vm._s(_vm.counterValueSymbol) + " ")
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "counter" }, [
+                      _c("span", { staticClass: "nowrap" }, [
+                        _c("i", {
+                          class:
+                            "fa fa-" + _vm.counterValueSymbol.toLowerCase(),
+                          attrs: { "aria-hidden": "true" }
+                        }),
+                        _vm._v(_vm._s(_vm.totalFiat))
                       ])
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "span",
-                    {
-                      directives: [
-                        {
-                          name: "show",
-                          rawName: "v-show",
-                          value: !_vm.loadingPortfolio,
-                          expression: "!loadingPortfolio"
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "small-6 medium-shrink cell" }, [
+                  _c("div", { staticClass: "counter-widget text-left" }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "title nowrap",
+                        model: {
+                          value: _vm.assetsCounter,
+                          callback: function($$v) {
+                            _vm.assetsCounter = $$v
+                          },
+                          expression: "assetsCounter"
                         }
-                      ]
-                    },
-                    [
-                      _c("i", { staticClass: "fa fa-refresh " }),
-                      _vm._v(" "),
-                      _c("span", { staticClass: "show-for-medium" }, [
-                        _vm._v("Reload")
+                      },
+                      [_vm._v("# of Assets ")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "counter" }, [
+                      _vm._v(_vm._s(_vm.assetsCounter))
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "small-6 medium-shrink cell" }, [
+                  _c("div", { staticClass: "counter-widget text-left" }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "title nowrap",
+                        model: {
+                          value: _vm.coinsCounter,
+                          callback: function($$v) {
+                            _vm.coinsCounter = $$v
+                          },
+                          expression: "coinsCounter"
+                        }
+                      },
+                      [_vm._v("# of Coins ")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "counter" }, [
+                      _vm._v(_vm._s(_vm.coinsCounter))
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "small-6 medium-shrink cell" }, [
+                  _c("div", { staticClass: "counter-widget text-left" }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "title",
+                        model: {
+                          value: _vm.biggestGainer.symbol,
+                          callback: function($$v) {
+                            _vm.$set(_vm.biggestGainer, "symbol", $$v)
+                          },
+                          expression: "biggestGainer.symbol"
+                        }
+                      },
+                      [_vm._v("Biggest Gainer ")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "counter" }, [
+                      _vm._v(_vm._s(_vm.biggestGainer.symbol) + " "),
+                      _c("span", { staticClass: "biggest profit" }, [
+                        _vm._v(" (+" + _vm._s(_vm.biggestGainer.profit) + "%)")
                       ])
-                    ]
-                  )
-                ]
-              )
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "small-6 medium-shrink cell" }, [
+                  _c("div", { staticClass: "counter-widget text-left" }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "title",
+                        model: {
+                          value: _vm.biggestLoser.symbol,
+                          callback: function($$v) {
+                            _vm.$set(_vm.biggestLoser, "symbol", $$v)
+                          },
+                          expression: "biggestLoser.symbol"
+                        }
+                      },
+                      [_vm._v("Biggest Loser ")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "counter" }, [
+                      _vm._v(_vm._s(_vm.biggestLoser.symbol) + " "),
+                      _c("span", { staticClass: "biggest loss" }, [
+                        _vm._v(" (" + _vm._s(_vm.biggestLoser.profit) + "%)")
+                      ])
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "small-12 medium-auto cell text-right" },
+                  [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "button hollow button-refresh",
+                        on: {
+                          click: function($event) {
+                            _vm.refreshPortfolio()
+                          }
+                        }
+                      },
+                      [
+                        _c(
+                          "span",
+                          {
+                            directives: [
+                              {
+                                name: "show",
+                                rawName: "v-show",
+                                value: _vm.loadingPortfolio,
+                                expression: "loadingPortfolio"
+                              }
+                            ]
+                          },
+                          [
+                            _c("i", {
+                              staticClass: "fa fa-refresh fa-spin fa-fw",
+                              attrs: { "aria-hidden": "true" }
+                            }),
+                            _vm._v(" "),
+                            _c("span", { staticClass: "show-for-medium" }, [
+                              _vm._v(" Loading...")
+                            ])
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "span",
+                          {
+                            directives: [
+                              {
+                                name: "show",
+                                rawName: "v-show",
+                                value: !_vm.loadingPortfolio,
+                                expression: "!loadingPortfolio"
+                              }
+                            ]
+                          },
+                          [
+                            _c("i", { staticClass: "fa fa-refresh " }),
+                            _vm._v(" "),
+                            _c("span", { staticClass: "show-for-medium" }, [
+                              _vm._v("Reload")
+                            ])
+                          ]
+                        )
+                      ]
+                    )
+                  ]
+                )
+              ])
             ])
-          ])
-        ])
       ]),
       _vm._v(" "),
-      _vm._m(0, false, false),
+      _vm._m(1, false, false),
       _vm._v(" "),
       _c("div", { staticClass: "small-12 large-6 cell" }, [
         _c(
@@ -120688,6 +122508,22 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "grid-x grid-padding-x" }, [
+      _c("div", { staticClass: "small-12 medium-shrink cell" }, [
+        _c("div", { staticClass: "portfolio-loader" }, [
+          _c("i", {
+            staticClass: "fa fa-spinner fa-spin",
+            attrs: { "aria-hidden": "true" }
+          }),
+          _vm._v(" Loading assets...\n                        ")
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
     return _c("div", { staticClass: "small-12 large-6 cell" }, [
       _c("div", { staticClass: "portfolio-assets" }, [
         _c("table", {
@@ -120708,15 +122544,15 @@ if (false) {
 }
 
 /***/ }),
-/* 271 */
+/* 283 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(272)
+var __vue_script__ = __webpack_require__(284)
 /* template */
-var __vue_template__ = __webpack_require__(273)
+var __vue_template__ = __webpack_require__(285)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -120756,7 +122592,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 272 */
+/* 284 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -120819,7 +122655,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 273 */
+/* 285 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -120933,7 +122769,508 @@ if (false) {
 }
 
 /***/ }),
-/* 274 */
+/* 286 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(3)
+/* script */
+var __vue_script__ = __webpack_require__(287)
+/* template */
+var __vue_template__ = __webpack_require__(288)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/Connections.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-8da3c324", Component.options)
+  } else {
+    hotAPI.reload("data-v-8da3c324", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 287 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: 'connections',
+    props: ['validation-errors', 'exchanges', 'sources'],
+    data: function data() {
+        return {
+            errors: [],
+            connections: [],
+            loadingExchanges: false,
+            exchangeSelected: "",
+            newExchangeApi: "",
+            newExchangeSecret: "",
+            newExchangeFee: "",
+            csrf: ""
+        };
+    },
+    computed: {},
+    mounted: function mounted() {
+        this.loadingExchanges = true;
+        this.csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        console.log('Component Connections mounted.');
+
+        this.loadingExchanges = false;
+    },
+
+    methods: {
+        createConnection: function createConnection() {
+            var _this = this;
+
+            var params = "?new_exchange=" + this.exchangeSelected + "&new_exchange_api_key=" + this.newExchangeApi + "&new_exchange_api_secret=" + this.newExchangeSecret + "&new_exchange_fee=" + this.newExchangeFee;
+
+            var uri = '/connections/' + params;
+            axios(uri, {
+                method: 'POST'
+            }).then(function (response) {
+                console.log("Connection created!");
+            }).catch(function (e) {
+                _this.errors.push(e);
+
+                console.log("Error: " + e.message);
+            });
+        },
+        deleteConnection: function deleteConnection(id) {
+            var _this2 = this;
+
+            var uri = '/connections/' + id;
+            axios.delete(uri).then(function (response) {
+                window.location.replace("/connections");
+                console.log("Connection deleted!");
+            }).catch(function (e) {
+                _this2.errors.push(e);
+
+                console.log("Error: " + e.message);
+            });
+        },
+        updateConnection: function updateConnection(id, key, secret, fee) {
+            var _this3 = this;
+
+            var params = "?new_exchange_api_key=" + key + "&new_exchange_api_secret=" + secret + "&new_exchange_fee=" + fee;
+
+            var uri = '/connections/' + id + '/' + params;
+            axios.patch(uri).then(function (response) {
+                window.location.replace("/connections");
+                console.log("Connection updated!");
+            }).catch(function (e) {
+                _this3.errors.push(e);
+                console.log("Error: " + e.message);
+            });
+        }
+    }
+});
+
+/***/ }),
+/* 288 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("section", { attrs: { id: "connections-widget" } }, [
+    _c("div", { staticClass: "grid-x grid-padding-x" }, [
+      _c(
+        "div",
+        { staticClass: "small-12 cell" },
+        [
+          _c("form", { attrs: { method: "POST", action: "/connections" } }, [
+            _c("input", {
+              attrs: { type: "hidden", name: "_token" },
+              domProps: { value: _vm.csrf }
+            }),
+            _vm._v(" "),
+            _c("div", { staticClass: "exchange-settings" }, [
+              _c("span", { staticClass: "h4" }, [_vm._v("Add Exchange")]),
+              _vm._v(" "),
+              _vm.validationErrors.new_exchange
+                ? _c(
+                    "div",
+                    _vm._l(_vm.validationErrors.new_exchange, function(error) {
+                      return _c("span", { staticClass: "validation-error" }, [
+                        _vm._v(" " + _vm._s(error) + " ")
+                      ])
+                    })
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _c("div", { staticClass: "input-group" }, [
+                _c("span", { staticClass: "input-group-label" }, [
+                  _vm._v("Exchanges")
+                ]),
+                _vm._v(" "),
+                _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.exchangeSelected,
+                        expression: "exchangeSelected"
+                      }
+                    ],
+                    staticClass: "input-group-field",
+                    attrs: { name: "new_exchange" },
+                    on: {
+                      change: function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.exchangeSelected = $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      }
+                    }
+                  },
+                  [
+                    _c(
+                      "option",
+                      {
+                        attrs: { disabled: "", value: "", selected: "selected" }
+                      },
+                      [_vm._v("Select...")]
+                    ),
+                    _vm._v(" "),
+                    _vm._l(_vm.exchanges, function(exchange) {
+                      return _c("option", { domProps: { value: exchange } }, [
+                        _vm._v(_vm._s(exchange))
+                      ])
+                    })
+                  ],
+                  2
+                )
+              ]),
+              _vm._v(" "),
+              _vm.validationErrors.new_exchange_api_key
+                ? _c(
+                    "div",
+                    _vm._l(_vm.validationErrors.new_exchange_api_key, function(
+                      error
+                    ) {
+                      return _c("span", { staticClass: "validation-error" }, [
+                        _vm._v(" " + _vm._s(error) + " ")
+                      ])
+                    })
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _c("div", { staticClass: "input-group" }, [
+                _c("span", { staticClass: "input-group-label" }, [
+                  _vm._v("API Key")
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.newExchangeApi,
+                      expression: "newExchangeApi"
+                    }
+                  ],
+                  staticClass: "input-group-field",
+                  attrs: { type: "text", name: "new_exchange_api_key" },
+                  domProps: { value: _vm.newExchangeApi },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.newExchangeApi = $event.target.value
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _vm.validationErrors.new_exchange_api_secret
+                ? _c(
+                    "div",
+                    _vm._l(
+                      _vm.validationErrors.new_exchange_api_secret,
+                      function(error) {
+                        return _c("span", { staticClass: "validation-error" }, [
+                          _vm._v(" " + _vm._s(error) + " ")
+                        ])
+                      }
+                    )
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _c("div", { staticClass: "input-group" }, [
+                _c("span", { staticClass: "input-group-label" }, [
+                  _vm._v("API Secret")
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.newExchangeSecret,
+                      expression: "newExchangeSecret"
+                    }
+                  ],
+                  staticClass: "input-group-field",
+                  attrs: { type: "text", name: "new_exchange_api_secret" },
+                  domProps: { value: _vm.newExchangeSecret },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.newExchangeSecret = $event.target.value
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _vm.validationErrors.new_exchange_fee
+                ? _c(
+                    "div",
+                    _vm._l(_vm.validationErrors.new_exchange_fee, function(
+                      error
+                    ) {
+                      return _c("span", { staticClass: "validation-error" }, [
+                        _vm._v(" " + _vm._s(error) + " ")
+                      ])
+                    })
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _c("div", { staticClass: "input-group" }, [
+                _c("span", { staticClass: "input-group-label" }, [
+                  _vm._v("Exchange Fee")
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.newExchangeFee,
+                      expression: "newExchangeFee"
+                    }
+                  ],
+                  staticClass: "input-group-field",
+                  attrs: { type: "text", name: "new_exchange_fee" },
+                  domProps: { value: _vm.newExchangeFee },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.newExchangeFee = $event.target.value
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c(
+                "button",
+                { staticClass: "button hollow", attrs: { type: "submit" } },
+                [_vm._v("Submit")]
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _vm._l(_vm.sources, function(connection) {
+            return _c("div", { staticClass: "exchange-settings" }, [
+              _c("span", { staticClass: "h4 capitalize" }, [
+                _vm._v(_vm._s(connection.exchange))
+              ]),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "hollow button alert delete-exchange-button",
+                  on: {
+                    click: function($event) {
+                      _vm.deleteConnection(connection.id)
+                    }
+                  }
+                },
+                [_vm._v("Delete")]
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "input-group" }, [
+                _c("span", { staticClass: "input-group-label capitalize" }, [
+                  _vm._v(_vm._s(connection.exchange) + " Key")
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  staticClass: "input-group-field",
+                  attrs: {
+                    type: "text",
+                    name: connection.exchange + "_con_key"
+                  },
+                  domProps: { value: connection.api }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "input-group" }, [
+                _c("span", { staticClass: "input-group-label capitalize" }, [
+                  _vm._v(_vm._s(connection.exchange) + " Secret")
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  staticClass: "input-group-field",
+                  attrs: {
+                    type: "text",
+                    name: connection.exchange + "_con_secret"
+                  },
+                  domProps: { value: connection.secret }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "input-group" }, [
+                _c("span", { staticClass: "input-group-label capitalize" }, [
+                  _vm._v(_vm._s(connection.exchange) + " Fee")
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  staticClass: "input-group-field",
+                  attrs: {
+                    type: "text",
+                    name: connection.exchange + "_con_fee"
+                  },
+                  domProps: { value: connection.fee }
+                })
+              ])
+            ])
+          })
+        ],
+        2
+      )
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-8da3c324", module.exports)
+  }
+}
+
+/***/ }),
+/* 289 */
 /***/ (function(module, exports) {
 
 //////////////////////////////////////////////////////////////////
@@ -120949,19 +123286,19 @@ $('#notificationsModal').on('closed.zf.reveal', function () {
 });
 
 /***/ }),
-/* 275 */
+/* 290 */
 /***/ (function(module, exports) {
 
 $('.alerts-callout').hide().delay(1000).fadeIn(2000).delay(5000).fadeOut(1000);
 
 /***/ }),
-/* 276 */
+/* 291 */
 /***/ (function(module, exports) {
 
 
 
 /***/ }),
-/* 277 */
+/* 292 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

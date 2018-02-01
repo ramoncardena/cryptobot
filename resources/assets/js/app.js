@@ -38,11 +38,16 @@
  Vue.component('tradepanel', require('./components/TradePanel.vue'));
  Vue.component('notification-list', require('./components/NotificationList.vue'));
  Vue.component('add-origin', require('./components/AddOrigin.vue'));
+ Vue.component('edit-origin', require('./components/EditOrigin.vue'));
+ Vue.component('delete-origin', require('./components/DeleteOrigin.vue'));
  Vue.component('add-asset', require('./components/AddAsset.vue'));
  Vue.component('edit-asset', require('./components/EditAsset.vue'));
- Vue.component('transactions', require('./components/Transactions.vue'));
+ Vue.component('delete-asset', require('./components/DeleteAsset.vue'));
+ Vue.component('add-transaction', require('./components/AddTransaction.vue'));
+ Vue.component('delete-transaction', require('./components/DeleteTransaction.vue'));
  Vue.component('portfolio', require('./components/Portfolio.vue'));
  Vue.component('asset', require('./components/Asset.vue'));
+ Vue.component('connections', require('./components/Connections.vue'));
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

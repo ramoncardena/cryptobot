@@ -17,7 +17,14 @@ section#settings{
 			color: get-color(secondary);
 		}	
 	}
-
+	.delete-exchange-button {
+		color: get-color(alert);
+		font-size: 1.3rem;
+		position: relative;
+		float: right;
+		margin: 0;
+		padding: 0 0 0 1rem;
+	}
 	.settings-area {
 		margin-top: 20px;
 	}
@@ -34,7 +41,12 @@ section#settings{
 		  	vertical-align: middle;
 		  }
 	}
-
+	.switch-label {
+		color: get-color(secondary);
+		padding-left: 1rem;
+		font-size: 1.1rem;
+		margin-top: 1px;
+	}
 	.input-group-label {
 		color: get-color(secondary);
 		background-color: transparent;

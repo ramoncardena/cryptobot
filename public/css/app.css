@@ -9321,13 +9321,13 @@ a.button:focus {
 .dropdown-pane {
   position: absolute;
   z-index: 10;
-  width: 300px;
-  padding: 1rem;
+  width: auto;
+  padding: 0;
   visibility: hidden;
   display: none;
-  border: 1px solid #cacaca;
+  border: 0px solid #cacaca;
   border-radius: 0;
-  background-color: #FEFEFA;
+  background-color: transparent;
   font-size: 1rem;
 }
 
@@ -15420,6 +15420,18 @@ a.thumbnail image {
   white-space: nowrap;
 }
 
+.capitalize {
+  text-transform: capitalize;
+}
+
+.green {
+  color: #036502;
+}
+
+.red {
+  color: #F1615E;
+}
+
 .top-bar {
   border-bottom: 1px solid #009ACE;
 }
@@ -15691,6 +15703,15 @@ section#settings .section-title h1 {
   color: #FF7276;
 }
 
+section#settings .delete-exchange-button {
+  color: #cc4b37;
+  font-size: 1.3rem;
+  position: relative;
+  float: right;
+  margin: 0;
+  padding: 0 0 0 1rem;
+}
+
 section#settings .settings-area {
   margin-top: 20px;
 }
@@ -15708,6 +15729,13 @@ section#settings .align-vertical button {
 section#settings .align-vertical h1 {
   display: inline;
   vertical-align: middle;
+}
+
+section#settings .switch-label {
+  color: #FF7276;
+  padding-left: 1rem;
+  font-size: 1.1rem;
+  margin-top: 1px;
 }
 
 section#settings .input-group-label {
@@ -15765,6 +15793,15 @@ section#trades .accordion-title {
 
 section#trades .trades-area {
   margin-top: 2rem;
+}
+
+section#portfolio .portfolio-loader {
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  font-size: 1.2rem;
+  color: #FF7276;
+  margin-bottom: 1rem;
 }
 
 section#portfolio .section-title {
@@ -16207,7 +16244,7 @@ section#addasset .easy-autocomplete input {
 }
 
 .input-group #transaction-operation {
-  width: 7rem;
+  width: 8rem;
   margin: 0;
   height: auto;
   min-width: 0;
@@ -16216,5 +16253,68 @@ section#addasset .easy-autocomplete input {
 
 .input-group .number {
   text-align: right;
+}
+
+.red,
+.green {
+  cursor: pointer;
+}
+
+section#connections .h4 {
+  color: #009ACE;
+}
+
+section#connections .exchange-settings {
+  margin-bottom: 3rem;
+}
+
+section#connections .api-switch {
+  margin-left: 2rem;
+}
+
+section#connections .section-title {
+  background-color: #FBFCF9;
+  border-bottom: 1px solid #e6e6e6;
+  padding: 1rem;
+}
+
+section#connections .section-title h1 {
+  color: #FF7276;
+}
+
+section#connections .delete-exchange-button {
+  margin-left: 1rem;
+  position: relative;
+  float: right;
+}
+
+section#connections .update-exchange-button {
+  margin-left: 1rem;
+  position: relative;
+  float: right;
+}
+
+section#connections .settings-area {
+  margin-top: 20px;
+}
+
+section#connections .align-vertical {
+  display: inline;
+}
+
+section#connections .align-vertical button {
+  margin: 0;
+  display: inline;
+  vertical-align: middle;
+}
+
+section#connections .align-vertical h1 {
+  display: inline;
+  vertical-align: middle;
+}
+
+section#connections .input-group-label {
+  color: #FF7276;
+  background-color: transparent;
 }
 

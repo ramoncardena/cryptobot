@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Library\Services\Facades\Bittrex;
 use App\Library\Services\Facades\Bitcoin;
 
+use App\Library\Services\CoinGuru;
+
 class HomeController extends Controller
 {
     protected $user;
@@ -47,6 +49,27 @@ class HomeController extends Controller
 
             $fiat = $this->user->settings()->fiat;
 
+            //$guru = new CoinGuru;
+            //$coinList = $guru->cryptocompareCoingetList();
+            //dd($coinList->Data->ROS);
+
+            // $myexchange = '\\ccxt\\' . 'bittrex';
+
+            // date_default_timezone_set ('UTC');
+            // $bittrex  = new $myexchange  (array (
+            //     'apiKey' => $this->user->settings()->get('bittrex_key'),
+            //     'secret' => $this->user->settings()->get('bittrex_secret'),
+            // ));
+            // $balance = $bittrex->fetch_balance();
+
+            // $allBalances = $balance['total'];
+            
+            // $nonZeroBalances = array_where($allBalances, function ($value, $key) {
+            //     return $value > 0;
+            // });
+
+            // dd($nonZeroBalances);
+            // dd(\ccxt\Exchange::$exchanges);
 
             return view('home', ['coins' => $coins, 'totals' => $totals, 'fiat' => $fiat]);
 

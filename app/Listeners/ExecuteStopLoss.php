@@ -110,7 +110,7 @@ class ExecuteStopLoss
                     $broker = new Broker;
                     $broker->setExchange($this->trade['exchange']);
                     $broker->setUser($user);
-                    $order = $broker->sellLimit($this->trade['pair'], $this->trade['amount'], $event->stopLoss->price);
+                    $order = $broker->sellLimit2($this->trade['pair'], $this->trade['amount'], $event->stopLoss->price);
                     
                 }
                 
@@ -121,7 +121,7 @@ class ExecuteStopLoss
                     $this->order = new Order;
                     $this->order->user_id = $this->trade['user_id'];
                     $this->order->trade_id = $this->trade['id'];
-                    $this->order->exchange = 'bittrex';
+                    $this->order->exchange = $this->trade['exchange'];
                     $this->order->order_id = $order->result->uuid;
                     $this->order->type = 'close';
                     $this->order->cancel = false;
@@ -130,9 +130,10 @@ class ExecuteStopLoss
                 }
                 else {
 
-                    // Log ERROR: Bittrex API returned error
-                    Log::error("[ExecuteStopLoss] Bittrex API: " . $order->message);
+                    // Log ERROR: Broker returned error
+                    Log::error("[User " . $user->id . "] ExecuteStopLoss Broker: " . $order->message);
 
+                    // TODO Launch event with error
                 }
 
                 // Event: OrderLaunched
@@ -154,10 +155,12 @@ class ExecuteStopLoss
                 
             }
             
-        } catch(Exception $e) {
+        } catch(\Exception $e) {
 
             // Log CRITICAL: Exception
-            Log::critical("[ExecuteStopLoss] Exception: " . $e->getMessage());
+            Log::critical("[User " . $user->id . "] ExecuteStopLoss Exception: " . $e->getMessage());
+            
+            // TODO Launch event with error
 
         }
 

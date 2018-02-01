@@ -9,7 +9,7 @@ class Transaction extends Model
     protected  $primaryKey = 'id';
     
 	protected $fillable = [
-        'amount', 'label'
+        'amount', 'label', 'type'
     ];
 
     public function asset()
