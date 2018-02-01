@@ -20,3 +20,10 @@
  .capitalize { 
  	text-transform:capitalize; 
  }
+ .green {
+	color: get-color(profit);
+ }
+
+ .red {
+	color: get-color(loss);	
+ }

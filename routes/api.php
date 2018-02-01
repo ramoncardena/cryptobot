@@ -35,6 +35,8 @@ Route::middleware('auth:api')->delete('/notifications', 'NotificationsController
 Route::middleware('auth:api')->get('/portfolio/refresh', 'PortfolioController@refresh');
 Route::middleware('auth:api')->get('/assets', 'PortfolioAssetController@getall');
 Route::middleware('auth:api')->get('/assets/{id}', 'PortfolioAssetController@get');
+Route::middleware('auth:api')->get('/transactions/{origin}/{asset}', 'PortfolioAssetController@gettransactions');
+Route::middleware('auth:api')->delete('/transactions/{id}', 'PortfolioAssetController@deletetransaction');
 
 
 

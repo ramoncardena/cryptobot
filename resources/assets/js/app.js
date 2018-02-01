@@ -43,7 +43,8 @@
  Vue.component('add-asset', require('./components/AddAsset.vue'));
  Vue.component('edit-asset', require('./components/EditAsset.vue'));
  Vue.component('delete-asset', require('./components/DeleteAsset.vue'));
- Vue.component('transactions', require('./components/Transactions.vue'));
+ Vue.component('add-transaction', require('./components/AddTransaction.vue'));
+ Vue.component('delete-transaction', require('./components/DeleteTransaction.vue'));
  Vue.component('portfolio', require('./components/Portfolio.vue'));
  Vue.component('asset', require('./components/Asset.vue'));
  Vue.component('connections', require('./components/Connections.vue'));

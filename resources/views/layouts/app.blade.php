@@ -30,12 +30,13 @@
                 <ul class="vertical menu text-center">
                     <li><a href="/home">Dashboard</a></li>
                     <li><a href="/portfolio">Portfolio</a></li>
-                    <li><a href="/orders">Orders</a></li>
                     <li><a href="/trades">Trades</a></li>
-                    <li><a href="#">Documentation</a></li>
-                    <li><a href="#">Support</a></li>
                     <li><a href="/connections">Exchange APIs</a></li>
                     <li><a href="/settings">Settings</a></li>
+                    <li>-</li>
+                    <li><a href="#">Documentation</a></li>
+                    <li><a href="#">Support</a></li>
+                    <li>-</li>
                     <li>
                         <a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
                             Logout

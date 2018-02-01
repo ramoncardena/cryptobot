@@ -30,9 +30,9 @@
                 <li><a href="#" data-open="edit-asset-modal"><i class="fa fa-pencil" aria-hidden="true"></i> <span class="nowrap">Edit Asset</span> </a></li>
                 <li><a href="#" data-open="delete-asset-modal"><i class="fa fa-times" aria-hidden="true"></i> <span class="nowrap">Delete Asset</span> </a></li>
                 <li class="h4">Transactions</li>
-                <li><a href="#" data-open="transactions-modal"><i class="fa fa-plus" aria-hidden="true"></i> <span class="nowrap">Add Transaction</span> </a></li>
-                <li><a href="#" data-open="transactions-modal"><i class="fa fa-pencil" aria-hidden="true"></i> <span class="nowrap">Edit Transaction</span> </a></li>
-                <li><a href="#" data-open="transactions-modal"><i class="fa fa-pencil" aria-hidden="true"></i> <span class="nowrap">Delete Transaction</span> </a></li>
+                <li><a href="#" data-open="add-transaction-modal"><i class="fa fa-plus" aria-hidden="true"></i> <span class="nowrap">Add Transaction</span> </a></li>
+                <li><a href="#" data-open="edit-ransaction-modal"><i class="fa fa-pencil" aria-hidden="true"></i> <span class="nowrap">Edit Transaction</span> </a></li>
+                <li><a href="#" data-open="delete-transaction-modal"><i class="fa fa-pencil" aria-hidden="true"></i> <span class="nowrap">Delete Transaction</span> </a></li>
             </ul>
 
          </div>
@@ -135,10 +135,28 @@
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
-     <!-- MODAL: Transactions -->
-    <div class="reveal portfolio-modal" id="transactions-modal" data-reveal>
+    <!-- MODAL: Add Transaction -->
+    <div class="reveal portfolio-modal" id="add-transaction-modal" data-reveal>
         
-        <transactions :validation-errors="{{ $errors }}" :portfolio="{{$portfolio}}" :origins="{{$origins}}" :exchanges="{{$exchanges}}"></transactions>
+        <add-transaction :validation-errors="{{ $errors }}" :portfolio="{{$portfolio}}" :origins="{{$origins}}" :exchanges="{{$exchanges}}"></add-transaction>
+
+        <button class="close-button" data-close aria-label="Close modal" type="button">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <!-- MODAL: Edit Transactions-->
+    <div class="reveal portfolio-modal" id="edit-transaction-modal" data-reveal>
+        
+        <add-transaction :validation-errors="{{ $errors }}" :portfolio="{{$portfolio}}" :origins="{{$origins}}" :exchanges="{{$exchanges}}"></add-transaction>
+
+        <button class="close-button" data-close aria-label="Close modal" type="button">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <!-- MODAL: Delete Transaction -->
+    <div class="reveal portfolio-modal" id="delete-transaction-modal" data-reveal>
+        
+        <delete-transaction :validation-errors="{{ $errors }}" :portfolio="{{$portfolio}}" :origins="{{$origins}}" :exchanges="{{$exchanges}}"></delete-transaction>
 
         <button class="close-button" data-close aria-label="Close modal" type="button">
             <span aria-hidden="true">&times;</span>

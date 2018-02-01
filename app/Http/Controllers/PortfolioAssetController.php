@@ -81,60 +81,6 @@ class PortfolioAssetController extends Controller
     }
 
     /**
-    * Show the trades dashboard.
-    *
-    * @return \Illuminate\Http\Response
-    */
-    public function get($id)
-    {
-        try {
-
-            $asset = PortfolioAsset::where('id', $id)->first();
-           
-            if ($asset) {
-                return response($asset, 200);
-            }
-            else {
-                return response("No asset found", 500);
-            }
-
-        } catch (\Exception $e) {
-
-            return response($e->getMessage(), 500)->header('Content-Type', 'text/plain');
-
-        }
-
-    }
-
-    /**
-     * Show the trades dashboard.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function getall()
-    {
-        try {
-            $this->user = Auth::user();
-
-            $portfolio = Portfolio::where('user_id', $this->user->id)->first();
-
-            if ($portfolio->assets) {
-                return response($portfolio->assets, 200);
-            }
-            else {
-                return response("No assets found", 500);
-            }
-
-        } catch (\Exception $e) {
-
-            return response($e->getMessage(), 500)->header('Content-Type', 'text/plain');
-
-        }
-
-    }
-
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -179,13 +125,50 @@ class PortfolioAssetController extends Controller
         }
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    public function get($id)
+    {
+        try {
+
+            $asset = PortfolioAsset::where('id', $id)->first();
+           
+            if ($asset) {
+                return response($asset, 200);
+            }
+            else {
+                return response("No asset found", 500);
+            }
+
+        } catch (\Exception $e) {
+
+            return response($e->getMessage(), 500)->header('Content-Type', 'text/plain');
+
+        }
+
+    }
+
+    public function getall()
+    {
+        try {
+            $this->user = Auth::user();
+
+            $portfolio = Portfolio::where('user_id', $this->user->id)->first();
+
+            if ($portfolio->assets) {
+                return response($portfolio->assets, 200);
+            }
+            else {
+                return response("No assets found", 500);
+            }
+
+        } catch (\Exception $e) {
+
+            return response($e->getMessage(), 500)->header('Content-Type', 'text/plain');
+
+        }
+
+    }
+
+
     public function settransaction(Request $request, $id)
     {
          try {
@@ -216,6 +199,49 @@ class PortfolioAssetController extends Controller
             }
 
             return redirect('/portfolio');
+
+
+        } catch (\Exception $e) {
+
+            return response($e->getMessage(), 500)->header('Content-Type', 'text/plain');
+
+        }
+    }
+
+    public function gettransactions($originId, $assetId)
+    {
+         try {
+            $this->user = Auth::user();
+
+            $assets =  $this->user->assets->where('origin_id', $originId);
+
+            $asset = $assets->where('id', $assetId)->first();
+
+            $transactions = $this->user->transactions->where('asset_id', $assetId);
+
+            return response($transactions, 200);
+
+
+        } catch (\Exception $e) {
+
+            return response($e->getMessage(), 500)->header('Content-Type', 'text/plain');
+
+        }
+    }
+
+    public function deletetransaction($id)
+    {
+         try {
+            $this->user = Auth::user();
+
+            $transactions =  $this->user->transactions;
+
+            $transaction = $transactions->where('id', $id)->first();
+
+// MODIFICAR LA CANTIDAD!! COPIAR DE ADD
+            $transaction->delete();
+            
+            return response("Ok", 200);
 
 
         } catch (\Exception $e) {

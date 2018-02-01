@@ -15424,6 +15424,14 @@ a.thumbnail image {
   text-transform: capitalize;
 }
 
+.green {
+  color: #036502;
+}
+
+.red {
+  color: #F1615E;
+}
+
 .top-bar {
   border-bottom: 1px solid #009ACE;
 }
@@ -15721,6 +15729,13 @@ section#settings .align-vertical button {
 section#settings .align-vertical h1 {
   display: inline;
   vertical-align: middle;
+}
+
+section#settings .switch-label {
+  color: #FF7276;
+  padding-left: 1rem;
+  font-size: 1.1rem;
+  margin-top: 1px;
 }
 
 section#settings .input-group-label {
@@ -16229,7 +16244,7 @@ section#addasset .easy-autocomplete input {
 }
 
 .input-group #transaction-operation {
-  width: 7rem;
+  width: 8rem;
   margin: 0;
   height: auto;
   min-width: 0;
@@ -16238,6 +16253,11 @@ section#addasset .easy-autocomplete input {
 
 .input-group .number {
   text-align: right;
+}
+
+.red,
+.green {
+  cursor: pointer;
 }
 
 section#connections .h4 {

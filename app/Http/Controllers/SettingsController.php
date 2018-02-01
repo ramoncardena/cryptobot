@@ -77,7 +77,7 @@ class SettingsController extends Controller
     {   
         $settings = settings();
 
-        $settings->set('exchanges', null);
+        //$settings->set('exchanges', null);
 
         // $bitstampSwitch=false;
         // $bittrexSwitch=false;

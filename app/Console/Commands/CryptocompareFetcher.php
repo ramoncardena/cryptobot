@@ -3,6 +3,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 use App\User;
 use App\CryptocompareAsset;
@@ -72,7 +73,17 @@ class CryptocompareFetcher extends Command {
 					$asset = new CryptocompareAsset;
 					$asset->id = $coin->Id;
 		            property_exists($coin, 'Url') ? $asset->url = $logoBaseUrl . $coin->Url : $asset->url = "#";
-		            property_exists($coin, 'ImageUrl') ? $asset->imageurl = $logoBaseUrl . $coin->ImageUrl : $asset->imageurl = "#";
+		            if (property_exists($coin, 'ImageUrl')) {
+		            	$url = $logoBaseUrl . $coin->ImageUrl;
+		            	$filename = '/public/coinimg/' . $coin->Symbol . '.jpg';
+		            	Storage::put($filename, file_get_contents($url));
+		            
+						$asset->imageurl = Storage::url('public/coinimg/' . $coin->Symbol . '.jpg');
+		            	// $asset->imageurl = $logoBaseUrl . $coin->ImageUrl;
+		            } 
+		            else {
+		            	$asset->imageurl = "#";
+		            }  
 		            $asset->name = $coin->Name;
 		            $asset->symbol = $coin->Symbol;
 		            $asset->coinname = $coin->CoinName;
