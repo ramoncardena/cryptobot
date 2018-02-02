@@ -97,23 +97,6 @@
                                 </div>
                                 <div class="input-group">
 
-                                    <span class="switch">
-                                        <input class="switch-input" id="hide-small-assets" type="checkbox" name="hide_small_assets">
-                                        <label class="switch-paddle" for="hide-small-assets">
-                                            <span class="show-for-sr">Hide small assets</span>
-                                            @if ($settings['hide_small_assets'] === 'on')
-                                            <span class="switch-inactive" aria-hidden="true">Yes</span>
-                                            @else
-                                            <span class="switch-inactive" aria-hidden="true">Yes</span>
-                                            @endif
-                                            @if ($settings['hide_small_assets'] === 'on')
-                                            <span class="switch-active" aria-hidden="true">No</span>
-                                            @else
-                                            <span class="switch-active" aria-hidden="true">No</span>
-                                            @endif
-                                        </label>
-                                    </span>
-                                    <span class="switch-label"> Hide small assets </span>
                                 </div>
                                 @endisset
 
