@@ -8,7 +8,7 @@
         <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'CryptoBot') }} [Beta]</title>
+        <title>{{ config('app.name', 'CryptoBot') }} [Alpha]</title>
 
         <!-- Styles -->
         <link href="node_modules/open-iconic/font/css/open-iconic-foundation.css" rel="stylesheet">
@@ -24,7 +24,8 @@
                 <!-- Menu -->
                 <div class="menu-title text-center">
                     <img class="logo" width="60" src="<?php echo Storage::url('cryptobot-logo-white-200px.png')?>"/>
-                    CryptoBot
+                    <div class="h4">CryptoBot</div>
+                    <div class="version">{{ config('app.version', '0.0.0') }} [Alpha]</div>
                     <!--asset('storage/cryptobot-logo-white-200px.png') -->
                 </div>
                 <ul class="vertical menu text-center">

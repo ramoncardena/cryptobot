@@ -15412,6 +15412,11 @@ a.thumbnail image {
   background: url("/storage/icons/loading.gif") 50% 50% no-repeat #f9f9f9;
 }
 
+.version {
+  font-size: 0.95rem;
+  font-style: italic;
+}
+
 .badge {
   font-weight: bold;
 }
