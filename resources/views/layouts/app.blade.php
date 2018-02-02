@@ -28,7 +28,7 @@
                     <!--asset('storage/cryptobot-logo-white-200px.png') -->
                 </div>
                 <ul class="vertical menu text-center">
-                    <li><a href="/home">Dashboard</a></li>
+                    <li><a href="{{ route('home') }}">Dashboard</a></li>
                     <li><a href="/portfolio">Portfolio</a></li>
                     <li><a href="/trades">Trades</a></li>
                     <li><a href="/connections">Exchange APIs</a></li>

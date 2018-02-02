@@ -41,13 +41,13 @@ class HomeController extends Controller
             
             $this->user = Auth::user();
 
-            Bittrex::setAPI($this->user->settings()->get('bittrex_key'), $this->user->settings()->get('bittrex_secret'));
+            // Bittrex::setAPI($this->user->settings()->get('bittrex_key'), $this->user->settings()->get('bittrex_secret'));
 
-            $coins = $this->getCoins();
+            // $coins = $this->getCoins();
 
-            $totals = $this->getTotals($coins);
+            // $totals = $this->getTotals($coins);
 
-            $fiat = $this->user->settings()->fiat;
+            // $fiat = $this->user->settings()->fiat;
 
             //$guru = new CoinGuru;
             //$coinList = $guru->cryptocompareCoingetList();
@@ -71,7 +71,7 @@ class HomeController extends Controller
             // dd($nonZeroBalances);
             // dd(\ccxt\Exchange::$exchanges);
 
-            return view('home', ['coins' => $coins, 'totals' => $totals, 'fiat' => $fiat]);
+            return view('home');
 
         }
         else {
