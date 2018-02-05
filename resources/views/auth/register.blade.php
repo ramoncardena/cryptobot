@@ -20,7 +20,17 @@
                     {{ csrf_field() }}
 
                     <div class="name">
-                        <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" aria-describedby="nameHelpText" placeholder="Name" required autofocus>
+                        <input id="invitation" type="text" class="form-control" name="invitation" value="{{ old('invitation') }}" aria-describedby="nameHelpText" placeholder="Invitation Code" required autofocus>
+
+                        @if ($errors->has('invitation'))
+                        <span class="help-text" id="nameHelpText">
+                            <strong>{{ $errors->first('invitation') }}</strong>
+                        </span>
+                        @endif
+                    </div>
+
+                    <div class="name">
+                        <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" aria-describedby="nameHelpText" placeholder="Name"  autofocus>
 
                         @if ($errors->has('name'))
                         <span class="help-text" id="nameHelpText">

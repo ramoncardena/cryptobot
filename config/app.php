@@ -168,6 +168,7 @@ return [
         /*
          * Package Service Providers...
          */
+        Atbox\Invi\InviServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -234,6 +235,8 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Bittrex' => App\Library\Services\Facades\Bittrex::class,
         'Bitcoin' => App\Library\Services\Facades\Bitcoin::class,
+
+        'Invi' => Atbox\Invi\Facades\Invi::class,
 
     ],
 

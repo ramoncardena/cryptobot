@@ -26,6 +26,17 @@ Route::post('/connections', 'ConnectionsController@store');
 Route::delete('/connections/{id}', 'ConnectionsController@destroy');
 Route::patch('/connections/{id}', 'ConnectionsController@update');
 
+Route::get('/invite', 'InviteController@index');
+Route::post('/invite', 'InviteController@store');
+
+Route::get('/mailable', function () {
+    $name = Auth::user()->name;
+    $email = Auth::user()->email;
+    $invitation = json_decode(\Invi::generate("ramon.cardena@gmail.com", "7 day", true));
+
+    return new App\Mail\NewInvite($invitation, $name, $email);
+});
+
 Route::get('/orders', 'OrdersController@index');
 Route::get('/trades', 'TradeController@index');
 Route::post('/trades', 'TradeController@store');

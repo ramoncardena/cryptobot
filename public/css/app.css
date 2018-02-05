@@ -15844,6 +15844,82 @@ section#portfolio .portfolio-area {
   text-align: right;
 }
 
+section#invitations .section-title {
+  background-color: #FBFCF9;
+  border-bottom: 1px solid #e6e6e6;
+  padding: 1rem;
+}
+
+section#invitations .section-title h1 {
+  color: #FF7276;
+}
+
+section#invitations .accordion-title {
+  color: #FF7276;
+}
+
+section#invitations .content-area {
+  margin-top: 2rem;
+}
+
+section#invitations .invitations-title {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+}
+
+section#invitations .invitations-subtitle {
+  font-size: 1.5rem;
+}
+
+section#invitations .invitations-note {
+  font-size: 1rem;
+}
+
+section#invitations .invitations-thanks {
+  font-size: 1.5rem;
+}
+
+section#invitations .invitation-instructions {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  font-size: 1.2rem;
+}
+
+section#invitations .invitation-code {
+  font-size: 2rem;
+  color: #FF7276;
+}
+
+section#invitations .invitation-email {
+  font-size: 1.5rem;
+  color: #FF7276;
+}
+
+section#invitations .invitation-expiration {
+  font-size: 1.5rem;
+  color: #FF7276;
+}
+
+section#invitations .invitation-label {
+  font-size: 1rem;
+  color: #009ACE;
+}
+
+section#email-newinvite .invitation-code {
+  font-size: 2rem;
+  color: #FF7276;
+}
+
+section#email-newinvite .invitation-expiration {
+  font-size: 1.5rem;
+  color: #FF7276;
+}
+
+section#email-newinvite .invitation-label {
+  font-size: 1rem;
+  color: #009ACE;
+}
+
 .balance {
   font-size: 1rem;
   color: #8a8a8a;
@@ -16320,6 +16396,15 @@ section#connections .align-vertical h1 {
 
 section#connections .input-group-label {
   color: #FF7276;
+  background-color: transparent;
+}
+
+section#invite-panel .input-group .number {
+  text-align: right;
+}
+
+section#invite-panel .input-group-label {
+  color: #009ACE;
   background-color: transparent;
 }
 

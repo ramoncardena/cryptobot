@@ -1,0 +1,13 @@
+section#invite-panel {
+
+	.input-group {
+		.number {
+			text-align: right;
+		}
+		
+	}
+	.input-group-label {
+		color: get-color(primary);
+		background-color: transparent;
+	}
+}

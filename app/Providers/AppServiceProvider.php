@@ -19,6 +19,20 @@ class AppServiceProvider extends ServiceProvider
         view()->composer(
             'partials.notifications', 'App\Http\ViewComposers\NavbarViewComposer'
         );
+
+        // Custom validator rule
+        \Validator::extend('invited', function($attribute, $value, $parameters, $validator){
+
+            $invitationCode = $value;
+            $invitationEmail = $parameters[0];
+
+            $invitationStatus = \Invi::status($invitationCode, $invitationEmail);
+
+            if($invitationStatus=='valid'){
+                return true;
+            }
+            return false;
+        });
     }
 
     /**

@@ -34,6 +34,7 @@
                     <li><a href="/trades">Trades</a></li>
                     <li><a href="/connections">Exchange APIs</a></li>
                     <li><a href="/settings">Settings</a></li>
+                    <li><a href="/invite">Invitations</a></li>
                     <li>-</li>
                     <li><a href="#">Documentation</a></li>
                     <li><a href="#">Support</a></li>

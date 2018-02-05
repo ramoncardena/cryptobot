@@ -11,7 +11,7 @@
 // Foundation
 @import "foundation";
 
-// Modules
+// Vendor
 @import "vendor/chartist";
 
 // Modules
@@ -32,6 +32,10 @@
 @import "partials/orders";
 @import "partials/trades";
 @import "partials/portfolio";
+@import "partials/invitations";
+
+// Emails
+@import "emails/newinvite";
 
 // Vue Components
 @import "vue/balance";
@@ -43,4 +47,5 @@
 @import "vue/addasset";
 @import "vue/transactions";
 @import "vue/connections";
+@import "vue/invitepanel";
 

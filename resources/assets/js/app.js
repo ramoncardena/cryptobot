@@ -48,6 +48,7 @@
  Vue.component('portfolio', require('./components/Portfolio.vue'));
  Vue.component('asset', require('./components/Asset.vue'));
  Vue.component('connections', require('./components/Connections.vue'));
+ Vue.component('invite-panel', require('./components/InvitePanel.vue'));
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

@@ -1,0 +1,54 @@
+section#invitations {
+
+	.section-title {
+		background-color: $title-background;
+		border-bottom: 1px solid $light-gray;
+		padding: 1rem;
+		h1 {
+			color: get-color(secondary);
+		}	
+	}
+	
+	.accordion-title {
+		color: get-color(secondary);
+	}
+
+	.content-area {
+		margin-top: 2rem;
+	}
+	.invitations-title {
+		font-size: 2rem;
+		margin-bottom: 2rem;
+	}
+	.invitations-subtitle{
+		font-size: 1.5rem;
+	}
+	.invitations-note {
+		font-size: 1rem;
+	}
+	.invitations-thanks {
+		font-size: 1.5rem;
+	}
+	.invitation-instructions {
+		margin-top: 1.5rem;
+		margin-bottom: 1.5rem;
+		font-size: 1.2rem;
+	}
+	.invitation-code {
+		font-size: 2rem;
+		color: get-color(secondary);
+	}
+	.invitation-email {
+		font-size: 1.5rem;
+		color: get-color(secondary);
+	}
+	.invitation-expiration {
+		font-size: 1.5rem;
+		color: get-color(secondary);
+	}
+	.invitation-label {
+		font-size: 1rem;
+		color: get-color(primary);
+	}
+
+}

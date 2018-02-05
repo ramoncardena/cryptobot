@@ -44277,7 +44277,7 @@ module.exports = Cancel;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(142);
-module.exports = __webpack_require__(292);
+module.exports = __webpack_require__(295);
 
 
 /***/ }),
@@ -44324,6 +44324,7 @@ Vue.component('delete-transaction', __webpack_require__(277));
 Vue.component('portfolio', __webpack_require__(280));
 Vue.component('asset', __webpack_require__(283));
 Vue.component('connections', __webpack_require__(286));
+Vue.component('invite-panel', __webpack_require__(289));
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -44336,9 +44337,9 @@ var app = new Vue({
 
 $(document).ready(function () {
 
-    __webpack_require__(289);
-    __webpack_require__(290);
-    __webpack_require__(291);
+    __webpack_require__(292);
+    __webpack_require__(293);
+    __webpack_require__(294);
 
     $.extend($.fn.dataTable.defaults, {
         responsive: true
@@ -123271,6 +123272,179 @@ if (false) {
 
 /***/ }),
 /* 289 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(3)
+/* script */
+var __vue_script__ = __webpack_require__(290)
+/* template */
+var __vue_template__ = __webpack_require__(291)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/InvitePanel.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-f67eb2d8", Component.options)
+  } else {
+    hotAPI.reload("data-v-f67eb2d8", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 290 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: 'invite-panel',
+    data: function data() {
+        return {
+            updating: false,
+            csrf: ""
+        };
+    },
+    props: ['invitations', 'validation-errors'],
+    computed: {},
+    watch: {},
+    mounted: function mounted() {
+
+        this.csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        console.log('Component InvitePanel mounted.');
+    },
+
+    methods: {
+        saveName: function saveName() {}
+    }
+});
+
+/***/ }),
+/* 291 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("section", { attrs: { id: "invite-panel" } }, [
+    _c("div", { staticClass: "grid-container fluid invite-panel" }, [
+      _c("form", { attrs: { method: "POST", action: "/invite" } }, [
+        _c("input", {
+          attrs: { type: "hidden", name: "_token" },
+          domProps: { value: _vm.csrf }
+        }),
+        _vm._v(" "),
+        _c("div", { staticClass: "grid-x grid-padding-x align-center" }, [
+          _c("div", { staticClass: "cell large-6" }, [
+            _vm.validationErrors.invitation_email
+              ? _c(
+                  "div",
+                  _vm._l(_vm.validationErrors.invitation_email, function(
+                    error
+                  ) {
+                    return _c("span", { staticClass: "validation-error" }, [
+                      _vm._v(" " + _vm._s(error) + " ")
+                    ])
+                  })
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm._m(0, false, false)
+          ])
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-group" }, [
+      _c("span", { staticClass: "input-group-label" }, [_vm._v("Email")]),
+      _vm._v(" "),
+      _c("input", {
+        staticClass: "input-group-field",
+        attrs: { name: "invitation_email", type: "email" }
+      }),
+      _vm._v(" "),
+      _c("div", { staticClass: "input-group-button" }, [
+        _c("input", {
+          staticClass: "button",
+          attrs: { type: "submit", value: "Invite" }
+        })
+      ])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-f67eb2d8", module.exports)
+  }
+}
+
+/***/ }),
+/* 292 */
 /***/ (function(module, exports) {
 
 //////////////////////////////////////////////////////////////////
@@ -123286,19 +123460,19 @@ $('#notificationsModal').on('closed.zf.reveal', function () {
 });
 
 /***/ }),
-/* 290 */
+/* 293 */
 /***/ (function(module, exports) {
 
 $('.alerts-callout').hide().delay(1000).fadeIn(2000).delay(5000).fadeOut(1000);
 
 /***/ }),
-/* 291 */
+/* 294 */
 /***/ (function(module, exports) {
 
 
 
 /***/ }),
-/* 292 */
+/* 295 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

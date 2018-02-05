@@ -74,12 +74,12 @@ class CryptocompareFetcher extends Command {
 					$asset->id = $coin->Id;
 		            property_exists($coin, 'Url') ? $asset->url = $logoBaseUrl . $coin->Url : $asset->url = "#";
 		            if (property_exists($coin, 'ImageUrl')) {
-		            	$url = $logoBaseUrl . $coin->ImageUrl;
-		            	$filename = '/public/coinimg/' . $coin->Symbol . '.jpg';
-		            	Storage::put($filename, file_get_contents($url));
+		            	// $url = $logoBaseUrl . $coin->ImageUrl;
+		            	// $filename = '/public/coinimg/' . $coin->Symbol . '.jpg';
+		            	// Storage::put($filename, file_get_contents($url));
 		            
-						$asset->imageurl = Storage::url('public/coinimg/' . $coin->Symbol . '.jpg');
-		            	// $asset->imageurl = $logoBaseUrl . $coin->ImageUrl;
+						// $asset->imageurl = Storage::url('public/coinimg/' . $coin->Symbol . '.jpg');
+		                $asset->imageurl = $logoBaseUrl . $coin->ImageUrl;
 		            } 
 		            else {
 		            	$asset->imageurl = "#";

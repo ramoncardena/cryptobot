@@ -1,0 +1,16 @@
+section#email-newinvite {
+
+	.invitation-code {
+		font-size: 2rem;
+		color: get-color(secondary);
+	}
+	
+	.invitation-expiration {
+		font-size: 1.5rem;
+		color: get-color(secondary);
+	}
+	.invitation-label {
+		font-size: 1rem;
+		color: get-color(primary);
+	}
+}
