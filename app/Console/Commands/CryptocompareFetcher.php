@@ -84,6 +84,7 @@ class CryptocompareFetcher extends Command {
 		            else {
 		            	$asset->imageurl = "#";
 		            }  
+
 		            $asset->name = $coin->Name;
 		            $asset->symbol = $coin->Symbol;
 		            $asset->coinname = $coin->CoinName;
