@@ -29,7 +29,8 @@
                     <!--asset('storage/cryptobot-logo-white-200px.png') -->
                 </div>
                 <ul class="vertical menu text-center">
-                    <li><a href="{{ route('home') }}">Dashboard</a></li>
+                    <li><a href="{{ route('home') }}">Home</a></li>
+                    <li><a href="/dashboard">Dashboard</a></li>
                     <li><a href="/portfolio">Portfolio</a></li>
                     <li><a href="/trades">Trades</a></li>
                     <li><a href="/connections">Exchange APIs</a></li>
@@ -85,36 +86,29 @@
                             <div class="top-bar-right">
                                 <ul class="dropdown menu" data-dropdown-menu data-disable-hover="true" data-click-open="true">
                                     @if (Auth::guest())
-                                    <li><a href="{{ route('login') }}">Login</i></a></li>
-
-                                    <li><a href="{{ route('register') }}">Register</a></li>
+                                        <li><a href="{{ route('login') }}">Login</i></a></li>
+                                        <li><a href="{{ route('register') }}">Register</a></li>
                                     @else
-                                    <li> <a href="{{ route('home') }}">  <i class="fa fa-home" aria-hidden="true"></i> </a></li>
-                                    
-                                    <li>
-                                        <a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
-                                            <i class="fa fa-sign-out" aria-hidden="true"></i>
-                                        </a>
+                                        <li> <a href="{{ route('home') }}" title="Home">  <i class="fa fa-home" aria-hidden="true"></i> </a></li>
+                                        <li> <a href="{{ route('dashboard') }}" title="Dashboard">  <i class="fa fa-tachometer" aria-hidden="true"></i></i></a></li>
+                                        <li> <a href="{{ route('portfolio') }}" title="Portfolio">  <i class="fa fa-pie-chart" aria-hidden="true"></i></a></li>
+                                        <li> <a href="{{ route('trades') }}" title="Trades">  <i class="fa fa-line-chart" aria-hidden="true"></i></a></li>
+                                        <li><a href="{{ route('settings') }}" title="Settings" ><i class="fa fa-cog" aria-hidden="true"></i></a></li>
+                                        <li  class="show-for-medium">
+                                            <a href="#" data-open="notificationsModal" title="Alerts"><i class="fa fa-bell-o" aria-hidden="true"></i><span class="badge alert">{{ count(Auth::user()->Notifications) }}</span></a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ route('logout') }}" title="Logout" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                                                <i class="fa fa-sign-out" aria-hidden="true"></i>
+                                            </a>
 
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                            {{ csrf_field() }}
-                                        </form>
-                                    </li>
-                                   
-
-                                    <li>
-                                        <a href="/settings"><i class="fa fa-cog" aria-hidden="true"></i></a>
-                                    </li>
-
-                                    <li  class="show-for-medium">
-                                        <a href="#" data-open="notificationsModal"><i class="fa fa-bell-o" aria-hidden="true"></i><span class="badge alert">{{ count(Auth::user()->Notifications) }}</span></a>
-                                    </li>
-
-                                    <li>
-                                        <a href="#"><i class="fa fa-th" aria-hidden="true" data-toggle="offCanvas"></i></a>
-                                    </li>
-                                    
-
+                                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                                {{ csrf_field() }}
+                                            </form>
+                                        </li>
+                                        <li>
+                                            <a href="#" title="Menu" ><i class="fa fa-th" aria-hidden="true" data-toggle="offCanvas"></i></a>
+                                        </li>
                                     @endif
                                 </ul>
                             </div>

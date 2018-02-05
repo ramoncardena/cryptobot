@@ -15,13 +15,14 @@ use Illuminate\Support\Facades\Auth;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
 
-Route::get('/settings', 'SettingsController@index');
+Route::get('/settings', 'SettingsController@index')->name('settings');
 Route::get('/settings/{setting}', 'SettingsController@show');
 Route::patch('/settings', 'SettingsController@update');
 Route::post('/settings', 'SettingsController@store');
 
-Route::get('/connections', 'ConnectionsController@index');
+Route::get('/connections', 'ConnectionsController@index')->name('connections');
 Route::post('/connections', 'ConnectionsController@store');
 Route::delete('/connections/{id}', 'ConnectionsController@destroy');
 Route::patch('/connections/{id}', 'ConnectionsController@update');
@@ -38,17 +39,16 @@ Route::post('/invite', 'InviteController@store');
 // });
 
 Route::get('/orders', 'OrdersController@index');
-Route::get('/trades', 'TradeController@index');
+
+Route::get('/trades', 'TradeController@index')->name('trades');
 Route::post('/trades', 'TradeController@store');
 Route::delete('/trades/{id}', 'TradeController@destroy');
 Route::patch('/trades/{id}', 'TradeController@update');
 
-Route::get('/portfolio', 'PortfolioController@index');
-
+Route::get('/portfolio', 'PortfolioController@index')->name('portfolio');
 Route::post('/portfolio/origin', 'PortfolioOriginController@store');
 Route::patch('/portfolio/origin/{id}', 'PortfolioOriginController@update');
 Route::delete('/portfolio/origin/{id}', 'PortfolioOriginController@destroy');
-
 Route::post('/portfolio/asset', 'PortfolioAssetController@store');
 Route::patch('/portfolio/asset/{id}', 'PortfolioAssetController@update');
 Route::delete('/portfolio/asset/{id}', 'PortfolioAssetController@destroy');
