@@ -31,7 +31,17 @@ class AppServiceProvider extends ServiceProvider
             if($invitationStatus=='valid'){
                 return true;
             }
+            
             return false;
+        });
+        // \Validator::resolver(function($translator, $data, $rules, $messages)
+        // {
+        //     $messages['invite'] = 'Phone number format should be 954-555-1234';
+        //     return new \Validator($translator, $data, $rules, $messages);
+        // });
+        \Validator::replacer('invited', function($message, $attribute, $rule, $parameters) {
+            $message = 'Your invitation code is not valid';
+            return $message;
         });
     }
 

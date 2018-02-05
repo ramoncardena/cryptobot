@@ -66,6 +66,8 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        \Invi::used($data['invitation'], $data['email']);
+
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
