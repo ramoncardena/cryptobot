@@ -18,7 +18,7 @@
 </head>
 
 <body>
-    <section id="home">
+    <section id="welcome">
         <div class="grid-container flex-center position-ref full-height">
             <div class="grid-x grid-padding-x align-center">
                 <div class="cell text-center">

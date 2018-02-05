@@ -4,6 +4,7 @@ section#dashboard {
 		background-color: $title-background;
 		border-bottom: 1px solid $light-gray;
 		padding: 1rem;
+		margin-bottom: 1rem;
 
 		h1 {
 			color: get-color(secondary);

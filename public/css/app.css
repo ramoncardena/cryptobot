@@ -15533,10 +15533,64 @@ table.trade thead th {
   width: 100%;
 }
 
-section#home html,
-section#home body {
+section#welcome html,
+section#welcome body {
   height: 100vh;
   margin: 0;
+}
+
+section#welcome .section-title {
+  background-color: #FBFCF9;
+  border-bottom: 1px solid #e6e6e6;
+  padding: 1rem;
+}
+
+section#welcome .section-title h1 {
+  color: #FF7276;
+}
+
+section#welcome .full-height {
+  height: 100vh;
+}
+
+section#welcome .flex-center {
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+section#welcome .position-ref {
+  position: relative;
+}
+
+section#welcome .top-right {
+  position: absolute;
+  right: 10px;
+  top: 18px;
+}
+
+section#welcome .title {
+  font-size: 3.5rem;
+  font-weight: 100;
+}
+
+section#welcome .versioninfo {
+  color: #636b6f;
+  padding: 0 25px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .1rem;
+  text-decoration: none;
+}
+
+section#welcome .m-b-md {
+  margin-bottom: 30px;
 }
 
 section#home .section-title {
@@ -15549,48 +15603,12 @@ section#home .section-title h1 {
   color: #FF7276;
 }
 
-section#home .full-height {
-  height: 100vh;
+section#home .section-title .value {
+  color: #FF7276;
 }
 
-section#home .flex-center {
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-}
-
-section#home .position-ref {
-  position: relative;
-}
-
-section#home .top-right {
-  position: absolute;
-  right: 10px;
-  top: 18px;
-}
-
-section#home .title {
-  font-size: 3.5rem;
-  font-weight: 100;
-}
-
-section#home .versioninfo {
-  color: #636b6f;
-  padding: 0 25px;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: .1rem;
-  text-decoration: none;
-}
-
-section#home .m-b-md {
-  margin-bottom: 30px;
+section#home .portfolio {
+  margin-top: 20px;
 }
 
 section#login .full-height {
@@ -15675,6 +15693,7 @@ section#dashboard .section-title {
   background-color: #FBFCF9;
   border-bottom: 1px solid #e6e6e6;
   padding: 1rem;
+  margin-bottom: 1rem;
 }
 
 section#dashboard .section-title h1 {

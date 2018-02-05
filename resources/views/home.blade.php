@@ -2,7 +2,7 @@
 
 @section('content')
 
-<section id="dashboard">
+<section id="home">
 
 	<div class="grid-container fluid">
 

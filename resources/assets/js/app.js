@@ -48,6 +48,8 @@
  Vue.component('asset', require('./components/portfolio/Asset.vue'));
 
 
+ Vue.component('coin-card', require('./components/dashboard/CoinCard.vue'));
+
  Vue.component('notification-list', require('./components/notifications/NotificationList.vue'));
  Vue.component('connections', require('./components/connections/Connections.vue'));
  Vue.component('invite-panel', require('./components/invitations/InvitePanel.vue'));

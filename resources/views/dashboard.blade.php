@@ -10,7 +10,7 @@
 
 	        <div class="form-container section-title cell text-left">
 	            
-                    <div class="grid-x grid-padding-x align-middle">
+                    <div class="grid-x grid-padding-x align-center">
 
                         <div class="small-4 cell text-left">
                             <div class="align-vertical">
@@ -18,17 +18,17 @@
                             </div>
                         </div>
 
-                        <div class="small-8 cell text-right">
+                        <div class="small-8 cell">
                             <div class="align-vertical">
-                               
+                              
                             </div>
                         </div>
                     </div>
 	        </div>
 
-	        <div class="large-10 cell text-center portfolio form-container">
+	        <div class="large-10 cell">
 
-                    
+                <coin-card coin="ADA"> </coin-card> 
 
 	        </div>
 
