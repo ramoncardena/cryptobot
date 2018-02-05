@@ -31,24 +31,26 @@
 /**
  * Custom components
  */
- Vue.component('balance', require('./components/Balance.vue'));
- Vue.component('order', require('./components/Order.vue'));
- Vue.component('trade', require('./components/Trade.vue'));
- Vue.component('tradelist', require('./components/TradeList.vue'));
- Vue.component('tradepanel', require('./components/TradePanel.vue'));
- Vue.component('notification-list', require('./components/NotificationList.vue'));
- Vue.component('add-origin', require('./components/AddOrigin.vue'));
- Vue.component('edit-origin', require('./components/EditOrigin.vue'));
- Vue.component('delete-origin', require('./components/DeleteOrigin.vue'));
- Vue.component('add-asset', require('./components/AddAsset.vue'));
- Vue.component('edit-asset', require('./components/EditAsset.vue'));
- Vue.component('delete-asset', require('./components/DeleteAsset.vue'));
- Vue.component('add-transaction', require('./components/AddTransaction.vue'));
- Vue.component('delete-transaction', require('./components/DeleteTransaction.vue'));
- Vue.component('portfolio', require('./components/Portfolio.vue'));
- Vue.component('asset', require('./components/Asset.vue'));
- Vue.component('connections', require('./components/Connections.vue'));
- Vue.component('invite-panel', require('./components/InvitePanel.vue'));
+
+ Vue.component('trade', require('./components/trades/Trade.vue'));
+ Vue.component('tradelist', require('./components/trades/TradeList.vue'));
+ Vue.component('tradepanel', require('./components/trades/TradePanel.vue'));
+
+ Vue.component('add-origin', require('./components/portfolio/AddOrigin.vue'));
+ Vue.component('edit-origin', require('./components/portfolio/EditOrigin.vue'));
+ Vue.component('delete-origin', require('./components/portfolio/DeleteOrigin.vue'));
+ Vue.component('add-asset', require('./components/portfolio/AddAsset.vue'));
+ Vue.component('edit-asset', require('./components/portfolio/EditAsset.vue'));
+ Vue.component('delete-asset', require('./components/portfolio/DeleteAsset.vue'));
+ Vue.component('add-transaction', require('./components/portfolio/AddTransaction.vue'));
+ Vue.component('delete-transaction', require('./components/portfolio/DeleteTransaction.vue'));
+ Vue.component('portfolio', require('./components/portfolio/Portfolio.vue'));
+ Vue.component('asset', require('./components/portfolio/Asset.vue'));
+
+
+ Vue.component('notification-list', require('./components/notifications/NotificationList.vue'));
+ Vue.component('connections', require('./components/connections/Connections.vue'));
+ Vue.component('invite-panel', require('./components/invitations/InvitePanel.vue'));
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

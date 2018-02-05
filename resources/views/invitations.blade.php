@@ -34,7 +34,7 @@
 	        </div>
 
 	        <div class="cell text-center content-area">
-                <p class="invitations-title">Here you can manage your invitations for your friends to join CryptoBot!</p>
+                <p class="invitations-title">Here you can generate invitations for your friends to join CryptoBot!</p>
 
                 <p class="invitations-subtitle">Fill the form below with the email of your friend:</p>  
 
