@@ -15456,11 +15456,14 @@ a.thumbnail image {
 
 .alerts-callout {
   position: absolute;
-  right: 1rem;
-  margin-top: 0.3rem;
+  margin-top: 0;
   z-index: 9999;
   display: none;
   padding: 2rem;
+  border-radius: 0;
+  width: 100%;
+  text-align: center;
+  font-size: 1.3rem;
 }
 
 .form-callout {

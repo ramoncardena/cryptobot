@@ -30,7 +30,7 @@
 					<p class="invitation-expiration">{{ $invitation->expiration }}</p>
 				</div>
 
-				<p>You can go to our <a href="https://cryptobot.trading/register">registration page</a> and paste your invitation code there, or follow this link.</p>
+				<p>You can go to our registration page at <a href="https://cryptobot.trading/register">https://cryptobot.trading/register</a> and paste your invitation code there.</p>
 				<p class="lead"><b>Thanks for joining us!</b></p>
 				<p><i>CryptoBot Team</i></p>
 			</div>

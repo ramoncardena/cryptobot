@@ -58,9 +58,20 @@ class InviteController extends Controller
         $email = Auth::user()->email;
         $invitation = json_decode(\Invi::generate($request->invitation_email, "7 day", true));
 
-        Mail::to($invitation->email)->send(new NewInvite($invitation, $name, $email));
-        
-        return view('invitations', ['invitation_code' => $invitation->code, 'invitation_email' => $invitation->email, 'invitation_expiration' => $invitation->expiration]);
+        if ($invitation->error) {
+            // SESSION FLASH: Error generating invitations
+            $request->session()->flash('status-text', 'Error: ' . $invitation->error );
+            $request->session()->flash('status-class', 'alert');
+
+            return redirect('/invite');
+        }
+        else {
+            return view('invitations', ['invitation_code' => $invitation->code, 'invitation_email' => $invitation->email, 'invitation_expiration' => $invitation->expiration]);
+
+            Mail::to($invitation->email)->send(new NewInvite($invitation, $name, $email));
+
+        }
+        dd($invitation);
     }
 
     /**
