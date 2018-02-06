@@ -2,13 +2,33 @@ section#coin-card {
 	color: $medium-gray;
 	font-family: 'Nunito', sans-serif;
 
+	
 	.card-divider {
-		font-size: 1.1rem;
+		padding: 0;
+		font-size: 1rem;
 		border-bottom: 1px solid get-color(primary);
 
 		.coin-symbol {
-			font-size: 1.6rem;
+			font-size: 1.2rem;
 			font-weight: bold;
+		}
+
+		.coin-data {
+
+			padding: 2px;
+	
+			&-fiat {
+				
+			}
+			&-btc {
+				
+			}
+			&-change {
+				
+			}
+		}
+		.coin-name {
+			padding: 2px;
 		}
 	}
 
@@ -19,7 +39,7 @@ section#coin-card {
 			color: $medium-gray;
 		}
 		.fa {
-			font-size: 1.3rem;
+			font-size: 1rem;
 			color: $medium-gray;
 		}
 		&-value {

@@ -122008,6 +122008,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'coin-card',
@@ -122029,17 +122032,39 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         // this.responsiveOptions = [];
         // this.chartistCoinChartData.labels = [1, 2, 3, 4, 5, 6, 7, 8];
         // this.chartistCoinChartData.series = [5, 9, 7, 8, 5, 3, 5, 4];
-        // this.chartistCoinChartOptions = {
-        //     low: 0, 
-        //     showArea: true
-        // };
+        this.chartistCoinChartOptions = {
+            showArea: true,
+            showLine: false,
+            showPoint: false,
+            fullWidth: true,
+            axisX: {
+                showLabel: false,
+                showGrid: false
+            }
+        };
         // this.chartistCoinChart = new Chartist.Line('.ct-chart-coin', this.chartistCoinChartData, this.chartistCoinChartOptions,this.responsiveOptions);
-        new Chartist.Line('.ct-chart-coin', {
-            labels: [1, 2, 3, 4, 5, 6, 7, 8],
-            series: [[5, 9, 7, 8, 5, 3, 5, 4]]
+        new Chartist.Line('.ct-chart-coin' + this.coin, {
+            series: [[5, 9, 7, 8, 15, 11, 9, 14]]
         }, {
             low: 0,
-            showArea: true
+            showArea: true,
+            showLine: true,
+            showPoint: false,
+            fullWidth: true,
+            chartPadding: {
+                top: 5,
+                bottom: -35,
+                right: 5,
+                left: -35
+            },
+            axisX: {
+                showLabel: false,
+                showGrid: false
+            },
+            axisY: {
+                showLabel: false,
+                showGrid: false
+            }
         });
 
         this.csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
@@ -122062,29 +122087,32 @@ var render = function() {
   return _c("section", { attrs: { id: "coin-card" } }, [
     _c("div", { staticClass: "card" }, [
       _c("div", { staticClass: "card-divider" }, [
-        _c(
-          "div",
-          { staticClass: "grid-x grid-padding-x align-middle align-center" },
-          [
-            _c("div", { staticClass: "small-6 cell" }, [
-              _c("span", { staticClass: "coin-symbol" }, [
-                _vm._v(_vm._s(_vm.coin))
-              ]),
-              _vm._v(" (Cardano)\n                ")
-            ]),
+        _c("div", { staticClass: "grid-x grid-margin-x text-center" }, [
+          _c("div", { staticClass: "small-12 cell" }, [
+            _c("i", {
+              staticClass: "fa fa-arrow-down red",
+              attrs: { "aria-hidden": "true" }
+            }),
             _vm._v(" "),
-            _c("div", { staticClass: "small-3 cell" }, [
-              _vm._v("\n                    €0.25\n                ")
+            _c("span", { staticClass: "coin-symbol" }, [
+              _vm._v(_vm._s(_vm.coin))
             ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "small-3 cell" }, [
-              _vm._v("\n                    -67.856%\n                ")
-            ])
-          ]
-        )
+            _vm._v(" (Cardano)\n                ")
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "small-4 cell" }, [_vm._v("€0.25")]),
+          _vm._v(" "),
+          _c("div", { staticClass: "small-4 cell" }, [_vm._v("B0.00032783")]),
+          _vm._v(" "),
+          _c("div", { staticClass: "small-4 cell" }, [_vm._v("-67.856%")])
+        ])
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "ct-chart-coin ct-golden-section" }),
+      _c("div", { staticClass: "grid-x grid-passing-x align-middle" }, [
+        _c("div", { staticClass: "auto small-12 cell" }, [
+          _c("div", { class: "ct-chart-coin" + _vm.coin + " ct-double-octave" })
+        ])
+      ]),
       _vm._v(" "),
       _vm._m(0, false, false)
     ])
