@@ -1,0 +1,32 @@
+section#coin-card {
+	color: $medium-gray;
+	font-family: 'Nunito', sans-serif;
+
+	.card-divider {
+		font-size: 1.1rem;
+		border-bottom: 1px solid get-color(primary);
+
+		.coin-symbol {
+			font-size: 1.6rem;
+			font-weight: bold;
+		}
+	}
+
+	.card-section {
+		&-title {
+			font-size: 0.8rem;
+			text-transform: uppercase;
+			color: $medium-gray;
+		}
+		.fa {
+			font-size: 1.3rem;
+			color: $medium-gray;
+		}
+		&-value {
+			font-size: 0.7rem;
+			color: $dark-gray;
+		}
+	}
+	
+
+}

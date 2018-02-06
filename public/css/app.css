@@ -8763,7 +8763,7 @@ a.button:focus {
       -ms-flex-positive: 1;
           flex-grow: 1;
   margin-bottom: 1rem;
-  border: 1px solid #e6e6e6;
+  border: 1px solid #009ACE;
   border-radius: 0;
   background: #fefefe;
   -webkit-box-shadow: none;
@@ -8784,7 +8784,7 @@ a.button:focus {
   display: -ms-flexbox;
   display: flex;
   padding: 1rem;
-  background: #e6e6e6;
+  background: #fefefe;
 }
 
 .card-divider > :last-child {
@@ -15689,6 +15689,10 @@ section#register .login-icon .fa {
   margin-bottom: 1rem;
 }
 
+section#dashboard {
+  margin-top: 1rem;
+}
+
 section#dashboard .section-title {
   background-color: #FBFCF9;
   border-bottom: 1px solid #e6e6e6;
@@ -16428,5 +16432,36 @@ section#invite-panel .input-group .number {
 section#invite-panel .input-group-label {
   color: #009ACE;
   background-color: transparent;
+}
+
+section#coin-card {
+  color: #cacaca;
+  font-family: 'Nunito', sans-serif;
+}
+
+section#coin-card .card-divider {
+  font-size: 1.1rem;
+  border-bottom: 1px solid #009ACE;
+}
+
+section#coin-card .card-divider .coin-symbol {
+  font-size: 1.6rem;
+  font-weight: bold;
+}
+
+section#coin-card .card-section-title {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  color: #cacaca;
+}
+
+section#coin-card .card-section .fa {
+  font-size: 1.3rem;
+  color: #cacaca;
+}
+
+section#coin-card .card-section-value {
+  font-size: 0.7rem;
+  color: #8a8a8a;
 }
 

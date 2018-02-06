@@ -122964,11 +122964,34 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'coin-card',
     data: function data() {
         return {
+            chartistCoinChart: {},
+            responsiveOptions: [],
+            chartistCoinChartData: { labels: [], series: [] },
+            chartistCoinChartOptions: {},
             updating: false,
             csrf: ""
         };
@@ -122977,6 +123000,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     computed: {},
     watch: {},
     mounted: function mounted() {
+        // Set Chart options
+        // this.responsiveOptions = [];
+        // this.chartistCoinChartData.labels = [1, 2, 3, 4, 5, 6, 7, 8];
+        // this.chartistCoinChartData.series = [5, 9, 7, 8, 5, 3, 5, 4];
+        // this.chartistCoinChartOptions = {
+        //     low: 0, 
+        //     showArea: true
+        // };
+        // this.chartistCoinChart = new Chartist.Line('.ct-chart-coin', this.chartistCoinChartData, this.chartistCoinChartOptions,this.responsiveOptions);
+        new Chartist.Line('.ct-chart-coin', {
+            labels: [1, 2, 3, 4, 5, 6, 7, 8],
+            series: [[5, 9, 7, 8, 5, 3, 5, 4]]
+        }, {
+            low: 0,
+            showArea: true
+        });
 
         this.csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         console.log('Component CoinCard mounted.');
@@ -122995,41 +123034,99 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0, false, false)
+  return _c("section", { attrs: { id: "coin-card" } }, [
+    _c("div", { staticClass: "card" }, [
+      _c("div", { staticClass: "card-divider" }, [
+        _c(
+          "div",
+          { staticClass: "grid-x grid-padding-x align-middle align-center" },
+          [
+            _c("div", { staticClass: "small-6 cell" }, [
+              _c("span", { staticClass: "coin-symbol" }, [
+                _vm._v(_vm._s(_vm.coin))
+              ]),
+              _vm._v(" (Cardano)\n                ")
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "small-3 cell" }, [
+              _vm._v("\n                    €0.25\n                ")
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "small-3 cell" }, [
+              _vm._v("\n                    -67.856%\n                ")
+            ])
+          ]
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "ct-chart-coin ct-golden-section" }),
+      _vm._v(" "),
+      _vm._m(0, false, false)
+    ])
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("section", { attrs: { id: "coin-card" } }, [
-      _c("div", { staticClass: "grid-container fluid" }, [
-        _c("div", { staticClass: "grid-x grid-padding-x align-center" }, [
-          _c("div", { staticClass: "cell large-4" }, [
-            _c("div", { staticClass: "card" }, [
-              _c("div", { staticClass: "card-divider" }, [
-                _vm._v(
-                  "\n                        ADA (Cardano)\n                    "
-                )
-              ]),
-              _vm._v(" "),
-              _c("img", {
-                attrs: { src: "/storage/cryptobot-logo-300px.png" }
-              }),
-              _vm._v(" "),
-              _c("div", { staticClass: "card-section" }, [
-                _c("h4", [_vm._v("This is a card.")]),
-                _vm._v(" "),
-                _c("p", [
-                  _vm._v(
-                    "It has an easy to override visual style, and is appropriately subdued."
-                  )
-                ])
-              ])
+    return _c("div", { staticClass: "card-section" }, [
+      _c(
+        "div",
+        { staticClass: "grid-x grid-padding-x align-middle align-center" },
+        [
+          _c("div", { staticClass: "small-4 cell text-center" }, [
+            _c("div", [
+              _c("i", {
+                staticClass: "fa fa-pie-chart",
+                attrs: { "aria-hidden": "true" }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-section-title" }, [
+              _vm._v("Market Cap")
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-section-value" }, [
+              _vm._v("€6.566.732.210")
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "small-4 cell text-center" }, [
+            _c("div", [
+              _c("i", {
+                staticClass: "fa fa-bar-chart",
+                attrs: { "aria-hidden": "true" }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-section-title" }, [
+              _vm._v("24h Vol.")
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-section-value" }, [
+              _vm._v("€514.987.168,00")
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "small-4 cell text-center" }, [
+            _c("div", [
+              _c("i", {
+                staticClass: "fa fa-money",
+                attrs: { "aria-hidden": "true" }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-section-title" }, [
+              _vm._v("Supply")
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-section-value" }, [
+              _vm._v("€25.927.070.538")
             ])
           ])
-        ])
-      ])
+        ]
+      )
     ])
   }
 ]
