@@ -44277,7 +44277,7 @@ module.exports = Cancel;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(142);
-module.exports = __webpack_require__(295);
+module.exports = __webpack_require__(292);
 
 
 /***/ }),
@@ -44308,26 +44308,26 @@ Vue.component('passport-personal-access-tokens', __webpack_require__(233));
  * Custom components
  */
 
-Vue.component('trade', __webpack_require__(340));
-Vue.component('tradelist', __webpack_require__(343));
-Vue.component('tradepanel', __webpack_require__(346));
+Vue.component('trade', __webpack_require__(238));
+Vue.component('tradelist', __webpack_require__(241));
+Vue.component('tradepanel', __webpack_require__(244));
 
-Vue.component('add-origin', __webpack_require__(304));
-Vue.component('edit-origin', __webpack_require__(307));
-Vue.component('delete-origin', __webpack_require__(310));
-Vue.component('add-asset', __webpack_require__(313));
-Vue.component('edit-asset', __webpack_require__(316));
-Vue.component('delete-asset', __webpack_require__(319));
-Vue.component('add-transaction', __webpack_require__(322));
-Vue.component('delete-transaction', __webpack_require__(325));
-Vue.component('portfolio', __webpack_require__(328));
-Vue.component('asset', __webpack_require__(331));
+Vue.component('add-origin', __webpack_require__(247));
+Vue.component('edit-origin', __webpack_require__(250));
+Vue.component('delete-origin', __webpack_require__(253));
+Vue.component('add-asset', __webpack_require__(256));
+Vue.component('edit-asset', __webpack_require__(259));
+Vue.component('delete-asset', __webpack_require__(262));
+Vue.component('add-transaction', __webpack_require__(265));
+Vue.component('delete-transaction', __webpack_require__(268));
+Vue.component('portfolio', __webpack_require__(271));
+Vue.component('asset', __webpack_require__(274));
 
-Vue.component('coin-card', __webpack_require__(352));
+Vue.component('coin-card', __webpack_require__(277));
 
-Vue.component('notification-list', __webpack_require__(349));
-Vue.component('connections', __webpack_require__(334));
-Vue.component('invite-panel', __webpack_require__(337));
+Vue.component('notification-list', __webpack_require__(280));
+Vue.component('connections', __webpack_require__(283));
+Vue.component('invite-panel', __webpack_require__(286));
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -44340,9 +44340,9 @@ var app = new Vue({
 
 $(document).ready(function () {
 
-    __webpack_require__(292);
-    __webpack_require__(293);
-    __webpack_require__(294);
+    __webpack_require__(289);
+    __webpack_require__(290);
+    __webpack_require__(291);
 
     $.extend($.fn.dataTable.defaults, {
         responsive: true
@@ -112884,5444 +112884,15 @@ if (false) {
 }
 
 /***/ }),
-/* 238 */,
-/* 239 */,
-/* 240 */,
-/* 241 */,
-/* 242 */,
-/* 243 */,
-/* 244 */,
-/* 245 */,
-/* 246 */,
-/* 247 */,
-/* 248 */,
-/* 249 */,
-/* 250 */,
-/* 251 */,
-/* 252 */,
-/* 253 */,
-/* 254 */,
-/* 255 */,
-/* 256 */,
-/* 257 */,
-/* 258 */,
-/* 259 */,
-/* 260 */,
-/* 261 */,
-/* 262 */,
-/* 263 */,
-/* 264 */,
-/* 265 */,
-/* 266 */,
-/* 267 */,
-/* 268 */,
-/* 269 */,
-/* 270 */,
-/* 271 */,
-/* 272 */,
-/* 273 */,
-/* 274 */,
-/* 275 */,
-/* 276 */,
-/* 277 */,
-/* 278 */,
-/* 279 */,
-/* 280 */,
-/* 281 */,
-/* 282 */,
-/* 283 */,
-/* 284 */,
-/* 285 */,
-/* 286 */,
-/* 287 */,
-/* 288 */,
-/* 289 */,
-/* 290 */,
-/* 291 */,
-/* 292 */
-/***/ (function(module, exports) {
-
-//////////////////////////////////////////////////////////////////
-// Cases Carousel 
-$('.reveal').on('open.zf.reveal', function () {
-    console.log('Modal opened!');
-    // Resize window to fit content
-    $(window).trigger('resize');
-});
-
-$('#notificationsModal').on('closed.zf.reveal', function () {
-    console.log('Modal closed!');
-});
-
-/***/ }),
-/* 293 */
-/***/ (function(module, exports) {
-
-$('.alerts-callout').hide().delay(1000).slideDown(1000).delay(5000).slideUp(1000);
-
-/***/ }),
-/* 294 */
-/***/ (function(module, exports) {
-
-
-
-/***/ }),
-/* 295 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 296 */,
-/* 297 */,
-/* 298 */,
-/* 299 */,
-/* 300 */,
-/* 301 */,
-/* 302 */,
-/* 303 */,
-/* 304 */
+/* 238 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(305)
+var __vue_script__ = __webpack_require__(239)
 /* template */
-var __vue_template__ = __webpack_require__(306)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/portfolio/AddOrigin.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-6dcad1b9", Component.options)
-  } else {
-    hotAPI.reload("data-v-6dcad1b9", Component.options)
-' + '  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 305 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    name: 'add-origin',
-    data: function data() {
-        return {
-            exchange: "",
-            originType: "",
-            updating: false,
-            csrf: ""
-        };
-    },
-    props: ['exchanges', 'origin-types', 'validation-errors'],
-    computed: {},
-    mounted: function mounted() {
-        this.csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-        console.log('Component AddOrigin mounted.');
-    },
-
-    methods: {}
-});
-
-/***/ }),
-/* 306 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "grid-container fluid" }, [
-    _c("form", { attrs: { method: "POST", action: "/portfolio/origin" } }, [
-      _c("input", {
-        attrs: { type: "hidden", name: "_token" },
-        domProps: { value: _vm.csrf }
-      }),
-      _vm._v(" "),
-      _c("div", { staticClass: "grid-x grid-padding-x" }, [
-        _vm._m(0, false, false),
-        _vm._v(" "),
-        _c("div", { staticClass: "small-12 cell form-container" }, [
-          _vm.validationErrors.origin_type
-            ? _c(
-                "div",
-                _vm._l(_vm.validationErrors.origin_type, function(error) {
-                  return _c("span", { staticClass: "validation-error" }, [
-                    _vm._v(" " + _vm._s(error) + " ")
-                  ])
-                })
-              )
-            : _vm._e(),
-          _vm._v(" "),
-          _c("div", { staticClass: "input-group" }, [
-            _c("span", { staticClass: "input-group-label" }, [
-              _vm._v("Origin Type")
-            ]),
-            _vm._v(" "),
-            _c(
-              "select",
-              {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.originType,
-                    expression: "originType"
-                  }
-                ],
-                staticClass: "input-group-field",
-                attrs: { name: "origin_type" },
-                on: {
-                  change: function($event) {
-                    var $$selectedVal = Array.prototype.filter
-                      .call($event.target.options, function(o) {
-                        return o.selected
-                      })
-                      .map(function(o) {
-                        var val = "_value" in o ? o._value : o.value
-                        return val
-                      })
-                    _vm.originType = $event.target.multiple
-                      ? $$selectedVal
-                      : $$selectedVal[0]
-                  }
-                }
-              },
-              [
-                _c("option", { attrs: { disabled: "", value: "" } }, [
-                  _vm._v("Select...")
-                ]),
-                _vm._v(" "),
-                _vm._l(_vm.originTypes, function(originType) {
-                  return _c("option", { domProps: { value: originType } }, [
-                    _vm._v(_vm._s(originType) + " ")
-                  ])
-                })
-              ],
-              2
-            )
-          ])
-        ]),
-        _vm._v(" "),
-        _vm.originType == "Exchange"
-          ? _c("div", { staticClass: "small-12 cell form-container" }, [
-              _vm.validationErrors.origin_name
-                ? _c(
-                    "div",
-                    _vm._l(_vm.validationErrors.origin_name, function(error) {
-                      return _c("span", { staticClass: "validation-error" }, [
-                        _vm._v(" " + _vm._s(error) + " ")
-                      ])
-                    })
-                  )
-                : _vm._e(),
-              _vm._v(" "),
-              _c("div", { staticClass: "input-group" }, [
-                _c("span", { staticClass: "input-group-label" }, [
-                  _vm._v("Exchange")
-                ]),
-                _vm._v(" "),
-                _c(
-                  "select",
-                  {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.exchange,
-                        expression: "exchange"
-                      }
-                    ],
-                    staticClass: "input-group-field",
-                    attrs: { name: "origin_name" },
-                    on: {
-                      change: [
-                        function($event) {
-                          var $$selectedVal = Array.prototype.filter
-                            .call($event.target.options, function(o) {
-                              return o.selected
-                            })
-                            .map(function(o) {
-                              var val = "_value" in o ? o._value : o.value
-                              return val
-                            })
-                          _vm.exchange = $event.target.multiple
-                            ? $$selectedVal
-                            : $$selectedVal[0]
-                        },
-                        function($event) {
-                          _vm.getpairs(_vm.exchange)
-                        }
-                      ]
-                    }
-                  },
-                  [
-                    _c("option", { attrs: { disabled: "", value: "" } }, [
-                      _vm._v("Select...")
-                    ]),
-                    _vm._v(" "),
-                    _vm._l(_vm.exchanges, function(exchange) {
-                      return _c(
-                        "option",
-                        {
-                          attrs: { selected: "true" },
-                          domProps: { value: exchange }
-                        },
-                        [_vm._v(_vm._s(exchange) + " ")]
-                      )
-                    })
-                  ],
-                  2
-                )
-              ])
-            ])
-          : _vm._e(),
-        _vm._v(" "),
-        _vm.originType != "Exchange"
-          ? _c("div", { staticClass: "small-12 cell form-container" }, [
-              _vm.validationErrors.origin_name
-                ? _c(
-                    "div",
-                    _vm._l(_vm.validationErrors.origin_name, function(error) {
-                      return _c("span", { staticClass: "validation-error" }, [
-                        _vm._v(" " + _vm._s(error) + " ")
-                      ])
-                    })
-                  )
-                : _vm._e(),
-              _vm._v(" "),
-              _vm._m(1, false, false)
-            ])
-          : _vm._e(),
-        _vm._v(" "),
-        _vm.originType != "Exchange"
-          ? _c("div", { staticClass: "small-12 cell form-container" }, [
-              _vm.validationErrors.origin_address
-                ? _c(
-                    "div",
-                    _vm._l(_vm.validationErrors.origin_address, function(
-                      error
-                    ) {
-                      return _c("span", { staticClass: "validation-error" }, [
-                        _vm._v(" " + _vm._s(error) + " ")
-                      ])
-                    })
-                  )
-                : _vm._e(),
-              _vm._v(" "),
-              _vm._m(2, false, false)
-            ])
-          : _vm._e(),
-        _vm._v(" "),
-        _vm._m(3, false, false)
-      ])
-    ])
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "small-12 cell form-container" }, [
-      _c("p", { staticClass: "h2" }, [_vm._v("New Origin")]),
-      _vm._v(" "),
-      _c("p", { staticClass: "lead" }, [
-        _c("b", [_vm._v("Add new source to your portfolio")])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "input-group" }, [
-      _c("span", { staticClass: "input-group-label" }, [
-        _vm._v("\n                        Name\n                    ")
-      ]),
-      _vm._v(" "),
-      _c("input", {
-        staticClass: "input-group-field",
-        attrs: { name: "origin_name", type: "text" }
-      })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "input-group" }, [
-      _c("span", { staticClass: "input-group-label" }, [
-        _vm._v("\n                        Address\n                    ")
-      ]),
-      _vm._v(" "),
-      _c("input", {
-        staticClass: "input-group-field",
-        attrs: { name: "origin_address", type: "text" }
-      })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "small-12 cell form-container" }, [
-      _c(
-        "button",
-        { staticClass: "hollow button", attrs: { type: "submit" } },
-        [_vm._v("\n                   Add Origin\n                ")]
-      )
-    ])
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-6dcad1b9", module.exports)
-  }
-}
-
-/***/ }),
-/* 307 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(3)
-/* script */
-var __vue_script__ = __webpack_require__(308)
-/* template */
-var __vue_template__ = __webpack_require__(309)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/portfolio/EditOrigin.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-a0863fa4", Component.options)
-  } else {
-    hotAPI.reload("data-v-a0863fa4", Component.options)
-' + '  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 308 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    name: 'edit-origin',
-    data: function data() {
-        return {
-            exchange: "",
-            noxchgOrigins: [],
-            origin: {},
-            originSelected: "",
-            originSelectedName: "",
-            originType: "",
-            originName: "",
-            originAddress: "",
-            updating: false,
-            csrf: "",
-            errors: []
-        };
-    },
-    props: ['exchanges', 'origins', 'origin-types', 'validation-errors'],
-    computed: {},
-    mounted: function mounted() {
-
-        for (var i = 0; i < this.origins.length; i++) {
-            if (this.exchanges.indexOf(this.origins[i].name.toLowerCase()) < 0) {
-                this.noxchgOrigins.push(this.origins[i]);
-            }
-        }
-
-        this.csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-        console.log('Component AddOrigin mounted.');
-    },
-
-    methods: {
-        loadOrigin: function loadOrigin() {
-            console.log("Loading Origin...");
-            // for (var i = 0; i < this.origins.length; i++) {     
-            //     if (this.origins[i].id == this.originSelected) this.originSelectedName = this.origins[i].name;
-            // }
-
-            for (var i = 0; i < this.origins.length; i++) {
-                if (this.origins[i].id == this.originSelected) this.origin = this.origins[i];
-            }
-            this.originType = this.origin.type;
-            this.originName = this.origin.name;
-            this.originAddress = this.origin.address;
-        },
-        saveName: function saveName() {}
-    }
-});
-
-/***/ }),
-/* 309 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "grid-container fluid" }, [
-    _c(
-      "form",
-      {
-        attrs: {
-          method: "POST",
-          action: "/portfolio/origin/" + _vm.originSelected
-        }
-      },
-      [
-        _c("input", {
-          attrs: { type: "hidden", name: "_token" },
-          domProps: { value: _vm.csrf }
-        }),
-        _vm._v(" "),
-        _c("input", {
-          attrs: { name: "_method", type: "hidden", value: "PATCH" }
-        }),
-        _vm._v(" "),
-        _c("div", { staticClass: "grid-x grid-padding-x" }, [
-          _vm._m(0, false, false),
-          _vm._v(" "),
-          _c("div", { staticClass: "small-12 cell form-container" }, [
-            _vm.validationErrors.origin_type
-              ? _c(
-                  "div",
-                  _vm._l(_vm.validationErrors.origin_type, function(error) {
-                    return _c("span", { staticClass: "validation-error" }, [
-                      _vm._v(" " + _vm._s(error) + " ")
-                    ])
-                  })
-                )
-              : _vm._e(),
-            _vm._v(" "),
-            _c("div", { staticClass: "input-group" }, [
-              _c("span", { staticClass: "input-group-label" }, [
-                _vm._v("Origin")
-              ]),
-              _vm._v(" "),
-              _c(
-                "select",
-                {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.originSelected,
-                      expression: "originSelected"
-                    }
-                  ],
-                  staticClass: "input-group-field",
-                  attrs: { name: "origin" },
-                  on: {
-                    change: [
-                      function($event) {
-                        var $$selectedVal = Array.prototype.filter
-                          .call($event.target.options, function(o) {
-                            return o.selected
-                          })
-                          .map(function(o) {
-                            var val = "_value" in o ? o._value : o.value
-                            return val
-                          })
-                        _vm.originSelected = $event.target.multiple
-                          ? $$selectedVal
-                          : $$selectedVal[0]
-                      },
-                      function($event) {
-                        _vm.loadOrigin()
-                      }
-                    ]
-                  }
-                },
-                [
-                  _c("option", { attrs: { disabled: "", value: "" } }, [
-                    _vm._v("Select...")
-                  ]),
-                  _vm._v(" "),
-                  _vm._l(_vm.noxchgOrigins, function(origin) {
-                    return _c("option", { domProps: { value: origin.id } }, [
-                      _vm._v(_vm._s(origin.name) + " ")
-                    ])
-                  })
-                ],
-                2
-              ),
-              _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.originSelectedName,
-                    expression: "originSelectedName"
-                  }
-                ],
-                attrs: {
-                  id: "asset-origin-name",
-                  name: "asset_origin_name",
-                  type: "hidden"
-                },
-                domProps: { value: _vm.originSelectedName },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.originSelectedName = $event.target.value
-                  }
-                }
-              })
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "small-12 cell form-container" }, [
-            _vm.validationErrors.origin_type
-              ? _c(
-                  "div",
-                  _vm._l(_vm.validationErrors.origin_type, function(error) {
-                    return _c("span", { staticClass: "validation-error" }, [
-                      _vm._v(" " + _vm._s(error) + " ")
-                    ])
-                  })
-                )
-              : _vm._e(),
-            _vm._v(" "),
-            _c("div", { staticClass: "input-group" }, [
-              _c("span", { staticClass: "input-group-label" }, [
-                _vm._v("Origin Type")
-              ]),
-              _vm._v(" "),
-              _c(
-                "select",
-                {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.originType,
-                      expression: "originType"
-                    }
-                  ],
-                  staticClass: "input-group-field",
-                  attrs: { name: "origin_type" },
-                  on: {
-                    change: function($event) {
-                      var $$selectedVal = Array.prototype.filter
-                        .call($event.target.options, function(o) {
-                          return o.selected
-                        })
-                        .map(function(o) {
-                          var val = "_value" in o ? o._value : o.value
-                          return val
-                        })
-                      _vm.originType = $event.target.multiple
-                        ? $$selectedVal
-                        : $$selectedVal[0]
-                    }
-                  }
-                },
-                [
-                  _c("option", { attrs: { disabled: "", value: "" } }, [
-                    _vm._v("Select...")
-                  ]),
-                  _vm._v(" "),
-                  _vm._l(_vm.originTypes, function(originType) {
-                    return _c("option", { domProps: { value: originType } }, [
-                      _vm._v(_vm._s(originType) + " ")
-                    ])
-                  })
-                ],
-                2
-              )
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "small-12 cell form-container" }, [
-            _vm.validationErrors.origin_name
-              ? _c(
-                  "div",
-                  _vm._l(_vm.validationErrors.origin_name, function(error) {
-                    return _c("span", { staticClass: "validation-error" }, [
-                      _vm._v(" " + _vm._s(error) + " ")
-                    ])
-                  })
-                )
-              : _vm._e(),
-            _vm._v(" "),
-            _c("div", { staticClass: "input-group" }, [
-              _c("span", { staticClass: "input-group-label" }, [
-                _vm._v("\n                        Name\n                    ")
-              ]),
-              _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.originName,
-                    expression: "originName"
-                  }
-                ],
-                staticClass: "input-group-field",
-                attrs: { name: "origin_name", type: "text" },
-                domProps: { value: _vm.originName },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.originName = $event.target.value
-                  }
-                }
-              })
-            ])
-          ]),
-          _vm._v(" "),
-          _vm.originType != "Exchange"
-            ? _c("div", { staticClass: "small-12 cell form-container" }, [
-                _vm.validationErrors.origin_address
-                  ? _c(
-                      "div",
-                      _vm._l(_vm.validationErrors.origin_address, function(
-                        error
-                      ) {
-                        return _c("span", { staticClass: "validation-error" }, [
-                          _vm._v(" " + _vm._s(error) + " ")
-                        ])
-                      })
-                    )
-                  : _vm._e(),
-                _vm._v(" "),
-                _c("div", { staticClass: "input-group" }, [
-                  _c("span", { staticClass: "input-group-label" }, [
-                    _vm._v(
-                      "\n                        Address\n                    "
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.originAddress,
-                        expression: "originAddress"
-                      }
-                    ],
-                    staticClass: "input-group-field",
-                    attrs: { name: "origin_address", type: "text" },
-                    domProps: { value: _vm.originAddress },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.originAddress = $event.target.value
-                      }
-                    }
-                  })
-                ])
-              ])
-            : _vm._e(),
-          _vm._v(" "),
-          _vm._m(1, false, false)
-        ])
-      ]
-    )
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "small-12 cell form-container" }, [
-      _c("p", { staticClass: "h2" }, [_vm._v("Edit Origin")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "small-12 cell form-container" }, [
-      _c(
-        "button",
-        { staticClass: "hollow button", attrs: { type: "submit" } },
-        [_vm._v("\n                   Save Origin\n                ")]
-      )
-    ])
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-a0863fa4", module.exports)
-  }
-}
-
-/***/ }),
-/* 310 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(3)
-/* script */
-var __vue_script__ = __webpack_require__(311)
-/* template */
-var __vue_template__ = __webpack_require__(312)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/portfolio/DeleteOrigin.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-32d06de2", Component.options)
-  } else {
-    hotAPI.reload("data-v-32d06de2", Component.options)
-' + '  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 311 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    name: 'delete-origin',
-    data: function data() {
-        return {
-            exchange: "",
-            noxchgOrigins: [],
-            origin: {},
-            originSelected: "",
-            originSelectedName: "",
-            originType: "",
-            originName: "",
-            originAddress: "",
-            updating: false,
-            csrf: "",
-            errors: []
-        };
-    },
-    props: ['exchanges', 'origins', 'origin-types', 'validation-errors'],
-    computed: {},
-    mounted: function mounted() {
-
-        for (var i = 0; i < this.origins.length; i++) {
-            if (this.exchanges.indexOf(this.origins[i].name.toLowerCase()) < 0) {
-                this.noxchgOrigins.push(this.origins[i]);
-            }
-        }
-
-        this.csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-        console.log('Component AddOrigin mounted.');
-    },
-
-    methods: {
-        loadOrigin: function loadOrigin() {
-
-            for (var i = 0; i < this.origins.length; i++) {
-                if (this.origins[i].id == this.originSelected) this.origin = this.origins[i];
-            }
-            this.originType = this.origin.type;
-            this.originName = this.origin.name;
-            this.originAddress = this.origin.address;
-        },
-        saveName: function saveName() {}
-    }
-});
-
-/***/ }),
-/* 312 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "grid-container fluid" }, [
-    _c(
-      "form",
-      {
-        attrs: {
-          method: "POST",
-          action: "/portfolio/origin/" + _vm.originSelected
-        }
-      },
-      [
-        _c("input", {
-          attrs: { type: "hidden", name: "_token" },
-          domProps: { value: _vm.csrf }
-        }),
-        _vm._v(" "),
-        _c("input", {
-          attrs: { name: "_method", type: "hidden", value: "DELETE" }
-        }),
-        _vm._v(" "),
-        _c("div", { staticClass: "grid-x grid-padding-x" }, [
-          _vm._m(0, false, false),
-          _vm._v(" "),
-          _c("div", { staticClass: "small-12 cell form-container" }, [
-            _vm.validationErrors.origin_type
-              ? _c(
-                  "div",
-                  _vm._l(_vm.validationErrors.origin_type, function(error) {
-                    return _c("span", { staticClass: "validation-error" }, [
-                      _vm._v(" " + _vm._s(error) + " ")
-                    ])
-                  })
-                )
-              : _vm._e(),
-            _vm._v(" "),
-            _c("div", { staticClass: "input-group" }, [
-              _c("span", { staticClass: "input-group-label" }, [
-                _vm._v("Origin")
-              ]),
-              _vm._v(" "),
-              _c(
-                "select",
-                {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.originSelected,
-                      expression: "originSelected"
-                    }
-                  ],
-                  staticClass: "input-group-field",
-                  attrs: { name: "origin" },
-                  on: {
-                    change: [
-                      function($event) {
-                        var $$selectedVal = Array.prototype.filter
-                          .call($event.target.options, function(o) {
-                            return o.selected
-                          })
-                          .map(function(o) {
-                            var val = "_value" in o ? o._value : o.value
-                            return val
-                          })
-                        _vm.originSelected = $event.target.multiple
-                          ? $$selectedVal
-                          : $$selectedVal[0]
-                      },
-                      function($event) {
-                        _vm.loadOrigin()
-                      }
-                    ]
-                  }
-                },
-                [
-                  _c("option", { attrs: { disabled: "", value: "" } }, [
-                    _vm._v("Select...")
-                  ]),
-                  _vm._v(" "),
-                  _vm._l(_vm.noxchgOrigins, function(origin) {
-                    return _c("option", { domProps: { value: origin.id } }, [
-                      _vm._v(_vm._s(origin.name) + " ")
-                    ])
-                  })
-                ],
-                2
-              ),
-              _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.originSelectedName,
-                    expression: "originSelectedName"
-                  }
-                ],
-                attrs: {
-                  id: "asset-origin-name",
-                  name: "asset_origin_name",
-                  type: "hidden"
-                },
-                domProps: { value: _vm.originSelectedName },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.originSelectedName = $event.target.value
-                  }
-                }
-              })
-            ])
-          ]),
-          _vm._v(" "),
-          _vm.originSelected != ""
-            ? _c("div", { staticClass: "small-12 cell form-container" }, [
-                _c(
-                  "button",
-                  { staticClass: "hollow button", attrs: { type: "submit" } },
-                  [
-                    _vm._v(
-                      "\n                   Delete Origin\n                "
-                    )
-                  ]
-                )
-              ])
-            : _vm._e()
-        ])
-      ]
-    )
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "small-12 cell form-container" }, [
-      _c("p", { staticClass: "h2" }, [_vm._v("Delete Origin")])
-    ])
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-32d06de2", module.exports)
-  }
-}
-
-/***/ }),
-/* 313 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(3)
-/* script */
-var __vue_script__ = __webpack_require__(314)
-/* template */
-var __vue_template__ = __webpack_require__(315)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/portfolio/AddAsset.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-3c3b31a6", Component.options)
-  } else {
-    hotAPI.reload("data-v-3c3b31a6", Component.options)
-' + '  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 314 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    name: 'add-asset',
-    data: function data() {
-        return {
-            coinSelected: "",
-            coin: "",
-            noxchgOrigins: [],
-            originSelected: "",
-            originSelectedName: "",
-            updating: false,
-            csrf: ""
-        };
-    },
-    props: ['coins', 'origins', 'validation-errors', 'exchanges'],
-    computed: {},
-    watch: {},
-    mounted: function mounted() {
-        var _this = this;
-
-        console.log(this.origins);
-        var coins = $.map(this.coins, function (a) {
-            return a.toString();
-        });
-
-        for (var i = 0; i < this.origins.length; i++) {
-            if (this.exchanges.indexOf(this.origins[i].name.toLowerCase()) < 0) {
-                this.noxchgOrigins.push(this.origins[i]);
-            }
-        }
-
-        var options = {
-            data: coins,
-            list: {
-                onClickEvent: function onClickEvent() {
-                    _this.coinSelected = $("#coins").getSelectedItemData();
-                },
-                maxNumberOfElements: 2000,
-                match: {
-                    enabled: true
-                },
-                showAnimation: {
-                    type: "fade", //normal|slide|fade
-                    time: 400,
-                    callback: function callback() {}
-                },
-                hideAnimation: {
-                    type: "fade s", //normal|slide|fade
-                    time: 400,
-                    callback: function callback() {}
-                }
-            },
-            theme: "square"
-        };
-
-        $("#coins").easyAutocomplete(options);
-
-        this.csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-        console.log('Component AddAsset mounted.');
-    },
-
-    methods: {
-        saveName: function saveName() {
-            for (var i = 0; i < this.origins.length; i++) {
-                if (this.origins[i].id == this.originSelected) this.originSelectedName = this.origins[i].name;
-            }
-        }
-    }
-});
-
-/***/ }),
-/* 315 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("section", { attrs: { id: "addasset" } }, [
-    _c("div", { staticClass: "grid-container fluid add-asset" }, [
-      _c("form", { attrs: { method: "POST", action: "/portfolio/asset" } }, [
-        _c("input", {
-          attrs: { type: "hidden", name: "_token" },
-          domProps: { value: _vm.csrf }
-        }),
-        _vm._v(" "),
-        _c("div", { staticClass: "grid-x grid-padding-x" }, [
-          _vm._m(0, false, false),
-          _vm._v(" "),
-          _c("div", { staticClass: "small-12 cell form-container" }, [
-            _vm.validationErrors.origin_type
-              ? _c(
-                  "div",
-                  _vm._l(_vm.validationErrors.origin_type, function(error) {
-                    return _c("span", { staticClass: "validation-error" }, [
-                      _vm._v(" " + _vm._s(error) + " ")
-                    ])
-                  })
-                )
-              : _vm._e(),
-            _vm._v(" "),
-            _c("div", { staticClass: "input-group" }, [
-              _c("span", { staticClass: "input-group-label" }, [
-                _vm._v("Origin")
-              ]),
-              _vm._v(" "),
-              _c(
-                "select",
-                {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.originSelected,
-                      expression: "originSelected"
-                    }
-                  ],
-                  staticClass: "input-group-field",
-                  attrs: { name: "asset_origin" },
-                  on: {
-                    change: [
-                      function($event) {
-                        var $$selectedVal = Array.prototype.filter
-                          .call($event.target.options, function(o) {
-                            return o.selected
-                          })
-                          .map(function(o) {
-                            var val = "_value" in o ? o._value : o.value
-                            return val
-                          })
-                        _vm.originSelected = $event.target.multiple
-                          ? $$selectedVal
-                          : $$selectedVal[0]
-                      },
-                      function($event) {
-                        _vm.saveName()
-                      }
-                    ]
-                  }
-                },
-                [
-                  _c("option", { attrs: { disabled: "", value: "" } }, [
-                    _vm._v("Select...")
-                  ]),
-                  _vm._v(" "),
-                  _vm._l(_vm.noxchgOrigins, function(origin) {
-                    return _c("option", { domProps: { value: origin.id } }, [
-                      _vm._v(_vm._s(origin.name) + " ")
-                    ])
-                  })
-                ],
-                2
-              ),
-              _vm._v(" "),
-              _c("input", {
-                attrs: {
-                  id: "asset-origin-name",
-                  name: "asset_origin_name",
-                  type: "hidden"
-                },
-                domProps: { value: _vm.originSelectedName }
-              })
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "small-12 cell form-container" }, [
-            _vm.validationErrors.asset_symbol
-              ? _c(
-                  "div",
-                  _vm._l(_vm.validationErrors.asset_symbol, function(error) {
-                    return _c("span", { staticClass: "validation-error" }, [
-                      _vm._v(" " + _vm._s(error) + " ")
-                    ])
-                  })
-                )
-              : _vm._e(),
-            _vm._v(" "),
-            _c("div", { staticClass: "input-group" }, [
-              _c("span", { staticClass: "input-group-label" }, [
-                _vm._v("Asset")
-              ]),
-              _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.coinSelected,
-                    expression: "coinSelected"
-                  }
-                ],
-                staticClass: "input-group-field number",
-                attrs: { name: "asset_symbol", id: "coins", type: "text" },
-                domProps: { value: _vm.coinSelected },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.coinSelected = $event.target.value
-                  }
-                }
-              })
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "small-12 cell form-container" }, [
-            _vm.validationErrors.asset_amount
-              ? _c(
-                  "div",
-                  _vm._l(_vm.validationErrors.asset_amount, function(error) {
-                    return _c("span", { staticClass: "validation-error" }, [
-                      _vm._v(" " + _vm._s(error) + " ")
-                    ])
-                  })
-                )
-              : _vm._e(),
-            _vm._v(" "),
-            _vm._m(1, false, false)
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "small-12 cell form-container" }, [
-            _vm.validationErrors.asset_initial_price
-              ? _c(
-                  "div",
-                  _vm._l(_vm.validationErrors.asset_initial_price, function(
-                    error
-                  ) {
-                    return _c("span", { staticClass: "validation-error" }, [
-                      _vm._v(" " + _vm._s(error) + " ")
-                    ])
-                  })
-                )
-              : _vm._e(),
-            _vm._v(" "),
-            _vm._m(2, false, false)
-          ]),
-          _vm._v(" "),
-          _vm._m(3, false, false)
-        ])
-      ])
-    ])
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "small-12 cell form-container" }, [
-      _c("p", { staticClass: "h1" }, [_vm._v("Portfolio: New Asset")]),
-      _vm._v(" "),
-      _c("p", { staticClass: "lead" }, [
-        _c("b", [_vm._v("Add new asset to your portfolio")])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "input-group" }, [
-      _c("span", { staticClass: "input-group-label" }, [
-        _vm._v("\n                            Amount\n                        ")
-      ]),
-      _vm._v(" "),
-      _c("input", {
-        staticClass: "input-group-field number",
-        attrs: { name: "asset_amount", type: "text" }
-      })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "input-group" }, [
-      _c("span", { staticClass: "input-group-label" }, [
-        _vm._v(
-          "\n                            Initial Price\n                        "
-        )
-      ]),
-      _vm._v(" "),
-      _c("input", {
-        staticClass: "input-group-field number",
-        attrs: { name: "asset_initial_price", type: "text" }
-      })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "small-12 cell form-container" }, [
-      _c(
-        "button",
-        { staticClass: "hollow button", attrs: { type: "submit" } },
-        [_vm._v("\n                       Add Asset\n                    ")]
-      )
-    ])
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-3c3b31a6", module.exports)
-  }
-}
-
-/***/ }),
-/* 316 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(3)
-/* script */
-var __vue_script__ = __webpack_require__(317)
-/* template */
-var __vue_template__ = __webpack_require__(318)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/portfolio/EditAsset.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-fe2b93d0", Component.options)
-  } else {
-    hotAPI.reload("data-v-fe2b93d0", Component.options)
-' + '  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 317 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    name: 'edit-asset',
-    data: function data() {
-        return {
-            assets: [],
-            noxchgOrigins: [],
-            assetAmount: 0,
-            assetInitialPrice: 0,
-            assetSelected: "",
-            coinSelected: "",
-            coin: "",
-            originSelected: "",
-            originSelectedName: "",
-            updating: false,
-            csrf: "",
-            errors: []
-        };
-    },
-    props: ['portfolio', 'origins', 'exchanges', 'validation-errors'],
-    computed: {},
-    watch: {},
-    mounted: function mounted() {
-
-        var coins = $.map(this.coins, function (a) {
-            return a.toString();
-        });
-
-        for (var i = 0; i < this.origins.length; i++) {
-            if (this.exchanges.indexOf(this.origins[i].name.toLowerCase()) < 0) {
-                this.noxchgOrigins.push(this.origins[i]);
-            }
-        }
-
-        this.csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-        console.log('Component EditAsset mounted.');
-    },
-
-    methods: {
-        loadAssets: function loadAssets() {
-            var _this = this;
-
-            for (var i = 0; i < this.origins.length; i++) {
-                if (this.origins[i].id == this.originSelected) this.originSelectedName = this.origins[i].name;
-            }
-
-            this.assets = [];
-
-            // Call the LoadPortfolio event asyncronously
-            var uri = '/api/assets';
-            axios(uri, {
-                method: 'GET'
-            }).then(function (response) {
-                for (var i = 0; i < response.data.length; i++) {
-                    if (response.data[i].origin_id == _this.originSelected) _this.assets.push(response.data[i]);
-                }
-            }).catch(function (e) {
-                _this.errors.push(e);
-                console.log("Error: " + e.message);
-            });
-        },
-        loadAssetData: function loadAssetData(assetId) {
-            var _this2 = this;
-
-            // Call the LoadPortfolio event asyncronously
-            var uri = '/api/assets/' + assetId;
-            axios(uri, {
-                method: 'GET'
-            }).then(function (response) {
-                _this2.assetAmount = response.data.amount;
-                _this2.assetInitialPrice = response.data.initial_price;
-                console.log("Retieving asset...");
-            }).catch(function (e) {
-                _this2.errors.push(e);
-
-                console.log("Error: " + e.message);
-            });
-        }
-    }
-});
-
-/***/ }),
-/* 318 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("section", { attrs: { id: "editasset" } }, [
-    _c("div", { staticClass: "grid-container fluid edit-asset" }, [
-      _c(
-        "form",
-        {
-          attrs: {
-            method: "POST",
-            action: "/portfolio/asset/" + _vm.assetSelected
-          }
-        },
-        [
-          _c("input", {
-            attrs: { type: "hidden", name: "_token" },
-            domProps: { value: _vm.csrf }
-          }),
-          _vm._v(" "),
-          _c("input", {
-            attrs: { name: "_method", type: "hidden", value: "PATCH" }
-          }),
-          _vm._v(" "),
-          _c("div", { staticClass: "grid-x grid-padding-x" }, [
-            _vm._m(0, false, false),
-            _vm._v(" "),
-            _c("div", { staticClass: "small-12 cell form-container" }, [
-              _vm.validationErrors.asset_origin
-                ? _c(
-                    "div",
-                    _vm._l(_vm.validationErrors.asset_origin, function(error) {
-                      return _c("span", { staticClass: "validation-error" }, [
-                        _vm._v(" " + _vm._s(error) + " ")
-                      ])
-                    })
-                  )
-                : _vm._e(),
-              _vm._v(" "),
-              _c("div", { staticClass: "input-group" }, [
-                _c("span", { staticClass: "input-group-label" }, [
-                  _vm._v("Origin")
-                ]),
-                _vm._v(" "),
-                _c(
-                  "select",
-                  {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.originSelected,
-                        expression: "originSelected"
-                      }
-                    ],
-                    staticClass: "input-group-field",
-                    attrs: { name: "asset_origin" },
-                    on: {
-                      change: [
-                        function($event) {
-                          var $$selectedVal = Array.prototype.filter
-                            .call($event.target.options, function(o) {
-                              return o.selected
-                            })
-                            .map(function(o) {
-                              var val = "_value" in o ? o._value : o.value
-                              return val
-                            })
-                          _vm.originSelected = $event.target.multiple
-                            ? $$selectedVal
-                            : $$selectedVal[0]
-                        },
-                        function($event) {
-                          _vm.loadAssets()
-                        }
-                      ]
-                    }
-                  },
-                  [
-                    _c("option", { attrs: { disabled: "", value: "" } }, [
-                      _vm._v("Select...")
-                    ]),
-                    _vm._v(" "),
-                    _vm._l(_vm.origins, function(origin) {
-                      return _c("option", { domProps: { value: origin.id } }, [
-                        _vm._v(_vm._s(origin.name) + " ")
-                      ])
-                    })
-                  ],
-                  2
-                ),
-                _vm._v(" "),
-                _c("input", {
-                  attrs: {
-                    id: "asset-origin-name",
-                    name: "asset_origin_name",
-                    type: "hidden"
-                  },
-                  domProps: { value: _vm.originSelectedName }
-                })
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "small-12 cell form-container" }, [
-              _vm.validationErrors.asset
-                ? _c(
-                    "div",
-                    _vm._l(_vm.validationErrors.asset, function(error) {
-                      return _c("span", { staticClass: "validation-error" }, [
-                        _vm._v(" " + _vm._s(error) + " ")
-                      ])
-                    })
-                  )
-                : _vm._e(),
-              _vm._v(" "),
-              _c("div", { staticClass: "input-group" }, [
-                _c("span", { staticClass: "input-group-label" }, [
-                  _vm._v("Asset")
-                ]),
-                _vm._v(" "),
-                _c(
-                  "select",
-                  {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.assetSelected,
-                        expression: "assetSelected"
-                      }
-                    ],
-                    staticClass: "input-group-field",
-                    attrs: { name: "asset" },
-                    on: {
-                      change: [
-                        function($event) {
-                          var $$selectedVal = Array.prototype.filter
-                            .call($event.target.options, function(o) {
-                              return o.selected
-                            })
-                            .map(function(o) {
-                              var val = "_value" in o ? o._value : o.value
-                              return val
-                            })
-                          _vm.assetSelected = $event.target.multiple
-                            ? $$selectedVal
-                            : $$selectedVal[0]
-                        },
-                        function($event) {
-                          _vm.loadAssetData(_vm.assetSelected)
-                        }
-                      ]
-                    }
-                  },
-                  [
-                    _c("option", { attrs: { disabled: "", value: "" } }, [
-                      _vm._v("Select...")
-                    ]),
-                    _vm._v(" "),
-                    _vm._l(_vm.assets, function(asset) {
-                      return _c("option", { domProps: { value: asset.id } }, [
-                        _vm._v(" " + _vm._s(asset.symbol) + " ")
-                      ])
-                    })
-                  ],
-                  2
-                )
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "small-12 cell form-container" }, [
-              _vm.validationErrors.asset_amount
-                ? _c(
-                    "div",
-                    _vm._l(_vm.validationErrors.asset_amount, function(error) {
-                      return _c("span", { staticClass: "validation-error" }, [
-                        _vm._v(" " + _vm._s(error) + " ")
-                      ])
-                    })
-                  )
-                : _vm._e(),
-              _vm._v(" "),
-              _c("div", { staticClass: "input-group" }, [
-                _c("span", { staticClass: "input-group-label" }, [
-                  _vm._v(
-                    "\n                            Amount\n                        "
-                  )
-                ]),
-                _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.assetAmount,
-                      expression: "assetAmount"
-                    }
-                  ],
-                  staticClass: "input-group-field number",
-                  attrs: { name: "asset_amount", type: "text" },
-                  domProps: { value: _vm.assetAmount },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.assetAmount = $event.target.value
-                    }
-                  }
-                })
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "small-12 cell form-container" }, [
-              _vm.validationErrors.asset_initial_price
-                ? _c(
-                    "div",
-                    _vm._l(_vm.validationErrors.asset_initial_price, function(
-                      error
-                    ) {
-                      return _c("span", { staticClass: "validation-error" }, [
-                        _vm._v(" " + _vm._s(error) + " ")
-                      ])
-                    })
-                  )
-                : _vm._e(),
-              _vm._v(" "),
-              _c("div", { staticClass: "input-group" }, [
-                _c("span", { staticClass: "input-group-label" }, [
-                  _vm._v(
-                    "\n                            Purchase Price\n                        "
-                  )
-                ]),
-                _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.assetInitialPrice,
-                      expression: "assetInitialPrice"
-                    }
-                  ],
-                  staticClass: "input-group-field number",
-                  attrs: { name: "asset_initial_price", type: "text" },
-                  domProps: { value: _vm.assetInitialPrice },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.assetInitialPrice = $event.target.value
-                    }
-                  }
-                })
-              ])
-            ]),
-            _vm._v(" "),
-            _vm._m(1, false, false)
-          ])
-        ]
-      )
-    ])
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "small-12 cell form-container" }, [
-      _c("p", { staticClass: "h2" }, [_vm._v("Edit Asset")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "small-12 cell form-container" }, [
-      _c(
-        "button",
-        { staticClass: "hollow button", attrs: { type: "submit" } },
-        [_vm._v("\n                       Save Asset\n                    ")]
-      )
-    ])
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-fe2b93d0", module.exports)
-  }
-}
-
-/***/ }),
-/* 319 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(3)
-/* script */
-var __vue_script__ = __webpack_require__(320)
-/* template */
-var __vue_template__ = __webpack_require__(321)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/portfolio/DeleteAsset.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-02e3a5d2", Component.options)
-  } else {
-    hotAPI.reload("data-v-02e3a5d2", Component.options)
-' + '  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 320 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    name: 'delete-asset',
-    data: function data() {
-        return {
-            assets: [],
-            noxchgOrigins: [],
-            assetAmount: 0,
-            assetInitialPrice: 0,
-            assetSelected: "",
-            coinSelected: "",
-            coin: "",
-            originSelected: "",
-            originSelectedName: "",
-            updating: false,
-            csrf: "",
-            errors: []
-        };
-    },
-    props: ['portfolio', 'origins', 'exchanges', 'validation-errors'],
-    computed: {},
-    watch: {},
-    mounted: function mounted() {
-
-        var coins = $.map(this.coins, function (a) {
-            return a.toString();
-        });
-
-        for (var i = 0; i < this.origins.length; i++) {
-            if (this.exchanges.indexOf(this.origins[i].name.toLowerCase()) < 0) {
-                this.noxchgOrigins.push(this.origins[i]);
-            }
-        }
-
-        this.csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-        console.log('Component EditAsset mounted.');
-    },
-
-    methods: {
-        loadAssets: function loadAssets() {
-            var _this = this;
-
-            for (var i = 0; i < this.origins.length; i++) {
-                if (this.origins[i].id == this.originSelected) this.originSelectedName = this.origins[i].name;
-            }
-
-            this.assets = [];
-
-            // Call the LoadPortfolio event asyncronously
-            var uri = '/api/assets';
-            axios(uri, {
-                method: 'GET'
-            }).then(function (response) {
-                for (var i = 0; i < response.data.length; i++) {
-                    if (response.data[i].origin_id == _this.originSelected) _this.assets.push(response.data[i]);
-                }
-            }).catch(function (e) {
-                _this.errors.push(e);
-                console.log("Error: " + e.message);
-            });
-        },
-        loadAssetData: function loadAssetData(assetId) {
-            var _this2 = this;
-
-            // Call the LoadPortfolio event asyncronously
-            var uri = '/api/assets/' + assetId;
-            axios(uri, {
-                method: 'GET'
-            }).then(function (response) {
-                _this2.assetAmount = response.data.amount;
-                _this2.assetInitialPrice = response.data.initial_price;
-                console.log("Retieving asset...");
-            }).catch(function (e) {
-                _this2.errors.push(e);
-
-                console.log("Error: " + e.message);
-            });
-        }
-    }
-});
-
-/***/ }),
-/* 321 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("section", { attrs: { id: "deleteasset" } }, [
-    _c("div", { staticClass: "grid-container fluid delete-asset" }, [
-      _c(
-        "form",
-        {
-          attrs: {
-            method: "POST",
-            action: "/portfolio/asset/" + _vm.assetSelected
-          }
-        },
-        [
-          _c("input", {
-            attrs: { type: "hidden", name: "_token" },
-            domProps: { value: _vm.csrf }
-          }),
-          _vm._v(" "),
-          _c("input", {
-            attrs: { name: "_method", type: "hidden", value: "DELETE" }
-          }),
-          _vm._v(" "),
-          _c("div", { staticClass: "grid-x grid-padding-x" }, [
-            _vm._m(0, false, false),
-            _vm._v(" "),
-            _c("div", { staticClass: "small-12 cell form-container" }, [
-              _vm.validationErrors.asset_origin
-                ? _c(
-                    "div",
-                    _vm._l(_vm.validationErrors.asset_origin, function(error) {
-                      return _c("span", { staticClass: "validation-error" }, [
-                        _vm._v(" " + _vm._s(error) + " ")
-                      ])
-                    })
-                  )
-                : _vm._e(),
-              _vm._v(" "),
-              _c("div", { staticClass: "input-group" }, [
-                _c("span", { staticClass: "input-group-label" }, [
-                  _vm._v("Origin")
-                ]),
-                _vm._v(" "),
-                _c(
-                  "select",
-                  {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.originSelected,
-                        expression: "originSelected"
-                      }
-                    ],
-                    staticClass: "input-group-field",
-                    attrs: { name: "asset_origin" },
-                    on: {
-                      change: [
-                        function($event) {
-                          var $$selectedVal = Array.prototype.filter
-                            .call($event.target.options, function(o) {
-                              return o.selected
-                            })
-                            .map(function(o) {
-                              var val = "_value" in o ? o._value : o.value
-                              return val
-                            })
-                          _vm.originSelected = $event.target.multiple
-                            ? $$selectedVal
-                            : $$selectedVal[0]
-                        },
-                        function($event) {
-                          _vm.loadAssets()
-                          _vm.assetSelected = ""
-                        }
-                      ]
-                    }
-                  },
-                  [
-                    _c("option", { attrs: { disabled: "", value: "" } }, [
-                      _vm._v("Select...")
-                    ]),
-                    _vm._v(" "),
-                    _vm._l(_vm.noxchgOrigins, function(origin) {
-                      return _c("option", { domProps: { value: origin.id } }, [
-                        _vm._v(_vm._s(origin.name) + " ")
-                      ])
-                    })
-                  ],
-                  2
-                ),
-                _vm._v(" "),
-                _c("input", {
-                  attrs: {
-                    id: "asset-origin-name",
-                    name: "asset_origin_name",
-                    type: "hidden"
-                  },
-                  domProps: { value: _vm.originSelectedName }
-                })
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "small-12 cell form-container" }, [
-              _vm.validationErrors.asset
-                ? _c(
-                    "div",
-                    _vm._l(_vm.validationErrors.asset, function(error) {
-                      return _c("span", { staticClass: "validation-error" }, [
-                        _vm._v(" " + _vm._s(error) + " ")
-                      ])
-                    })
-                  )
-                : _vm._e(),
-              _vm._v(" "),
-              _c("div", { staticClass: "input-group" }, [
-                _c("span", { staticClass: "input-group-label" }, [
-                  _vm._v("Asset")
-                ]),
-                _vm._v(" "),
-                _c(
-                  "select",
-                  {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.assetSelected,
-                        expression: "assetSelected"
-                      }
-                    ],
-                    staticClass: "input-group-field",
-                    attrs: { name: "asset" },
-                    on: {
-                      change: [
-                        function($event) {
-                          var $$selectedVal = Array.prototype.filter
-                            .call($event.target.options, function(o) {
-                              return o.selected
-                            })
-                            .map(function(o) {
-                              var val = "_value" in o ? o._value : o.value
-                              return val
-                            })
-                          _vm.assetSelected = $event.target.multiple
-                            ? $$selectedVal
-                            : $$selectedVal[0]
-                        },
-                        function($event) {
-                          _vm.loadAssetData(_vm.assetSelected)
-                        }
-                      ]
-                    }
-                  },
-                  [
-                    _c("option", { attrs: { disabled: "", value: "" } }, [
-                      _vm._v("Select...")
-                    ]),
-                    _vm._v(" "),
-                    _vm._l(_vm.assets, function(asset) {
-                      return _c("option", { domProps: { value: asset.id } }, [
-                        _vm._v(" " + _vm._s(asset.symbol) + " ")
-                      ])
-                    })
-                  ],
-                  2
-                )
-              ])
-            ]),
-            _vm._v(" "),
-            _vm.assetSelected != ""
-              ? _c("div", { staticClass: "small-12 cell form-container" }, [
-                  _c(
-                    "button",
-                    { staticClass: "hollow button", attrs: { type: "submit" } },
-                    [
-                      _vm._v(
-                        "\n                       Delete Asset\n                    "
-                      )
-                    ]
-                  )
-                ])
-              : _vm._e()
-          ])
-        ]
-      )
-    ])
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "small-12 cell form-container" }, [
-      _c("p", { staticClass: "h2" }, [_vm._v("Delete Asset")])
-    ])
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-02e3a5d2", module.exports)
-  }
-}
-
-/***/ }),
-/* 322 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(3)
-/* script */
-var __vue_script__ = __webpack_require__(323)
-/* template */
-var __vue_template__ = __webpack_require__(324)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/portfolio/AddTransaction.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-27d7cf4a", Component.options)
-  } else {
-    hotAPI.reload("data-v-27d7cf4a", Component.options)
-' + '  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 323 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    name: 'add-transaction',
-    data: function data() {
-        return {
-            assets: [],
-            noxchgOrigins: [],
-            assetAmount: 0,
-            transactions: [],
-            transactionsLoaded: false,
-            transactionOperation: "",
-            transactionAmount: 0,
-            transactionLabel: "",
-            assetInitialPrice: 0,
-            assetSelected: "",
-            coinSelected: "",
-            coin: "",
-            originSelected: "",
-            originSelectedName: "",
-            updating: false,
-            csrf: "",
-            errors: []
-        };
-    },
-    props: ['portfolio', 'origins', 'exchanges', 'validation-errors'],
-    computed: {},
-    watch: {},
-    mounted: function mounted() {
-
-        var coins = $.map(this.coins, function (a) {
-            return a.toString();
-        });
-
-        for (var i = 0; i < this.origins.length; i++) {
-            if (this.exchanges.indexOf(this.origins[i].name.toLowerCase()) < 0) {
-                this.noxchgOrigins.push(this.origins[i]);
-            }
-        }
-
-        this.csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-        console.log('Component Transactions mounted.');
-    },
-
-    methods: {
-        loadAssets: function loadAssets() {
-            var _this = this;
-
-            for (var i = 0; i < this.origins.length; i++) {
-                if (this.origins[i].id == this.originSelected) this.originSelectedName = this.origins[i].name;
-            }
-
-            this.assets = [];
-
-            // Call the LoadPortfolio event asyncronously
-            var uri = '/api/assets';
-            axios(uri, {
-                method: 'GET'
-            }).then(function (response) {
-                for (var i = 0; i < response.data.length; i++) {
-                    if (response.data[i].origin_id == _this.originSelected) _this.assets.push(response.data[i]);
-                }
-                console.log("Retieving assets...");
-            }).catch(function (e) {
-                _this.errors.push(e);
-
-                console.log("Error: " + e.message);
-            });
-        },
-        loadAssetData: function loadAssetData(originId, assetId) {
-            var _this2 = this;
-
-            // Call the LoadPortfolio event asyncronously
-            var uri = '/api/assets/' + assetId;
-            axios(uri, {
-                method: 'GET'
-            }).then(function (response) {
-                _this2.assetAmount = response.data.amount;
-                _this2.assetInitialPrice = response.data.initial_price;
-
-                var uri = '/api/transactions/' + originId + '/' + assetId;
-                axios(uri, {
-                    method: 'GET'
-                }).then(function (response) {
-                    console.log(response.data);
-                    _this2.transactions = response.data;
-                    _this2.transactionsLoaded = true;
-
-                    if (response.data.length == 0) {
-                        _this2.transactionsLoaded = false;
-                    }
-                }).catch(function (e) {
-                    _this2.errors.push(e);
-                    console.log("Error: " + e.message);
-                });
-            }).catch(function (e) {
-                _this2.errors.push(e);
-
-                console.log("Error: " + e.message);
-            });
-        },
-        deleteTransaction: function deleteTransaction(id) {}
-    }
-});
-
-/***/ }),
-/* 324 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("section", { attrs: { id: "add-transaction" } }, [
-    _c("div", { staticClass: "grid-container fluid transactions" }, [
-      _c(
-        "form",
-        {
-          attrs: {
-            method: "POST",
-            action: "/assets/" + _vm.assetSelected + "/transaction"
-          }
-        },
-        [
-          _c("input", {
-            attrs: { type: "hidden", name: "_token" },
-            domProps: { value: _vm.csrf }
-          }),
-          _vm._v(" "),
-          _c("input", {
-            attrs: { name: "_method", type: "hidden", value: "PATCH" }
-          }),
-          _vm._v(" "),
-          _c("div", { staticClass: "grid-x grid-padding-x" }, [
-            _vm._m(0, false, false),
-            _vm._v(" "),
-            _c("div", { staticClass: "small-12 cell form-container" }, [
-              _vm.validationErrors.origin_type
-                ? _c(
-                    "div",
-                    _vm._l(_vm.validationErrors.origin_type, function(error) {
-                      return _c("span", { staticClass: "validation-error" }, [
-                        _vm._v(" " + _vm._s(error) + " ")
-                      ])
-                    })
-                  )
-                : _vm._e(),
-              _vm._v(" "),
-              _c("div", { staticClass: "input-group" }, [
-                _c("span", { staticClass: "input-group-label" }, [
-                  _vm._v("Origin")
-                ]),
-                _vm._v(" "),
-                _c(
-                  "select",
-                  {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.originSelected,
-                        expression: "originSelected"
-                      }
-                    ],
-                    staticClass: "input-group-field",
-                    attrs: { name: "asset_origin" },
-                    on: {
-                      change: [
-                        function($event) {
-                          var $$selectedVal = Array.prototype.filter
-                            .call($event.target.options, function(o) {
-                              return o.selected
-                            })
-                            .map(function(o) {
-                              var val = "_value" in o ? o._value : o.value
-                              return val
-                            })
-                          _vm.originSelected = $event.target.multiple
-                            ? $$selectedVal
-                            : $$selectedVal[0]
-                        },
-                        function($event) {
-                          _vm.loadAssets()
-                          _vm.transactionsLoaded = false
-                        }
-                      ]
-                    }
-                  },
-                  [
-                    _c("option", { attrs: { disabled: "", value: "" } }, [
-                      _vm._v("Select...")
-                    ]),
-                    _vm._v(" "),
-                    _vm._l(_vm.noxchgOrigins, function(origin) {
-                      return _c("option", { domProps: { value: origin.id } }, [
-                        _vm._v(_vm._s(origin.name) + " ")
-                      ])
-                    })
-                  ],
-                  2
-                ),
-                _vm._v(" "),
-                _c("input", {
-                  attrs: {
-                    id: "asset-origin-name",
-                    name: "asset_origin_name",
-                    type: "hidden"
-                  },
-                  domProps: { value: _vm.originSelectedName }
-                })
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "small-12 cell form-container" }, [
-              _vm.validationErrors.asset_symbol
-                ? _c(
-                    "div",
-                    _vm._l(_vm.validationErrors.asset_symbol, function(error) {
-                      return _c("span", { staticClass: "validation-error" }, [
-                        _vm._v(" " + _vm._s(error) + " ")
-                      ])
-                    })
-                  )
-                : _vm._e(),
-              _vm._v(" "),
-              _c("div", { staticClass: "input-group" }, [
-                _c("span", { staticClass: "input-group-label" }, [
-                  _vm._v("Asset")
-                ]),
-                _vm._v(" "),
-                _c(
-                  "select",
-                  {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.assetSelected,
-                        expression: "assetSelected"
-                      }
-                    ],
-                    staticClass: "input-group-field",
-                    attrs: { name: "asset" },
-                    on: {
-                      change: [
-                        function($event) {
-                          var $$selectedVal = Array.prototype.filter
-                            .call($event.target.options, function(o) {
-                              return o.selected
-                            })
-                            .map(function(o) {
-                              var val = "_value" in o ? o._value : o.value
-                              return val
-                            })
-                          _vm.assetSelected = $event.target.multiple
-                            ? $$selectedVal
-                            : $$selectedVal[0]
-                        },
-                        function($event) {
-                          _vm.loadAssetData(
-                            _vm.originSelected,
-                            _vm.assetSelected
-                          )
-                        }
-                      ]
-                    }
-                  },
-                  [
-                    _c("option", { attrs: { disabled: "", value: "" } }, [
-                      _vm._v("Select...")
-                    ]),
-                    _vm._v(" "),
-                    _vm._l(_vm.assets, function(asset) {
-                      return _c("option", { domProps: { value: asset.id } }, [
-                        _vm._v(" " + _vm._s(asset.symbol) + " ")
-                      ])
-                    })
-                  ],
-                  2
-                )
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "small-12 cell form-container" }, [
-              _vm.validationErrors.transaction_amount
-                ? _c(
-                    "div",
-                    _vm._l(_vm.validationErrors.transaction_amount, function(
-                      error
-                    ) {
-                      return _c("span", { staticClass: "validation-error" }, [
-                        _vm._v(" " + _vm._s(error) + " ")
-                      ])
-                    })
-                  )
-                : _vm._e(),
-              _vm._v(" "),
-              _c("div", { staticClass: "input-group" }, [
-                _c("span", { staticClass: "input-group-label" }, [
-                  _vm._v(
-                    "\n                             Amount\n                        "
-                  )
-                ]),
-                _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.transactionAmount,
-                      expression: "transactionAmount"
-                    }
-                  ],
-                  staticClass: "input-group-field price number",
-                  attrs: { name: "transaction_amount", type: "text" },
-                  domProps: { value: _vm.transactionAmount },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.transactionAmount = $event.target.value
-                    }
-                  }
-                }),
-                _vm._v(" "),
-                _c(
-                  "select",
-                  {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.transactionOperation,
-                        expression: "transactionOperation"
-                      }
-                    ],
-                    attrs: {
-                      name: "transaction_type",
-                      id: "transaction-operation"
-                    },
-                    on: {
-                      change: function($event) {
-                        var $$selectedVal = Array.prototype.filter
-                          .call($event.target.options, function(o) {
-                            return o.selected
-                          })
-                          .map(function(o) {
-                            var val = "_value" in o ? o._value : o.value
-                            return val
-                          })
-                        _vm.transactionOperation = $event.target.multiple
-                          ? $$selectedVal
-                          : $$selectedVal[0]
-                      }
-                    }
-                  },
-                  [
-                    _c("option", { attrs: { disabled: "", value: "" } }, [
-                      _vm._v("Operation")
-                    ]),
-                    _vm._v(" "),
-                    _c("option", { attrs: { value: "in" } }, [_vm._v("In")]),
-                    _vm._v(" "),
-                    _c("option", { attrs: { value: "out" } }, [_vm._v("Out")])
-                  ]
-                )
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "small-12 cell form-container" }, [
-              _vm.validationErrors.asset_initial_price
-                ? _c(
-                    "div",
-                    _vm._l(_vm.validationErrors.asset_initial_price, function(
-                      error
-                    ) {
-                      return _c("span", { staticClass: "validation-error" }, [
-                        _vm._v(" " + _vm._s(error) + " ")
-                      ])
-                    })
-                  )
-                : _vm._e(),
-              _vm._v(" "),
-              _c("div", { staticClass: "input-group" }, [
-                _c("span", { staticClass: "input-group-label" }, [
-                  _vm._v(
-                    "\n                            Label\n                        "
-                  )
-                ]),
-                _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.transactionLabel,
-                      expression: "transactionLabel"
-                    }
-                  ],
-                  staticClass: "input-group-field number",
-                  attrs: { name: "transaction_label", type: "text" },
-                  domProps: { value: _vm.transactionLabel },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.transactionLabel = $event.target.value
-                    }
-                  }
-                })
-              ])
-            ]),
-            _vm._v(" "),
-            _vm._m(1, false, false),
-            _vm._v(" "),
-            _vm.transactionsLoaded == true
-              ? _c("div", { staticClass: "small-12 cell form-container" }, [
-                  _c("table", { staticClass: "stack" }, [
-                    _vm._m(2, false, false),
-                    _vm._v(" "),
-                    _c(
-                      "tbody",
-                      _vm._l(_vm.transactions, function(transaction) {
-                        return _c("tr", [
-                          transaction.type == "in"
-                            ? _c("td", [
-                                _c("i", {
-                                  staticClass: "fa fa-arrow-right green",
-                                  attrs: { "aria-hidden": "true" }
-                                })
-                              ])
-                            : _vm._e(),
-                          _vm._v(" "),
-                          transaction.type == "out"
-                            ? _c("td", [
-                                _c("i", {
-                                  staticClass: "fa fa-arrow-left red",
-                                  attrs: { "aria-hidden": "true" }
-                                })
-                              ])
-                            : _vm._e(),
-                          _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(transaction.amount))]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(transaction.label))])
-                        ])
-                      })
-                    )
-                  ])
-                ])
-              : _vm._e()
-          ])
-        ]
-      )
-    ])
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "small-12 cell form-container" }, [
-      _c("p", { staticClass: "h2" }, [_vm._v("Add Transaction")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "small-12 cell form-container" }, [
-      _c(
-        "button",
-        { staticClass: "hollow button", attrs: { type: "submit" } },
-        [
-          _vm._v(
-            "\n                       Execute Transaction\n                    "
-          )
-        ]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", [
-        _c("th", { attrs: { width: "50" } }, [_vm._v("Type")]),
-        _vm._v(" "),
-        _c("th", { attrs: { width: "150" } }, [_vm._v("Amount")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Label")])
-      ])
-    ])
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-27d7cf4a", module.exports)
-  }
-}
-
-/***/ }),
-/* 325 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(3)
-/* script */
-var __vue_script__ = __webpack_require__(326)
-/* template */
-var __vue_template__ = __webpack_require__(327)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/portfolio/DeleteTransaction.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-228a46c5", Component.options)
-  } else {
-    hotAPI.reload("data-v-228a46c5", Component.options)
-' + '  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 326 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    name: 'delete-transaction',
-    data: function data() {
-        return {
-            assets: [],
-            noxchgOrigins: [],
-            assetAmount: 0,
-            transactions: [],
-            transactionsLoaded: false,
-            transactionOperation: "",
-            transactionAmount: 0,
-            transactionLabel: "",
-            assetInitialPrice: 0,
-            assetSelected: "",
-            coinSelected: "",
-            coin: "",
-            originSelected: "",
-            originSelectedName: "",
-            updating: false,
-            csrf: "",
-            errors: []
-        };
-    },
-    props: ['portfolio', 'origins', 'exchanges', 'validation-errors'],
-    computed: {},
-    watch: {},
-    mounted: function mounted() {
-
-        var coins = $.map(this.coins, function (a) {
-            return a.toString();
-        });
-
-        for (var i = 0; i < this.origins.length; i++) {
-            if (this.exchanges.indexOf(this.origins[i].name.toLowerCase()) < 0) {
-                this.noxchgOrigins.push(this.origins[i]);
-            }
-        }
-
-        this.csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-        console.log('Component Transactions mounted.');
-    },
-
-    methods: {
-        loadAssets: function loadAssets() {
-            var _this = this;
-
-            for (var i = 0; i < this.origins.length; i++) {
-                if (this.origins[i].id == this.originSelected) this.originSelectedName = this.origins[i].name;
-            }
-
-            this.assets = [];
-
-            // Call the LoadPortfolio event asyncronously
-            var uri = '/api/assets';
-            axios(uri, {
-                method: 'GET'
-            }).then(function (response) {
-                for (var i = 0; i < response.data.length; i++) {
-                    if (response.data[i].origin_id == _this.originSelected) _this.assets.push(response.data[i]);
-                }
-                console.log("Retieving assets...");
-            }).catch(function (e) {
-                _this.errors.push(e);
-
-                console.log("Error: " + e.message);
-            });
-        },
-        loadAssetData: function loadAssetData(originId, assetId) {
-            var _this2 = this;
-
-            // Call the LoadPortfolio event asyncronously
-            var uri = '/api/assets/' + assetId;
-            axios(uri, {
-                method: 'GET'
-            }).then(function (response) {
-                _this2.assetAmount = response.data.amount;
-                _this2.assetInitialPrice = response.data.initial_price;
-
-                var uri = '/api/transactions/' + originId + '/' + assetId;
-                axios(uri, {
-                    method: 'GET'
-                }).then(function (response) {
-                    console.log(response.data);
-                    _this2.transactions = response.data;
-                    _this2.transactionsLoaded = true;
-
-                    if (response.data.length == 0) {
-                        _this2.transactionsLoaded = false;
-                    }
-                }).catch(function (e) {
-                    _this2.errors.push(e);
-                    console.log("Error: " + e.message);
-                });
-            }).catch(function (e) {
-                _this2.errors.push(e);
-
-                console.log("Error: " + e.message);
-            });
-        },
-        deleteTransaction: function deleteTransaction(id) {
-            var _this3 = this;
-
-            var uri = '/api/transactions/' + id;
-            axios.delete(uri).then(function (response) {
-                console.log(response.data);
-                window.location.replace('/portfolio');
-            }).catch(function (e) {
-                _this3.errors.push(e);
-                console.log("Error: " + e.message);
-            });
-        }
-    }
-});
-
-/***/ }),
-/* 327 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("section", { attrs: { id: "delete-transaction" } }, [
-    _c("div", { staticClass: "grid-container fluid transactions" }, [
-      _c("div", { staticClass: "grid-x grid-padding-x" }, [
-        _vm._m(0, false, false),
-        _vm._v(" "),
-        _c("div", { staticClass: "small-12 cell form-container" }, [
-          _vm.validationErrors.origin_type
-            ? _c(
-                "div",
-                _vm._l(_vm.validationErrors.origin_type, function(error) {
-                  return _c("span", { staticClass: "validation-error" }, [
-                    _vm._v(" " + _vm._s(error) + " ")
-                  ])
-                })
-              )
-            : _vm._e(),
-          _vm._v(" "),
-          _c("div", { staticClass: "input-group" }, [
-            _c("span", { staticClass: "input-group-label" }, [
-              _vm._v("Origin")
-            ]),
-            _vm._v(" "),
-            _c(
-              "select",
-              {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.originSelected,
-                    expression: "originSelected"
-                  }
-                ],
-                staticClass: "input-group-field",
-                attrs: { name: "asset_origin" },
-                on: {
-                  change: [
-                    function($event) {
-                      var $$selectedVal = Array.prototype.filter
-                        .call($event.target.options, function(o) {
-                          return o.selected
-                        })
-                        .map(function(o) {
-                          var val = "_value" in o ? o._value : o.value
-                          return val
-                        })
-                      _vm.originSelected = $event.target.multiple
-                        ? $$selectedVal
-                        : $$selectedVal[0]
-                    },
-                    function($event) {
-                      _vm.loadAssets()
-                      _vm.transactionsLoaded = false
-                    }
-                  ]
-                }
-              },
-              [
-                _c("option", { attrs: { disabled: "", value: "" } }, [
-                  _vm._v("Select...")
-                ]),
-                _vm._v(" "),
-                _vm._l(_vm.noxchgOrigins, function(origin) {
-                  return _c("option", { domProps: { value: origin.id } }, [
-                    _vm._v(_vm._s(origin.name) + " ")
-                  ])
-                })
-              ],
-              2
-            ),
-            _vm._v(" "),
-            _c("input", {
-              attrs: {
-                id: "asset-origin-name",
-                name: "asset_origin_name",
-                type: "hidden"
-              },
-              domProps: { value: _vm.originSelectedName }
-            })
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "small-12 cell form-container" }, [
-          _vm.validationErrors.asset_symbol
-            ? _c(
-                "div",
-                _vm._l(_vm.validationErrors.asset_symbol, function(error) {
-                  return _c("span", { staticClass: "validation-error" }, [
-                    _vm._v(" " + _vm._s(error) + " ")
-                  ])
-                })
-              )
-            : _vm._e(),
-          _vm._v(" "),
-          _c("div", { staticClass: "input-group" }, [
-            _c("span", { staticClass: "input-group-label" }, [_vm._v("Asset")]),
-            _vm._v(" "),
-            _c(
-              "select",
-              {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.assetSelected,
-                    expression: "assetSelected"
-                  }
-                ],
-                staticClass: "input-group-field",
-                attrs: { name: "asset" },
-                on: {
-                  change: [
-                    function($event) {
-                      var $$selectedVal = Array.prototype.filter
-                        .call($event.target.options, function(o) {
-                          return o.selected
-                        })
-                        .map(function(o) {
-                          var val = "_value" in o ? o._value : o.value
-                          return val
-                        })
-                      _vm.assetSelected = $event.target.multiple
-                        ? $$selectedVal
-                        : $$selectedVal[0]
-                    },
-                    function($event) {
-                      _vm.loadAssetData(_vm.originSelected, _vm.assetSelected)
-                    }
-                  ]
-                }
-              },
-              [
-                _c("option", { attrs: { disabled: "", value: "" } }, [
-                  _vm._v("Select...")
-                ]),
-                _vm._v(" "),
-                _vm._l(_vm.assets, function(asset) {
-                  return _c("option", { domProps: { value: asset.id } }, [
-                    _vm._v(" " + _vm._s(asset.symbol) + " ")
-                  ])
-                })
-              ],
-              2
-            )
-          ])
-        ]),
-        _vm._v(" "),
-        _vm.transactionsLoaded == true
-          ? _c("div", { staticClass: "small-12 cell form-container" }, [
-              _c("table", { staticClass: "stack" }, [
-                _vm._m(1, false, false),
-                _vm._v(" "),
-                _c(
-                  "tbody",
-                  _vm._l(_vm.transactions, function(transaction) {
-                    return _c("tr", [
-                      transaction.type == "in"
-                        ? _c("td", [
-                            _c("i", {
-                              staticClass: "fa fa-arrow-right green",
-                              attrs: { "aria-hidden": "true" }
-                            })
-                          ])
-                        : _vm._e(),
-                      _vm._v(" "),
-                      transaction.type == "out"
-                        ? _c("td", [
-                            _c("i", {
-                              staticClass: "fa fa-arrow-left red",
-                              attrs: { "aria-hidden": "true" }
-                            })
-                          ])
-                        : _vm._e(),
-                      _vm._v(" "),
-                      _c("td", [_vm._v(_vm._s(transaction.amount))]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v(_vm._s(transaction.label))]),
-                      _vm._v(" "),
-                      _c("td", [
-                        _c("i", {
-                          staticClass: "fa fa-times red",
-                          attrs: { "aria-hidden": "true" },
-                          on: {
-                            click: function($event) {
-                              _vm.deleteTransaction(transaction.id)
-                            }
-                          }
-                        })
-                      ])
-                    ])
-                  })
-                )
-              ])
-            ])
-          : _vm._e()
-      ])
-    ])
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "small-12 cell form-container" }, [
-      _c("p", { staticClass: "h2" }, [_vm._v("Delete Transaction")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", [
-        _c("th", { attrs: { width: "50" } }, [_vm._v("Type")]),
-        _vm._v(" "),
-        _c("th", { attrs: { width: "150" } }, [_vm._v("Amount")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Label")]),
-        _vm._v(" "),
-        _c("th")
-      ])
-    ])
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-228a46c5", module.exports)
-  }
-}
-
-/***/ }),
-/* 328 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(3)
-/* script */
-var __vue_script__ = __webpack_require__(329)
-/* template */
-var __vue_template__ = __webpack_require__(330)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/portfolio/Portfolio.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-984ef14c", Component.options)
-  } else {
-    hotAPI.reload("data-v-984ef14c", Component.options)
-' + '  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 329 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    name: 'portfolio',
-    props: ['portfolio'],
-    data: function data() {
-        return {
-            assets: [],
-            totalBtc: 0,
-            totalFiat: 0,
-            totalExchanges: 0,
-            biggestLoser: { symbol: "", profit: 0 },
-            biggestGainer: { symbol: "", profit: 0 },
-            assetsCounter: 0,
-            coinsCounter: 0,
-            portfolioAssetCount: 0,
-            portfolioCurrentAssetCount: 0,
-            showChart: false,
-            uniqueAssetsBtc: [],
-            uniqueAssetsFiat: [],
-            uniqueAssetsName: [],
-            uniqueAssetsOriginName: [],
-            uniqueAssetsOriginFiat: [],
-            mostValuableName: "",
-            mostValuableValue: "",
-            counterValueSymbol: '',
-            portfolioTable: {},
-            loadingPortfolio: false,
-            loadingAsset: false,
-            updatingAsset: false,
-            chartistTotalsData: { labels: [], series: [] },
-            chartistTotalsChart: {},
-            chartistTotalsOptions: [],
-            chartistOriginsData: { labels: [], series: [] },
-            chartistOriginsChart: {},
-            chartistOriginsOptions: [],
-            responsiveOptions: [],
-            errors: []
-        };
-    },
-    computed: {},
-    mounted: function mounted() {
-        var _this = this;
-
-        this.loadingPortfolio = true;
-
-        // Variables initizalization
-        this.totalBtc = 0;
-        this.totalFiat = 0;
-        this.uniqueAssetsOriginFiat = [];
-        this.uniqueAssetsOriginName = [];
-
-        // Setup DATATABLE
-        this.portfolioTable = $('#portfolioTable').DataTable({
-            "searching": false,
-            "responsive": true,
-            "paging": false,
-            "info": false,
-            "columnDefs": [{ "visible": false, "targets": 7 }],
-            columns: [{ title: '' }, { title: '<div class="sorting nowrap">Coin</div>' }, { title: '<div class="sorting nowrap">Amount</div>' }, { title: '<div class="sorting nowrap">Value (Fiat)</div>' }, { title: '<div class="sorting nowrap">Value (BTC)</div>' }, { title: '<div class="sorting nowrap">Last Price</div>' }, { title: '<div class="sorting nowrap">Purchase Price</div>' }, { title: '<div class="sorting nowrap">Asset ID</div>' }, { title: '<div class="sorting_asc nowrap">Origin</div>' }],
-            "drawCallback": function drawCallback(settings) {
-                var api = this.api();
-                var rows = api.rows({ page: 'current' }).nodes();
-                var last = null;
-
-                api.column(8, { page: 'current' }).data().each(function (group, i) {
-                    if (last !== group) {
-                        $(rows).eq(i).before('<tr class="group"><td colspan="7">' + group + '</td></tr>');
-
-                        last = group;
-                    }
-                });
-            }
-        });
-
-        // Clear Datatable in case of reloading
-        this.portfolioTable.clear();
-
-        // Set Chart options
-        this.responsiveOptions = [['screen and (min-width: 200px)', {
-            horizontalBars: true,
-            seriesBarDistance: 5
-        }],
-        // Options override for media > 800px
-        ['screen and (min-width: 800px)', {
-            stackBars: false,
-            seriesBarDistance: 10
-        }],
-        // Options override for media > 1000px
-        ['screen and (min-width: 1000px)', {
-            horizontalBars: false,
-            seriesBarDistance: 15
-        }]];
-        this.chartistTotalsOptions = {
-            distributeSeries: true
-        };
-        this.chartistOriginsOptions = {
-            distributeSeries: true
-        };
-
-        // Call the LoadPortfolio event asyncronously
-        var uri = '/api/portfolio/refresh';
-        axios(uri, {
-            method: 'GET'
-        }).then(function (response) {
-            console.log("Reloading portfolio...");
-        }).catch(function (e) {
-            _this.errors.push(e);
-
-            console.log("Error: " + e.message);
-        });
-
-        // Listen to ASSETS events
-        Echo.private('assets.' + this.portfolio.id).listen('PortfolioAssetLoaded', function (e) {
-            // ************
-            // ASSET LOADED
-            // ************
-
-            // console.log("Portfolio UpdateID: " + this.portfolio.update_id  + " Asset UpdateID: " + e.asset.update_id);
-            if (_this.portfolio.update_id == e.asset.update_id) {
-
-                var tools = '<div class="asset-tools nowrap"><button class="clear button" data-open="edit-asset-modal"><i class="fa fa-pencil edit-icon" aria-hidden="true"></i></button></div>';
-
-                // Set coin url, logo, name and symbol
-                var coin = '<div class="asset-info nowrap"><a href="' + e.asset.info_url + '" target="_blank"><img class="asset-img" src="' + e.asset.logo_url + '" width="20"></a> <span class="show-for-medium asset-name">' + e.asset.full_name + '</span> <span class="asset-symbol">' + e.asset.symbol + '</span></div>';
-
-                // Set coin amount
-                var amount = '<div class="asset-amount nowrap">' + parseFloat(e.asset.amount).toFixed(4) + '</div>';
-
-                // Set coin origin
-                var origin = '<div class="asset-origin  nowrap">' + e.asset.origin_name + '</div>';
-
-                // Add row to the table with the new asset
-                _this.portfolioTable.row.add(['', coin, amount, parseFloat(e.asset.counter_value).toFixed(2), parseFloat(e.asset.balance).toFixed(8), parseFloat(e.asset.price).toFixed(8), parseFloat(e.asset.initial_price).toFixed(8), e.asset.id, origin]).order([8, 'asc']).invalidate().draw();
-            }
-        }).listen('PortfolioAssetUpdated', function (e) {
-            // ************
-            // ASSET UPDATED
-            // ************
-
-            if (_this.portfolio.update_id == e.asset.update_id) {
-                //console.log(e.asset.symbol);
-
-                // Calculate current TOTAL balances (btc and fiat)
-                _this.totalBtc = (parseFloat(_this.totalBtc) + parseFloat(e.asset.balance)).toFixed(8);
-                _this.totalFiat = (parseFloat(_this.totalFiat) + parseFloat(e.asset.counter_value)).toFixed(2);
-
-                // Store TOTAL balances
-                var balance = parseFloat(e.asset.balance).toFixed(8);
-                var price = parseFloat(e.asset.price).toFixed(8);
-                var counter_value = parseFloat(e.asset.counter_value).toFixed(2);
-                var purchase_price = parseFloat(e.asset.initial_price).toFixed(8);
-
-                // Store a consolidated array by VALUE
-                var indexRepeatedAsset = _this.uniqueAssetsName.indexOf(e.asset.symbol);
-
-                if (indexRepeatedAsset >= 0) {
-                    // If asset is already counted we sum the new value
-                    var newBalanceBtc = parseFloat(_this.uniqueAssetsBtc[indexRepeatedAsset]) + parseFloat(e.asset.balance);
-                    var newBalanceFiat = parseFloat(_this.uniqueAssetsFiat[indexRepeatedAsset]) + parseFloat(e.asset.counter_value);
-                    _this.uniqueAssetsBtc[indexRepeatedAsset] = parseFloat(newBalanceBtc);
-                    _this.uniqueAssetsFiat[indexRepeatedAsset] = parseFloat(newBalanceFiat);
-
-                    // Update Chart data
-                    _this.chartistTotalsData.series[indexRepeatedAsset] = parseFloat(parseFloat(_this.uniqueAssetsFiat[indexRepeatedAsset]).toFixed(2));
-                } else {
-
-                    _this.coinsCounter++;
-
-                    // If the asset doesn't exists we push it
-                    _this.uniqueAssetsBtc.push(parseFloat(e.asset.balance));
-                    _this.uniqueAssetsFiat.push(parseFloat(e.asset.counter_value));
-                    _this.uniqueAssetsName.push(e.asset.symbol);
-
-                    // Update Chart data
-                    _this.chartistTotalsData.labels.push(e.asset.symbol);
-                    _this.chartistTotalsData.series.push(parseFloat(parseFloat(e.asset.counter_value).toFixed(2)));
-                }
-
-                // Store consolidated array of ORIGINS
-                var indexRepeatedOrigin = _this.uniqueAssetsOriginName.indexOf(e.asset.origin_name);
-
-                if (indexRepeatedOrigin >= 0) {
-                    // If origin is already counted we sum the new value
-                    var newBalanceFiat = parseFloat(_this.uniqueAssetsOriginFiat[indexRepeatedOrigin]) + parseFloat(e.asset.counter_value);
-                    _this.uniqueAssetsOriginFiat[indexRepeatedOrigin] = parseFloat(newBalanceFiat);
-
-                    // Update Chart data
-                    _this.chartistOriginsData.series[indexRepeatedOrigin] = parseFloat(parseFloat(newBalanceFiat).toFixed(2));
-                } else {
-
-                    // If the asset doesn't exists we push it
-                    _this.uniqueAssetsOriginName.push(e.asset.origin_name);
-                    _this.uniqueAssetsOriginFiat.push(e.asset.counter_value);
-
-                    // Update Chart data
-                    _this.chartistOriginsData.labels.push(e.asset.origin_name);
-                    _this.chartistOriginsData.series.push(parseFloat(parseFloat(e.asset.counter_value).toFixed(2)));
-                }
-
-                // Locate current coin row in DATATABLE
-                var indexes = _this.portfolioTable.rows().eq(0).filter(function (rowIdx) {
-                    return _this.portfolioTable.cell(rowIdx, 7).data() === e.asset.id ? true : false;
-                });
-
-                // Update DATATABLE values (Price, Balance and Counter Value)
-                var formated_counter_value = '<span class="nowrap">' + _this.counterValueSymbolHtml + parseFloat(counter_value).toFixed(2) + '</span>';
-                var formated_balance = '<span class="nowrap"><i class="fa fa-btc" aria-hidden="true"></i>' + parseFloat(balance).toFixed(8) + '</span>';
-                var formated_price = '<span class="nowrap"><i class="fa fa-btc" aria-hidden="true"></i>' + parseFloat(price).toFixed(8) + '</span>';
-
-                var formated_purchase_price = '<span class="nowrap"><i class="fa fa-btc" aria-hidden="true"></i>' + parseFloat(purchase_price).toFixed(8) + '</span>';
-
-                _this.portfolioTable.cell(indexes[0], 3).data(formated_counter_value).invalidate();
-                _this.portfolioTable.cell(indexes[0], 4).data(formated_balance).invalidate();
-                _this.portfolioTable.cell(indexes[0], 5).data(formated_price).invalidate();
-                _this.portfolioTable.cell(indexes[0], 6).data(formated_purchase_price).invalidate();
-
-                var balance = '<i class="fa fa-btc" aria-hidden="true"></i>' + parseFloat(e.asset.balance).toFixed(8);
-                if (e.asset.initial_price == 0) {
-                    var profit = "-";
-                } else {
-                    var profit = ((parseFloat(price) - parseFloat(e.asset.initial_price)) / parseFloat(e.asset.initial_price) * 100).toFixed(2);
-                }
-                if (profit >= 0) {
-                    _this.portfolioTable.cell(indexes[0], 0).data('<span class="profit nowrap">+' + profit + '%</span>').invalidate();
-                } else {
-                    _this.portfolioTable.cell(indexes[0], 0).data('<span class="loss nowrap">' + profit + '%</span>').invalidate();
-                }
-
-                // Gainers and losers
-                if (parseFloat(profit) > parseFloat(_this.biggestGainer.profit) && e.asset.symbol != 'BTC' && e.asset.symbol != 'BTG') {
-                    _this.biggestGainer.profit = profit;
-                    _this.biggestGainer.symbol = e.asset.symbol;
-                }
-                if (parseFloat(profit) < parseFloat(_this.biggestLoser.profit) && e.asset.symbol != 'BTC' && e.asset.symbol != 'BTG') {
-                    _this.biggestLoser.profit = profit;
-                    _this.biggestLoser.symbol = e.asset.symbol;
-                }
-
-                // this.portfolioTable.responsive.rebuild();
-                // this.portfolioTable.responsive.recalc();
-                _this.portfolioTable.draw();
-
-                // Keep count of number of assets
-                _this.portfolioCurrentAssetCount++;
-
-                // Keep asset on array of assets
-                _this.assets.push(e.asset);
-
-                // console.log("Asset Count: " + this.portfolioCurrentAssetCount);
-                if (_this.portfolioCurrentAssetCount == _this.portfolioAssetCount && _this.portfolioCurrentAssetCount != 0) {
-                    console.log(_this.chartistOriginsData.series);
-                    console.log(_this.chartistOriginsData.labels);
-                    _this.showChart = true;
-                    _this.chartistTotalsChart = new Chartist.Bar('.ct-chart-totals', _this.chartistTotalsData, _this.chartistTotalsOptions, _this.responsiveOptions);
-                    _this.chartistOriginsChart = new Chartist.Bar('.ct-chart-origins', _this.chartistOriginsData, _this.chartistOriginsOptions, _this.responsiveOptions);
-                    _this.assetsCounter = _this.portfolioCurrentAssetCount;
-
-                    $(window).trigger('resize');
-                    _this.loadingPortfolio = false;
-                }
-            }
-        });
-        Echo.private('portfolios.' + this.portfolio.id).listen('PortfolioLoaded', function (e) {
-            // ************
-            // PORTFOLIO LOADED
-            // ************
-
-            // console.log("Asset count: " + e.assetCount);
-            _this.counterValueSymbol = _this.portfolio.counter_value.toUpperCase();
-            _this.counterValueSymbolHtml = '<i class="fa fa-' + _this.portfolio.counter_value.toLowerCase() + ' aria-hidden="true"></i>';
-            _this.portfolioAssetCount = e.assetCount;
-        });
-
-        console.log('Component TradeList mounted.');
-    },
-
-    methods: {
-        refreshPortfolio: function refreshPortfolio() {
-            var _this2 = this;
-
-            this.loadingPortfolio = true;
-
-            if (this.portfolioCurrentAssetCount > 0) {
-                this.chartistTotalsChart.detach();
-                this.chartistOriginsChart.detach();
-                this.portfolioTable.clear().draw();
-            };
-            this.assets = [];
-            this.totalBtc = 0;
-            this.totalFiat = 0;
-            this.biggestLoser = { symbol: "", profit: 0 }, this.biggestGainer = { symbol: "", profit: 0 }, this.assetsCounter = 0, this.coinsCounter = 0, this.uniqueAssetsBtc = [];
-            this.uniqueAssetsFiat = [];
-            this.uniqueAssetsName = [];
-            this.uniqueAssetsOriginFiat = [];
-            this.uniqueAssetsOriginName = [];
-            this.chartistTotalsData.labels = [];
-            this.chartistOriginsData.labels = [];
-            this.chartistTotalsData.series = [];
-            this.chartistOriginsData.series = [];
-            this.portfolioCurrentAssetCount = 0;
-            this.portfolioAssetCount = 0;
-            this.showChart = false;
-
-            var uri = '/api/portfolio/refresh';
-            axios(uri, {
-                method: 'GET'
-            }).then(function (response) {
-                console.log("Reloading portfolio...");
-            }).catch(function (e) {
-                _this2.errors.push(e);
-                _this2.loadingPortfolio = false;
-                console.log("Error: " + e.message);
-            });
-        }
-    }
-});
-
-/***/ }),
-/* 330 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("section", { attrs: { id: "portfolio-widget" } }, [
-    _c("div", { staticClass: "grid-x grid-padding-x" }, [
-      _c("div", { staticClass: "small-12 cell" }, [
-        _vm.loadingPortfolio == true
-          ? _c("div", { staticClass: "grid-container fluid" }, [
-              _vm._m(0, false, false)
-            ])
-          : _c("div", { staticClass: "grid-container fluid" }, [
-              _c("div", { staticClass: "grid-x grid-padding-x" }, [
-                _c("div", { staticClass: "small-12 medium-shrink cell" }, [
-                  _c("div", { staticClass: "counter-widget text-left" }, [
-                    _c("div", { staticClass: "title" }, [_vm._v("Total BTC ")]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "counter" }, [
-                      _c("span", { staticClass: "nowrap" }, [
-                        _c("i", {
-                          staticClass: "fa fa-btc",
-                          attrs: { "aria-hidden": "true" }
-                        }),
-                        _vm._v(_vm._s(_vm.totalBtc))
-                      ])
-                    ])
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "small-12 medium-shrink cell" }, [
-                  _c("div", { staticClass: "counter-widget text-left" }, [
-                    _c("div", { staticClass: "title" }, [
-                      _vm._v("Total " + _vm._s(_vm.counterValueSymbol) + " ")
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "counter" }, [
-                      _c("span", { staticClass: "nowrap" }, [
-                        _c("i", {
-                          class:
-                            "fa fa-" + _vm.counterValueSymbol.toLowerCase(),
-                          attrs: { "aria-hidden": "true" }
-                        }),
-                        _vm._v(_vm._s(_vm.totalFiat))
-                      ])
-                    ])
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "small-6 medium-shrink cell" }, [
-                  _c("div", { staticClass: "counter-widget text-left" }, [
-                    _c(
-                      "div",
-                      {
-                        staticClass: "title nowrap",
-                        model: {
-                          value: _vm.assetsCounter,
-                          callback: function($$v) {
-                            _vm.assetsCounter = $$v
-                          },
-                          expression: "assetsCounter"
-                        }
-                      },
-                      [_vm._v("# of Assets ")]
-                    ),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "counter" }, [
-                      _vm._v(_vm._s(_vm.assetsCounter))
-                    ])
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "small-6 medium-shrink cell" }, [
-                  _c("div", { staticClass: "counter-widget text-left" }, [
-                    _c(
-                      "div",
-                      {
-                        staticClass: "title nowrap",
-                        model: {
-                          value: _vm.coinsCounter,
-                          callback: function($$v) {
-                            _vm.coinsCounter = $$v
-                          },
-                          expression: "coinsCounter"
-                        }
-                      },
-                      [_vm._v("# of Coins ")]
-                    ),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "counter" }, [
-                      _vm._v(_vm._s(_vm.coinsCounter))
-                    ])
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "small-6 medium-shrink cell" }, [
-                  _c("div", { staticClass: "counter-widget text-left" }, [
-                    _c(
-                      "div",
-                      {
-                        staticClass: "title",
-                        model: {
-                          value: _vm.biggestGainer.symbol,
-                          callback: function($$v) {
-                            _vm.$set(_vm.biggestGainer, "symbol", $$v)
-                          },
-                          expression: "biggestGainer.symbol"
-                        }
-                      },
-                      [_vm._v("Biggest Gainer ")]
-                    ),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "counter" }, [
-                      _vm._v(_vm._s(_vm.biggestGainer.symbol) + " "),
-                      _c("span", { staticClass: "biggest profit" }, [
-                        _vm._v(" (+" + _vm._s(_vm.biggestGainer.profit) + "%)")
-                      ])
-                    ])
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "small-6 medium-shrink cell" }, [
-                  _c("div", { staticClass: "counter-widget text-left" }, [
-                    _c(
-                      "div",
-                      {
-                        staticClass: "title",
-                        model: {
-                          value: _vm.biggestLoser.symbol,
-                          callback: function($$v) {
-                            _vm.$set(_vm.biggestLoser, "symbol", $$v)
-                          },
-                          expression: "biggestLoser.symbol"
-                        }
-                      },
-                      [_vm._v("Biggest Loser ")]
-                    ),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "counter" }, [
-                      _vm._v(_vm._s(_vm.biggestLoser.symbol) + " "),
-                      _c("span", { staticClass: "biggest loss" }, [
-                        _vm._v(" (" + _vm._s(_vm.biggestLoser.profit) + "%)")
-                      ])
-                    ])
-                  ])
-                ]),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "small-12 medium-auto cell text-right" },
-                  [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "button hollow button-refresh",
-                        on: {
-                          click: function($event) {
-                            _vm.refreshPortfolio()
-                          }
-                        }
-                      },
-                      [
-                        _c(
-                          "span",
-                          {
-                            directives: [
-                              {
-                                name: "show",
-                                rawName: "v-show",
-                                value: _vm.loadingPortfolio,
-                                expression: "loadingPortfolio"
-                              }
-                            ]
-                          },
-                          [
-                            _c("i", {
-                              staticClass: "fa fa-refresh fa-spin fa-fw",
-                              attrs: { "aria-hidden": "true" }
-                            }),
-                            _vm._v(" "),
-                            _c("span", { staticClass: "show-for-medium" }, [
-                              _vm._v(" Loading...")
-                            ])
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "span",
-                          {
-                            directives: [
-                              {
-                                name: "show",
-                                rawName: "v-show",
-                                value: !_vm.loadingPortfolio,
-                                expression: "!loadingPortfolio"
-                              }
-                            ]
-                          },
-                          [
-                            _c("i", { staticClass: "fa fa-refresh " }),
-                            _vm._v(" "),
-                            _c("span", { staticClass: "show-for-medium" }, [
-                              _vm._v("Reload")
-                            ])
-                          ]
-                        )
-                      ]
-                    )
-                  ]
-                )
-              ])
-            ])
-      ]),
-      _vm._v(" "),
-      _vm._m(1, false, false),
-      _vm._v(" "),
-      _c("div", { staticClass: "small-12 large-6 cell" }, [
-        _c(
-          "div",
-          {
-            staticClass:
-              "grid-x grid-padding-x align-center-middle text-center dashboard"
-          },
-          [
-            _c("div", { staticClass: "small-12 cell charts" }, [
-              _c("div", {
-                directives: [
-                  {
-                    name: "show",
-                    rawName: "v-show",
-                    value: _vm.showChart,
-                    expression: "showChart"
-                  }
-                ],
-                staticClass: "ct-chart-totals ct-golden-section"
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "small-12 cell charts" }, [
-              _c("div", {
-                directives: [
-                  {
-                    name: "show",
-                    rawName: "v-show",
-                    value: _vm.showChart,
-                    expression: "showChart"
-                  }
-                ],
-                staticClass: "ct-chart-origins ct-golden-section"
-              })
-            ])
-          ]
-        )
-      ])
-    ])
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "grid-x grid-padding-x" }, [
-      _c("div", { staticClass: "small-12 medium-shrink cell" }, [
-        _c("div", { staticClass: "portfolio-loader" }, [
-          _c("i", {
-            staticClass: "fa fa-spinner fa-spin",
-            attrs: { "aria-hidden": "true" }
-          }),
-          _vm._v(" Loading assets...\n                        ")
-        ])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "small-12 large-6 cell" }, [
-      _c("div", { staticClass: "portfolio-assets" }, [
-        _c("table", {
-          staticClass: "display unstriped",
-          attrs: { id: "portfolioTable", width: "100%" }
-        })
-      ])
-    ])
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-984ef14c", module.exports)
-  }
-}
-
-/***/ }),
-/* 331 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(3)
-/* script */
-var __vue_script__ = __webpack_require__(332)
-/* template */
-var __vue_template__ = __webpack_require__(333)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/portfolio/Asset.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-fd53b3fc", Component.options)
-  } else {
-    hotAPI.reload("data-v-fd53b3fc", Component.options)
-' + '  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 332 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    name: 'asset',
-    data: function data() {
-        return {
-            balance: 0
-        };
-    },
-    props: ['item', 'portfolio-counter-value'],
-    mounted: function mounted() {
-        console.log('Component Asset mounted.');
-    }
-});
-
-/***/ }),
-/* 333 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("tr", [
-    _c("td"),
-    _vm._v(" "),
-    _c("td", [
-      _c("div", { staticClass: "asset-info nowrap" }, [
-        _c("a", { attrs: { href: _vm.item.info_url, target: "_blank" } }, [
-          _c("img", {
-            staticClass: "asset-img",
-            attrs: { src: _vm.item.logo_url, width: "20" }
-          })
-        ]),
-        _vm._v(" "),
-        _c("span", { staticClass: "show-for-medium asset-name" }, [
-          _vm._v(_vm._s(_vm.item.full_name))
-        ]),
-        _vm._v(" "),
-        _c("span", { staticClass: "asset-symbol" }, [
-          _vm._v(_vm._s(_vm.item.symbol))
-        ])
-      ])
-    ]),
-    _vm._v(" "),
-    _vm.portfolioCounterValue == "eur"
-      ? _c("td", [
-          _c("div", { staticClass: "asset-value nowrap" }, [
-            _vm._v(
-              "\n            " +
-                _vm._s(parseFloat(_vm.item.counter_value).toFixed(2)) +
-                " "
-            ),
-            _c("i", {
-              staticClass: "fa fa-eur",
-              attrs: { "aria-hidden": "true" }
-            })
-          ])
-        ])
-      : _vm._e(),
-    _vm._v(" "),
-    _vm.portfolioCounterValue == "usd"
-      ? _c("td", [
-          _c("div", { staticClass: "asset-value  nowrap" }, [
-            _c("i", {
-              staticClass: "fa fa-usd",
-              attrs: { "aria-hidden": "true" }
-            }),
-            _vm._v(
-              " " +
-                _vm._s(parseFloat(_vm.item.counter_value).toFixed(2)) +
-                " \n        "
-            )
-          ])
-        ])
-      : _vm._e(),
-    _vm._v(" "),
-    _vm.portfolioCounterValue == "btc"
-      ? _c("td", [
-          _c("div", { staticClass: "asset-value  nowrap" }, [
-            _c("i", {
-              staticClass: "fa fa-btc",
-              attrs: { "aria-hidden": "true" }
-            }),
-            _vm._v(
-              " " +
-                _vm._s(parseFloat(_vm.item.counter_value).toFixed(2)) +
-                " \n        "
-            )
-          ])
-        ])
-      : _vm._e(),
-    _vm._v(" "),
-    _c("td", [
-      _c("div", { staticClass: "asset-balance  nowrap" }, [
-        _c("i", { staticClass: "fa fa-btc", attrs: { "aria-hidden": "true" } }),
-        _vm._v(
-          " " + _vm._s(parseFloat(_vm.item.balance).toFixed(8)) + "\n        "
-        )
-      ])
-    ]),
-    _vm._v(" "),
-    _c("td", [
-      _c("div", { staticClass: "asset-amount  nowrap" }, [
-        _vm._v(
-          "\n            " +
-            _vm._s(parseFloat(_vm.item.amount).toFixed(8)) +
-            "\n        "
-        )
-      ])
-    ]),
-    _vm._v(" "),
-    _c("td", [
-      _c("div", { staticClass: "asset-origin  nowrap" }, [
-        _vm._v("\n            " + _vm._s(_vm.item.origin_name) + "\n        ")
-      ])
-    ])
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-fd53b3fc", module.exports)
-  }
-}
-
-/***/ }),
-/* 334 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(3)
-/* script */
-var __vue_script__ = __webpack_require__(335)
-/* template */
-var __vue_template__ = __webpack_require__(336)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/connections/Connections.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-78ec4434", Component.options)
-  } else {
-    hotAPI.reload("data-v-78ec4434", Component.options)
-' + '  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 335 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    name: 'connections',
-    props: ['validation-errors', 'exchanges', 'sources'],
-    data: function data() {
-        return {
-            errors: [],
-            connections: [],
-            loadingExchanges: false,
-            exchangeSelected: "",
-            newExchangeApi: "",
-            newExchangeSecret: "",
-            newExchangeFee: "",
-            csrf: ""
-        };
-    },
-    computed: {},
-    mounted: function mounted() {
-        this.loadingExchanges = true;
-        this.csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-        console.log('Component Connections mounted.');
-
-        this.loadingExchanges = false;
-    },
-
-    methods: {
-        createConnection: function createConnection() {
-            var _this = this;
-
-            var params = "?new_exchange=" + this.exchangeSelected + "&new_exchange_api_key=" + this.newExchangeApi + "&new_exchange_api_secret=" + this.newExchangeSecret + "&new_exchange_fee=" + this.newExchangeFee;
-
-            var uri = '/connections/' + params;
-            axios(uri, {
-                method: 'POST'
-            }).then(function (response) {
-                console.log("Connection created!");
-            }).catch(function (e) {
-                _this.errors.push(e);
-
-                console.log("Error: " + e.message);
-            });
-        },
-        deleteConnection: function deleteConnection(id) {
-            var _this2 = this;
-
-            var uri = '/connections/' + id;
-            axios.delete(uri).then(function (response) {
-                window.location.replace("/connections");
-                console.log("Connection deleted!");
-            }).catch(function (e) {
-                _this2.errors.push(e);
-
-                console.log("Error: " + e.message);
-            });
-        },
-        updateConnection: function updateConnection(id, key, secret, fee) {
-            var _this3 = this;
-
-            var params = "?new_exchange_api_key=" + key + "&new_exchange_api_secret=" + secret + "&new_exchange_fee=" + fee;
-
-            var uri = '/connections/' + id + '/' + params;
-            axios.patch(uri).then(function (response) {
-                window.location.replace("/connections");
-                console.log("Connection updated!");
-            }).catch(function (e) {
-                _this3.errors.push(e);
-                console.log("Error: " + e.message);
-            });
-        }
-    }
-});
-
-/***/ }),
-/* 336 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("section", { attrs: { id: "connections-widget" } }, [
-    _c("div", { staticClass: "grid-x grid-padding-x" }, [
-      _c(
-        "div",
-        { staticClass: "small-12 cell" },
-        [
-          _c("form", { attrs: { method: "POST", action: "/connections" } }, [
-            _c("input", {
-              attrs: { type: "hidden", name: "_token" },
-              domProps: { value: _vm.csrf }
-            }),
-            _vm._v(" "),
-            _c("div", { staticClass: "exchange-settings" }, [
-              _c("span", { staticClass: "h4" }, [_vm._v("Add Exchange")]),
-              _vm._v(" "),
-              _vm.validationErrors.new_exchange
-                ? _c(
-                    "div",
-                    _vm._l(_vm.validationErrors.new_exchange, function(error) {
-                      return _c("span", { staticClass: "validation-error" }, [
-                        _vm._v(" " + _vm._s(error) + " ")
-                      ])
-                    })
-                  )
-                : _vm._e(),
-              _vm._v(" "),
-              _c("div", { staticClass: "input-group" }, [
-                _c("span", { staticClass: "input-group-label" }, [
-                  _vm._v("Exchanges")
-                ]),
-                _vm._v(" "),
-                _c(
-                  "select",
-                  {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.exchangeSelected,
-                        expression: "exchangeSelected"
-                      }
-                    ],
-                    staticClass: "input-group-field",
-                    attrs: { name: "new_exchange" },
-                    on: {
-                      change: function($event) {
-                        var $$selectedVal = Array.prototype.filter
-                          .call($event.target.options, function(o) {
-                            return o.selected
-                          })
-                          .map(function(o) {
-                            var val = "_value" in o ? o._value : o.value
-                            return val
-                          })
-                        _vm.exchangeSelected = $event.target.multiple
-                          ? $$selectedVal
-                          : $$selectedVal[0]
-                      }
-                    }
-                  },
-                  [
-                    _c(
-                      "option",
-                      {
-                        attrs: { disabled: "", value: "", selected: "selected" }
-                      },
-                      [_vm._v("Select...")]
-                    ),
-                    _vm._v(" "),
-                    _vm._l(_vm.exchanges, function(exchange) {
-                      return _c("option", { domProps: { value: exchange } }, [
-                        _vm._v(_vm._s(exchange))
-                      ])
-                    })
-                  ],
-                  2
-                )
-              ]),
-              _vm._v(" "),
-              _vm.validationErrors.new_exchange_api_key
-                ? _c(
-                    "div",
-                    _vm._l(_vm.validationErrors.new_exchange_api_key, function(
-                      error
-                    ) {
-                      return _c("span", { staticClass: "validation-error" }, [
-                        _vm._v(" " + _vm._s(error) + " ")
-                      ])
-                    })
-                  )
-                : _vm._e(),
-              _vm._v(" "),
-              _c("div", { staticClass: "input-group" }, [
-                _c("span", { staticClass: "input-group-label" }, [
-                  _vm._v("API Key")
-                ]),
-                _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.newExchangeApi,
-                      expression: "newExchangeApi"
-                    }
-                  ],
-                  staticClass: "input-group-field",
-                  attrs: { type: "text", name: "new_exchange_api_key" },
-                  domProps: { value: _vm.newExchangeApi },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.newExchangeApi = $event.target.value
-                    }
-                  }
-                })
-              ]),
-              _vm._v(" "),
-              _vm.validationErrors.new_exchange_api_secret
-                ? _c(
-                    "div",
-                    _vm._l(
-                      _vm.validationErrors.new_exchange_api_secret,
-                      function(error) {
-                        return _c("span", { staticClass: "validation-error" }, [
-                          _vm._v(" " + _vm._s(error) + " ")
-                        ])
-                      }
-                    )
-                  )
-                : _vm._e(),
-              _vm._v(" "),
-              _c("div", { staticClass: "input-group" }, [
-                _c("span", { staticClass: "input-group-label" }, [
-                  _vm._v("API Secret")
-                ]),
-                _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.newExchangeSecret,
-                      expression: "newExchangeSecret"
-                    }
-                  ],
-                  staticClass: "input-group-field",
-                  attrs: { type: "text", name: "new_exchange_api_secret" },
-                  domProps: { value: _vm.newExchangeSecret },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.newExchangeSecret = $event.target.value
-                    }
-                  }
-                })
-              ]),
-              _vm._v(" "),
-              _vm.validationErrors.new_exchange_fee
-                ? _c(
-                    "div",
-                    _vm._l(_vm.validationErrors.new_exchange_fee, function(
-                      error
-                    ) {
-                      return _c("span", { staticClass: "validation-error" }, [
-                        _vm._v(" " + _vm._s(error) + " ")
-                      ])
-                    })
-                  )
-                : _vm._e(),
-              _vm._v(" "),
-              _c("div", { staticClass: "input-group" }, [
-                _c("span", { staticClass: "input-group-label" }, [
-                  _vm._v("Exchange Fee")
-                ]),
-                _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.newExchangeFee,
-                      expression: "newExchangeFee"
-                    }
-                  ],
-                  staticClass: "input-group-field",
-                  attrs: { type: "text", name: "new_exchange_fee" },
-                  domProps: { value: _vm.newExchangeFee },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.newExchangeFee = $event.target.value
-                    }
-                  }
-                })
-              ]),
-              _vm._v(" "),
-              _c(
-                "button",
-                { staticClass: "button hollow", attrs: { type: "submit" } },
-                [_vm._v("Submit")]
-              )
-            ])
-          ]),
-          _vm._v(" "),
-          _vm._l(_vm.sources, function(connection) {
-            return _c("div", { staticClass: "exchange-settings" }, [
-              _c("span", { staticClass: "h4 capitalize" }, [
-                _vm._v(_vm._s(connection.exchange))
-              ]),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "hollow button alert delete-exchange-button",
-                  on: {
-                    click: function($event) {
-                      _vm.deleteConnection(connection.id)
-                    }
-                  }
-                },
-                [_vm._v("Delete")]
-              ),
-              _vm._v(" "),
-              _c("div", { staticClass: "input-group" }, [
-                _c("span", { staticClass: "input-group-label capitalize" }, [
-                  _vm._v(_vm._s(connection.exchange) + " Key")
-                ]),
-                _vm._v(" "),
-                _c("input", {
-                  staticClass: "input-group-field",
-                  attrs: {
-                    type: "text",
-                    name: connection.exchange + "_con_key"
-                  },
-                  domProps: { value: connection.api }
-                })
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "input-group" }, [
-                _c("span", { staticClass: "input-group-label capitalize" }, [
-                  _vm._v(_vm._s(connection.exchange) + " Secret")
-                ]),
-                _vm._v(" "),
-                _c("input", {
-                  staticClass: "input-group-field",
-                  attrs: {
-                    type: "text",
-                    name: connection.exchange + "_con_secret"
-                  },
-                  domProps: { value: connection.secret }
-                })
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "input-group" }, [
-                _c("span", { staticClass: "input-group-label capitalize" }, [
-                  _vm._v(_vm._s(connection.exchange) + " Fee")
-                ]),
-                _vm._v(" "),
-                _c("input", {
-                  staticClass: "input-group-field",
-                  attrs: {
-                    type: "text",
-                    name: connection.exchange + "_con_fee"
-                  },
-                  domProps: { value: connection.fee }
-                })
-              ])
-            ])
-          })
-        ],
-        2
-      )
-    ])
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-78ec4434", module.exports)
-  }
-}
-
-/***/ }),
-/* 337 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(3)
-/* script */
-var __vue_script__ = __webpack_require__(338)
-/* template */
-var __vue_template__ = __webpack_require__(339)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/invitations/InvitePanel.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-1be300ff", Component.options)
-  } else {
-    hotAPI.reload("data-v-1be300ff", Component.options)
-' + '  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 338 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    name: 'invite-panel',
-    data: function data() {
-        return {
-            updating: false,
-            csrf: ""
-        };
-    },
-    props: ['invitations', 'validation-errors'],
-    computed: {},
-    watch: {},
-    mounted: function mounted() {
-
-        this.csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-        console.log('Component InvitePanel mounted.');
-    },
-
-    methods: {
-        saveName: function saveName() {}
-    }
-});
-
-/***/ }),
-/* 339 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("section", { attrs: { id: "invite-panel" } }, [
-    _c("div", { staticClass: "grid-container fluid invite-panel" }, [
-      _c("form", { attrs: { method: "POST", action: "/invite" } }, [
-        _c("input", {
-          attrs: { type: "hidden", name: "_token" },
-          domProps: { value: _vm.csrf }
-        }),
-        _vm._v(" "),
-        _c("div", { staticClass: "grid-x grid-padding-x align-center" }, [
-          _c("div", { staticClass: "cell large-6" }, [
-            _vm.validationErrors.invitation_email
-              ? _c(
-                  "div",
-                  _vm._l(_vm.validationErrors.invitation_email, function(
-                    error
-                  ) {
-                    return _c("span", { staticClass: "validation-error" }, [
-                      _vm._v(" " + _vm._s(error) + " ")
-                    ])
-                  })
-                )
-              : _vm._e(),
-            _vm._v(" "),
-            _vm._m(0, false, false)
-          ])
-        ])
-      ])
-    ])
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "input-group" }, [
-      _c("span", { staticClass: "input-group-label" }, [_vm._v("Email")]),
-      _vm._v(" "),
-      _c("input", {
-        staticClass: "input-group-field",
-        attrs: { name: "invitation_email", type: "email" }
-      }),
-      _vm._v(" "),
-      _c("div", { staticClass: "input-group-button" }, [
-        _c("input", {
-          staticClass: "button",
-          attrs: { type: "submit", value: "Invite" }
-        })
-      ])
-    ])
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-1be300ff", module.exports)
-  }
-}
-
-/***/ }),
-/* 340 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(3)
-/* script */
-var __vue_script__ = __webpack_require__(341)
-/* template */
-var __vue_template__ = __webpack_require__(342)
+var __vue_template__ = __webpack_require__(240)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -118361,7 +112932,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 341 */
+/* 239 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -118489,7 +113060,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 342 */
+/* 240 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -118711,15 +113282,15 @@ if (false) {
 }
 
 /***/ }),
-/* 343 */
+/* 241 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(344)
+var __vue_script__ = __webpack_require__(242)
 /* template */
-var __vue_template__ = __webpack_require__(345)
+var __vue_template__ = __webpack_require__(243)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -118759,7 +113330,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 344 */
+/* 242 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -119199,7 +113770,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 345 */
+/* 243 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -120905,15 +115476,15 @@ if (false) {
 }
 
 /***/ }),
-/* 346 */
+/* 244 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(347)
+var __vue_script__ = __webpack_require__(245)
 /* template */
-var __vue_template__ = __webpack_require__(348)
+var __vue_template__ = __webpack_require__(246)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -120953,7 +115524,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 347 */
+/* 245 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -121575,7 +116146,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 348 */
+/* 246 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -122683,15 +117254,15 @@ if (false) {
 }
 
 /***/ }),
-/* 349 */
+/* 247 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(350)
+var __vue_script__ = __webpack_require__(248)
 /* template */
-var __vue_template__ = __webpack_require__(351)
+var __vue_template__ = __webpack_require__(249)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -122708,7 +117279,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/notifications/NotificationList.vue"
+Component.options.__file = "resources/assets/js/components/portfolio/AddOrigin.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
 
 /* hot reload */
@@ -122718,9 +117289,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-6f400267", Component.options)
+    hotAPI.createRecord("data-v-6dcad1b9", Component.options)
   } else {
-    hotAPI.reload("data-v-6f400267", Component.options)
+    hotAPI.reload("data-v-6dcad1b9", Component.options)
 ' + '  }
   module.hot.dispose(function (data) {
     disposed = true
@@ -122731,7 +117302,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 350 */
+/* 248 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -122761,86 +117332,786 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    name: 'notification-list',
-    props: ['notifications'],
+    name: 'add-origin',
     data: function data() {
-        return {};
+        return {
+            exchange: "",
+            originType: "",
+            updating: false,
+            csrf: ""
+        };
     },
+    props: ['exchanges', 'origin-types', 'validation-errors'],
     computed: {},
     mounted: function mounted() {
-        console.log('Component Notifications mounted.');
+        this.csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        console.log('Component AddOrigin mounted.');
     },
 
-    methods: {
-        markAsRead: function markAsRead(id) {
-            axios('/api/notifications/' + id + '/markasread', {
-                method: 'GET'
-            }).then(function (response) {
-                $(window).trigger('resize');
-                console.log("Success: " + response);
-            }).catch(function (e) {
-                console.log("Error: " + e.message);
-            });
-        }
-    }
+    methods: {}
 });
 
 /***/ }),
-/* 351 */
+/* 249 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "notification-list" }, [
-    _c("button", { staticClass: "hollow button" }, [
-      _vm._v(" Mark all as read")
-    ]),
-    _vm._v(" "),
-    _c("button", { staticClass: "hollow button" }, [_vm._v(" Delete all")]),
-    _vm._v(" "),
-    _c(
-      "table",
-      { staticClass: "display dataTable myTable", attrs: { width: "100%" } },
-      [
+  return _c("div", { staticClass: "grid-container fluid" }, [
+    _c("form", { attrs: { method: "POST", action: "/portfolio/origin" } }, [
+      _c("input", {
+        attrs: { type: "hidden", name: "_token" },
+        domProps: { value: _vm.csrf }
+      }),
+      _vm._v(" "),
+      _c("div", { staticClass: "grid-x grid-padding-x" }, [
         _vm._m(0, false, false),
         _vm._v(" "),
-        _c(
-          "tbody",
-          _vm._l(_vm.notifications, function(notification) {
-            return _c("tr", [
-              notification.read_at == null
-                ? _c("td", [
-                    _c("i", {
-                      staticClass: "fa fa-check item-new",
-                      attrs: { "aria-hidden": "true" },
-                      on: {
-                        click: function($event) {
-                          _vm.markAsRead(notification.id)
-                        }
+        _c("div", { staticClass: "small-12 cell form-container" }, [
+          _vm.validationErrors.origin_type
+            ? _c(
+                "div",
+                _vm._l(_vm.validationErrors.origin_type, function(error) {
+                  return _c("span", { staticClass: "validation-error" }, [
+                    _vm._v(" " + _vm._s(error) + " ")
+                  ])
+                })
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _c("div", { staticClass: "input-group" }, [
+            _c("span", { staticClass: "input-group-label" }, [
+              _vm._v("Origin Type")
+            ]),
+            _vm._v(" "),
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.originType,
+                    expression: "originType"
+                  }
+                ],
+                staticClass: "input-group-field",
+                attrs: { name: "origin_type" },
+                on: {
+                  change: function($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function(o) {
+                        return o.selected
+                      })
+                      .map(function(o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return val
+                      })
+                    _vm.originType = $event.target.multiple
+                      ? $$selectedVal
+                      : $$selectedVal[0]
+                  }
+                }
+              },
+              [
+                _c("option", { attrs: { disabled: "", value: "" } }, [
+                  _vm._v("Select...")
+                ]),
+                _vm._v(" "),
+                _vm._l(_vm.originTypes, function(originType) {
+                  return _c("option", { domProps: { value: originType } }, [
+                    _vm._v(_vm._s(originType) + " ")
+                  ])
+                })
+              ],
+              2
+            )
+          ])
+        ]),
+        _vm._v(" "),
+        _vm.originType == "Exchange"
+          ? _c("div", { staticClass: "small-12 cell form-container" }, [
+              _vm.validationErrors.origin_name
+                ? _c(
+                    "div",
+                    _vm._l(_vm.validationErrors.origin_name, function(error) {
+                      return _c("span", { staticClass: "validation-error" }, [
+                        _vm._v(" " + _vm._s(error) + " ")
+                      ])
+                    })
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _c("div", { staticClass: "input-group" }, [
+                _c("span", { staticClass: "input-group-label" }, [
+                  _vm._v("Exchange")
+                ]),
+                _vm._v(" "),
+                _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.exchange,
+                        expression: "exchange"
                       }
+                    ],
+                    staticClass: "input-group-field",
+                    attrs: { name: "origin_name" },
+                    on: {
+                      change: [
+                        function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.exchange = $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        },
+                        function($event) {
+                          _vm.getpairs(_vm.exchange)
+                        }
+                      ]
+                    }
+                  },
+                  [
+                    _c("option", { attrs: { disabled: "", value: "" } }, [
+                      _vm._v("Select...")
+                    ]),
+                    _vm._v(" "),
+                    _vm._l(_vm.exchanges, function(exchange) {
+                      return _c(
+                        "option",
+                        {
+                          attrs: { selected: "true" },
+                          domProps: { value: exchange }
+                        },
+                        [_vm._v(_vm._s(exchange) + " ")]
+                      )
                     })
-                  ])
-                : _vm._e(),
-              _vm._v(" "),
-              notification.read_at != null
-                ? _c("td", [
-                    _c("i", {
-                      staticClass: "fa fa-check item-check",
-                      attrs: { "aria-hidden": "true" }
-                    })
-                  ])
-                : _vm._e(),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(notification.updated_at))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(" " + _vm._s(notification.data.message))])
+                  ],
+                  2
+                )
+              ])
             ])
-          })
-        )
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.originType != "Exchange"
+          ? _c("div", { staticClass: "small-12 cell form-container" }, [
+              _vm.validationErrors.origin_name
+                ? _c(
+                    "div",
+                    _vm._l(_vm.validationErrors.origin_name, function(error) {
+                      return _c("span", { staticClass: "validation-error" }, [
+                        _vm._v(" " + _vm._s(error) + " ")
+                      ])
+                    })
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm._m(1, false, false)
+            ])
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.originType != "Exchange"
+          ? _c("div", { staticClass: "small-12 cell form-container" }, [
+              _vm.validationErrors.origin_address
+                ? _c(
+                    "div",
+                    _vm._l(_vm.validationErrors.origin_address, function(
+                      error
+                    ) {
+                      return _c("span", { staticClass: "validation-error" }, [
+                        _vm._v(" " + _vm._s(error) + " ")
+                      ])
+                    })
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm._m(2, false, false)
+            ])
+          : _vm._e(),
+        _vm._v(" "),
+        _vm._m(3, false, false)
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "small-12 cell form-container" }, [
+      _c("p", { staticClass: "h2" }, [_vm._v("New Origin")]),
+      _vm._v(" "),
+      _c("p", { staticClass: "lead" }, [
+        _c("b", [_vm._v("Add new source to your portfolio")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-group" }, [
+      _c("span", { staticClass: "input-group-label" }, [
+        _vm._v("\n                        Name\n                    ")
+      ]),
+      _vm._v(" "),
+      _c("input", {
+        staticClass: "input-group-field",
+        attrs: { name: "origin_name", type: "text" }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-group" }, [
+      _c("span", { staticClass: "input-group-label" }, [
+        _vm._v("\n                        Address\n                    ")
+      ]),
+      _vm._v(" "),
+      _c("input", {
+        staticClass: "input-group-field",
+        attrs: { name: "origin_address", type: "text" }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "small-12 cell form-container" }, [
+      _c(
+        "button",
+        { staticClass: "hollow button", attrs: { type: "submit" } },
+        [_vm._v("\n                   Add Origin\n                ")]
+      )
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-6dcad1b9", module.exports)
+  }
+}
+
+/***/ }),
+/* 250 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(3)
+/* script */
+var __vue_script__ = __webpack_require__(251)
+/* template */
+var __vue_template__ = __webpack_require__(252)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/portfolio/EditOrigin.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-a0863fa4", Component.options)
+  } else {
+    hotAPI.reload("data-v-a0863fa4", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 251 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: 'edit-origin',
+    data: function data() {
+        return {
+            exchange: "",
+            noxchgOrigins: [],
+            origin: {},
+            originSelected: "",
+            originSelectedName: "",
+            originType: "",
+            originName: "",
+            originAddress: "",
+            updating: false,
+            csrf: "",
+            errors: []
+        };
+    },
+    props: ['exchanges', 'origins', 'origin-types', 'validation-errors'],
+    computed: {},
+    mounted: function mounted() {
+
+        for (var i = 0; i < this.origins.length; i++) {
+            if (this.exchanges.indexOf(this.origins[i].name.toLowerCase()) < 0) {
+                this.noxchgOrigins.push(this.origins[i]);
+            }
+        }
+
+        this.csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        console.log('Component AddOrigin mounted.');
+    },
+
+    methods: {
+        loadOrigin: function loadOrigin() {
+            console.log("Loading Origin...");
+            // for (var i = 0; i < this.origins.length; i++) {     
+            //     if (this.origins[i].id == this.originSelected) this.originSelectedName = this.origins[i].name;
+            // }
+
+            for (var i = 0; i < this.origins.length; i++) {
+                if (this.origins[i].id == this.originSelected) this.origin = this.origins[i];
+            }
+            this.originType = this.origin.type;
+            this.originName = this.origin.name;
+            this.originAddress = this.origin.address;
+        },
+        saveName: function saveName() {}
+    }
+});
+
+/***/ }),
+/* 252 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "grid-container fluid" }, [
+    _c(
+      "form",
+      {
+        attrs: {
+          method: "POST",
+          action: "/portfolio/origin/" + _vm.originSelected
+        }
+      },
+      [
+        _c("input", {
+          attrs: { type: "hidden", name: "_token" },
+          domProps: { value: _vm.csrf }
+        }),
+        _vm._v(" "),
+        _c("input", {
+          attrs: { name: "_method", type: "hidden", value: "PATCH" }
+        }),
+        _vm._v(" "),
+        _c("div", { staticClass: "grid-x grid-padding-x" }, [
+          _vm._m(0, false, false),
+          _vm._v(" "),
+          _c("div", { staticClass: "small-12 cell form-container" }, [
+            _vm.validationErrors.origin_type
+              ? _c(
+                  "div",
+                  _vm._l(_vm.validationErrors.origin_type, function(error) {
+                    return _c("span", { staticClass: "validation-error" }, [
+                      _vm._v(" " + _vm._s(error) + " ")
+                    ])
+                  })
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _c("div", { staticClass: "input-group" }, [
+              _c("span", { staticClass: "input-group-label" }, [
+                _vm._v("Origin")
+              ]),
+              _vm._v(" "),
+              _c(
+                "select",
+                {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.originSelected,
+                      expression: "originSelected"
+                    }
+                  ],
+                  staticClass: "input-group-field",
+                  attrs: { name: "origin" },
+                  on: {
+                    change: [
+                      function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.originSelected = $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      },
+                      function($event) {
+                        _vm.loadOrigin()
+                      }
+                    ]
+                  }
+                },
+                [
+                  _c("option", { attrs: { disabled: "", value: "" } }, [
+                    _vm._v("Select...")
+                  ]),
+                  _vm._v(" "),
+                  _vm._l(_vm.noxchgOrigins, function(origin) {
+                    return _c("option", { domProps: { value: origin.id } }, [
+                      _vm._v(_vm._s(origin.name) + " ")
+                    ])
+                  })
+                ],
+                2
+              ),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.originSelectedName,
+                    expression: "originSelectedName"
+                  }
+                ],
+                attrs: {
+                  id: "asset-origin-name",
+                  name: "asset_origin_name",
+                  type: "hidden"
+                },
+                domProps: { value: _vm.originSelectedName },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.originSelectedName = $event.target.value
+                  }
+                }
+              })
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "small-12 cell form-container" }, [
+            _vm.validationErrors.origin_type
+              ? _c(
+                  "div",
+                  _vm._l(_vm.validationErrors.origin_type, function(error) {
+                    return _c("span", { staticClass: "validation-error" }, [
+                      _vm._v(" " + _vm._s(error) + " ")
+                    ])
+                  })
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _c("div", { staticClass: "input-group" }, [
+              _c("span", { staticClass: "input-group-label" }, [
+                _vm._v("Origin Type")
+              ]),
+              _vm._v(" "),
+              _c(
+                "select",
+                {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.originType,
+                      expression: "originType"
+                    }
+                  ],
+                  staticClass: "input-group-field",
+                  attrs: { name: "origin_type" },
+                  on: {
+                    change: function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.originType = $event.target.multiple
+                        ? $$selectedVal
+                        : $$selectedVal[0]
+                    }
+                  }
+                },
+                [
+                  _c("option", { attrs: { disabled: "", value: "" } }, [
+                    _vm._v("Select...")
+                  ]),
+                  _vm._v(" "),
+                  _vm._l(_vm.originTypes, function(originType) {
+                    return _c("option", { domProps: { value: originType } }, [
+                      _vm._v(_vm._s(originType) + " ")
+                    ])
+                  })
+                ],
+                2
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "small-12 cell form-container" }, [
+            _vm.validationErrors.origin_name
+              ? _c(
+                  "div",
+                  _vm._l(_vm.validationErrors.origin_name, function(error) {
+                    return _c("span", { staticClass: "validation-error" }, [
+                      _vm._v(" " + _vm._s(error) + " ")
+                    ])
+                  })
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _c("div", { staticClass: "input-group" }, [
+              _c("span", { staticClass: "input-group-label" }, [
+                _vm._v("\n                        Name\n                    ")
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.originName,
+                    expression: "originName"
+                  }
+                ],
+                staticClass: "input-group-field",
+                attrs: { name: "origin_name", type: "text" },
+                domProps: { value: _vm.originName },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.originName = $event.target.value
+                  }
+                }
+              })
+            ])
+          ]),
+          _vm._v(" "),
+          _vm.originType != "Exchange"
+            ? _c("div", { staticClass: "small-12 cell form-container" }, [
+                _vm.validationErrors.origin_address
+                  ? _c(
+                      "div",
+                      _vm._l(_vm.validationErrors.origin_address, function(
+                        error
+                      ) {
+                        return _c("span", { staticClass: "validation-error" }, [
+                          _vm._v(" " + _vm._s(error) + " ")
+                        ])
+                      })
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _c("div", { staticClass: "input-group" }, [
+                  _c("span", { staticClass: "input-group-label" }, [
+                    _vm._v(
+                      "\n                        Address\n                    "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.originAddress,
+                        expression: "originAddress"
+                      }
+                    ],
+                    staticClass: "input-group-field",
+                    attrs: { name: "origin_address", type: "text" },
+                    domProps: { value: _vm.originAddress },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.originAddress = $event.target.value
+                      }
+                    }
+                  })
+                ])
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _vm._m(1, false, false)
+        ])
       ]
     )
   ])
@@ -122850,30 +118121,2328 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("thead", { staticClass: "dataTable-header" }, [
-      _c("tr", { attrs: { role: "row" } }, [
-        _c("th", {
-          staticClass: "sorting",
-          attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
+    return _c("div", { staticClass: "small-12 cell form-container" }, [
+      _c("p", { staticClass: "h2" }, [_vm._v("Edit Origin")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "small-12 cell form-container" }, [
+      _c(
+        "button",
+        { staticClass: "hollow button", attrs: { type: "submit" } },
+        [_vm._v("\n                   Save Origin\n                ")]
+      )
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-a0863fa4", module.exports)
+  }
+}
+
+/***/ }),
+/* 253 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(3)
+/* script */
+var __vue_script__ = __webpack_require__(254)
+/* template */
+var __vue_template__ = __webpack_require__(255)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/portfolio/DeleteOrigin.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-32d06de2", Component.options)
+  } else {
+    hotAPI.reload("data-v-32d06de2", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 254 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: 'delete-origin',
+    data: function data() {
+        return {
+            exchange: "",
+            noxchgOrigins: [],
+            origin: {},
+            originSelected: "",
+            originSelectedName: "",
+            originType: "",
+            originName: "",
+            originAddress: "",
+            updating: false,
+            csrf: "",
+            errors: []
+        };
+    },
+    props: ['exchanges', 'origins', 'origin-types', 'validation-errors'],
+    computed: {},
+    mounted: function mounted() {
+
+        for (var i = 0; i < this.origins.length; i++) {
+            if (this.exchanges.indexOf(this.origins[i].name.toLowerCase()) < 0) {
+                this.noxchgOrigins.push(this.origins[i]);
+            }
+        }
+
+        this.csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        console.log('Component AddOrigin mounted.');
+    },
+
+    methods: {
+        loadOrigin: function loadOrigin() {
+
+            for (var i = 0; i < this.origins.length; i++) {
+                if (this.origins[i].id == this.originSelected) this.origin = this.origins[i];
+            }
+            this.originType = this.origin.type;
+            this.originName = this.origin.name;
+            this.originAddress = this.origin.address;
+        },
+        saveName: function saveName() {}
+    }
+});
+
+/***/ }),
+/* 255 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "grid-container fluid" }, [
+    _c(
+      "form",
+      {
+        attrs: {
+          method: "POST",
+          action: "/portfolio/origin/" + _vm.originSelected
+        }
+      },
+      [
+        _c("input", {
+          attrs: { type: "hidden", name: "_token" },
+          domProps: { value: _vm.csrf }
         }),
         _vm._v(" "),
-        _c(
-          "th",
-          {
-            staticClass: "sorting",
-            attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
-          },
-          [_vm._v("Time")]
-        ),
+        _c("input", {
+          attrs: { name: "_method", type: "hidden", value: "DELETE" }
+        }),
         _vm._v(" "),
-        _c(
-          "th",
-          {
-            staticClass: "sorting",
-            attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
-          },
-          [_vm._v("Message")]
+        _c("div", { staticClass: "grid-x grid-padding-x" }, [
+          _vm._m(0, false, false),
+          _vm._v(" "),
+          _c("div", { staticClass: "small-12 cell form-container" }, [
+            _vm.validationErrors.origin_type
+              ? _c(
+                  "div",
+                  _vm._l(_vm.validationErrors.origin_type, function(error) {
+                    return _c("span", { staticClass: "validation-error" }, [
+                      _vm._v(" " + _vm._s(error) + " ")
+                    ])
+                  })
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _c("div", { staticClass: "input-group" }, [
+              _c("span", { staticClass: "input-group-label" }, [
+                _vm._v("Origin")
+              ]),
+              _vm._v(" "),
+              _c(
+                "select",
+                {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.originSelected,
+                      expression: "originSelected"
+                    }
+                  ],
+                  staticClass: "input-group-field",
+                  attrs: { name: "origin" },
+                  on: {
+                    change: [
+                      function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.originSelected = $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      },
+                      function($event) {
+                        _vm.loadOrigin()
+                      }
+                    ]
+                  }
+                },
+                [
+                  _c("option", { attrs: { disabled: "", value: "" } }, [
+                    _vm._v("Select...")
+                  ]),
+                  _vm._v(" "),
+                  _vm._l(_vm.noxchgOrigins, function(origin) {
+                    return _c("option", { domProps: { value: origin.id } }, [
+                      _vm._v(_vm._s(origin.name) + " ")
+                    ])
+                  })
+                ],
+                2
+              ),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.originSelectedName,
+                    expression: "originSelectedName"
+                  }
+                ],
+                attrs: {
+                  id: "asset-origin-name",
+                  name: "asset_origin_name",
+                  type: "hidden"
+                },
+                domProps: { value: _vm.originSelectedName },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.originSelectedName = $event.target.value
+                  }
+                }
+              })
+            ])
+          ]),
+          _vm._v(" "),
+          _vm.originSelected != ""
+            ? _c("div", { staticClass: "small-12 cell form-container" }, [
+                _c(
+                  "button",
+                  { staticClass: "hollow button", attrs: { type: "submit" } },
+                  [
+                    _vm._v(
+                      "\n                   Delete Origin\n                "
+                    )
+                  ]
+                )
+              ])
+            : _vm._e()
+        ])
+      ]
+    )
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "small-12 cell form-container" }, [
+      _c("p", { staticClass: "h2" }, [_vm._v("Delete Origin")])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-32d06de2", module.exports)
+  }
+}
+
+/***/ }),
+/* 256 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(3)
+/* script */
+var __vue_script__ = __webpack_require__(257)
+/* template */
+var __vue_template__ = __webpack_require__(258)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/portfolio/AddAsset.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-3c3b31a6", Component.options)
+  } else {
+    hotAPI.reload("data-v-3c3b31a6", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 257 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: 'add-asset',
+    data: function data() {
+        return {
+            coinSelected: "",
+            coin: "",
+            noxchgOrigins: [],
+            originSelected: "",
+            originSelectedName: "",
+            updating: false,
+            csrf: ""
+        };
+    },
+    props: ['coins', 'origins', 'validation-errors', 'exchanges'],
+    computed: {},
+    watch: {},
+    mounted: function mounted() {
+        var _this = this;
+
+        console.log(this.origins);
+        var coins = $.map(this.coins, function (a) {
+            return a.toString();
+        });
+
+        for (var i = 0; i < this.origins.length; i++) {
+            if (this.exchanges.indexOf(this.origins[i].name.toLowerCase()) < 0) {
+                this.noxchgOrigins.push(this.origins[i]);
+            }
+        }
+
+        var options = {
+            data: coins,
+            list: {
+                onClickEvent: function onClickEvent() {
+                    _this.coinSelected = $("#coins").getSelectedItemData();
+                },
+                maxNumberOfElements: 2000,
+                match: {
+                    enabled: true
+                },
+                showAnimation: {
+                    type: "fade", //normal|slide|fade
+                    time: 400,
+                    callback: function callback() {}
+                },
+                hideAnimation: {
+                    type: "fade s", //normal|slide|fade
+                    time: 400,
+                    callback: function callback() {}
+                }
+            },
+            theme: "square"
+        };
+
+        $("#coins").easyAutocomplete(options);
+
+        this.csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        console.log('Component AddAsset mounted.');
+    },
+
+    methods: {
+        saveName: function saveName() {
+            for (var i = 0; i < this.origins.length; i++) {
+                if (this.origins[i].id == this.originSelected) this.originSelectedName = this.origins[i].name;
+            }
+        }
+    }
+});
+
+/***/ }),
+/* 258 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("section", { attrs: { id: "addasset" } }, [
+    _c("div", { staticClass: "grid-container fluid add-asset" }, [
+      _c("form", { attrs: { method: "POST", action: "/portfolio/asset" } }, [
+        _c("input", {
+          attrs: { type: "hidden", name: "_token" },
+          domProps: { value: _vm.csrf }
+        }),
+        _vm._v(" "),
+        _c("div", { staticClass: "grid-x grid-padding-x" }, [
+          _vm._m(0, false, false),
+          _vm._v(" "),
+          _c("div", { staticClass: "small-12 cell form-container" }, [
+            _vm.validationErrors.origin_type
+              ? _c(
+                  "div",
+                  _vm._l(_vm.validationErrors.origin_type, function(error) {
+                    return _c("span", { staticClass: "validation-error" }, [
+                      _vm._v(" " + _vm._s(error) + " ")
+                    ])
+                  })
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _c("div", { staticClass: "input-group" }, [
+              _c("span", { staticClass: "input-group-label" }, [
+                _vm._v("Origin")
+              ]),
+              _vm._v(" "),
+              _c(
+                "select",
+                {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.originSelected,
+                      expression: "originSelected"
+                    }
+                  ],
+                  staticClass: "input-group-field",
+                  attrs: { name: "asset_origin" },
+                  on: {
+                    change: [
+                      function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.originSelected = $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      },
+                      function($event) {
+                        _vm.saveName()
+                      }
+                    ]
+                  }
+                },
+                [
+                  _c("option", { attrs: { disabled: "", value: "" } }, [
+                    _vm._v("Select...")
+                  ]),
+                  _vm._v(" "),
+                  _vm._l(_vm.noxchgOrigins, function(origin) {
+                    return _c("option", { domProps: { value: origin.id } }, [
+                      _vm._v(_vm._s(origin.name) + " ")
+                    ])
+                  })
+                ],
+                2
+              ),
+              _vm._v(" "),
+              _c("input", {
+                attrs: {
+                  id: "asset-origin-name",
+                  name: "asset_origin_name",
+                  type: "hidden"
+                },
+                domProps: { value: _vm.originSelectedName }
+              })
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "small-12 cell form-container" }, [
+            _vm.validationErrors.asset_symbol
+              ? _c(
+                  "div",
+                  _vm._l(_vm.validationErrors.asset_symbol, function(error) {
+                    return _c("span", { staticClass: "validation-error" }, [
+                      _vm._v(" " + _vm._s(error) + " ")
+                    ])
+                  })
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _c("div", { staticClass: "input-group" }, [
+              _c("span", { staticClass: "input-group-label" }, [
+                _vm._v("Asset")
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.coinSelected,
+                    expression: "coinSelected"
+                  }
+                ],
+                staticClass: "input-group-field number",
+                attrs: { name: "asset_symbol", id: "coins", type: "text" },
+                domProps: { value: _vm.coinSelected },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.coinSelected = $event.target.value
+                  }
+                }
+              })
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "small-12 cell form-container" }, [
+            _vm.validationErrors.asset_amount
+              ? _c(
+                  "div",
+                  _vm._l(_vm.validationErrors.asset_amount, function(error) {
+                    return _c("span", { staticClass: "validation-error" }, [
+                      _vm._v(" " + _vm._s(error) + " ")
+                    ])
+                  })
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm._m(1, false, false)
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "small-12 cell form-container" }, [
+            _vm.validationErrors.asset_initial_price
+              ? _c(
+                  "div",
+                  _vm._l(_vm.validationErrors.asset_initial_price, function(
+                    error
+                  ) {
+                    return _c("span", { staticClass: "validation-error" }, [
+                      _vm._v(" " + _vm._s(error) + " ")
+                    ])
+                  })
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm._m(2, false, false)
+          ]),
+          _vm._v(" "),
+          _vm._m(3, false, false)
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "small-12 cell form-container" }, [
+      _c("p", { staticClass: "h1" }, [_vm._v("Portfolio: New Asset")]),
+      _vm._v(" "),
+      _c("p", { staticClass: "lead" }, [
+        _c("b", [_vm._v("Add new asset to your portfolio")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-group" }, [
+      _c("span", { staticClass: "input-group-label" }, [
+        _vm._v("\n                            Amount\n                        ")
+      ]),
+      _vm._v(" "),
+      _c("input", {
+        staticClass: "input-group-field number",
+        attrs: { name: "asset_amount", type: "text" }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-group" }, [
+      _c("span", { staticClass: "input-group-label" }, [
+        _vm._v(
+          "\n                            Initial Price\n                        "
         )
+      ]),
+      _vm._v(" "),
+      _c("input", {
+        staticClass: "input-group-field number",
+        attrs: { name: "asset_initial_price", type: "text" }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "small-12 cell form-container" }, [
+      _c(
+        "button",
+        { staticClass: "hollow button", attrs: { type: "submit" } },
+        [_vm._v("\n                       Add Asset\n                    ")]
+      )
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-3c3b31a6", module.exports)
+  }
+}
+
+/***/ }),
+/* 259 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(3)
+/* script */
+var __vue_script__ = __webpack_require__(260)
+/* template */
+var __vue_template__ = __webpack_require__(261)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/portfolio/EditAsset.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-fe2b93d0", Component.options)
+  } else {
+    hotAPI.reload("data-v-fe2b93d0", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 260 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: 'edit-asset',
+    data: function data() {
+        return {
+            assets: [],
+            noxchgOrigins: [],
+            assetAmount: 0,
+            assetInitialPrice: 0,
+            assetSelected: "",
+            coinSelected: "",
+            coin: "",
+            originSelected: "",
+            originSelectedName: "",
+            updating: false,
+            csrf: "",
+            errors: []
+        };
+    },
+    props: ['portfolio', 'origins', 'exchanges', 'validation-errors'],
+    computed: {},
+    watch: {},
+    mounted: function mounted() {
+
+        var coins = $.map(this.coins, function (a) {
+            return a.toString();
+        });
+
+        for (var i = 0; i < this.origins.length; i++) {
+            if (this.exchanges.indexOf(this.origins[i].name.toLowerCase()) < 0) {
+                this.noxchgOrigins.push(this.origins[i]);
+            }
+        }
+
+        this.csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        console.log('Component EditAsset mounted.');
+    },
+
+    methods: {
+        loadAssets: function loadAssets() {
+            var _this = this;
+
+            for (var i = 0; i < this.origins.length; i++) {
+                if (this.origins[i].id == this.originSelected) this.originSelectedName = this.origins[i].name;
+            }
+
+            this.assets = [];
+
+            // Call the LoadPortfolio event asyncronously
+            var uri = '/api/assets';
+            axios(uri, {
+                method: 'GET'
+            }).then(function (response) {
+                for (var i = 0; i < response.data.length; i++) {
+                    if (response.data[i].origin_id == _this.originSelected) _this.assets.push(response.data[i]);
+                }
+            }).catch(function (e) {
+                _this.errors.push(e);
+                console.log("Error: " + e.message);
+            });
+        },
+        loadAssetData: function loadAssetData(assetId) {
+            var _this2 = this;
+
+            // Call the LoadPortfolio event asyncronously
+            var uri = '/api/assets/' + assetId;
+            axios(uri, {
+                method: 'GET'
+            }).then(function (response) {
+                _this2.assetAmount = response.data.amount;
+                _this2.assetInitialPrice = response.data.initial_price;
+                console.log("Retieving asset...");
+            }).catch(function (e) {
+                _this2.errors.push(e);
+
+                console.log("Error: " + e.message);
+            });
+        }
+    }
+});
+
+/***/ }),
+/* 261 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("section", { attrs: { id: "editasset" } }, [
+    _c("div", { staticClass: "grid-container fluid edit-asset" }, [
+      _c(
+        "form",
+        {
+          attrs: {
+            method: "POST",
+            action: "/portfolio/asset/" + _vm.assetSelected
+          }
+        },
+        [
+          _c("input", {
+            attrs: { type: "hidden", name: "_token" },
+            domProps: { value: _vm.csrf }
+          }),
+          _vm._v(" "),
+          _c("input", {
+            attrs: { name: "_method", type: "hidden", value: "PATCH" }
+          }),
+          _vm._v(" "),
+          _c("div", { staticClass: "grid-x grid-padding-x" }, [
+            _vm._m(0, false, false),
+            _vm._v(" "),
+            _c("div", { staticClass: "small-12 cell form-container" }, [
+              _vm.validationErrors.asset_origin
+                ? _c(
+                    "div",
+                    _vm._l(_vm.validationErrors.asset_origin, function(error) {
+                      return _c("span", { staticClass: "validation-error" }, [
+                        _vm._v(" " + _vm._s(error) + " ")
+                      ])
+                    })
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _c("div", { staticClass: "input-group" }, [
+                _c("span", { staticClass: "input-group-label" }, [
+                  _vm._v("Origin")
+                ]),
+                _vm._v(" "),
+                _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.originSelected,
+                        expression: "originSelected"
+                      }
+                    ],
+                    staticClass: "input-group-field",
+                    attrs: { name: "asset_origin" },
+                    on: {
+                      change: [
+                        function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.originSelected = $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        },
+                        function($event) {
+                          _vm.loadAssets()
+                        }
+                      ]
+                    }
+                  },
+                  [
+                    _c("option", { attrs: { disabled: "", value: "" } }, [
+                      _vm._v("Select...")
+                    ]),
+                    _vm._v(" "),
+                    _vm._l(_vm.origins, function(origin) {
+                      return _c("option", { domProps: { value: origin.id } }, [
+                        _vm._v(_vm._s(origin.name) + " ")
+                      ])
+                    })
+                  ],
+                  2
+                ),
+                _vm._v(" "),
+                _c("input", {
+                  attrs: {
+                    id: "asset-origin-name",
+                    name: "asset_origin_name",
+                    type: "hidden"
+                  },
+                  domProps: { value: _vm.originSelectedName }
+                })
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "small-12 cell form-container" }, [
+              _vm.validationErrors.asset
+                ? _c(
+                    "div",
+                    _vm._l(_vm.validationErrors.asset, function(error) {
+                      return _c("span", { staticClass: "validation-error" }, [
+                        _vm._v(" " + _vm._s(error) + " ")
+                      ])
+                    })
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _c("div", { staticClass: "input-group" }, [
+                _c("span", { staticClass: "input-group-label" }, [
+                  _vm._v("Asset")
+                ]),
+                _vm._v(" "),
+                _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.assetSelected,
+                        expression: "assetSelected"
+                      }
+                    ],
+                    staticClass: "input-group-field",
+                    attrs: { name: "asset" },
+                    on: {
+                      change: [
+                        function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.assetSelected = $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        },
+                        function($event) {
+                          _vm.loadAssetData(_vm.assetSelected)
+                        }
+                      ]
+                    }
+                  },
+                  [
+                    _c("option", { attrs: { disabled: "", value: "" } }, [
+                      _vm._v("Select...")
+                    ]),
+                    _vm._v(" "),
+                    _vm._l(_vm.assets, function(asset) {
+                      return _c("option", { domProps: { value: asset.id } }, [
+                        _vm._v(" " + _vm._s(asset.symbol) + " ")
+                      ])
+                    })
+                  ],
+                  2
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "small-12 cell form-container" }, [
+              _vm.validationErrors.asset_amount
+                ? _c(
+                    "div",
+                    _vm._l(_vm.validationErrors.asset_amount, function(error) {
+                      return _c("span", { staticClass: "validation-error" }, [
+                        _vm._v(" " + _vm._s(error) + " ")
+                      ])
+                    })
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _c("div", { staticClass: "input-group" }, [
+                _c("span", { staticClass: "input-group-label" }, [
+                  _vm._v(
+                    "\n                            Amount\n                        "
+                  )
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.assetAmount,
+                      expression: "assetAmount"
+                    }
+                  ],
+                  staticClass: "input-group-field number",
+                  attrs: { name: "asset_amount", type: "text" },
+                  domProps: { value: _vm.assetAmount },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.assetAmount = $event.target.value
+                    }
+                  }
+                })
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "small-12 cell form-container" }, [
+              _vm.validationErrors.asset_initial_price
+                ? _c(
+                    "div",
+                    _vm._l(_vm.validationErrors.asset_initial_price, function(
+                      error
+                    ) {
+                      return _c("span", { staticClass: "validation-error" }, [
+                        _vm._v(" " + _vm._s(error) + " ")
+                      ])
+                    })
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _c("div", { staticClass: "input-group" }, [
+                _c("span", { staticClass: "input-group-label" }, [
+                  _vm._v(
+                    "\n                            Purchase Price\n                        "
+                  )
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.assetInitialPrice,
+                      expression: "assetInitialPrice"
+                    }
+                  ],
+                  staticClass: "input-group-field number",
+                  attrs: { name: "asset_initial_price", type: "text" },
+                  domProps: { value: _vm.assetInitialPrice },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.assetInitialPrice = $event.target.value
+                    }
+                  }
+                })
+              ])
+            ]),
+            _vm._v(" "),
+            _vm._m(1, false, false)
+          ])
+        ]
+      )
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "small-12 cell form-container" }, [
+      _c("p", { staticClass: "h2" }, [_vm._v("Edit Asset")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "small-12 cell form-container" }, [
+      _c(
+        "button",
+        { staticClass: "hollow button", attrs: { type: "submit" } },
+        [_vm._v("\n                       Save Asset\n                    ")]
+      )
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-fe2b93d0", module.exports)
+  }
+}
+
+/***/ }),
+/* 262 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(3)
+/* script */
+var __vue_script__ = __webpack_require__(263)
+/* template */
+var __vue_template__ = __webpack_require__(264)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/portfolio/DeleteAsset.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-02e3a5d2", Component.options)
+  } else {
+    hotAPI.reload("data-v-02e3a5d2", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 263 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: 'delete-asset',
+    data: function data() {
+        return {
+            assets: [],
+            noxchgOrigins: [],
+            assetAmount: 0,
+            assetInitialPrice: 0,
+            assetSelected: "",
+            coinSelected: "",
+            coin: "",
+            originSelected: "",
+            originSelectedName: "",
+            updating: false,
+            csrf: "",
+            errors: []
+        };
+    },
+    props: ['portfolio', 'origins', 'exchanges', 'validation-errors'],
+    computed: {},
+    watch: {},
+    mounted: function mounted() {
+
+        var coins = $.map(this.coins, function (a) {
+            return a.toString();
+        });
+
+        for (var i = 0; i < this.origins.length; i++) {
+            if (this.exchanges.indexOf(this.origins[i].name.toLowerCase()) < 0) {
+                this.noxchgOrigins.push(this.origins[i]);
+            }
+        }
+
+        this.csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        console.log('Component EditAsset mounted.');
+    },
+
+    methods: {
+        loadAssets: function loadAssets() {
+            var _this = this;
+
+            for (var i = 0; i < this.origins.length; i++) {
+                if (this.origins[i].id == this.originSelected) this.originSelectedName = this.origins[i].name;
+            }
+
+            this.assets = [];
+
+            // Call the LoadPortfolio event asyncronously
+            var uri = '/api/assets';
+            axios(uri, {
+                method: 'GET'
+            }).then(function (response) {
+                for (var i = 0; i < response.data.length; i++) {
+                    if (response.data[i].origin_id == _this.originSelected) _this.assets.push(response.data[i]);
+                }
+            }).catch(function (e) {
+                _this.errors.push(e);
+                console.log("Error: " + e.message);
+            });
+        },
+        loadAssetData: function loadAssetData(assetId) {
+            var _this2 = this;
+
+            // Call the LoadPortfolio event asyncronously
+            var uri = '/api/assets/' + assetId;
+            axios(uri, {
+                method: 'GET'
+            }).then(function (response) {
+                _this2.assetAmount = response.data.amount;
+                _this2.assetInitialPrice = response.data.initial_price;
+                console.log("Retieving asset...");
+            }).catch(function (e) {
+                _this2.errors.push(e);
+
+                console.log("Error: " + e.message);
+            });
+        }
+    }
+});
+
+/***/ }),
+/* 264 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("section", { attrs: { id: "deleteasset" } }, [
+    _c("div", { staticClass: "grid-container fluid delete-asset" }, [
+      _c(
+        "form",
+        {
+          attrs: {
+            method: "POST",
+            action: "/portfolio/asset/" + _vm.assetSelected
+          }
+        },
+        [
+          _c("input", {
+            attrs: { type: "hidden", name: "_token" },
+            domProps: { value: _vm.csrf }
+          }),
+          _vm._v(" "),
+          _c("input", {
+            attrs: { name: "_method", type: "hidden", value: "DELETE" }
+          }),
+          _vm._v(" "),
+          _c("div", { staticClass: "grid-x grid-padding-x" }, [
+            _vm._m(0, false, false),
+            _vm._v(" "),
+            _c("div", { staticClass: "small-12 cell form-container" }, [
+              _vm.validationErrors.asset_origin
+                ? _c(
+                    "div",
+                    _vm._l(_vm.validationErrors.asset_origin, function(error) {
+                      return _c("span", { staticClass: "validation-error" }, [
+                        _vm._v(" " + _vm._s(error) + " ")
+                      ])
+                    })
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _c("div", { staticClass: "input-group" }, [
+                _c("span", { staticClass: "input-group-label" }, [
+                  _vm._v("Origin")
+                ]),
+                _vm._v(" "),
+                _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.originSelected,
+                        expression: "originSelected"
+                      }
+                    ],
+                    staticClass: "input-group-field",
+                    attrs: { name: "asset_origin" },
+                    on: {
+                      change: [
+                        function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.originSelected = $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        },
+                        function($event) {
+                          _vm.loadAssets()
+                          _vm.assetSelected = ""
+                        }
+                      ]
+                    }
+                  },
+                  [
+                    _c("option", { attrs: { disabled: "", value: "" } }, [
+                      _vm._v("Select...")
+                    ]),
+                    _vm._v(" "),
+                    _vm._l(_vm.noxchgOrigins, function(origin) {
+                      return _c("option", { domProps: { value: origin.id } }, [
+                        _vm._v(_vm._s(origin.name) + " ")
+                      ])
+                    })
+                  ],
+                  2
+                ),
+                _vm._v(" "),
+                _c("input", {
+                  attrs: {
+                    id: "asset-origin-name",
+                    name: "asset_origin_name",
+                    type: "hidden"
+                  },
+                  domProps: { value: _vm.originSelectedName }
+                })
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "small-12 cell form-container" }, [
+              _vm.validationErrors.asset
+                ? _c(
+                    "div",
+                    _vm._l(_vm.validationErrors.asset, function(error) {
+                      return _c("span", { staticClass: "validation-error" }, [
+                        _vm._v(" " + _vm._s(error) + " ")
+                      ])
+                    })
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _c("div", { staticClass: "input-group" }, [
+                _c("span", { staticClass: "input-group-label" }, [
+                  _vm._v("Asset")
+                ]),
+                _vm._v(" "),
+                _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.assetSelected,
+                        expression: "assetSelected"
+                      }
+                    ],
+                    staticClass: "input-group-field",
+                    attrs: { name: "asset" },
+                    on: {
+                      change: [
+                        function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.assetSelected = $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        },
+                        function($event) {
+                          _vm.loadAssetData(_vm.assetSelected)
+                        }
+                      ]
+                    }
+                  },
+                  [
+                    _c("option", { attrs: { disabled: "", value: "" } }, [
+                      _vm._v("Select...")
+                    ]),
+                    _vm._v(" "),
+                    _vm._l(_vm.assets, function(asset) {
+                      return _c("option", { domProps: { value: asset.id } }, [
+                        _vm._v(" " + _vm._s(asset.symbol) + " ")
+                      ])
+                    })
+                  ],
+                  2
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _vm.assetSelected != ""
+              ? _c("div", { staticClass: "small-12 cell form-container" }, [
+                  _c(
+                    "button",
+                    { staticClass: "hollow button", attrs: { type: "submit" } },
+                    [
+                      _vm._v(
+                        "\n                       Delete Asset\n                    "
+                      )
+                    ]
+                  )
+                ])
+              : _vm._e()
+          ])
+        ]
+      )
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "small-12 cell form-container" }, [
+      _c("p", { staticClass: "h2" }, [_vm._v("Delete Asset")])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-02e3a5d2", module.exports)
+  }
+}
+
+/***/ }),
+/* 265 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(3)
+/* script */
+var __vue_script__ = __webpack_require__(266)
+/* template */
+var __vue_template__ = __webpack_require__(267)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/portfolio/AddTransaction.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-27d7cf4a", Component.options)
+  } else {
+    hotAPI.reload("data-v-27d7cf4a", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 266 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: 'add-transaction',
+    data: function data() {
+        return {
+            assets: [],
+            noxchgOrigins: [],
+            assetAmount: 0,
+            transactions: [],
+            transactionsLoaded: false,
+            transactionOperation: "",
+            transactionAmount: 0,
+            transactionLabel: "",
+            assetInitialPrice: 0,
+            assetSelected: "",
+            coinSelected: "",
+            coin: "",
+            originSelected: "",
+            originSelectedName: "",
+            updating: false,
+            csrf: "",
+            errors: []
+        };
+    },
+    props: ['portfolio', 'origins', 'exchanges', 'validation-errors'],
+    computed: {},
+    watch: {},
+    mounted: function mounted() {
+
+        var coins = $.map(this.coins, function (a) {
+            return a.toString();
+        });
+
+        for (var i = 0; i < this.origins.length; i++) {
+            if (this.exchanges.indexOf(this.origins[i].name.toLowerCase()) < 0) {
+                this.noxchgOrigins.push(this.origins[i]);
+            }
+        }
+
+        this.csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        console.log('Component Transactions mounted.');
+    },
+
+    methods: {
+        loadAssets: function loadAssets() {
+            var _this = this;
+
+            for (var i = 0; i < this.origins.length; i++) {
+                if (this.origins[i].id == this.originSelected) this.originSelectedName = this.origins[i].name;
+            }
+
+            this.assets = [];
+
+            // Call the LoadPortfolio event asyncronously
+            var uri = '/api/assets';
+            axios(uri, {
+                method: 'GET'
+            }).then(function (response) {
+                for (var i = 0; i < response.data.length; i++) {
+                    if (response.data[i].origin_id == _this.originSelected) _this.assets.push(response.data[i]);
+                }
+                console.log("Retieving assets...");
+            }).catch(function (e) {
+                _this.errors.push(e);
+
+                console.log("Error: " + e.message);
+            });
+        },
+        loadAssetData: function loadAssetData(originId, assetId) {
+            var _this2 = this;
+
+            // Call the LoadPortfolio event asyncronously
+            var uri = '/api/assets/' + assetId;
+            axios(uri, {
+                method: 'GET'
+            }).then(function (response) {
+                _this2.assetAmount = response.data.amount;
+                _this2.assetInitialPrice = response.data.initial_price;
+
+                var uri = '/api/transactions/' + originId + '/' + assetId;
+                axios(uri, {
+                    method: 'GET'
+                }).then(function (response) {
+                    console.log(response.data);
+                    _this2.transactions = response.data;
+                    _this2.transactionsLoaded = true;
+
+                    if (response.data.length == 0) {
+                        _this2.transactionsLoaded = false;
+                    }
+                }).catch(function (e) {
+                    _this2.errors.push(e);
+                    console.log("Error: " + e.message);
+                });
+            }).catch(function (e) {
+                _this2.errors.push(e);
+
+                console.log("Error: " + e.message);
+            });
+        },
+        deleteTransaction: function deleteTransaction(id) {}
+    }
+});
+
+/***/ }),
+/* 267 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("section", { attrs: { id: "add-transaction" } }, [
+    _c("div", { staticClass: "grid-container fluid transactions" }, [
+      _c(
+        "form",
+        {
+          attrs: {
+            method: "POST",
+            action: "/assets/" + _vm.assetSelected + "/transaction"
+          }
+        },
+        [
+          _c("input", {
+            attrs: { type: "hidden", name: "_token" },
+            domProps: { value: _vm.csrf }
+          }),
+          _vm._v(" "),
+          _c("input", {
+            attrs: { name: "_method", type: "hidden", value: "PATCH" }
+          }),
+          _vm._v(" "),
+          _c("div", { staticClass: "grid-x grid-padding-x" }, [
+            _vm._m(0, false, false),
+            _vm._v(" "),
+            _c("div", { staticClass: "small-12 cell form-container" }, [
+              _vm.validationErrors.origin_type
+                ? _c(
+                    "div",
+                    _vm._l(_vm.validationErrors.origin_type, function(error) {
+                      return _c("span", { staticClass: "validation-error" }, [
+                        _vm._v(" " + _vm._s(error) + " ")
+                      ])
+                    })
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _c("div", { staticClass: "input-group" }, [
+                _c("span", { staticClass: "input-group-label" }, [
+                  _vm._v("Origin")
+                ]),
+                _vm._v(" "),
+                _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.originSelected,
+                        expression: "originSelected"
+                      }
+                    ],
+                    staticClass: "input-group-field",
+                    attrs: { name: "asset_origin" },
+                    on: {
+                      change: [
+                        function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.originSelected = $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        },
+                        function($event) {
+                          _vm.loadAssets()
+                          _vm.transactionsLoaded = false
+                        }
+                      ]
+                    }
+                  },
+                  [
+                    _c("option", { attrs: { disabled: "", value: "" } }, [
+                      _vm._v("Select...")
+                    ]),
+                    _vm._v(" "),
+                    _vm._l(_vm.noxchgOrigins, function(origin) {
+                      return _c("option", { domProps: { value: origin.id } }, [
+                        _vm._v(_vm._s(origin.name) + " ")
+                      ])
+                    })
+                  ],
+                  2
+                ),
+                _vm._v(" "),
+                _c("input", {
+                  attrs: {
+                    id: "asset-origin-name",
+                    name: "asset_origin_name",
+                    type: "hidden"
+                  },
+                  domProps: { value: _vm.originSelectedName }
+                })
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "small-12 cell form-container" }, [
+              _vm.validationErrors.asset_symbol
+                ? _c(
+                    "div",
+                    _vm._l(_vm.validationErrors.asset_symbol, function(error) {
+                      return _c("span", { staticClass: "validation-error" }, [
+                        _vm._v(" " + _vm._s(error) + " ")
+                      ])
+                    })
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _c("div", { staticClass: "input-group" }, [
+                _c("span", { staticClass: "input-group-label" }, [
+                  _vm._v("Asset")
+                ]),
+                _vm._v(" "),
+                _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.assetSelected,
+                        expression: "assetSelected"
+                      }
+                    ],
+                    staticClass: "input-group-field",
+                    attrs: { name: "asset" },
+                    on: {
+                      change: [
+                        function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.assetSelected = $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        },
+                        function($event) {
+                          _vm.loadAssetData(
+                            _vm.originSelected,
+                            _vm.assetSelected
+                          )
+                        }
+                      ]
+                    }
+                  },
+                  [
+                    _c("option", { attrs: { disabled: "", value: "" } }, [
+                      _vm._v("Select...")
+                    ]),
+                    _vm._v(" "),
+                    _vm._l(_vm.assets, function(asset) {
+                      return _c("option", { domProps: { value: asset.id } }, [
+                        _vm._v(" " + _vm._s(asset.symbol) + " ")
+                      ])
+                    })
+                  ],
+                  2
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "small-12 cell form-container" }, [
+              _vm.validationErrors.transaction_amount
+                ? _c(
+                    "div",
+                    _vm._l(_vm.validationErrors.transaction_amount, function(
+                      error
+                    ) {
+                      return _c("span", { staticClass: "validation-error" }, [
+                        _vm._v(" " + _vm._s(error) + " ")
+                      ])
+                    })
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _c("div", { staticClass: "input-group" }, [
+                _c("span", { staticClass: "input-group-label" }, [
+                  _vm._v(
+                    "\n                             Amount\n                        "
+                  )
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.transactionAmount,
+                      expression: "transactionAmount"
+                    }
+                  ],
+                  staticClass: "input-group-field price number",
+                  attrs: { name: "transaction_amount", type: "text" },
+                  domProps: { value: _vm.transactionAmount },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.transactionAmount = $event.target.value
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.transactionOperation,
+                        expression: "transactionOperation"
+                      }
+                    ],
+                    attrs: {
+                      name: "transaction_type",
+                      id: "transaction-operation"
+                    },
+                    on: {
+                      change: function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.transactionOperation = $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      }
+                    }
+                  },
+                  [
+                    _c("option", { attrs: { disabled: "", value: "" } }, [
+                      _vm._v("Operation")
+                    ]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "in" } }, [_vm._v("In")]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "out" } }, [_vm._v("Out")])
+                  ]
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "small-12 cell form-container" }, [
+              _vm.validationErrors.asset_initial_price
+                ? _c(
+                    "div",
+                    _vm._l(_vm.validationErrors.asset_initial_price, function(
+                      error
+                    ) {
+                      return _c("span", { staticClass: "validation-error" }, [
+                        _vm._v(" " + _vm._s(error) + " ")
+                      ])
+                    })
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _c("div", { staticClass: "input-group" }, [
+                _c("span", { staticClass: "input-group-label" }, [
+                  _vm._v(
+                    "\n                            Label\n                        "
+                  )
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.transactionLabel,
+                      expression: "transactionLabel"
+                    }
+                  ],
+                  staticClass: "input-group-field number",
+                  attrs: { name: "transaction_label", type: "text" },
+                  domProps: { value: _vm.transactionLabel },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.transactionLabel = $event.target.value
+                    }
+                  }
+                })
+              ])
+            ]),
+            _vm._v(" "),
+            _vm._m(1, false, false),
+            _vm._v(" "),
+            _vm.transactionsLoaded == true
+              ? _c("div", { staticClass: "small-12 cell form-container" }, [
+                  _c("table", { staticClass: "stack" }, [
+                    _vm._m(2, false, false),
+                    _vm._v(" "),
+                    _c(
+                      "tbody",
+                      _vm._l(_vm.transactions, function(transaction) {
+                        return _c("tr", [
+                          transaction.type == "in"
+                            ? _c("td", [
+                                _c("i", {
+                                  staticClass: "fa fa-arrow-right green",
+                                  attrs: { "aria-hidden": "true" }
+                                })
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          transaction.type == "out"
+                            ? _c("td", [
+                                _c("i", {
+                                  staticClass: "fa fa-arrow-left red",
+                                  attrs: { "aria-hidden": "true" }
+                                })
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(transaction.amount))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(transaction.label))])
+                        ])
+                      })
+                    )
+                  ])
+                ])
+              : _vm._e()
+          ])
+        ]
+      )
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "small-12 cell form-container" }, [
+      _c("p", { staticClass: "h2" }, [_vm._v("Add Transaction")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "small-12 cell form-container" }, [
+      _c(
+        "button",
+        { staticClass: "hollow button", attrs: { type: "submit" } },
+        [
+          _vm._v(
+            "\n                       Execute Transaction\n                    "
+          )
+        ]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", { attrs: { width: "50" } }, [_vm._v("Type")]),
+        _vm._v(" "),
+        _c("th", { attrs: { width: "150" } }, [_vm._v("Amount")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Label")])
       ])
     ])
   }
@@ -122883,20 +120452,1476 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-6f400267", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-27d7cf4a", module.exports)
   }
 }
 
 /***/ }),
-/* 352 */
+/* 268 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(353)
+var __vue_script__ = __webpack_require__(269)
 /* template */
-var __vue_template__ = __webpack_require__(354)
+var __vue_template__ = __webpack_require__(270)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/portfolio/DeleteTransaction.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-228a46c5", Component.options)
+  } else {
+    hotAPI.reload("data-v-228a46c5", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 269 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: 'delete-transaction',
+    data: function data() {
+        return {
+            assets: [],
+            noxchgOrigins: [],
+            assetAmount: 0,
+            transactions: [],
+            transactionsLoaded: false,
+            transactionOperation: "",
+            transactionAmount: 0,
+            transactionLabel: "",
+            assetInitialPrice: 0,
+            assetSelected: "",
+            coinSelected: "",
+            coin: "",
+            originSelected: "",
+            originSelectedName: "",
+            updating: false,
+            csrf: "",
+            errors: []
+        };
+    },
+    props: ['portfolio', 'origins', 'exchanges', 'validation-errors'],
+    computed: {},
+    watch: {},
+    mounted: function mounted() {
+
+        var coins = $.map(this.coins, function (a) {
+            return a.toString();
+        });
+
+        for (var i = 0; i < this.origins.length; i++) {
+            if (this.exchanges.indexOf(this.origins[i].name.toLowerCase()) < 0) {
+                this.noxchgOrigins.push(this.origins[i]);
+            }
+        }
+
+        this.csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        console.log('Component Transactions mounted.');
+    },
+
+    methods: {
+        loadAssets: function loadAssets() {
+            var _this = this;
+
+            for (var i = 0; i < this.origins.length; i++) {
+                if (this.origins[i].id == this.originSelected) this.originSelectedName = this.origins[i].name;
+            }
+
+            this.assets = [];
+
+            // Call the LoadPortfolio event asyncronously
+            var uri = '/api/assets';
+            axios(uri, {
+                method: 'GET'
+            }).then(function (response) {
+                for (var i = 0; i < response.data.length; i++) {
+                    if (response.data[i].origin_id == _this.originSelected) _this.assets.push(response.data[i]);
+                }
+                console.log("Retieving assets...");
+            }).catch(function (e) {
+                _this.errors.push(e);
+
+                console.log("Error: " + e.message);
+            });
+        },
+        loadAssetData: function loadAssetData(originId, assetId) {
+            var _this2 = this;
+
+            // Call the LoadPortfolio event asyncronously
+            var uri = '/api/assets/' + assetId;
+            axios(uri, {
+                method: 'GET'
+            }).then(function (response) {
+                _this2.assetAmount = response.data.amount;
+                _this2.assetInitialPrice = response.data.initial_price;
+
+                var uri = '/api/transactions/' + originId + '/' + assetId;
+                axios(uri, {
+                    method: 'GET'
+                }).then(function (response) {
+                    console.log(response.data);
+                    _this2.transactions = response.data;
+                    _this2.transactionsLoaded = true;
+
+                    if (response.data.length == 0) {
+                        _this2.transactionsLoaded = false;
+                    }
+                }).catch(function (e) {
+                    _this2.errors.push(e);
+                    console.log("Error: " + e.message);
+                });
+            }).catch(function (e) {
+                _this2.errors.push(e);
+
+                console.log("Error: " + e.message);
+            });
+        },
+        deleteTransaction: function deleteTransaction(id) {
+            var _this3 = this;
+
+            var uri = '/api/transactions/' + id;
+            axios.delete(uri).then(function (response) {
+                console.log(response.data);
+                window.location.replace('/portfolio');
+            }).catch(function (e) {
+                _this3.errors.push(e);
+                console.log("Error: " + e.message);
+            });
+        }
+    }
+});
+
+/***/ }),
+/* 270 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("section", { attrs: { id: "delete-transaction" } }, [
+    _c("div", { staticClass: "grid-container fluid transactions" }, [
+      _c("div", { staticClass: "grid-x grid-padding-x" }, [
+        _vm._m(0, false, false),
+        _vm._v(" "),
+        _c("div", { staticClass: "small-12 cell form-container" }, [
+          _vm.validationErrors.origin_type
+            ? _c(
+                "div",
+                _vm._l(_vm.validationErrors.origin_type, function(error) {
+                  return _c("span", { staticClass: "validation-error" }, [
+                    _vm._v(" " + _vm._s(error) + " ")
+                  ])
+                })
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _c("div", { staticClass: "input-group" }, [
+            _c("span", { staticClass: "input-group-label" }, [
+              _vm._v("Origin")
+            ]),
+            _vm._v(" "),
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.originSelected,
+                    expression: "originSelected"
+                  }
+                ],
+                staticClass: "input-group-field",
+                attrs: { name: "asset_origin" },
+                on: {
+                  change: [
+                    function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.originSelected = $event.target.multiple
+                        ? $$selectedVal
+                        : $$selectedVal[0]
+                    },
+                    function($event) {
+                      _vm.loadAssets()
+                      _vm.transactionsLoaded = false
+                    }
+                  ]
+                }
+              },
+              [
+                _c("option", { attrs: { disabled: "", value: "" } }, [
+                  _vm._v("Select...")
+                ]),
+                _vm._v(" "),
+                _vm._l(_vm.noxchgOrigins, function(origin) {
+                  return _c("option", { domProps: { value: origin.id } }, [
+                    _vm._v(_vm._s(origin.name) + " ")
+                  ])
+                })
+              ],
+              2
+            ),
+            _vm._v(" "),
+            _c("input", {
+              attrs: {
+                id: "asset-origin-name",
+                name: "asset_origin_name",
+                type: "hidden"
+              },
+              domProps: { value: _vm.originSelectedName }
+            })
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "small-12 cell form-container" }, [
+          _vm.validationErrors.asset_symbol
+            ? _c(
+                "div",
+                _vm._l(_vm.validationErrors.asset_symbol, function(error) {
+                  return _c("span", { staticClass: "validation-error" }, [
+                    _vm._v(" " + _vm._s(error) + " ")
+                  ])
+                })
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _c("div", { staticClass: "input-group" }, [
+            _c("span", { staticClass: "input-group-label" }, [_vm._v("Asset")]),
+            _vm._v(" "),
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.assetSelected,
+                    expression: "assetSelected"
+                  }
+                ],
+                staticClass: "input-group-field",
+                attrs: { name: "asset" },
+                on: {
+                  change: [
+                    function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.assetSelected = $event.target.multiple
+                        ? $$selectedVal
+                        : $$selectedVal[0]
+                    },
+                    function($event) {
+                      _vm.loadAssetData(_vm.originSelected, _vm.assetSelected)
+                    }
+                  ]
+                }
+              },
+              [
+                _c("option", { attrs: { disabled: "", value: "" } }, [
+                  _vm._v("Select...")
+                ]),
+                _vm._v(" "),
+                _vm._l(_vm.assets, function(asset) {
+                  return _c("option", { domProps: { value: asset.id } }, [
+                    _vm._v(" " + _vm._s(asset.symbol) + " ")
+                  ])
+                })
+              ],
+              2
+            )
+          ])
+        ]),
+        _vm._v(" "),
+        _vm.transactionsLoaded == true
+          ? _c("div", { staticClass: "small-12 cell form-container" }, [
+              _c("table", { staticClass: "stack" }, [
+                _vm._m(1, false, false),
+                _vm._v(" "),
+                _c(
+                  "tbody",
+                  _vm._l(_vm.transactions, function(transaction) {
+                    return _c("tr", [
+                      transaction.type == "in"
+                        ? _c("td", [
+                            _c("i", {
+                              staticClass: "fa fa-arrow-right green",
+                              attrs: { "aria-hidden": "true" }
+                            })
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      transaction.type == "out"
+                        ? _c("td", [
+                            _c("i", {
+                              staticClass: "fa fa-arrow-left red",
+                              attrs: { "aria-hidden": "true" }
+                            })
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(transaction.amount))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(transaction.label))]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _c("i", {
+                          staticClass: "fa fa-times red",
+                          attrs: { "aria-hidden": "true" },
+                          on: {
+                            click: function($event) {
+                              _vm.deleteTransaction(transaction.id)
+                            }
+                          }
+                        })
+                      ])
+                    ])
+                  })
+                )
+              ])
+            ])
+          : _vm._e()
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "small-12 cell form-container" }, [
+      _c("p", { staticClass: "h2" }, [_vm._v("Delete Transaction")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", { attrs: { width: "50" } }, [_vm._v("Type")]),
+        _vm._v(" "),
+        _c("th", { attrs: { width: "150" } }, [_vm._v("Amount")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Label")]),
+        _vm._v(" "),
+        _c("th")
+      ])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-228a46c5", module.exports)
+  }
+}
+
+/***/ }),
+/* 271 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(3)
+/* script */
+var __vue_script__ = __webpack_require__(272)
+/* template */
+var __vue_template__ = __webpack_require__(273)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/portfolio/Portfolio.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-984ef14c", Component.options)
+  } else {
+    hotAPI.reload("data-v-984ef14c", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 272 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: 'portfolio',
+    props: ['portfolio'],
+    data: function data() {
+        return {
+            assets: [],
+            totalBtc: 0,
+            totalFiat: 0,
+            totalExchanges: 0,
+            biggestLoser: { symbol: "", profit: 0 },
+            biggestGainer: { symbol: "", profit: 0 },
+            assetsCounter: 0,
+            coinsCounter: 0,
+            portfolioAssetCount: 0,
+            portfolioCurrentAssetCount: 0,
+            showChart: false,
+            uniqueAssetsBtc: [],
+            uniqueAssetsFiat: [],
+            uniqueAssetsName: [],
+            uniqueAssetsOriginName: [],
+            uniqueAssetsOriginFiat: [],
+            mostValuableName: "",
+            mostValuableValue: "",
+            counterValueSymbol: '',
+            portfolioTable: {},
+            loadingPortfolio: false,
+            loadingAsset: false,
+            updatingAsset: false,
+            chartistTotalsData: { labels: [], series: [] },
+            chartistTotalsChart: {},
+            chartistTotalsOptions: [],
+            chartistOriginsData: { labels: [], series: [] },
+            chartistOriginsChart: {},
+            chartistOriginsOptions: [],
+            responsiveOptions: [],
+            errors: []
+        };
+    },
+    computed: {},
+    mounted: function mounted() {
+        var _this = this;
+
+        this.loadingPortfolio = true;
+
+        // Variables initizalization
+        this.totalBtc = 0;
+        this.totalFiat = 0;
+        this.uniqueAssetsOriginFiat = [];
+        this.uniqueAssetsOriginName = [];
+
+        // Setup DATATABLE
+        this.portfolioTable = $('#portfolioTable').DataTable({
+            "searching": false,
+            "responsive": true,
+            "paging": false,
+            "info": false,
+            "columnDefs": [{ "visible": false, "targets": 7 }],
+            columns: [{ title: '' }, { title: '<div class="sorting nowrap">Coin</div>' }, { title: '<div class="sorting nowrap">Amount</div>' }, { title: '<div class="sorting nowrap">Value (Fiat)</div>' }, { title: '<div class="sorting nowrap">Value (BTC)</div>' }, { title: '<div class="sorting nowrap">Last Price</div>' }, { title: '<div class="sorting nowrap">Purchase Price</div>' }, { title: '<div class="sorting nowrap">Asset ID</div>' }, { title: '<div class="sorting_asc nowrap">Origin</div>' }],
+            "drawCallback": function drawCallback(settings) {
+                var api = this.api();
+                var rows = api.rows({ page: 'current' }).nodes();
+                var last = null;
+
+                api.column(8, { page: 'current' }).data().each(function (group, i) {
+                    if (last !== group) {
+                        $(rows).eq(i).before('<tr class="group"><td colspan="7">' + group + '</td></tr>');
+
+                        last = group;
+                    }
+                });
+            }
+        });
+
+        // Clear Datatable in case of reloading
+        this.portfolioTable.clear();
+
+        // Set Chart options
+        this.responsiveOptions = [['screen and (min-width: 200px)', {
+            horizontalBars: true,
+            seriesBarDistance: 5
+        }],
+        // Options override for media > 800px
+        ['screen and (min-width: 800px)', {
+            stackBars: false,
+            seriesBarDistance: 10
+        }],
+        // Options override for media > 1000px
+        ['screen and (min-width: 1000px)', {
+            horizontalBars: false,
+            seriesBarDistance: 15
+        }]];
+        this.chartistTotalsOptions = {
+            distributeSeries: true
+        };
+        this.chartistOriginsOptions = {
+            distributeSeries: true
+        };
+
+        // Call the LoadPortfolio event asyncronously
+        var uri = '/api/portfolio/refresh';
+        axios(uri, {
+            method: 'GET'
+        }).then(function (response) {
+            console.log("Reloading portfolio...");
+        }).catch(function (e) {
+            _this.errors.push(e);
+
+            console.log("Error: " + e.message);
+        });
+
+        // Listen to ASSETS events
+        Echo.private('assets.' + this.portfolio.id).listen('PortfolioAssetLoaded', function (e) {
+            // ************
+            // ASSET LOADED
+            // ************
+
+            // console.log("Portfolio UpdateID: " + this.portfolio.update_id  + " Asset UpdateID: " + e.asset.update_id);
+            if (_this.portfolio.update_id == e.asset.update_id) {
+
+                var tools = '<div class="asset-tools nowrap"><button class="clear button" data-open="edit-asset-modal"><i class="fa fa-pencil edit-icon" aria-hidden="true"></i></button></div>';
+
+                // Set coin url, logo, name and symbol
+                var coin = '<div class="asset-info nowrap"><a href="' + e.asset.info_url + '" target="_blank"><img class="asset-img" src="' + e.asset.logo_url + '" width="20"></a> <span class="show-for-medium asset-name">' + e.asset.full_name + '</span> <span class="asset-symbol">' + e.asset.symbol + '</span></div>';
+
+                // Set coin amount
+                var amount = '<div class="asset-amount nowrap">' + parseFloat(e.asset.amount).toFixed(4) + '</div>';
+
+                // Set coin origin
+                var origin = '<div class="asset-origin  nowrap">' + e.asset.origin_name + '</div>';
+
+                // Add row to the table with the new asset
+                _this.portfolioTable.row.add(['', coin, amount, parseFloat(e.asset.counter_value).toFixed(2), parseFloat(e.asset.balance).toFixed(8), parseFloat(e.asset.price).toFixed(8), parseFloat(e.asset.initial_price).toFixed(8), e.asset.id, origin]).order([8, 'asc']).invalidate().draw();
+            }
+        }).listen('PortfolioAssetUpdated', function (e) {
+            // ************
+            // ASSET UPDATED
+            // ************
+
+            if (_this.portfolio.update_id == e.asset.update_id) {
+                //console.log(e.asset.symbol);
+
+                // Calculate current TOTAL balances (btc and fiat)
+                _this.totalBtc = (parseFloat(_this.totalBtc) + parseFloat(e.asset.balance)).toFixed(8);
+                _this.totalFiat = (parseFloat(_this.totalFiat) + parseFloat(e.asset.counter_value)).toFixed(2);
+
+                // Store TOTAL balances
+                var balance = parseFloat(e.asset.balance).toFixed(8);
+                var price = parseFloat(e.asset.price).toFixed(8);
+                var counter_value = parseFloat(e.asset.counter_value).toFixed(2);
+                var purchase_price = parseFloat(e.asset.initial_price).toFixed(8);
+
+                // Store a consolidated array by VALUE
+                var indexRepeatedAsset = _this.uniqueAssetsName.indexOf(e.asset.symbol);
+
+                if (indexRepeatedAsset >= 0) {
+                    // If asset is already counted we sum the new value
+                    var newBalanceBtc = parseFloat(_this.uniqueAssetsBtc[indexRepeatedAsset]) + parseFloat(e.asset.balance);
+                    var newBalanceFiat = parseFloat(_this.uniqueAssetsFiat[indexRepeatedAsset]) + parseFloat(e.asset.counter_value);
+                    _this.uniqueAssetsBtc[indexRepeatedAsset] = parseFloat(newBalanceBtc);
+                    _this.uniqueAssetsFiat[indexRepeatedAsset] = parseFloat(newBalanceFiat);
+
+                    // Update Chart data
+                    _this.chartistTotalsData.series[indexRepeatedAsset] = parseFloat(parseFloat(_this.uniqueAssetsFiat[indexRepeatedAsset]).toFixed(2));
+                } else {
+
+                    _this.coinsCounter++;
+
+                    // If the asset doesn't exists we push it
+                    _this.uniqueAssetsBtc.push(parseFloat(e.asset.balance));
+                    _this.uniqueAssetsFiat.push(parseFloat(e.asset.counter_value));
+                    _this.uniqueAssetsName.push(e.asset.symbol);
+
+                    // Update Chart data
+                    _this.chartistTotalsData.labels.push(e.asset.symbol);
+                    _this.chartistTotalsData.series.push(parseFloat(parseFloat(e.asset.counter_value).toFixed(2)));
+                }
+
+                // Store consolidated array of ORIGINS
+                var indexRepeatedOrigin = _this.uniqueAssetsOriginName.indexOf(e.asset.origin_name);
+
+                if (indexRepeatedOrigin >= 0) {
+                    // If origin is already counted we sum the new value
+                    var newBalanceFiat = parseFloat(_this.uniqueAssetsOriginFiat[indexRepeatedOrigin]) + parseFloat(e.asset.counter_value);
+                    _this.uniqueAssetsOriginFiat[indexRepeatedOrigin] = parseFloat(newBalanceFiat);
+
+                    // Update Chart data
+                    _this.chartistOriginsData.series[indexRepeatedOrigin] = parseFloat(parseFloat(newBalanceFiat).toFixed(2));
+                } else {
+
+                    // If the asset doesn't exists we push it
+                    _this.uniqueAssetsOriginName.push(e.asset.origin_name);
+                    _this.uniqueAssetsOriginFiat.push(e.asset.counter_value);
+
+                    // Update Chart data
+                    _this.chartistOriginsData.labels.push(e.asset.origin_name);
+                    _this.chartistOriginsData.series.push(parseFloat(parseFloat(e.asset.counter_value).toFixed(2)));
+                }
+
+                // Locate current coin row in DATATABLE
+                var indexes = _this.portfolioTable.rows().eq(0).filter(function (rowIdx) {
+                    return _this.portfolioTable.cell(rowIdx, 7).data() === e.asset.id ? true : false;
+                });
+
+                // Update DATATABLE values (Price, Balance and Counter Value)
+                var formated_counter_value = '<span class="nowrap">' + _this.counterValueSymbolHtml + parseFloat(counter_value).toFixed(2) + '</span>';
+                var formated_balance = '<span class="nowrap"><i class="fa fa-btc" aria-hidden="true"></i>' + parseFloat(balance).toFixed(8) + '</span>';
+                var formated_price = '<span class="nowrap"><i class="fa fa-btc" aria-hidden="true"></i>' + parseFloat(price).toFixed(8) + '</span>';
+
+                var formated_purchase_price = '<span class="nowrap"><i class="fa fa-btc" aria-hidden="true"></i>' + parseFloat(purchase_price).toFixed(8) + '</span>';
+
+                _this.portfolioTable.cell(indexes[0], 3).data(formated_counter_value).invalidate();
+                _this.portfolioTable.cell(indexes[0], 4).data(formated_balance).invalidate();
+                _this.portfolioTable.cell(indexes[0], 5).data(formated_price).invalidate();
+                _this.portfolioTable.cell(indexes[0], 6).data(formated_purchase_price).invalidate();
+
+                var balance = '<i class="fa fa-btc" aria-hidden="true"></i>' + parseFloat(e.asset.balance).toFixed(8);
+                if (e.asset.initial_price == 0) {
+                    var profit = "-";
+                } else {
+                    var profit = ((parseFloat(price) - parseFloat(e.asset.initial_price)) / parseFloat(e.asset.initial_price) * 100).toFixed(2);
+                }
+                if (profit >= 0) {
+                    _this.portfolioTable.cell(indexes[0], 0).data('<span class="profit nowrap">+' + profit + '%</span>').invalidate();
+                } else {
+                    _this.portfolioTable.cell(indexes[0], 0).data('<span class="loss nowrap">' + profit + '%</span>').invalidate();
+                }
+
+                // Gainers and losers
+                if (parseFloat(profit) > parseFloat(_this.biggestGainer.profit) && e.asset.symbol != 'BTC' && e.asset.symbol != 'BTG') {
+                    _this.biggestGainer.profit = profit;
+                    _this.biggestGainer.symbol = e.asset.symbol;
+                }
+                if (parseFloat(profit) < parseFloat(_this.biggestLoser.profit) && e.asset.symbol != 'BTC' && e.asset.symbol != 'BTG') {
+                    _this.biggestLoser.profit = profit;
+                    _this.biggestLoser.symbol = e.asset.symbol;
+                }
+
+                // this.portfolioTable.responsive.rebuild();
+                // this.portfolioTable.responsive.recalc();
+                _this.portfolioTable.draw();
+
+                // Keep count of number of assets
+                _this.portfolioCurrentAssetCount++;
+
+                // Keep asset on array of assets
+                _this.assets.push(e.asset);
+
+                // console.log("Asset Count: " + this.portfolioCurrentAssetCount);
+                if (_this.portfolioCurrentAssetCount == _this.portfolioAssetCount && _this.portfolioCurrentAssetCount != 0) {
+                    console.log(_this.chartistOriginsData.series);
+                    console.log(_this.chartistOriginsData.labels);
+                    _this.showChart = true;
+                    _this.chartistTotalsChart = new Chartist.Bar('.ct-chart-totals', _this.chartistTotalsData, _this.chartistTotalsOptions, _this.responsiveOptions);
+                    _this.chartistOriginsChart = new Chartist.Bar('.ct-chart-origins', _this.chartistOriginsData, _this.chartistOriginsOptions, _this.responsiveOptions);
+                    _this.assetsCounter = _this.portfolioCurrentAssetCount;
+
+                    $(window).trigger('resize');
+                    _this.loadingPortfolio = false;
+                }
+            }
+        });
+        Echo.private('portfolios.' + this.portfolio.id).listen('PortfolioLoaded', function (e) {
+            // ************
+            // PORTFOLIO LOADED
+            // ************
+
+            // console.log("Asset count: " + e.assetCount);
+            _this.counterValueSymbol = _this.portfolio.counter_value.toUpperCase();
+            _this.counterValueSymbolHtml = '<i class="fa fa-' + _this.portfolio.counter_value.toLowerCase() + ' aria-hidden="true"></i>';
+            _this.portfolioAssetCount = e.assetCount;
+        });
+
+        console.log('Component TradeList mounted.');
+    },
+
+    methods: {
+        refreshPortfolio: function refreshPortfolio() {
+            var _this2 = this;
+
+            this.loadingPortfolio = true;
+
+            if (this.portfolioCurrentAssetCount > 0) {
+                this.chartistTotalsChart.detach();
+                this.chartistOriginsChart.detach();
+                this.portfolioTable.clear().draw();
+            };
+            this.assets = [];
+            this.totalBtc = 0;
+            this.totalFiat = 0;
+            this.biggestLoser = { symbol: "", profit: 0 }, this.biggestGainer = { symbol: "", profit: 0 }, this.assetsCounter = 0, this.coinsCounter = 0, this.uniqueAssetsBtc = [];
+            this.uniqueAssetsFiat = [];
+            this.uniqueAssetsName = [];
+            this.uniqueAssetsOriginFiat = [];
+            this.uniqueAssetsOriginName = [];
+            this.chartistTotalsData.labels = [];
+            this.chartistOriginsData.labels = [];
+            this.chartistTotalsData.series = [];
+            this.chartistOriginsData.series = [];
+            this.portfolioCurrentAssetCount = 0;
+            this.portfolioAssetCount = 0;
+            this.showChart = false;
+
+            var uri = '/api/portfolio/refresh';
+            axios(uri, {
+                method: 'GET'
+            }).then(function (response) {
+                console.log("Reloading portfolio...");
+            }).catch(function (e) {
+                _this2.errors.push(e);
+                _this2.loadingPortfolio = false;
+                console.log("Error: " + e.message);
+            });
+        }
+    }
+});
+
+/***/ }),
+/* 273 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("section", { attrs: { id: "portfolio-widget" } }, [
+    _c("div", { staticClass: "grid-x grid-padding-x" }, [
+      _c("div", { staticClass: "small-12 cell" }, [
+        _vm.loadingPortfolio == true
+          ? _c("div", { staticClass: "grid-container fluid" }, [
+              _vm._m(0, false, false)
+            ])
+          : _c("div", { staticClass: "grid-container fluid" }, [
+              _c("div", { staticClass: "grid-x grid-padding-x" }, [
+                _c("div", { staticClass: "small-12 medium-shrink cell" }, [
+                  _c("div", { staticClass: "counter-widget text-left" }, [
+                    _c("div", { staticClass: "title" }, [_vm._v("Total BTC ")]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "counter" }, [
+                      _c("span", { staticClass: "nowrap" }, [
+                        _c("i", {
+                          staticClass: "fa fa-btc",
+                          attrs: { "aria-hidden": "true" }
+                        }),
+                        _vm._v(_vm._s(_vm.totalBtc))
+                      ])
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "small-12 medium-shrink cell" }, [
+                  _c("div", { staticClass: "counter-widget text-left" }, [
+                    _c("div", { staticClass: "title" }, [
+                      _vm._v("Total " + _vm._s(_vm.counterValueSymbol) + " ")
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "counter" }, [
+                      _c("span", { staticClass: "nowrap" }, [
+                        _c("i", {
+                          class:
+                            "fa fa-" + _vm.counterValueSymbol.toLowerCase(),
+                          attrs: { "aria-hidden": "true" }
+                        }),
+                        _vm._v(_vm._s(_vm.totalFiat))
+                      ])
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "small-6 medium-shrink cell" }, [
+                  _c("div", { staticClass: "counter-widget text-left" }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "title nowrap",
+                        model: {
+                          value: _vm.assetsCounter,
+                          callback: function($$v) {
+                            _vm.assetsCounter = $$v
+                          },
+                          expression: "assetsCounter"
+                        }
+                      },
+                      [_vm._v("# of Assets ")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "counter" }, [
+                      _vm._v(_vm._s(_vm.assetsCounter))
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "small-6 medium-shrink cell" }, [
+                  _c("div", { staticClass: "counter-widget text-left" }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "title nowrap",
+                        model: {
+                          value: _vm.coinsCounter,
+                          callback: function($$v) {
+                            _vm.coinsCounter = $$v
+                          },
+                          expression: "coinsCounter"
+                        }
+                      },
+                      [_vm._v("# of Coins ")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "counter" }, [
+                      _vm._v(_vm._s(_vm.coinsCounter))
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "small-6 medium-shrink cell" }, [
+                  _c("div", { staticClass: "counter-widget text-left" }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "title",
+                        model: {
+                          value: _vm.biggestGainer.symbol,
+                          callback: function($$v) {
+                            _vm.$set(_vm.biggestGainer, "symbol", $$v)
+                          },
+                          expression: "biggestGainer.symbol"
+                        }
+                      },
+                      [_vm._v("Biggest Gainer ")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "counter" }, [
+                      _vm._v(_vm._s(_vm.biggestGainer.symbol) + " "),
+                      _c("span", { staticClass: "biggest profit" }, [
+                        _vm._v(" (+" + _vm._s(_vm.biggestGainer.profit) + "%)")
+                      ])
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "small-6 medium-shrink cell" }, [
+                  _c("div", { staticClass: "counter-widget text-left" }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "title",
+                        model: {
+                          value: _vm.biggestLoser.symbol,
+                          callback: function($$v) {
+                            _vm.$set(_vm.biggestLoser, "symbol", $$v)
+                          },
+                          expression: "biggestLoser.symbol"
+                        }
+                      },
+                      [_vm._v("Biggest Loser ")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "counter" }, [
+                      _vm._v(_vm._s(_vm.biggestLoser.symbol) + " "),
+                      _c("span", { staticClass: "biggest loss" }, [
+                        _vm._v(" (" + _vm._s(_vm.biggestLoser.profit) + "%)")
+                      ])
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "small-12 medium-auto cell text-right" },
+                  [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "button hollow button-refresh",
+                        on: {
+                          click: function($event) {
+                            _vm.refreshPortfolio()
+                          }
+                        }
+                      },
+                      [
+                        _c(
+                          "span",
+                          {
+                            directives: [
+                              {
+                                name: "show",
+                                rawName: "v-show",
+                                value: _vm.loadingPortfolio,
+                                expression: "loadingPortfolio"
+                              }
+                            ]
+                          },
+                          [
+                            _c("i", {
+                              staticClass: "fa fa-refresh fa-spin fa-fw",
+                              attrs: { "aria-hidden": "true" }
+                            }),
+                            _vm._v(" "),
+                            _c("span", { staticClass: "show-for-medium" }, [
+                              _vm._v(" Loading...")
+                            ])
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "span",
+                          {
+                            directives: [
+                              {
+                                name: "show",
+                                rawName: "v-show",
+                                value: !_vm.loadingPortfolio,
+                                expression: "!loadingPortfolio"
+                              }
+                            ]
+                          },
+                          [
+                            _c("i", { staticClass: "fa fa-refresh " }),
+                            _vm._v(" "),
+                            _c("span", { staticClass: "show-for-medium" }, [
+                              _vm._v("Reload")
+                            ])
+                          ]
+                        )
+                      ]
+                    )
+                  ]
+                )
+              ])
+            ])
+      ]),
+      _vm._v(" "),
+      _vm._m(1, false, false),
+      _vm._v(" "),
+      _c("div", { staticClass: "small-12 large-6 cell" }, [
+        _c(
+          "div",
+          {
+            staticClass:
+              "grid-x grid-padding-x align-center-middle text-center dashboard"
+          },
+          [
+            _c("div", { staticClass: "small-12 cell charts" }, [
+              _c("div", {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.showChart,
+                    expression: "showChart"
+                  }
+                ],
+                staticClass: "ct-chart-totals ct-golden-section"
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "small-12 cell charts" }, [
+              _c("div", {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.showChart,
+                    expression: "showChart"
+                  }
+                ],
+                staticClass: "ct-chart-origins ct-golden-section"
+              })
+            ])
+          ]
+        )
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "grid-x grid-padding-x" }, [
+      _c("div", { staticClass: "small-12 medium-shrink cell" }, [
+        _c("div", { staticClass: "portfolio-loader" }, [
+          _c("i", {
+            staticClass: "fa fa-spinner fa-spin",
+            attrs: { "aria-hidden": "true" }
+          }),
+          _vm._v(" Loading assets...\n                        ")
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "small-12 large-6 cell" }, [
+      _c("div", { staticClass: "portfolio-assets" }, [
+        _c("table", {
+          staticClass: "display unstriped",
+          attrs: { id: "portfolioTable", width: "100%" }
+        })
+      ])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-984ef14c", module.exports)
+  }
+}
+
+/***/ }),
+/* 274 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(3)
+/* script */
+var __vue_script__ = __webpack_require__(275)
+/* template */
+var __vue_template__ = __webpack_require__(276)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/portfolio/Asset.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-fd53b3fc", Component.options)
+  } else {
+    hotAPI.reload("data-v-fd53b3fc", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 275 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: 'asset',
+    data: function data() {
+        return {
+            balance: 0
+        };
+    },
+    props: ['item', 'portfolio-counter-value'],
+    mounted: function mounted() {
+        console.log('Component Asset mounted.');
+    }
+});
+
+/***/ }),
+/* 276 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("tr", [
+    _c("td"),
+    _vm._v(" "),
+    _c("td", [
+      _c("div", { staticClass: "asset-info nowrap" }, [
+        _c("a", { attrs: { href: _vm.item.info_url, target: "_blank" } }, [
+          _c("img", {
+            staticClass: "asset-img",
+            attrs: { src: _vm.item.logo_url, width: "20" }
+          })
+        ]),
+        _vm._v(" "),
+        _c("span", { staticClass: "show-for-medium asset-name" }, [
+          _vm._v(_vm._s(_vm.item.full_name))
+        ]),
+        _vm._v(" "),
+        _c("span", { staticClass: "asset-symbol" }, [
+          _vm._v(_vm._s(_vm.item.symbol))
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _vm.portfolioCounterValue == "eur"
+      ? _c("td", [
+          _c("div", { staticClass: "asset-value nowrap" }, [
+            _vm._v(
+              "\n            " +
+                _vm._s(parseFloat(_vm.item.counter_value).toFixed(2)) +
+                " "
+            ),
+            _c("i", {
+              staticClass: "fa fa-eur",
+              attrs: { "aria-hidden": "true" }
+            })
+          ])
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.portfolioCounterValue == "usd"
+      ? _c("td", [
+          _c("div", { staticClass: "asset-value  nowrap" }, [
+            _c("i", {
+              staticClass: "fa fa-usd",
+              attrs: { "aria-hidden": "true" }
+            }),
+            _vm._v(
+              " " +
+                _vm._s(parseFloat(_vm.item.counter_value).toFixed(2)) +
+                " \n        "
+            )
+          ])
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.portfolioCounterValue == "btc"
+      ? _c("td", [
+          _c("div", { staticClass: "asset-value  nowrap" }, [
+            _c("i", {
+              staticClass: "fa fa-btc",
+              attrs: { "aria-hidden": "true" }
+            }),
+            _vm._v(
+              " " +
+                _vm._s(parseFloat(_vm.item.counter_value).toFixed(2)) +
+                " \n        "
+            )
+          ])
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    _c("td", [
+      _c("div", { staticClass: "asset-balance  nowrap" }, [
+        _c("i", { staticClass: "fa fa-btc", attrs: { "aria-hidden": "true" } }),
+        _vm._v(
+          " " + _vm._s(parseFloat(_vm.item.balance).toFixed(8)) + "\n        "
+        )
+      ])
+    ]),
+    _vm._v(" "),
+    _c("td", [
+      _c("div", { staticClass: "asset-amount  nowrap" }, [
+        _vm._v(
+          "\n            " +
+            _vm._s(parseFloat(_vm.item.amount).toFixed(8)) +
+            "\n        "
+        )
+      ])
+    ]),
+    _vm._v(" "),
+    _c("td", [
+      _c("div", { staticClass: "asset-origin  nowrap" }, [
+        _vm._v("\n            " + _vm._s(_vm.item.origin_name) + "\n        ")
+      ])
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-fd53b3fc", module.exports)
+  }
+}
+
+/***/ }),
+/* 277 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(3)
+/* script */
+var __vue_script__ = __webpack_require__(278)
+/* template */
+var __vue_template__ = __webpack_require__(279)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -122936,7 +121961,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 353 */
+/* 278 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -123027,7 +122052,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 354 */
+/* 279 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -123138,6 +122163,919 @@ if (false) {
     require("vue-hot-reload-api")      .rerender("data-v-051b22d3", module.exports)
   }
 }
+
+/***/ }),
+/* 280 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(3)
+/* script */
+var __vue_script__ = __webpack_require__(281)
+/* template */
+var __vue_template__ = __webpack_require__(282)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/notifications/NotificationList.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-6f400267", Component.options)
+  } else {
+    hotAPI.reload("data-v-6f400267", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 281 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: 'notification-list',
+    props: ['notifications'],
+    data: function data() {
+        return {};
+    },
+    computed: {},
+    mounted: function mounted() {
+        console.log('Component Notifications mounted.');
+    },
+
+    methods: {
+        markAsRead: function markAsRead(id) {
+            axios('/api/notifications/' + id + '/markasread', {
+                method: 'GET'
+            }).then(function (response) {
+                $(window).trigger('resize');
+                console.log("Success: " + response);
+            }).catch(function (e) {
+                console.log("Error: " + e.message);
+            });
+        }
+    }
+});
+
+/***/ }),
+/* 282 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "notification-list" }, [
+    _c("button", { staticClass: "hollow button" }, [
+      _vm._v(" Mark all as read")
+    ]),
+    _vm._v(" "),
+    _c("button", { staticClass: "hollow button" }, [_vm._v(" Delete all")]),
+    _vm._v(" "),
+    _c(
+      "table",
+      { staticClass: "display dataTable myTable", attrs: { width: "100%" } },
+      [
+        _vm._m(0, false, false),
+        _vm._v(" "),
+        _c(
+          "tbody",
+          _vm._l(_vm.notifications, function(notification) {
+            return _c("tr", [
+              notification.read_at == null
+                ? _c("td", [
+                    _c("i", {
+                      staticClass: "fa fa-check item-new",
+                      attrs: { "aria-hidden": "true" },
+                      on: {
+                        click: function($event) {
+                          _vm.markAsRead(notification.id)
+                        }
+                      }
+                    })
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              notification.read_at != null
+                ? _c("td", [
+                    _c("i", {
+                      staticClass: "fa fa-check item-check",
+                      attrs: { "aria-hidden": "true" }
+                    })
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _c("td", [_vm._v(_vm._s(notification.updated_at))]),
+              _vm._v(" "),
+              _c("td", [_vm._v(" " + _vm._s(notification.data.message))])
+            ])
+          })
+        )
+      ]
+    )
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", { staticClass: "dataTable-header" }, [
+      _c("tr", { attrs: { role: "row" } }, [
+        _c("th", {
+          staticClass: "sorting",
+          attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
+        }),
+        _vm._v(" "),
+        _c(
+          "th",
+          {
+            staticClass: "sorting",
+            attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
+          },
+          [_vm._v("Time")]
+        ),
+        _vm._v(" "),
+        _c(
+          "th",
+          {
+            staticClass: "sorting",
+            attrs: { tabindex: "0", rowspan: "1", colspan: "1" }
+          },
+          [_vm._v("Message")]
+        )
+      ])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-6f400267", module.exports)
+  }
+}
+
+/***/ }),
+/* 283 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(3)
+/* script */
+var __vue_script__ = __webpack_require__(284)
+/* template */
+var __vue_template__ = __webpack_require__(285)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/connections/Connections.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-78ec4434", Component.options)
+  } else {
+    hotAPI.reload("data-v-78ec4434", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 284 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: 'connections',
+    props: ['validation-errors', 'exchanges', 'sources'],
+    data: function data() {
+        return {
+            errors: [],
+            connections: [],
+            loadingExchanges: false,
+            exchangeSelected: "",
+            newExchangeApi: "",
+            newExchangeSecret: "",
+            newExchangeFee: "",
+            csrf: ""
+        };
+    },
+    computed: {},
+    mounted: function mounted() {
+        this.loadingExchanges = true;
+        this.csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        console.log('Component Connections mounted.');
+
+        this.loadingExchanges = false;
+    },
+
+    methods: {
+        createConnection: function createConnection() {
+            var _this = this;
+
+            var params = "?new_exchange=" + this.exchangeSelected + "&new_exchange_api_key=" + this.newExchangeApi + "&new_exchange_api_secret=" + this.newExchangeSecret + "&new_exchange_fee=" + this.newExchangeFee;
+
+            var uri = '/connections/' + params;
+            axios(uri, {
+                method: 'POST'
+            }).then(function (response) {
+                console.log("Connection created!");
+            }).catch(function (e) {
+                _this.errors.push(e);
+
+                console.log("Error: " + e.message);
+            });
+        },
+        deleteConnection: function deleteConnection(id) {
+            var _this2 = this;
+
+            var uri = '/connections/' + id;
+            axios.delete(uri).then(function (response) {
+                window.location.replace("/connections");
+                console.log("Connection deleted!");
+            }).catch(function (e) {
+                _this2.errors.push(e);
+
+                console.log("Error: " + e.message);
+            });
+        },
+        updateConnection: function updateConnection(id, key, secret, fee) {
+            var _this3 = this;
+
+            var params = "?new_exchange_api_key=" + key + "&new_exchange_api_secret=" + secret + "&new_exchange_fee=" + fee;
+
+            var uri = '/connections/' + id + '/' + params;
+            axios.patch(uri).then(function (response) {
+                window.location.replace("/connections");
+                console.log("Connection updated!");
+            }).catch(function (e) {
+                _this3.errors.push(e);
+                console.log("Error: " + e.message);
+            });
+        }
+    }
+});
+
+/***/ }),
+/* 285 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("section", { attrs: { id: "connections-widget" } }, [
+    _c("div", { staticClass: "grid-x grid-padding-x" }, [
+      _c(
+        "div",
+        { staticClass: "small-12 cell" },
+        [
+          _c("form", { attrs: { method: "POST", action: "/connections" } }, [
+            _c("input", {
+              attrs: { type: "hidden", name: "_token" },
+              domProps: { value: _vm.csrf }
+            }),
+            _vm._v(" "),
+            _c("div", { staticClass: "exchange-settings" }, [
+              _c("span", { staticClass: "h4" }, [_vm._v("Add Exchange")]),
+              _vm._v(" "),
+              _vm.validationErrors.new_exchange
+                ? _c(
+                    "div",
+                    _vm._l(_vm.validationErrors.new_exchange, function(error) {
+                      return _c("span", { staticClass: "validation-error" }, [
+                        _vm._v(" " + _vm._s(error) + " ")
+                      ])
+                    })
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _c("div", { staticClass: "input-group" }, [
+                _c("span", { staticClass: "input-group-label" }, [
+                  _vm._v("Exchanges")
+                ]),
+                _vm._v(" "),
+                _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.exchangeSelected,
+                        expression: "exchangeSelected"
+                      }
+                    ],
+                    staticClass: "input-group-field",
+                    attrs: { name: "new_exchange" },
+                    on: {
+                      change: function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.exchangeSelected = $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      }
+                    }
+                  },
+                  [
+                    _c(
+                      "option",
+                      {
+                        attrs: { disabled: "", value: "", selected: "selected" }
+                      },
+                      [_vm._v("Select...")]
+                    ),
+                    _vm._v(" "),
+                    _vm._l(_vm.exchanges, function(exchange) {
+                      return _c("option", { domProps: { value: exchange } }, [
+                        _vm._v(_vm._s(exchange))
+                      ])
+                    })
+                  ],
+                  2
+                )
+              ]),
+              _vm._v(" "),
+              _vm.validationErrors.new_exchange_api_key
+                ? _c(
+                    "div",
+                    _vm._l(_vm.validationErrors.new_exchange_api_key, function(
+                      error
+                    ) {
+                      return _c("span", { staticClass: "validation-error" }, [
+                        _vm._v(" " + _vm._s(error) + " ")
+                      ])
+                    })
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _c("div", { staticClass: "input-group" }, [
+                _c("span", { staticClass: "input-group-label" }, [
+                  _vm._v("API Key")
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.newExchangeApi,
+                      expression: "newExchangeApi"
+                    }
+                  ],
+                  staticClass: "input-group-field",
+                  attrs: { type: "text", name: "new_exchange_api_key" },
+                  domProps: { value: _vm.newExchangeApi },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.newExchangeApi = $event.target.value
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _vm.validationErrors.new_exchange_api_secret
+                ? _c(
+                    "div",
+                    _vm._l(
+                      _vm.validationErrors.new_exchange_api_secret,
+                      function(error) {
+                        return _c("span", { staticClass: "validation-error" }, [
+                          _vm._v(" " + _vm._s(error) + " ")
+                        ])
+                      }
+                    )
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _c("div", { staticClass: "input-group" }, [
+                _c("span", { staticClass: "input-group-label" }, [
+                  _vm._v("API Secret")
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.newExchangeSecret,
+                      expression: "newExchangeSecret"
+                    }
+                  ],
+                  staticClass: "input-group-field",
+                  attrs: { type: "text", name: "new_exchange_api_secret" },
+                  domProps: { value: _vm.newExchangeSecret },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.newExchangeSecret = $event.target.value
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _vm.validationErrors.new_exchange_fee
+                ? _c(
+                    "div",
+                    _vm._l(_vm.validationErrors.new_exchange_fee, function(
+                      error
+                    ) {
+                      return _c("span", { staticClass: "validation-error" }, [
+                        _vm._v(" " + _vm._s(error) + " ")
+                      ])
+                    })
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _c("div", { staticClass: "input-group" }, [
+                _c("span", { staticClass: "input-group-label" }, [
+                  _vm._v("Exchange Fee")
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.newExchangeFee,
+                      expression: "newExchangeFee"
+                    }
+                  ],
+                  staticClass: "input-group-field",
+                  attrs: { type: "text", name: "new_exchange_fee" },
+                  domProps: { value: _vm.newExchangeFee },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.newExchangeFee = $event.target.value
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c(
+                "button",
+                { staticClass: "button hollow", attrs: { type: "submit" } },
+                [_vm._v("Submit")]
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _vm._l(_vm.sources, function(connection) {
+            return _c("div", { staticClass: "exchange-settings" }, [
+              _c("span", { staticClass: "h4 capitalize" }, [
+                _vm._v(_vm._s(connection.exchange))
+              ]),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "hollow button alert delete-exchange-button",
+                  on: {
+                    click: function($event) {
+                      _vm.deleteConnection(connection.id)
+                    }
+                  }
+                },
+                [_vm._v("Delete")]
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "input-group" }, [
+                _c("span", { staticClass: "input-group-label capitalize" }, [
+                  _vm._v(_vm._s(connection.exchange) + " Key")
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  staticClass: "input-group-field",
+                  attrs: {
+                    type: "text",
+                    name: connection.exchange + "_con_key"
+                  },
+                  domProps: { value: connection.api }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "input-group" }, [
+                _c("span", { staticClass: "input-group-label capitalize" }, [
+                  _vm._v(_vm._s(connection.exchange) + " Secret")
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  staticClass: "input-group-field",
+                  attrs: {
+                    type: "text",
+                    name: connection.exchange + "_con_secret"
+                  },
+                  domProps: { value: connection.secret }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "input-group" }, [
+                _c("span", { staticClass: "input-group-label capitalize" }, [
+                  _vm._v(_vm._s(connection.exchange) + " Fee")
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  staticClass: "input-group-field",
+                  attrs: {
+                    type: "text",
+                    name: connection.exchange + "_con_fee"
+                  },
+                  domProps: { value: connection.fee }
+                })
+              ])
+            ])
+          })
+        ],
+        2
+      )
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-78ec4434", module.exports)
+  }
+}
+
+/***/ }),
+/* 286 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(3)
+/* script */
+var __vue_script__ = __webpack_require__(287)
+/* template */
+var __vue_template__ = __webpack_require__(288)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/invitations/InvitePanel.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-1be300ff", Component.options)
+  } else {
+    hotAPI.reload("data-v-1be300ff", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 287 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: 'invite-panel',
+    data: function data() {
+        return {
+            updating: false,
+            csrf: ""
+        };
+    },
+    props: ['invitations', 'validation-errors'],
+    computed: {},
+    watch: {},
+    mounted: function mounted() {
+
+        this.csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        console.log('Component InvitePanel mounted.');
+    },
+
+    methods: {
+        saveName: function saveName() {}
+    }
+});
+
+/***/ }),
+/* 288 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("section", { attrs: { id: "invite-panel" } }, [
+    _c("div", { staticClass: "grid-container fluid invite-panel" }, [
+      _c("form", { attrs: { method: "POST", action: "/invite" } }, [
+        _c("input", {
+          attrs: { type: "hidden", name: "_token" },
+          domProps: { value: _vm.csrf }
+        }),
+        _vm._v(" "),
+        _c("div", { staticClass: "grid-x grid-padding-x align-center" }, [
+          _c("div", { staticClass: "cell large-6" }, [
+            _vm.validationErrors.invitation_email
+              ? _c(
+                  "div",
+                  _vm._l(_vm.validationErrors.invitation_email, function(
+                    error
+                  ) {
+                    return _c("span", { staticClass: "validation-error" }, [
+                      _vm._v(" " + _vm._s(error) + " ")
+                    ])
+                  })
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm._m(0, false, false)
+          ])
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-group" }, [
+      _c("span", { staticClass: "input-group-label" }, [_vm._v("Email")]),
+      _vm._v(" "),
+      _c("input", {
+        staticClass: "input-group-field",
+        attrs: { name: "invitation_email", type: "email" }
+      }),
+      _vm._v(" "),
+      _c("div", { staticClass: "input-group-button" }, [
+        _c("input", {
+          staticClass: "button",
+          attrs: { type: "submit", value: "Invite" }
+        })
+      ])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-1be300ff", module.exports)
+  }
+}
+
+/***/ }),
+/* 289 */
+/***/ (function(module, exports) {
+
+//////////////////////////////////////////////////////////////////
+// Cases Carousel 
+$('.reveal').on('open.zf.reveal', function () {
+    console.log('Modal opened!');
+    // Resize window to fit content
+    $(window).trigger('resize');
+});
+
+$('#notificationsModal').on('closed.zf.reveal', function () {
+    console.log('Modal closed!');
+});
+
+/***/ }),
+/* 290 */
+/***/ (function(module, exports) {
+
+$('.alerts-callout').hide().delay(1000).slideDown(1000).delay(5000).slideUp(1000);
+
+/***/ }),
+/* 291 */
+/***/ (function(module, exports) {
+
+
+
+/***/ }),
+/* 292 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
 
 /***/ })
 /******/ ]);
