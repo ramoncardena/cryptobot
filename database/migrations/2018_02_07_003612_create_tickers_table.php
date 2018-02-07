@@ -16,6 +16,9 @@ class CreateTickersTable extends Migration
         Schema::create('tickers', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
+            $table->string('user_id');
+            $table->string('symbol');
+            $table->string('exchange');
         });
     }
 

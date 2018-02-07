@@ -55,4 +55,9 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Connection');
     }
+
+    public function tickers()
+    {
+        return $this->hasMany('App\Ticker');
+    }
 }
