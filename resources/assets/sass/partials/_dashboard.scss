@@ -1,5 +1,6 @@
 section#dashboard {
 	margin-top: 1rem;
+	
 	.section-title {
 		background-color: $title-background;
 		border-bottom: 1px solid $light-gray;
@@ -14,9 +15,9 @@ section#dashboard {
 			color: get-color(secondary);
 		}	
 	}
-
-	.portfolio {
-		margin-top: 20px;
+	
+	.add-coin {
+		font-size: 5rem;
+		color: $light-gray;
 	}
-
 }

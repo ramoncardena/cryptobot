@@ -3,6 +3,7 @@
 
         <div class="card">
             <div class="card-divider">
+                <i class="fa fa-times red remove-coin" aria-hidden="true"></i>
                 <div class="grid-x grid-margin-x text-center">
                     <div class="small-12 cell">
                         <i class="fa fa-arrow-down red" aria-hidden="true"></i> <span class="coin-symbol">{{ coin }}</span> (Cardano)

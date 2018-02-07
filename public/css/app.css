@@ -15708,8 +15708,9 @@ section#dashboard .section-title .value {
   color: #FF7276;
 }
 
-section#dashboard .portfolio {
-  margin-top: 20px;
+section#dashboard .add-coin {
+  font-size: 5rem;
+  color: #e6e6e6;
 }
 
 section#settings .h4 {
@@ -16437,6 +16438,10 @@ section#invite-panel .input-group-label {
 section#coin-card {
   color: #cacaca;
   font-family: 'Nunito', sans-serif;
+}
+
+section#coin-card .remove-coin {
+  padding: 0.2rem;
 }
 
 section#coin-card .card-divider {

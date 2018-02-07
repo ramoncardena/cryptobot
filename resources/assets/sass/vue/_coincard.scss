@@ -2,7 +2,9 @@ section#coin-card {
 	color: $medium-gray;
 	font-family: 'Nunito', sans-serif;
 
-	
+	.remove-coin {
+		padding: 0.2rem;
+	}
 	.card-divider {
 		padding: 0;
 		font-size: 1rem;

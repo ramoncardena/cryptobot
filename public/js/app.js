@@ -122011,6 +122011,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'coin-card',
@@ -122087,6 +122088,11 @@ var render = function() {
   return _c("section", { attrs: { id: "coin-card" } }, [
     _c("div", { staticClass: "card" }, [
       _c("div", { staticClass: "card-divider" }, [
+        _c("i", {
+          staticClass: "fa fa-times red remove-coin",
+          attrs: { "aria-hidden": "true" }
+        }),
+        _vm._v(" "),
         _c("div", { staticClass: "grid-x grid-margin-x text-center" }, [
           _c("div", { staticClass: "small-12 cell" }, [
             _c("i", {
