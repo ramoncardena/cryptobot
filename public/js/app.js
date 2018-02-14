@@ -122021,32 +122021,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             responsiveOptions: [],
             chartistCoinChartData: { labels: [], series: [] },
             chartistCoinChartOptions: {},
+            compactMode: false,
             updating: false,
             csrf: ""
         };
     },
-    props: ['coin'],
+    props: ['coin', 'compact'],
     computed: {},
     watch: {},
     mounted: function mounted() {
-        // Set Chart options
-        // this.responsiveOptions = [];
-        // this.chartistCoinChartData.labels = [1, 2, 3, 4, 5, 6, 7, 8];
-        // this.chartistCoinChartData.series = [5, 9, 7, 8, 5, 3, 5, 4];
+
+        if (this.compact) this.compactMode = true;
+
         this.chartistCoinChartOptions = {
-            showArea: true,
-            showLine: false,
-            showPoint: false,
-            fullWidth: true,
-            axisX: {
-                showLabel: false,
-                showGrid: false
-            }
-        };
-        // this.chartistCoinChart = new Chartist.Line('.ct-chart-coin', this.chartistCoinChartData, this.chartistCoinChartOptions,this.responsiveOptions);
-        new Chartist.Line('.ct-chart-coin' + this.coin, {
-            series: [[5, 9, 7, 8, 15, 11, 9, 14]]
-        }, {
             low: 0,
             showArea: true,
             showLine: true,
@@ -122066,14 +122053,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 showLabel: false,
                 showGrid: false
             }
-        });
+        };
+        this.chartistCoinChartData.series = [[5, 9, 7, 8, 15, 11, 9, 14]];
+        // this.chartistCoinChart = new Chartist.Line('.ct-chart-coin', this.chartistCoinChartData, this.chartistCoinChartOptions,this.responsiveOptions);
+        this.chartistCoinChart = new Chartist.Line('.ct-chart-coin' + this.coin, this.chartistCoinChartData, this.chartistCoinChartOptions);
 
         this.csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
         console.log('Component CoinCard mounted.');
     },
 
     methods: {
-        saveName: function saveName() {}
+        toggleCompact: function toggleCompact() {
+            console.log("Toggle");
+            if (this.compactMode == true) {
+                this.compactMode == false;
+                this.chartistCoinChart = new Chartist.Line('.ct-chart-coin' + this.coin, this.chartistCoinChartData, this.chartistCoinChartOptions);
+            } else {
+                this.compactMode == true;
+            }
+        }
     }
 });
 
@@ -122088,10 +122087,23 @@ var render = function() {
   return _c("section", { attrs: { id: "coin-card" } }, [
     _c("div", { staticClass: "card" }, [
       _c("div", { staticClass: "card-divider" }, [
-        _c("i", {
-          staticClass: "fa fa-times red remove-coin",
-          attrs: { "aria-hidden": "true" }
-        }),
+        _c(
+          "button",
+          {
+            staticClass: "clear button",
+            on: {
+              click: function($event) {
+                _vm.toggleCompact()
+              }
+            }
+          },
+          [
+            _c("i", {
+              staticClass: "fa fa-times green remove-coin",
+              attrs: { "aria-hidden": "true" }
+            })
+          ]
+        ),
         _vm._v(" "),
         _c("div", { staticClass: "grid-x grid-margin-x text-center" }, [
           _c("div", { staticClass: "small-12 cell" }, [
@@ -122114,11 +122126,15 @@ var render = function() {
         ])
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "grid-x grid-passing-x align-middle" }, [
-        _c("div", { staticClass: "auto small-12 cell" }, [
-          _c("div", { class: "ct-chart-coin" + _vm.coin + " ct-double-octave" })
-        ])
-      ]),
+      _vm.compactMode == false
+        ? _c("div", { staticClass: "grid-x grid-passing-x align-middle" }, [
+            _c("div", { staticClass: "auto small-12 cell" }, [
+              _c("div", {
+                class: "ct-chart-coin" + _vm.coin + " ct-double-octave"
+              })
+            ])
+          ])
+        : _vm._e(),
       _vm._v(" "),
       _vm._m(0, false, false)
     ])

@@ -3,7 +3,7 @@
 
         <div class="card">
             <div class="card-divider">
-                <i class="fa fa-times red remove-coin" aria-hidden="true"></i>
+                <button class="clear button" v-on:click="toggleCompact()"><i class="fa fa-times green remove-coin" aria-hidden="true"></i></button>
                 <div class="grid-x grid-margin-x text-center">
                     <div class="small-12 cell">
                         <i class="fa fa-arrow-down red" aria-hidden="true"></i> <span class="coin-symbol">{{ coin }}</span> (Cardano)
@@ -15,7 +15,7 @@
      
               
             </div>
-            <div class="grid-x grid-passing-x align-middle">
+            <div v-if="compactMode == false" class="grid-x grid-passing-x align-middle">
                 <div class="auto small-12 cell">
                     <div :class="'ct-chart-coin' + coin + ' ct-double-octave'"></div>
                 </div>
@@ -53,12 +53,14 @@ export default {
             responsiveOptions: [],
             chartistCoinChartData: {labels: [], series: []},
             chartistCoinChartOptions: {},
+            compactMode: false,
             updating: false,
             csrf: ""
         }
     },
     props: [
     'coin',
+    'compact'
     ],
     computed: {
 
@@ -67,26 +69,10 @@ export default {
 
     },
     mounted() {
-        // Set Chart options
-        // this.responsiveOptions = [];
-        // this.chartistCoinChartData.labels = [1, 2, 3, 4, 5, 6, 7, 8];
-        // this.chartistCoinChartData.series = [5, 9, 7, 8, 5, 3, 5, 4];
+       
+        if (this.compact) this.compactMode = true;
+
          this.chartistCoinChartOptions = {
-            showArea: true,
-            showLine: false,
-            showPoint: false,
-            fullWidth: true,
-            axisX: {
-                showLabel: false,
-                showGrid: false
-            }
-        };
-        // this.chartistCoinChart = new Chartist.Line('.ct-chart-coin', this.chartistCoinChartData, this.chartistCoinChartOptions,this.responsiveOptions);
-        new Chartist.Line('.ct-chart-coin' + this.coin, {
-            series: [
-            [5, 9, 7, 8, 15, 11, 9, 14]
-            ]
-        }, {
             low: 0,
             showArea: true,
             showLine: true,
@@ -106,14 +92,28 @@ export default {
                 showLabel: false,
                 showGrid: false
             }
-        });
+        };
+        this.chartistCoinChartData.series = [
+            [5, 9, 7, 8, 15, 11, 9, 14]
+            ]
+        // this.chartistCoinChart = new Chartist.Line('.ct-chart-coin', this.chartistCoinChartData, this.chartistCoinChartOptions,this.responsiveOptions);
+        this.chartistCoinChart = new Chartist.Line('.ct-chart-coin' + this.coin, this.chartistCoinChartData, this.chartistCoinChartOptions);
 
         this.csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+  
         console.log('Component CoinCard mounted.');
     },
     methods: {
-        saveName: (function () {
-
+        toggleCompact: (function () {
+            console.log("Toggle");
+            if (this.compactMode == true) {
+                this.compactMode == false;
+                this.chartistCoinChart = new Chartist.Line('.ct-chart-coin' + this.coin, this.chartistCoinChartData, this.chartistCoinChartOptions);
+            }
+            else {
+                this.compactMode == true;
+            }
+            
         })
     }
 }

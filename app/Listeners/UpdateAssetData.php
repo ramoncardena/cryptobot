@@ -49,7 +49,10 @@ class UpdateAssetData implements ShouldQueue
                 $asset->price = $assetPrice->BTC;
                 $asset->balance =  floatval($asset->amount) * floatval($assetPrice->BTC);
                 $counterValue = strtoupper($portfolio->counter_value);
-                $asset->counter_value = floatval($asset->amount) * floatval($guru->cryptocomparePriceGetSinglePrice($asset->symbol, $counterValue)->$counterValue);
+
+                $btcFiatValue = $guru->cryptocomparePriceGetSinglePrice('BTC', $counterValue)->$counterValue;
+                
+                $asset->counter_value = floatval($asset->amount) * (floatval($assetPrice->BTC) * floatval($btcFiatValue));
                 $asset->save();
 
                 // EVENT:  Portfolio Asset Loaded
@@ -59,7 +62,10 @@ class UpdateAssetData implements ShouldQueue
         } catch (\Exception $e) {
 
             // Log CRITICAL: Exception
-            Log::critical("[UpdateAssetData] Exception: " . $e->getMessage());
+            Log::critical("[UpdateAssetData] (" . $asset->symbol .") Exception: " . $e->getMessage() . " " . $e->getCode() . " " . $e->getFile() . ":" . $e->getLine());
+
+            // EVENT:  Portfolio Asset Loaded
+            event(new PortfolioAssetUpdated($asset));
 
         }
         

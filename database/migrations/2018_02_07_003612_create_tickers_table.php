@@ -18,7 +18,7 @@ class CreateTickersTable extends Migration
             $table->timestamps();
             $table->string('user_id');
             $table->string('symbol');
-            $table->string('exchange');
+            $table->string('exchange')->default('');
         });
     }
 
