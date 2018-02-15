@@ -121606,7 +121606,7 @@ var render = function() {
       _vm._v(" "),
       _vm._m(1, false, false),
       _vm._v(" "),
-      _c("div", { staticClass: "small-12 large-6 cell" }, [
+      _c("div", { staticClass: "small-12 cell" }, [
         _c(
           "div",
           {
@@ -121668,7 +121668,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "small-12 large-6 cell" }, [
+    return _c("div", { staticClass: "small-12 cell" }, [
       _c("div", { staticClass: "portfolio-assets" }, [
         _c("table", {
           staticClass: "display unstriped",

@@ -61,13 +61,13 @@
                 
             </div>
 
-            <div class="small-12 large-6 cell">
+            <div class="small-12 cell">
                 <div class="portfolio-assets">
                     <table id="portfolioTable" class="display unstriped" width="100%"></table>
                 </div>
             </div>
 
-            <div class="small-12 large-6 cell">
+            <div class="small-12 cell">
                 <div class="grid-x grid-padding-x align-center-middle text-center dashboard">
                     <div class="small-12 cell charts">
                          <div v-show="showChart" class="ct-chart-totals ct-golden-section"></div>
