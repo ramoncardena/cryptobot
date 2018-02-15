@@ -3,6 +3,14 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        
+        <link rel="manifest" href="manifest.json">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="application-name" content="CryptoBot">
+        <meta name="apple-mobile-web-app-title" content="CryptoBot">
+        <meta name="msapplication-starturl" content="/">
+
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <!-- CSRF Token -->
