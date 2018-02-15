@@ -15505,8 +15505,6 @@ table.trade thead th {
   font-weight: 200;
 }
 
-/* Table style */
-
 .icons-area {
   width: 55px;
 }
@@ -15806,6 +15804,36 @@ section#orders .align-vertical h1 {
 
 section#orders .input-group-label {
   color: #FF7276;
+  background-color: transparent;
+}
+
+section#trades table.dataTable.dtr-inline.collapsed > tbody > tr[role="row"] > td:first-child::before,
+section#trades table.dataTable.dtr-inline.collapsed > tbody > tr[role="row"] > th:first-child::before {
+  top: 9px;
+  left: 6px;
+  height: 14px;
+  width: 14px;
+  display: block;
+  position: absolute;
+  color: #cacaca;
+  border: 0;
+  border-radius: 0;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  -webkit-box-sizing: content-box;
+          box-sizing: content-box;
+  text-align: center;
+  text-indent: 0 !important;
+  font-family: 'Courier New', Courier, monospace;
+  line-height: 14px;
+  font-family: FontAwesome;
+  content: "\F078";
+  background-color: transparent;
+}
+
+section#trades table.dataTable.dtr-inline.collapsed > tbody > tr.parent > td:first-child::before,
+section#trades table.dataTable.dtr-inline.collapsed > tbody > tr.parent > th:first-child::before {
+  content: "\F077";
   background-color: transparent;
 }
 
@@ -16215,6 +16243,36 @@ section#email-newinvite .invitation-label {
 .tradepanel .last,
 .tradepanel .volume {
   margin-bottom: 1rem;
+}
+
+section#portfolio-widget table.dataTable.dtr-inline.collapsed > tbody > tr[role="row"] > td:first-child::before,
+section#portfolio-widget table.dataTable.dtr-inline.collapsed > tbody > tr[role="row"] > th:first-child::before {
+  top: 9px;
+  left: 6px;
+  height: 14px;
+  width: 14px;
+  display: block;
+  position: absolute;
+  color: #cacaca;
+  border: 0;
+  border-radius: 0;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  -webkit-box-sizing: content-box;
+          box-sizing: content-box;
+  text-align: center;
+  text-indent: 0 !important;
+  font-family: 'Courier New', Courier, monospace;
+  line-height: 14px;
+  font-family: FontAwesome;
+  content: "\F078";
+  background-color: transparent;
+}
+
+section#portfolio-widget table.dataTable.dtr-inline.collapsed > tbody > tr.parent > td:first-child::before,
+section#portfolio-widget table.dataTable.dtr-inline.collapsed > tbody > tr.parent > th:first-child::before {
+  content: "\F077";
+  background-color: transparent;
 }
 
 section#portfolio-widget .profit {

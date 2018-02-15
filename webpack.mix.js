@@ -15,7 +15,8 @@ let mix = require('laravel-mix');
  mix.sass('resources/assets/sass/app.scss', 'public/css')
  .styles([
  	'node_modules/datatables.net-zf/css/dataTables.foundation.css',
- 	'node_modules/datatables.net-responsive-zf/css/responsive.foundation.css'
+ 	'node_modules/datatables.net-responsive-zf/css/responsive.foundation.css',
+ 	'node_modules/datatables.net-colreorder-dt/css/colReorder.dataTables.css'
  	], 'public/css/datatables.css')
   .styles([
   	'node_modules/easy-autocomplete/dist/easy-autocomplete.css',

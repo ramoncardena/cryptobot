@@ -1,4 +1,28 @@
 section#trades{
+	table.dataTable.dtr-inline.collapsed > tbody > tr[role="row"] > td:first-child::before, table.dataTable.dtr-inline.collapsed > tbody > tr[role="row"] > th:first-child::before {
+		top: 9px;
+		left: 6px;
+		height: 14px;
+		width: 14px;
+		display: block;
+		position: absolute;
+		color: $medium-gray;
+		border: 0;
+		border-radius: 0;
+		box-shadow: none;
+		box-sizing: content-box;
+		text-align: center;
+		text-indent: 0 !important;
+		font-family: 'Courier New', Courier, monospace;
+		line-height: 14px;
+		font-family: FontAwesome;
+		content: "\f078";
+		background-color: transparent;
+	}
+	table.dataTable.dtr-inline.collapsed > tbody > tr.parent > td:first-child::before, table.dataTable.dtr-inline.collapsed > tbody > tr.parent > th:first-child::before {
+		content:  "\f077";
+		background-color: transparent;
+	}
 
 	.section-title {
 		background-color: $title-background;

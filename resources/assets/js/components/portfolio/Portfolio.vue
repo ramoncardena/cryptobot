@@ -1,8 +1,8 @@
 <template>
     <section id="portfolio-widget">
 
-        <div class="grid-x grid-padding-x">
-            <div class="small-12 cell">
+        <div class="grid-x grid-padding-x align-center">
+            <div class="small-12 medium-10 cell">
                 <div v-if="loadingPortfolio==true"  class="grid-container fluid">
                     <div class="grid-x grid-padding-x"> 
                         <div class="small-12 medium-shrink cell">
@@ -61,13 +61,13 @@
                 
             </div>
 
-            <div class="small-12 cell">
+            <div class="small-12 medium-10 cell">
                 <div class="portfolio-assets">
-                    <table id="portfolioTable" class="display unstriped" width="100%"></table>
+                    <table id="portfolioTable" class="display compact unstriped" width="100%"></table>
                 </div>
             </div>
 
-            <div class="small-12 cell">
+            <div class="small-12 medium-10 cell">
                 <div class="grid-x grid-padding-x align-center-middle text-center dashboard">
                     <div class="small-12 cell charts">
                          <div v-show="showChart" class="ct-chart-totals ct-golden-section"></div>
@@ -138,43 +138,49 @@ export default {
 
         // Setup DATATABLE
         this.portfolioTable = $('#portfolioTable').DataTable( {
+            "columns": [
+                { name: 'profit', title: ''},
+                { name: 'coin', title: '<div class="sorting nowrap">Coin</div>'},
+                { name: 'amount', title: '<div class="sorting nowrap">Amount</div>' },
+                { name: 'fiatvalue', title: '<div class="sorting nowrap">Value (Fiat)</div>' },
+                { name: 'btcvalue', title: '<div class="sorting nowrap">Value (BTC)</div>' },
+                { name: 'last', title: '<div class="sorting nowrap">Last Price</div>' },
+                { name: 'purchase', title: '<div class="sorting nowrap">Purchase Price</div>' },
+                { name: 'id', title: '<div class="sorting nowrap">Asset ID</div>' },
+                { name: 'origin', title: '<div class="sorting_asc nowrap">Origin</div>' }
+            ],
             "searching": false,
             "responsive": true,
+            "colReorder":true,
+            "stateSave": true,
             "paging": false,
             "info": false,
             "columnDefs": [
-            { "visible": false, "targets": 7 }
-            ],
-            columns: [
-            { title: ''},
-            { title: '<div class="sorting nowrap">Coin</div>'},
-            { title: '<div class="sorting nowrap">Amount</div>' },
-            { title: '<div class="sorting nowrap">Value (Fiat)</div>' },
-            { title: '<div class="sorting nowrap">Value (BTC)</div>' },
-            { title: '<div class="sorting nowrap">Last Price</div>' },
-            { title: '<div class="sorting nowrap">Purchase Price</div>' },
-            { title: '<div class="sorting nowrap">Asset ID</div>' },
-            { title: '<div class="sorting_asc nowrap">Origin</div>' }
+                { "visible": false, "targets": 7 }
             ],
             "drawCallback": function ( settings ) {
                 var api = this.api();
                 var rows = api.rows( {page:'current'} ).nodes();
                 var last=null;
 
-                api.column(8, {page:'current'} ).data().each( function ( group, i ) {
+                api.column('origin:name', {page:'current'} ).data().each( function ( group, i ) {
                     if ( last !== group ) {
                         $(rows).eq( i ).before(
-                            '<tr class="group"><td colspan="7">'+group+'</td></tr>'
+                            '<tr class="group"><td colspan="' + api.column( 'origin:name' ).index() +'">' + group + '</td></tr>'
                             );
 
                         last = group;
                     }
                 } );
             }
+            
         } );
         
         // Clear Datatable in case of reloading
         this.portfolioTable.clear();
+        this.portfolioTable.order.fixed( {
+            pre: [ this.portfolioTable.column( 'origin:name' ).index(), 'asc' ]
+        } );
 
         // Set Chart options
         this.responsiveOptions = [
@@ -246,7 +252,7 @@ export default {
                     parseFloat(e.asset.initial_price).toFixed(8),
                     e.asset.id,
                     origin
-                ] ).order( [ 8, 'asc' ] ).invalidate().draw();   
+                ] ).order( [ this.portfolioTable.column( 'origin:name' ).index(), 'asc' ] ).invalidate().draw();   
             }
             
         })
@@ -321,7 +327,7 @@ export default {
 
                 // Locate current coin row in DATATABLE
                 var indexes = this.portfolioTable.rows().eq( 0 ).filter( rowIdx => {
-                    return this.portfolioTable.cell( rowIdx, 7 ).data() === e.asset.id ? true : false;
+                    return this.portfolioTable.cell( rowIdx, this.portfolioTable.column( 'id:name' ).index() ).data() === e.asset.id ? true : false;
                 } );
 
                 // Update DATATABLE values (Price, Balance and Counter Value)

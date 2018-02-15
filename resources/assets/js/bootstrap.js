@@ -15,6 +15,8 @@ try {
     require( 'datatables.net-zf' );
     // require( 'datatables.net-responsive/js/dataTables.responsive' );
     require( 'datatables.net-responsive-zf' );
+    
+    require( 'datatables.net-colreorder');
     //require('footable/dist/footable');
     //
     require('easy-autocomplete/dist/jquery.easy-autocomplete');

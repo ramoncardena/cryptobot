@@ -1,3 +1,5 @@
+
+
 .dataTables_empty {
   display:none;
 }
@@ -12,23 +14,6 @@
 	margin-bottom: 2rem !important;
 	margin-top: 1rem !important;
 }
-// div.dataTables_wrapper {
-// 	margin-bottom: 2rem !important;
-// }
-// .dataTable-header {
-// 	text-align: center;
-// }
-// div.dataTables_length {
-//     float: left;
-// }
- 
-// div.dataTables_filter {
-//     float: right;
-// }
- 
-// div.dataTables_info {
-//     float: left;
-// }
 
 /* Header cells */
 table.trade thead th {
@@ -36,25 +21,10 @@ table.trade thead th {
     font-weight: 200;
 }
 
- /* Table style */
-// table.trade {
-//     width: 100%;
-//     clear: both;
-//     margin-bottom: 2rem;
-//     margin-top: 1rem;
-// }
- 
-// table.trade td,
-// table.trade th {
-//     padding: 5px;
-//     border: 1px solid #fff;
-// }
-
-
 .icons-area {
-        width: 55px;
-        .fa-cog {
-            font-size: 0.8rem;
-        }
+    width: 55px;
+    .fa-cog {
+        font-size: 0.8rem;
+    }
 }
 
