@@ -3,13 +3,18 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        
+
         <link rel="manifest" href="manifest.json">
         <meta name="mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="application-name" content="CryptoBot">
         <meta name="apple-mobile-web-app-title" content="CryptoBot">
         <meta name="msapplication-starturl" content="/">
+        <link rel="icon" type="image/png" href="favicon-16x16.png" sizes="16x16">
+        <link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32">
+        <link rel="icon" type="image/png" href="android-192x192.png" sizes="192x192">
+        <link rel="apple-touch-icon" href="apple-touch-icon-180x180.png" sizes="180x180">
+        <meta name="msapplication-config" content="browserconfig.xml">
 
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
