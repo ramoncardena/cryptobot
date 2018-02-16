@@ -122655,10 +122655,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
                 var formated_purchase_price = '<span class="nowrap"><i class="fa fa-btc" aria-hidden="true"></i>' + parseFloat(purchase_price).toFixed(8) + '</span>';
 
-                _this.portfolioTable.cell(indexes[0], 3).data(formated_counter_value).invalidate();
-                _this.portfolioTable.cell(indexes[0], 4).data(formated_balance).invalidate();
-                _this.portfolioTable.cell(indexes[0], 5).data(formated_price).invalidate();
-                _this.portfolioTable.cell(indexes[0], 6).data(formated_purchase_price).invalidate();
+                _this.portfolioTable.cell(indexes[0], _this.portfolioTable.column('fiatvalue:name').index()).data(formated_counter_value).invalidate();
+                _this.portfolioTable.cell(indexes[0], _this.portfolioTable.column('btcvalue:name').index()).data(formated_balance).invalidate();
+                _this.portfolioTable.cell(indexes[0], _this.portfolioTable.column('last:name').index()).data(formated_price).invalidate();
+                _this.portfolioTable.cell(indexes[0], _this.portfolioTable.column('purchase:name').index()).data(formated_purchase_price).invalidate();
 
                 var balance = '<i class="fa fa-btc" aria-hidden="true"></i>' + parseFloat(e.asset.balance).toFixed(8);
                 if (e.asset.initial_price == 0) {
@@ -122667,9 +122667,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     var profit = ((parseFloat(price) - parseFloat(e.asset.initial_price)) / parseFloat(e.asset.initial_price) * 100).toFixed(2);
                 }
                 if (profit >= 0) {
-                    _this.portfolioTable.cell(indexes[0], 0).data('<span class="profit nowrap">+' + profit + '%</span>').invalidate();
+                    _this.portfolioTable.cell(indexes[0], _this.portfolioTable.column('profit:name').index()).data('<span class="profit nowrap">+' + profit + '%</span>').invalidate();
                 } else {
-                    _this.portfolioTable.cell(indexes[0], 0).data('<span class="loss nowrap">' + profit + '%</span>').invalidate();
+                    _this.portfolioTable.cell(indexes[0], _this.portfolioTable.column('profit:name').index()).data('<span class="loss nowrap">' + profit + '%</span>').invalidate();
                 }
 
                 // Gainers and losers
@@ -122988,7 +122988,7 @@ var render = function() {
               "grid-x grid-padding-x align-center-middle text-center dashboard"
           },
           [
-            _c("div", { staticClass: "small-12 cell charts" }, [
+            _c("div", { staticClass: "small-12 large-6 cell charts" }, [
               _c("div", {
                 directives: [
                   {
@@ -123002,7 +123002,7 @@ var render = function() {
               })
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "small-12 cell charts" }, [
+            _c("div", { staticClass: "small-12 large-6 cell charts" }, [
               _c("div", {
                 directives: [
                   {

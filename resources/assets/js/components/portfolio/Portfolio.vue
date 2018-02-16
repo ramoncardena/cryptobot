@@ -69,10 +69,10 @@
 
             <div class="small-12 medium-10 cell">
                 <div class="grid-x grid-padding-x align-center-middle text-center dashboard">
-                    <div class="small-12 cell charts">
+                    <div class="small-12 large-6 cell charts">
                          <div v-show="showChart" class="ct-chart-totals ct-golden-section"></div>
                     </div>
-                    <div class="small-12 cell charts">
+                    <div class="small-12 large-6 cell charts">
                         <div v-show="showChart" class="ct-chart-origins ct-golden-section"></div>
                     </div>
                 </div>
@@ -337,10 +337,10 @@ export default {
 
                 var formated_purchase_price = '<span class="nowrap"><i class="fa fa-btc" aria-hidden="true"></i>' + parseFloat(purchase_price).toFixed(8) + '</span>';
 
-                this.portfolioTable.cell(indexes[0], 3).data(formated_counter_value).invalidate();
-                this.portfolioTable.cell(indexes[0], 4).data(formated_balance).invalidate();
-                this.portfolioTable.cell(indexes[0], 5).data(formated_price).invalidate();
-                this.portfolioTable.cell(indexes[0], 6).data(formated_purchase_price).invalidate();
+                this.portfolioTable.cell(indexes[0], this.portfolioTable.column( 'fiatvalue:name' ).index()).data(formated_counter_value).invalidate();
+                this.portfolioTable.cell(indexes[0], this.portfolioTable.column( 'btcvalue:name' ).index()).data(formated_balance).invalidate();
+                this.portfolioTable.cell(indexes[0], this.portfolioTable.column( 'last:name' ).index()).data(formated_price).invalidate();
+                this.portfolioTable.cell(indexes[0], this.portfolioTable.column( 'purchase:name' ).index()).data(formated_purchase_price).invalidate();
                 
                 var balance = '<i class="fa fa-btc" aria-hidden="true"></i>' + parseFloat(e.asset.balance).toFixed(8);
                 if (e.asset.initial_price == 0 ) {
@@ -350,10 +350,10 @@ export default {
                     var profit = ( ( ( parseFloat(price)-parseFloat(e.asset.initial_price) ) / parseFloat(e.asset.initial_price)) * 100 ).toFixed(2);
                 }
                 if (profit >= 0) {
-                    this.portfolioTable.cell(indexes[0], 0).data('<span class="profit nowrap">+' + profit + '%</span>' ).invalidate();
+                    this.portfolioTable.cell(indexes[0], this.portfolioTable.column( 'profit:name' ).index()).data('<span class="profit nowrap">+' + profit + '%</span>' ).invalidate();
                 }
                 else {
-                    this.portfolioTable.cell(indexes[0], 0).data('<span class="loss nowrap">' + profit + '%</span>' ).invalidate();
+                    this.portfolioTable.cell(indexes[0], this.portfolioTable.column( 'profit:name' ).index()).data('<span class="loss nowrap">' + profit + '%</span>' ).invalidate();
                 }
                 
 
