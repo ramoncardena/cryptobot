@@ -105,7 +105,7 @@
 
                             <div class="top-bar-left show-for-medium">
                                 <ul class="menu">
-                                    <li><img class="logo" src="<?php echo asset('storage/cryptobot-logo-40px-new-white.png') ?>"/> <span class="nav-title">CRYPTOBOT</span></li>
+                                    <li><img class="logo" src="<?php echo asset('storage/cryptobot-logo-40px-new-white.png') ?>"/> <span class="nav-title">CryptoBot</span></li>
                                 </ul>
                             </div>
 
