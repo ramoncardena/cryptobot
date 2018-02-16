@@ -4,6 +4,19 @@
 	.logo {
 		margin-left: 15px;
 	}
+	a {
+		color: $white;
+		&:hover {
+			color: $light-gray;
+		}
+	}
+}
+.nav-title {
+		font-size: 1.6rem;
+		text-transform: uppercase;
+		vertical-align: bottom;
+		margin-left: 0.5rem;
+		color: $white;
 }
 
 .title-bar-right {

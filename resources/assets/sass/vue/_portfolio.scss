@@ -25,17 +25,14 @@ section#portfolio-widget {
 	}
 	.profit {
 		color: get-color(profit);
-		float: right;
 		font-weight: 600;
 	}
 	.loss {
 		color: get-color(loss);
-		float: right;
 		font-weight: 600;
 	}
 	.profit-box {
 		color: get-color(profit);
-		float: right;
 		font-weight: 600;
 		background-color: rgba(get-color(profit),0.3);
 		padding: 0.5rem;
@@ -43,7 +40,6 @@ section#portfolio-widget {
 	}
 	.loss-box {
 		color: get-color(loss);
-		float: right;
 		font-weight: 600;
 		background-color: rgba(get-color(loss),0.3);
 		padding: 0.5rem;
@@ -51,7 +47,6 @@ section#portfolio-widget {
 	}
 	.neutral-box {
 		color: $medium-gray;
-		float: right;
 		font-weight: 600;
 		background-color: rgba($medium-gray,0.3);
 		padding: 0.5rem;

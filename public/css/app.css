@@ -11280,7 +11280,7 @@ a.thumbnail image {
 
 .top-bar,
 .top-bar ul {
-  background-color: #FEFEFA;
+  background-color: #345678;
 }
 
 .top-bar input {
@@ -15445,6 +15445,22 @@ a.thumbnail image {
   margin-left: 15px;
 }
 
+.top-bar a {
+  color: #fefefe;
+}
+
+.top-bar a:hover {
+  color: #e6e6e6;
+}
+
+.nav-title {
+  font-size: 1.6rem;
+  text-transform: uppercase;
+  vertical-align: bottom;
+  margin-left: 0.5rem;
+  color: #fefefe;
+}
+
 .title-bar-right .badge-icon {
   color: #fefefe;
   margin-right: 0.2rem;
@@ -15887,6 +15903,11 @@ section#portfolio .portfolio-area {
   margin-top: 2rem;
 }
 
+section#portfolio .h4 {
+  color: #fefefe;
+  text-transform: underline;
+}
+
 .portfolio-modal .input-group-label {
   color: #345678;
   background-color: transparent;
@@ -16280,19 +16301,16 @@ section#portfolio-widget table.dataTable.dtr-inline.collapsed > tbody > tr.paren
 
 section#portfolio-widget .profit {
   color: #036502;
-  float: right;
   font-weight: 600;
 }
 
 section#portfolio-widget .loss {
   color: #F1615E;
-  float: right;
   font-weight: 600;
 }
 
 section#portfolio-widget .profit-box {
   color: #036502;
-  float: right;
   font-weight: 600;
   background-color: rgba(3, 101, 2, 0.3);
   padding: 0.5rem;
@@ -16301,7 +16319,6 @@ section#portfolio-widget .profit-box {
 
 section#portfolio-widget .loss-box {
   color: #F1615E;
-  float: right;
   font-weight: 600;
   background-color: rgba(241, 97, 94, 0.3);
   padding: 0.5rem;
@@ -16310,7 +16327,6 @@ section#portfolio-widget .loss-box {
 
 section#portfolio-widget .neutral-box {
   color: #cacaca;
-  float: right;
   font-weight: 600;
   background-color: rgba(202, 202, 202, 0.3);
   padding: 0.5rem;

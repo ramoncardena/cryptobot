@@ -49,7 +49,7 @@
 
                 <!-- Menu -->
                 <div class="menu-title text-center">
-                    <img class="logo" width="60" src="<?php echo Storage::url('cryptobot-logo-white-200px.png')?>"/>
+                    <img class="logo" width="60" src="<?php echo Storage::url('cryptobot-logo-white-200px-new.png')?>"/>
                     <div class="h4">CryptoBot</div>
                     <div class="version">{{ config('app.version', '0.0.0') }} [Alpha]</div>
                     <!--asset('storage/cryptobot-logo-white-200px.png') -->
@@ -105,7 +105,7 @@
 
                             <div class="top-bar-left show-for-medium">
                                 <ul class="menu">
-                                    <li><img class="logo" src="<?php echo asset('storage/cryptobot-logo-40px-new.png') ?>"/></li>
+                                    <li><img class="logo" src="<?php echo asset('storage/cryptobot-logo-40px-new-white.png') ?>"/> <span class="nav-title">CRYPTOBOT</span></li>
                                 </ul>
                             </div>
 
