@@ -20,7 +20,10 @@ table.trade thead th {
     text-align: center;
     font-weight: 200;
 }
-
+thead {
+    background: get-color(primary);
+    color: $white;
+}
 .icons-area {
     width: 55px;
     .fa-cog {

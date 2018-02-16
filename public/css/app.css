@@ -6510,14 +6510,14 @@ h6,
 
 a {
   line-height: inherit;
-  color: #009ACE;
+  color: #345678;
   text-decoration: none;
   cursor: pointer;
 }
 
 a:hover,
 a:focus {
-  color: #0084b1;
+  color: #2d4a67;
 }
 
 a img {
@@ -7197,7 +7197,7 @@ select[multiple] {
   line-height: 1;
   text-align: center;
   cursor: pointer;
-  background-color: #009ACE;
+  background-color: #345678;
   color: #fefefe;
 }
 
@@ -7207,7 +7207,7 @@ select[multiple] {
 
 .button:hover,
 .button:focus {
-  background-color: #0083af;
+  background-color: #2c4966;
   color: #fefefe;
 }
 
@@ -7231,14 +7231,14 @@ select[multiple] {
 }
 
 .button.primary {
-  background-color: #009ACE;
-  color: #0a0a0a;
+  background-color: #345678;
+  color: #fefefe;
 }
 
 .button.primary:hover,
 .button.primary:focus {
-  background-color: #007ba5;
-  color: #0a0a0a;
+  background-color: #2a4560;
+  color: #fefefe;
 }
 
 .button.secondary {
@@ -7352,7 +7352,7 @@ select[multiple] {
 .button[disabled],
 .button[disabled]:hover,
 .button[disabled]:focus {
-  background-color: #009ACE;
+  background-color: #345678;
   color: #fefefe;
 }
 
@@ -7368,8 +7368,8 @@ select[multiple] {
 .button[disabled].primary,
 .button[disabled].primary:hover,
 .button[disabled].primary:focus {
-  background-color: #009ACE;
-  color: #0a0a0a;
+  background-color: #345678;
+  color: #fefefe;
 }
 
 .button.disabled.secondary,
@@ -7517,8 +7517,8 @@ select[multiple] {
 }
 
 .button.hollow {
-  border: 1px solid #009ACE;
-  color: #009ACE;
+  border: 1px solid #345678;
+  color: #345678;
 }
 
 .button.hollow,
@@ -7538,35 +7538,35 @@ select[multiple] {
 
 .button.hollow:hover,
 .button.hollow:focus {
-  border-color: #004d67;
-  color: #004d67;
+  border-color: #1a2b3c;
+  color: #1a2b3c;
 }
 
 .button.hollow:hover.disabled,
 .button.hollow:hover[disabled],
 .button.hollow:focus.disabled,
 .button.hollow:focus[disabled] {
-  border: 1px solid #009ACE;
-  color: #009ACE;
+  border: 1px solid #345678;
+  color: #345678;
 }
 
 .button.hollow.primary {
-  border: 1px solid #009ACE;
-  color: #009ACE;
+  border: 1px solid #345678;
+  color: #345678;
 }
 
 .button.hollow.primary:hover,
 .button.hollow.primary:focus {
-  border-color: #004d67;
-  color: #004d67;
+  border-color: #1a2b3c;
+  color: #1a2b3c;
 }
 
 .button.hollow.primary:hover.disabled,
 .button.hollow.primary:hover[disabled],
 .button.hollow.primary:focus.disabled,
 .button.hollow.primary:focus[disabled] {
-  border: 1px solid #009ACE;
-  color: #009ACE;
+  border: 1px solid #345678;
+  color: #345678;
 }
 
 .button.hollow.secondary {
@@ -7741,8 +7741,8 @@ select[multiple] {
 }
 
 .button.clear {
-  border: 1px solid #009ACE;
-  color: #009ACE;
+  border: 1px solid #345678;
+  color: #345678;
 }
 
 .button.clear,
@@ -7762,16 +7762,16 @@ select[multiple] {
 
 .button.clear:hover,
 .button.clear:focus {
-  border-color: #004d67;
-  color: #004d67;
+  border-color: #1a2b3c;
+  color: #1a2b3c;
 }
 
 .button.clear:hover.disabled,
 .button.clear:hover[disabled],
 .button.clear:focus.disabled,
 .button.clear:focus[disabled] {
-  border: 1px solid #009ACE;
-  color: #009ACE;
+  border: 1px solid #345678;
+  color: #345678;
 }
 
 .button.clear,
@@ -7787,22 +7787,22 @@ select[multiple] {
 }
 
 .button.clear.primary {
-  border: 1px solid #009ACE;
-  color: #009ACE;
+  border: 1px solid #345678;
+  color: #345678;
 }
 
 .button.clear.primary:hover,
 .button.clear.primary:focus {
-  border-color: #004d67;
-  color: #004d67;
+  border-color: #1a2b3c;
+  color: #1a2b3c;
 }
 
 .button.clear.primary:hover.disabled,
 .button.clear.primary:hover[disabled],
 .button.clear.primary:focus.disabled,
 .button.clear.primary:focus[disabled] {
-  border: 1px solid #009ACE;
-  color: #009ACE;
+  border: 1px solid #345678;
+  color: #345678;
 }
 
 .button.clear.primary,
@@ -8113,11 +8113,11 @@ select[multiple] {
 }
 
 .button.dropdown.hollow::after {
-  border-top-color: #009ACE;
+  border-top-color: #345678;
 }
 
 .button.dropdown.hollow.primary::after {
-  border-top-color: #009ACE;
+  border-top-color: #345678;
 }
 
 .button.dropdown.hollow.secondary::after {
@@ -8193,7 +8193,7 @@ a.button:focus {
   border-bottom: 0;
   font-size: 1.57142857rem;
   line-height: 1;
-  color: #009ACE;
+  color: #345678;
 }
 
 :last-child:not(.is-active) > .accordion-title {
@@ -8265,7 +8265,7 @@ a.button:focus {
   content: '';
   border-bottom-width: 0;
   border-top-style: solid;
-  border-color: #009ACE transparent transparent;
+  border-color: #345678 transparent transparent;
   position: absolute;
   top: 50%;
   margin-top: -3px;
@@ -8314,7 +8314,7 @@ a.button:focus {
   content: '';
   border-bottom-width: 0;
   border-top-style: solid;
-  border-color: #009ACE transparent transparent;
+  border-color: #345678 transparent transparent;
   top: 0;
   bottom: 0;
   margin: auto;
@@ -8347,13 +8347,13 @@ a.button:focus {
   border-radius: 50%;
   font-size: 0.6rem;
   text-align: center;
-  background: #009ACE;
+  background: #345678;
   color: #fefefe;
 }
 
 .badge.primary {
-  background: #009ACE;
-  color: #0a0a0a;
+  background: #345678;
+  color: #fefefe;
 }
 
 .badge.secondary {
@@ -8438,7 +8438,7 @@ a.button:focus {
 }
 
 .breadcrumbs a {
-  color: #009ACE;
+  color: #345678;
 }
 
 .breadcrumbs a:hover {
@@ -8510,14 +8510,14 @@ a.button:focus {
 }
 
 .button-group.primary .button {
-  background-color: #009ACE;
-  color: #0a0a0a;
+  background-color: #345678;
+  color: #fefefe;
 }
 
 .button-group.primary .button:hover,
 .button-group.primary .button:focus {
-  background-color: #007ba5;
-  color: #0a0a0a;
+  background-color: #2a4560;
+  color: #fefefe;
 }
 
 .button-group.secondary .button {
@@ -8688,7 +8688,7 @@ a.button:focus {
 }
 
 .callout.primary {
-  background-color: #b3ecff;
+  background-color: #c4d5e5;
   color: #0a0a0a;
 }
 
@@ -8763,7 +8763,7 @@ a.button:focus {
       -ms-flex-positive: 1;
           flex-grow: 1;
   margin-bottom: 1rem;
-  border: 1px solid #009ACE;
+  border: 1px solid #345678;
   border-radius: 0;
   background: #fefefe;
   -webkit-box-shadow: none;
@@ -9053,12 +9053,12 @@ a.button:focus {
 }
 
 .menu .is-active > a {
-  background: #009ACE;
+  background: #345678;
   color: #fefefe;
 }
 
 .menu .active > a {
-  background: #009ACE;
+  background: #345678;
   color: #fefefe;
 }
 
@@ -9273,7 +9273,7 @@ a.button:focus {
   content: '';
   border-right-width: 0;
   border-left-style: solid;
-  border-color: transparent transparent transparent #009ACE;
+  border-color: transparent transparent transparent #345678;
 }
 
 .drilldown.align-left .is-drilldown-submenu-parent > a::after {
@@ -9286,7 +9286,7 @@ a.button:focus {
   content: '';
   border-right-width: 0;
   border-left-style: solid;
-  border-color: transparent transparent transparent #009ACE;
+  border-color: transparent transparent transparent #345678;
 }
 
 .drilldown.align-right .is-drilldown-submenu-parent > a::after {
@@ -9299,7 +9299,7 @@ a.button:focus {
   content: '';
   border-left-width: 0;
   border-right-style: solid;
-  border-color: transparent #009ACE transparent transparent;
+  border-color: transparent #345678 transparent transparent;
 }
 
 .drilldown .js-drilldown-back > a::before {
@@ -9310,7 +9310,7 @@ a.button:focus {
   content: '';
   border-left-width: 0;
   border-right-style: solid;
-  border-color: transparent #009ACE transparent transparent;
+  border-color: transparent #345678 transparent transparent;
   border-left-width: 0;
   display: inline-block;
   vertical-align: middle;
@@ -9374,7 +9374,7 @@ a.button:focus {
 
 .dropdown.menu .is-active > a {
   background: transparent;
-  color: #009ACE;
+  color: #345678;
 }
 
 .no-js .dropdown.menu ul {
@@ -9564,13 +9564,13 @@ a.button:focus {
   line-height: 1;
   white-space: nowrap;
   cursor: default;
-  background: #009ACE;
+  background: #345678;
   color: #fefefe;
 }
 
 .label.primary {
-  background: #009ACE;
-  color: #0a0a0a;
+  background: #345678;
+  color: #fefefe;
 }
 
 .label.secondary {
@@ -9726,7 +9726,7 @@ a.button:focus {
   transition: transform 0.5s ease, -webkit-transform 0.5s ease;
   -webkit-backface-visibility: hidden;
           backface-visibility: hidden;
-  background: #009ACE;
+  background: #345678;
 }
 
 [data-whatinput='mouse'] .off-canvas {
@@ -9764,7 +9764,7 @@ a.button:focus {
   transition: transform 0.5s ease, -webkit-transform 0.5s ease;
   -webkit-backface-visibility: hidden;
           backface-visibility: hidden;
-  background: #009ACE;
+  background: #345678;
 }
 
 [data-whatinput='mouse'] .off-canvas-absolute {
@@ -10355,7 +10355,7 @@ a.button:focus {
 
 .pagination .current {
   padding: 0.21428571rem 0.71428571rem;
-  background: #009ACE;
+  background: #345678;
   color: #fefefe;
   cursor: default;
 }
@@ -10398,7 +10398,7 @@ a.button:focus {
 }
 
 .progress.primary .progress-meter {
-  background-color: #009ACE;
+  background-color: #345678;
 }
 
 .progress.secondary .progress-meter {
@@ -10442,7 +10442,7 @@ a.button:focus {
   display: block;
   width: 0%;
   height: 100%;
-  background-color: #009ACE;
+  background-color: #345678;
 }
 
 .progress-meter-text {
@@ -10502,7 +10502,7 @@ a.button:focus {
   width: 1.4rem;
   height: 1.4rem;
   border-radius: 0;
-  background-color: #009ACE;
+  background-color: #345678;
   -webkit-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
   -ms-touch-action: manipulation;
@@ -10514,7 +10514,7 @@ a.button:focus {
 }
 
 .slider-handle:hover {
-  background-color: #0083af;
+  background-color: #2c4966;
 }
 
 .slider-handle.is-dragging {
@@ -10768,7 +10768,7 @@ input + .switch-paddle {
 }
 
 input:checked ~ .switch-paddle {
-  background: #009ACE;
+  background: #345678;
 }
 
 input:checked ~ .switch-paddle::after {
@@ -11017,16 +11017,16 @@ table.hover:not(.unstriped) tr:nth-of-type(even):hover {
 }
 
 .tabs.primary {
-  background: #009ACE;
+  background: #345678;
 }
 
 .tabs.primary > li > a {
-  color: #0a0a0a;
+  color: #fefefe;
 }
 
 .tabs.primary > li > a:hover,
 .tabs.primary > li > a:focus {
-  background: #0092c4;
+  background: #395e84;
 }
 
 .tabs-title {
@@ -11038,18 +11038,18 @@ table.hover:not(.unstriped) tr:nth-of-type(even):hover {
   padding: 1.25rem 1.5rem;
   font-size: 0.85714286rem;
   line-height: 1;
-  color: #009ACE;
+  color: #345678;
 }
 
 .tabs-title > a:hover {
   background: #fefefe;
-  color: #0084b1;
+  color: #2d4a67;
 }
 
 .tabs-title > a:focus,
 .tabs-title > a[aria-selected='true'] {
   background: #e6e6e6;
-  color: #009ACE;
+  color: #345678;
 }
 
 .tabs-content {
@@ -11095,8 +11095,8 @@ a.thumbnail {
 
 a.thumbnail:hover,
 a.thumbnail:focus {
-  -webkit-box-shadow: 0 0 6px 1px rgba(0, 154, 206, 0.5);
-          box-shadow: 0 0 6px 1px rgba(0, 154, 206, 0.5);
+  -webkit-box-shadow: 0 0 6px 1px rgba(52, 86, 120, 0.5);
+          box-shadow: 0 0 6px 1px rgba(52, 86, 120, 0.5);
 }
 
 a.thumbnail image {
@@ -11106,7 +11106,7 @@ a.thumbnail image {
 
 .title-bar {
   padding: 0.5rem;
-  background: #009ACE;
+  background: #345678;
   color: #fefefe;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -15438,7 +15438,7 @@ a.thumbnail image {
 }
 
 .top-bar {
-  border-bottom: 1px solid #009ACE;
+  border-bottom: 1px solid #345678;
 }
 
 .top-bar .logo {
@@ -15488,7 +15488,7 @@ a.thumbnail image {
 
 .group {
   background-color: #ECEDEA;
-  color: #009ACE;
+  color: #345678;
   font-size: 1.3rem;
   text-transform: uppercase;
 }
@@ -15503,6 +15503,11 @@ a.thumbnail image {
 table.trade thead th {
   text-align: center;
   font-weight: 200;
+}
+
+thead {
+  background: #345678;
+  color: #fefefe;
 }
 
 .icons-area {
@@ -15642,7 +15647,7 @@ section#login .password {
 }
 
 section#login .login-icon .fa {
-  color: #009ACE;
+  color: #345678;
   font-size: 3rem;
   font-weight: 100;
   margin-bottom: 1rem;
@@ -15681,7 +15686,7 @@ section#register .password {
 }
 
 section#register .login-icon .fa {
-  color: #009ACE;
+  color: #345678;
   font-size: 3rem;
   font-weight: 100;
   margin-bottom: 1rem;
@@ -15712,7 +15717,7 @@ section#dashboard .add-coin {
 }
 
 section#settings .h4 {
-  color: #009ACE;
+  color: #345678;
 }
 
 section#settings .exchange-settings {
@@ -15883,7 +15888,7 @@ section#portfolio .portfolio-area {
 }
 
 .portfolio-modal .input-group-label {
-  color: #009ACE;
+  color: #345678;
   background-color: transparent;
 }
 
@@ -15892,7 +15897,7 @@ section#portfolio .portfolio-area {
   margin: 0;
   height: auto;
   min-width: 0;
-  color: #009ACE;
+  color: #345678;
 }
 
 .portfolio-modal .number {
@@ -15957,7 +15962,7 @@ section#invitations .invitation-expiration {
 
 section#invitations .invitation-label {
   font-size: 1rem;
-  color: #009ACE;
+  color: #345678;
 }
 
 section#email-newinvite .invitation-code {
@@ -15972,7 +15977,7 @@ section#email-newinvite .invitation-expiration {
 
 section#email-newinvite .invitation-label {
   font-size: 1rem;
-  color: #009ACE;
+  color: #345678;
 }
 
 .balance {
@@ -15985,7 +15990,7 @@ section#email-newinvite .invitation-label {
 }
 
 .balance .header .cell {
-  color: #009ACE;
+  color: #345678;
 }
 
 .balance .col-coin .coin-logo {
@@ -16022,7 +16027,7 @@ section#email-newinvite .invitation-label {
 }
 
 .order .header .cell {
-  color: #009ACE;
+  color: #345678;
 }
 
 .order .col-coin .coin-logo {
@@ -16044,7 +16049,7 @@ section#email-newinvite .invitation-label {
 }
 
 .order .order-title {
-  color: #009ACE;
+  color: #345678;
   font-size: 0.8rem;
   font-style: italic;
 }
@@ -16092,10 +16097,8 @@ section#email-newinvite .invitation-label {
 }
 
 .trade-list .trade .trade-title {
-  color: #009ACE;
   font-weight: normal;
   font-size: 1rem;
-  font-style: italic;
   text-align: center;
 }
 
@@ -16135,7 +16138,7 @@ section#email-newinvite .invitation-label {
 .trade-list .trade .edit-icon,
 .trade-list .trade .loading-icon {
   font-size: 1rem;
-  color: #009ACE;
+  color: #345678;
 }
 
 .trade-list .trade .cancel-icon {
@@ -16150,7 +16153,7 @@ section#email-newinvite .invitation-label {
 }
 
 .trade-modal .input-group-label {
-  color: #009ACE;
+  color: #345678;
   background-color: transparent;
 }
 
@@ -16159,7 +16162,7 @@ section#email-newinvite .invitation-label {
   margin: 0;
   height: auto;
   min-width: 0;
-  color: #009ACE;
+  color: #345678;
 }
 
 .trade-modal .number {
@@ -16188,7 +16191,7 @@ section#email-newinvite .invitation-label {
   margin: 0;
   height: auto;
   min-width: 0;
-  color: #009ACE;
+  color: #345678;
 }
 
 .tradepanel .input-group .number {
@@ -16200,11 +16203,11 @@ section#email-newinvite .invitation-label {
   margin: 0;
   height: auto;
   min-width: 0;
-  color: #009ACE;
+  color: #345678;
 }
 
 .tradepanel .input-group-label {
-  color: #009ACE;
+  color: #345678;
   background-color: transparent;
 }
 
@@ -16277,16 +16280,41 @@ section#portfolio-widget table.dataTable.dtr-inline.collapsed > tbody > tr.paren
 
 section#portfolio-widget .profit {
   color: #036502;
-  font-size: 0.8rem;
   float: right;
   font-weight: 600;
 }
 
 section#portfolio-widget .loss {
   color: #F1615E;
-  font-size: 0.8rem;
   float: right;
   font-weight: 600;
+}
+
+section#portfolio-widget .profit-box {
+  color: #036502;
+  float: right;
+  font-weight: 600;
+  background-color: rgba(3, 101, 2, 0.3);
+  padding: 0.5rem;
+  border-radius: 5px;
+}
+
+section#portfolio-widget .loss-box {
+  color: #F1615E;
+  float: right;
+  font-weight: 600;
+  background-color: rgba(241, 97, 94, 0.3);
+  padding: 0.5rem;
+  border-radius: 5px;
+}
+
+section#portfolio-widget .neutral-box {
+  color: #cacaca;
+  float: right;
+  font-weight: 600;
+  background-color: rgba(202, 202, 202, 0.3);
+  padding: 0.5rem;
+  border-radius: 5px;
 }
 
 section#portfolio-widget .biggest {
@@ -16320,6 +16348,12 @@ section#portfolio-widget .portfolio-assets .asset-balance,
 section#portfolio-widget .portfolio-assets .asset-value,
 section#portfolio-widget .portfolio-assets .column-title-wrapper {
   margin-right: 0.5rem;
+}
+
+section#portfolio-widget .portfolio-assets .asset-counter-value {
+  background-color: rgba(52, 86, 120, 0.1);
+  padding: 0.5rem;
+  border-radius: 5px;
 }
 
 section#portfolio-widget .portfolio-assets .fa-btc,
@@ -16358,7 +16392,7 @@ section#portfolio-widget .counter-widget .title {
 }
 
 section#portfolio-widget .counter-widget .counter {
-  color: #009ACE;
+  color: #345678;
   font-size: 1.5rem;
   margin: 0;
   padding: 0;
@@ -16414,7 +16448,7 @@ section#addasset .easy-autocomplete input {
   margin: 0;
   height: auto;
   min-width: 0;
-  color: #009ACE;
+  color: #345678;
 }
 
 .input-group .number {
@@ -16427,7 +16461,7 @@ section#addasset .easy-autocomplete input {
 }
 
 section#connections .h4 {
-  color: #009ACE;
+  color: #345678;
 }
 
 section#connections .exchange-settings {
@@ -16489,7 +16523,7 @@ section#invite-panel .input-group .number {
 }
 
 section#invite-panel .input-group-label {
-  color: #009ACE;
+  color: #345678;
   background-color: transparent;
 }
 
@@ -16505,7 +16539,7 @@ section#coin-card .remove-coin {
 section#coin-card .card-divider {
   padding: 0;
   font-size: 1rem;
-  border-bottom: 1px solid #009ACE;
+  border-bottom: 1px solid #345678;
 }
 
 section#coin-card .card-divider .coin-symbol {

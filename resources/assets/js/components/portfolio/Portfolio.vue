@@ -139,10 +139,10 @@ export default {
         // Setup DATATABLE
         this.portfolioTable = $('#portfolioTable').DataTable( {
             "columns": [
-                { name: 'profit', title: ''},
                 { name: 'coin', title: '<div class="sorting nowrap">Coin</div>'},
-                { name: 'amount', title: '<div class="sorting nowrap">Amount</div>' },
+                { name: 'profit', title: '<div class="sorting nowrap">Profit</div>'},
                 { name: 'fiatvalue', title: '<div class="sorting nowrap">Value (Fiat)</div>' },
+                { name: 'amount', title: '<div class="sorting nowrap">Amount</div>' },
                 { name: 'btcvalue', title: '<div class="sorting nowrap">Value (BTC)</div>' },
                 { name: 'last', title: '<div class="sorting nowrap">Last Price</div>' },
                 { name: 'purchase', title: '<div class="sorting nowrap">Purchase Price</div>' },
@@ -241,12 +241,14 @@ export default {
                 // Set coin origin
                 var origin = '<div class="asset-origin  nowrap">' + e.asset.origin_name + '</div>';
 
+                var counterValue = '<div class="asset-counter-value nowrap">' + parseFloat(e.asset.counter_value).toFixed(2) + '</div>';
+                
                 // Add row to the table with the new asset
                 this.portfolioTable.row.add( [
-                    '',
                     coin,
+                    '',  
+                    counterValue,
                     amount,
-                    parseFloat(e.asset.counter_value).toFixed(2),
                     parseFloat(e.asset.balance).toFixed(8),
                     parseFloat(e.asset.price).toFixed(8),
                     parseFloat(e.asset.initial_price).toFixed(8),
@@ -331,7 +333,7 @@ export default {
                 } );
 
                 // Update DATATABLE values (Price, Balance and Counter Value)
-                var formated_counter_value = '<span class="nowrap">' + this.counterValueSymbolHtml + parseFloat(counter_value).toFixed(2)  + '</span>';
+                var formated_counter_value = '<span class="asset-counter-value nowrap">' + this.counterValueSymbolHtml + parseFloat(counter_value).toFixed(2)  + '</span>';
                 var formated_balance = '<span class="nowrap"><i class="fa fa-btc" aria-hidden="true"></i>' + parseFloat(balance).toFixed(8) + '</span>';
                 var formated_price = '<span class="nowrap"><i class="fa fa-btc" aria-hidden="true"></i>' + parseFloat(price).toFixed(8) + '</span>';
 
@@ -349,11 +351,14 @@ export default {
                 else {
                     var profit = ( ( ( parseFloat(price)-parseFloat(e.asset.initial_price) ) / parseFloat(e.asset.initial_price)) * 100 ).toFixed(2);
                 }
-                if (profit >= 0) {
-                    this.portfolioTable.cell(indexes[0], this.portfolioTable.column( 'profit:name' ).index()).data('<span class="profit nowrap">+' + profit + '%</span>' ).invalidate();
+                if (profit > 0) {
+                    this.portfolioTable.cell(indexes[0], this.portfolioTable.column( 'profit:name' ).index()).data('<span class="profit-box nowrap">+' + profit + '%</span>' ).invalidate();
+                }
+                else if (profit < 0){
+                    this.portfolioTable.cell(indexes[0], this.portfolioTable.column( 'profit:name' ).index()).data('<span class="loss-box nowrap">' + profit + '%</span>' ).invalidate();
                 }
                 else {
-                    this.portfolioTable.cell(indexes[0], this.portfolioTable.column( 'profit:name' ).index()).data('<span class="loss nowrap">' + profit + '%</span>' ).invalidate();
+                    this.portfolioTable.cell(indexes[0], this.portfolioTable.column( 'profit:name' ).index()).data('<span class="neutral-box nowrap">' + profit + '%</span>' ).invalidate();
                 }
                 
 

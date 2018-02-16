@@ -122491,7 +122491,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         // Setup DATATABLE
         this.portfolioTable = $('#portfolioTable').DataTable({
-            "columns": [{ name: 'profit', title: '' }, { name: 'coin', title: '<div class="sorting nowrap">Coin</div>' }, { name: 'amount', title: '<div class="sorting nowrap">Amount</div>' }, { name: 'fiatvalue', title: '<div class="sorting nowrap">Value (Fiat)</div>' }, { name: 'btcvalue', title: '<div class="sorting nowrap">Value (BTC)</div>' }, { name: 'last', title: '<div class="sorting nowrap">Last Price</div>' }, { name: 'purchase', title: '<div class="sorting nowrap">Purchase Price</div>' }, { name: 'id', title: '<div class="sorting nowrap">Asset ID</div>' }, { name: 'origin', title: '<div class="sorting_asc nowrap">Origin</div>' }],
+            "columns": [{ name: 'coin', title: '<div class="sorting nowrap">Coin</div>' }, { name: 'profit', title: '<div class="sorting nowrap">Profit</div>' }, { name: 'fiatvalue', title: '<div class="sorting nowrap">Value (Fiat)</div>' }, { name: 'amount', title: '<div class="sorting nowrap">Amount</div>' }, { name: 'btcvalue', title: '<div class="sorting nowrap">Value (BTC)</div>' }, { name: 'last', title: '<div class="sorting nowrap">Last Price</div>' }, { name: 'purchase', title: '<div class="sorting nowrap">Purchase Price</div>' }, { name: 'id', title: '<div class="sorting nowrap">Asset ID</div>' }, { name: 'origin', title: '<div class="sorting_asc nowrap">Origin</div>' }],
             "searching": false,
             "responsive": true,
             "colReorder": true,
@@ -122575,8 +122575,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 // Set coin origin
                 var origin = '<div class="asset-origin  nowrap">' + e.asset.origin_name + '</div>';
 
+                var counterValue = '<div class="asset-counter-value nowrap">' + parseFloat(e.asset.counter_value).toFixed(2) + '</div>';
+
                 // Add row to the table with the new asset
-                _this.portfolioTable.row.add(['', coin, amount, parseFloat(e.asset.counter_value).toFixed(2), parseFloat(e.asset.balance).toFixed(8), parseFloat(e.asset.price).toFixed(8), parseFloat(e.asset.initial_price).toFixed(8), e.asset.id, origin]).order([_this.portfolioTable.column('origin:name').index(), 'asc']).invalidate().draw();
+                _this.portfolioTable.row.add([coin, '', counterValue, amount, parseFloat(e.asset.balance).toFixed(8), parseFloat(e.asset.price).toFixed(8), parseFloat(e.asset.initial_price).toFixed(8), e.asset.id, origin]).order([_this.portfolioTable.column('origin:name').index(), 'asc']).invalidate().draw();
             }
         }).listen('PortfolioAssetUpdated', function (e) {
             // ************
@@ -122649,7 +122651,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 });
 
                 // Update DATATABLE values (Price, Balance and Counter Value)
-                var formated_counter_value = '<span class="nowrap">' + _this.counterValueSymbolHtml + parseFloat(counter_value).toFixed(2) + '</span>';
+                var formated_counter_value = '<span class="asset-counter-value nowrap">' + _this.counterValueSymbolHtml + parseFloat(counter_value).toFixed(2) + '</span>';
                 var formated_balance = '<span class="nowrap"><i class="fa fa-btc" aria-hidden="true"></i>' + parseFloat(balance).toFixed(8) + '</span>';
                 var formated_price = '<span class="nowrap"><i class="fa fa-btc" aria-hidden="true"></i>' + parseFloat(price).toFixed(8) + '</span>';
 
@@ -122666,10 +122668,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 } else {
                     var profit = ((parseFloat(price) - parseFloat(e.asset.initial_price)) / parseFloat(e.asset.initial_price) * 100).toFixed(2);
                 }
-                if (profit >= 0) {
-                    _this.portfolioTable.cell(indexes[0], _this.portfolioTable.column('profit:name').index()).data('<span class="profit nowrap">+' + profit + '%</span>').invalidate();
+                if (profit > 0) {
+                    _this.portfolioTable.cell(indexes[0], _this.portfolioTable.column('profit:name').index()).data('<span class="profit-box nowrap">+' + profit + '%</span>').invalidate();
+                } else if (profit < 0) {
+                    _this.portfolioTable.cell(indexes[0], _this.portfolioTable.column('profit:name').index()).data('<span class="loss-box nowrap">' + profit + '%</span>').invalidate();
                 } else {
-                    _this.portfolioTable.cell(indexes[0], _this.portfolioTable.column('profit:name').index()).data('<span class="loss nowrap">' + profit + '%</span>').invalidate();
+                    _this.portfolioTable.cell(indexes[0], _this.portfolioTable.column('profit:name').index()).data('<span class="neutral-box nowrap">' + profit + '%</span>').invalidate();
                 }
 
                 // Gainers and losers
