@@ -8763,7 +8763,7 @@ a.button:focus {
       -ms-flex-positive: 1;
           flex-grow: 1;
   margin-bottom: 1rem;
-  border: 1px solid #345678;
+  border: 1px solid rgba(52, 86, 120, 0.2);
   border-radius: 0;
   background: #fefefe;
   -webkit-box-shadow: none;
@@ -8783,7 +8783,7 @@ a.button:focus {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  padding: 0.5rem;
+  padding: 1rem;
   background: #fefefe;
 }
 
@@ -8795,7 +8795,7 @@ a.button:focus {
   -webkit-box-flex: 1;
       -ms-flex: 1 0 auto;
           flex: 1 0 auto;
-  padding: 0.5rem;
+  padding: 1rem;
 }
 
 .card-section > :last-child {
@@ -15412,6 +15412,10 @@ a.thumbnail image {
   background: url("/storage/icons/loading.gif") 50% 50% no-repeat #f9f9f9;
 }
 
+.reveal {
+  overflow: visible;
+}
+
 .version {
   font-size: 0.95rem;
   font-style: italic;
@@ -16547,23 +16551,54 @@ section#coin-card {
   font-family: 'Nunito', sans-serif;
 }
 
-section#coin-card .remove-coin {
-  padding: 0.2rem;
+section#coin-card .profit-box {
+  color: #036502;
+  background-color: rgba(3, 101, 2, 0.3);
+  padding: 0.3rem;
+  margin: 0.3rem;
+  border-radius: 5px;
+}
+
+section#coin-card .loss-box {
+  color: #F1615E;
+  background-color: rgba(241, 97, 94, 0.3);
+  padding: 0.5rem;
+  border-radius: 5px;
+}
+
+section#coin-card .neutral-box {
+  color: #8a8a8a;
+  background-color: rgba(202, 202, 202, 0.3);
+  padding: 0.3rem;
+  margin: 0.3rem;
+  border-radius: 5px;
+}
+
+section#coin-card .coin-card-close {
+  position: relative;
+  top: -17px;
+  left: -10px;
+  font-size: 1.5rem;
 }
 
 section#coin-card .card-divider {
-  padding: 0;
   font-size: 1rem;
-  border-bottom: 1px solid #345678;
+  border-bottom: 1px solid rgba(52, 86, 120, 0.1);
+  color: #345678;
 }
 
 section#coin-card .card-divider .coin-symbol {
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   font-weight: bold;
 }
 
-section#coin-card .card-divider .coin-data {
-  padding: 2px;
+section#coin-card .card-divider .coin-data-fiat {
+  font-size: 1.3rem;
+  margin-top: 5px;
+}
+
+section#coin-card .card-divider .coin-data-change {
+  margin-bottom: 0.2rem;
 }
 
 section#coin-card .card-divider .coin-name {
@@ -16573,16 +16608,16 @@ section#coin-card .card-divider .coin-name {
 section#coin-card .card-section-title {
   font-size: 0.8rem;
   text-transform: uppercase;
-  color: #cacaca;
+  color: #345678;
 }
 
 section#coin-card .card-section .fa {
   font-size: 1rem;
-  color: #cacaca;
+  color: #345678;
 }
 
 section#coin-card .card-section-value {
   font-size: 0.7rem;
-  color: #8a8a8a;
+  color: #345678;
 }
 

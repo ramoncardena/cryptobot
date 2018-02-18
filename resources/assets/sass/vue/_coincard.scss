@@ -2,31 +2,54 @@ section#coin-card {
 	color: $medium-gray;
 	font-family: 'Nunito', sans-serif;
 
-	.remove-coin {
-		padding: 0.2rem;
+	.profit-box {
+		color: get-color(profit);
+		background-color: rgba(get-color(profit),0.3);
+		padding: 0.3rem;
+		margin: 0.3rem;
+		border-radius: 5px;
+	}
+	.loss-box {
+		color: get-color(loss);
+		background-color: rgba(get-color(loss),0.3);
+		padding: 0.5rem;
+		border-radius: 5px;
+	}
+	.neutral-box {
+		color: $dark-gray;
+		background-color: rgba($medium-gray,0.3);
+		padding: 0.3rem;
+		margin: 0.3rem;
+		border-radius: 5px;
+	}
+	.coin-card-close {
+		position: relative;
+		top: -17px;
+		left: -10px;
+		font-size: 1.5rem;
 	}
 	.card-divider {
-		padding: 0;
 		font-size: 1rem;
-		border-bottom: 1px solid get-color(primary);
+		border-bottom: 1px solid rgba(get-color(primary), 0.1);
+		color: get-color(primary);
 
 		.coin-symbol {
-			font-size: 1.2rem;
+			font-size: 1.5rem;
 			font-weight: bold;
 		}
 
 		.coin-data {
-
-			padding: 2px;
 	
 			&-fiat {
-				
+				font-size: 1.3rem;
+				margin-top: 5px;
 			}
 			&-btc {
 				
 			}
 			&-change {
 				
+				margin-bottom: 0.2rem;
 			}
 		}
 		.coin-name {
@@ -38,15 +61,15 @@ section#coin-card {
 		&-title {
 			font-size: 0.8rem;
 			text-transform: uppercase;
-			color: $medium-gray;
+			color: get-color(primary);
 		}
 		.fa {
 			font-size: 1rem;
-			color: $medium-gray;
+			color: get-color(primary);
 		}
 		&-value {
 			font-size: 0.7rem;
-			color: $dark-gray;
+			color: get-color(primary);
 		}
 	}
 	

@@ -7,7 +7,9 @@
 	z-index: 9999;
 	background: url('/storage/icons/loading.gif') 50% 50% no-repeat rgb(249,249,249);
 }
-
+.reveal {
+    overflow: visible;
+}
 .version {
 	font-size: 0.95rem;
 	font-style: italic;

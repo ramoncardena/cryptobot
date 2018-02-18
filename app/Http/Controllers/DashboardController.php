@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
+use App\Library\Services\CoinGuru;
 
 class DashboardController extends Controller
 {
@@ -13,6 +16,11 @@ class DashboardController extends Controller
 
     public function index()
     {
-   		return view('dashboard');
+    	// DATA FOR MODALS (New Ticker)
+	    // Coin list
+    	$guru = new CoinGuru;
+	    $coins = $guru->getCoinList();
+
+   		return view('dashboard', ['coins' => json_encode($coins)]);
    	}
 }

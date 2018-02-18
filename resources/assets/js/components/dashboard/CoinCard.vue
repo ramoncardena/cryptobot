@@ -1,18 +1,31 @@
 <template>
     <section id="coin-card">
 
-        <div class="card">
+        <div class="card" v-on:click="compactMode = !compactMode">
+            
             <div class="card-divider">
-                <button class="clear button" v-on:click="toggleCompact()"><i class="fa fa-times green remove-coin" aria-hidden="true"></i></button>
-                <div class="grid-x grid-margin-x text-center">
-                    <div class="small-12 cell">
-                        <i class="fa fa-arrow-down red" aria-hidden="true"></i> <span class="coin-symbol">{{ coin }}</span> (Cardano)
-                    </div>
-                    <div class="small-4 cell">€0.25</div>
-                    <div class="small-4 cell">B0.00032783</div>
-                    <div class="small-4 cell">-67.856%</div>
-                </div>    
-     
+                <span class="coin-card-close" aria-hidden="true">&times;</span>
+                <div class="grid-container fluid">
+                    <div class="grid-x grid-padding-x align-middle text-left">
+                    
+                        <div class="small-6 cell">
+
+                            <div class="nowrap coin-symbol"><img src="https://www.cryptocompare.com/media/351995/golem_logo.png" alt="" width="24"> {{ coin }} <i class="fa fa-arrow-up green" aria-hidden="true"></i></div>
+                            <div class="coin-name"> Golem Network Token </div>
+                        </div>
+                        
+                        <div class="small-6 cell text-right">
+
+                            <span class="coin-data-change profit-box"> +67.856% </span> 
+                            <div class="coin-data-fiat">€8235.47</div>
+                            <div class="coin-data-btc">B0.00032783</div>
+                        </div>
+
+                        <div class="small-12 cell text-left">
+                        </div>
+                        
+                    </div>    
+                </div>
               
             </div>
             <div v-if="compactMode == false" class="grid-x grid-passing-x align-middle">
