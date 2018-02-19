@@ -8783,7 +8783,7 @@ a.button:focus {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  padding: 1rem;
+  padding: 0.3rem;
   background: #fefefe;
 }
 
@@ -8795,7 +8795,7 @@ a.button:focus {
   -webkit-box-flex: 1;
       -ms-flex: 1 0 auto;
           flex: 1 0 auto;
-  padding: 1rem;
+  padding: 0.3rem;
 }
 
 .card-section > :last-child {
@@ -14694,7 +14694,7 @@ a.thumbnail image {
 
 .ct-line {
   fill: none;
-  stroke-width: 4px;
+  stroke-width: 1px;
 }
 
 .ct-area {
@@ -16554,7 +16554,7 @@ section#coin-card {
 section#coin-card .profit-box {
   color: #036502;
   background-color: rgba(3, 101, 2, 0.3);
-  padding: 0.3rem;
+  padding: 0.2rem;
   margin: 0.3rem;
   border-radius: 5px;
 }
@@ -16576,33 +16576,37 @@ section#coin-card .neutral-box {
 
 section#coin-card .coin-card-close {
   position: relative;
-  top: -17px;
-  left: -10px;
+  top: -11px;
+  left: -2px;
   font-size: 1.5rem;
 }
 
 section#coin-card .card-divider {
-  font-size: 1rem;
+  font-size: 0.9rem;
   border-bottom: 1px solid rgba(52, 86, 120, 0.1);
   color: #345678;
 }
 
 section#coin-card .card-divider .coin-symbol {
-  font-size: 1.5rem;
+  font-size: 1rem;
   font-weight: bold;
-}
-
-section#coin-card .card-divider .coin-data-fiat {
-  font-size: 1.3rem;
-  margin-top: 5px;
-}
-
-section#coin-card .card-divider .coin-data-change {
-  margin-bottom: 0.2rem;
 }
 
 section#coin-card .card-divider .coin-name {
   padding: 2px;
+}
+
+section#coin-card .coin-data-fiat {
+  font-size: 1rem;
+}
+
+section#coin-card .coin-data-btc {
+  font-size: 0.8rem;
+}
+
+section#coin-card .coin-data-change {
+  display: inline-block;
+  margin-top: 0.4rem;
 }
 
 section#coin-card .card-section-title {

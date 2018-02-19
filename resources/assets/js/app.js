@@ -50,6 +50,7 @@
 
  Vue.component('coin-card', require('./components/dashboard/CoinCard.vue'));
  Vue.component('add-ticker', require('./components/dashboard/AddTicker.vue'));
+ Vue.component('coin-card2', require('./components/dashboard/CoinCard2.vue'));
 
  Vue.component('notification-list', require('./components/notifications/NotificationList.vue'));
  Vue.component('connections', require('./components/connections/Connections.vue'));

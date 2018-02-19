@@ -19,15 +19,15 @@
                     <div class="grid-x grid-padding-x align-middle">
                         
                         <div class="small-12 medium-6 large-4 cell">
-                            <coin-card coin="GNT" :compact="false"> </coin-card>
+                            <coin-card2 coin="GNT" :compact="false"> </coin-card>
                         </div>
 
                         <div class="small-12 medium-6 large-4 cell">
-                            <coin-card coin="NXT" :compact="false"> </coin-card>
+                            <coin-card2 coin="NXT" :compact="false"> </coin-card>
                         </div>
 
                         <div class="small-12 medium-6 large-4 cell">
-                            <coin-card coin="BTC" :compact="false"> </coin-card>
+                            <coin-card2 coin="BTC" :compact="false"> </coin-card>
                         </div>
                         
                         <div class="small-12 medium-6 large-4 cell text-center">

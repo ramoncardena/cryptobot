@@ -44277,7 +44277,7 @@ module.exports = Cancel;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(142);
-module.exports = __webpack_require__(293);
+module.exports = __webpack_require__(299);
 
 
 /***/ }),
@@ -44324,11 +44324,12 @@ Vue.component('portfolio', __webpack_require__(272));
 Vue.component('asset', __webpack_require__(275));
 
 Vue.component('coin-card', __webpack_require__(278));
-Vue.component('add-ticker', __webpack_require__(302));
+Vue.component('add-ticker', __webpack_require__(281));
+Vue.component('coin-card2', __webpack_require__(308));
 
-Vue.component('notification-list', __webpack_require__(281));
-Vue.component('connections', __webpack_require__(284));
-Vue.component('invite-panel', __webpack_require__(287));
+Vue.component('notification-list', __webpack_require__(287));
+Vue.component('connections', __webpack_require__(290));
+Vue.component('invite-panel', __webpack_require__(293));
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -44341,9 +44342,9 @@ var app = new Vue({
 
 $(document).ready(function () {
 
-    __webpack_require__(290);
-    __webpack_require__(291);
-    __webpack_require__(292);
+    __webpack_require__(296);
+    __webpack_require__(297);
+    __webpack_require__(298);
 
     $.extend($.fn.dataTable.defaults, {
         responsive: true
@@ -123662,6 +123663,257 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
+Component.options.__file = "resources/assets/js/components/dashboard/AddTicker.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-19a5abe9", Component.options)
+  } else {
+    hotAPI.reload("data-v-19a5abe9", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 282 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: 'add-ticker',
+    data: function data() {
+        return {
+            coinSelected: "",
+            coin: "",
+            updating: false,
+            csrf: ""
+        };
+    },
+    props: ['coins', 'validation-errors'],
+    computed: {},
+    watch: {},
+    mounted: function mounted() {
+        var _this = this;
+
+        console.log(this.origins);
+        var coins = $.map(this.coins, function (a) {
+            return a.toString();
+        });
+
+        var options = {
+            data: coins,
+            list: {
+                onClickEvent: function onClickEvent() {
+                    _this.coinSelected = $("#coins").getSelectedItemData();
+                },
+                maxNumberOfElements: 2000,
+                match: {
+                    enabled: true
+                },
+                showAnimation: {
+                    type: "fade", //normal|slide|fade
+                    time: 400,
+                    callback: function callback() {}
+                },
+                hideAnimation: {
+                    type: "fade s", //normal|slide|fade
+                    time: 400,
+                    callback: function callback() {}
+                }
+            },
+            theme: "square"
+        };
+
+        $("#coins").easyAutocomplete(options);
+
+        this.csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        console.log('Component AddAsset mounted.');
+    },
+
+    methods: {
+        saveName: function saveName() {}
+    }
+});
+
+/***/ }),
+/* 283 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("section", { attrs: { id: "addticker" } }, [
+    _c("div", { staticClass: "grid-container fluid add-asset" }, [
+      _c("form", { attrs: { method: "POST", action: "/ticker" } }, [
+        _c("input", {
+          attrs: { type: "hidden", name: "_token" },
+          domProps: { value: _vm.csrf }
+        }),
+        _vm._v(" "),
+        _c("div", { staticClass: "grid-x grid-padding-x" }, [
+          _vm._m(0, false, false),
+          _vm._v(" "),
+          _c("div", { staticClass: "small-12 cell form-container" }, [
+            _vm.validationErrors.asset_symbol
+              ? _c(
+                  "div",
+                  _vm._l(_vm.validationErrors.asset_symbol, function(error) {
+                    return _c("span", { staticClass: "validation-error" }, [
+                      _vm._v(" " + _vm._s(error) + " ")
+                    ])
+                  })
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _c("div", { staticClass: "input-group" }, [
+              _c("span", { staticClass: "input-group-label" }, [
+                _vm._v("Asset")
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.coinSelected,
+                    expression: "coinSelected"
+                  }
+                ],
+                staticClass: "input-group-field number",
+                attrs: { name: "asset_symbol", id: "coins", type: "text" },
+                domProps: { value: _vm.coinSelected },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.coinSelected = $event.target.value
+                  }
+                }
+              })
+            ])
+          ]),
+          _vm._v(" "),
+          _vm._m(1, false, false)
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "small-12 cell form-container" }, [
+      _c("p", { staticClass: "h1" }, [_vm._v("Dashboard: New Asset")]),
+      _vm._v(" "),
+      _c("p", { staticClass: "lead" }, [
+        _c("b", [_vm._v("Add new asset to your dashboard")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "small-12 cell form-container" }, [
+      _c(
+        "button",
+        { staticClass: "hollow button", attrs: { type: "submit" } },
+        [_vm._v("\n                       Add Asset\n                    ")]
+      )
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-19a5abe9", module.exports)
+  }
+}
+
+/***/ }),
+/* 284 */,
+/* 285 */,
+/* 286 */,
+/* 287 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(3)
+/* script */
+var __vue_script__ = __webpack_require__(288)
+/* template */
+var __vue_template__ = __webpack_require__(289)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
 Component.options.__file = "resources/assets/js/components/notifications/NotificationList.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
 
@@ -123685,7 +123937,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 282 */
+/* 288 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -123742,7 +123994,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 283 */
+/* 289 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -123842,15 +124094,15 @@ if (false) {
 }
 
 /***/ }),
-/* 284 */
+/* 290 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(285)
+var __vue_script__ = __webpack_require__(291)
 /* template */
-var __vue_template__ = __webpack_require__(286)
+var __vue_template__ = __webpack_require__(292)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -123890,7 +124142,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 285 */
+/* 291 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -124043,7 +124295,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 286 */
+/* 292 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -124343,15 +124595,15 @@ if (false) {
 }
 
 /***/ }),
-/* 287 */
+/* 293 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(288)
+var __vue_script__ = __webpack_require__(294)
 /* template */
-var __vue_template__ = __webpack_require__(289)
+var __vue_template__ = __webpack_require__(295)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -124391,7 +124643,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 288 */
+/* 294 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -124447,7 +124699,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 289 */
+/* 295 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -124516,7 +124768,7 @@ if (false) {
 }
 
 /***/ }),
-/* 290 */
+/* 296 */
 /***/ (function(module, exports) {
 
 //////////////////////////////////////////////////////////////////
@@ -124532,41 +124784,41 @@ $('#notificationsModal').on('closed.zf.reveal', function () {
 });
 
 /***/ }),
-/* 291 */
+/* 297 */
 /***/ (function(module, exports) {
 
 $('.alerts-callout').hide().delay(1000).slideDown(1000).delay(5000).slideUp(1000);
 
 /***/ }),
-/* 292 */
+/* 298 */
 /***/ (function(module, exports) {
 
 
 
 /***/ }),
-/* 293 */
+/* 299 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 294 */,
-/* 295 */,
-/* 296 */,
-/* 297 */,
-/* 298 */,
-/* 299 */,
 /* 300 */,
 /* 301 */,
-/* 302 */
+/* 302 */,
+/* 303 */,
+/* 304 */,
+/* 305 */,
+/* 306 */,
+/* 307 */,
+/* 308 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(303)
+var __vue_script__ = __webpack_require__(309)
 /* template */
-var __vue_template__ = __webpack_require__(304)
+var __vue_template__ = __webpack_require__(310)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -124583,7 +124835,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/dashboard/AddTicker.vue"
+Component.options.__file = "resources/assets/js/components/dashboard/CoinCard2.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
 
 /* hot reload */
@@ -124593,9 +124845,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-19a5abe9", Component.options)
+    hotAPI.createRecord("data-v-c33e3e22", Component.options)
   } else {
-    hotAPI.reload("data-v-19a5abe9", Component.options)
+    hotAPI.reload("data-v-c33e3e22", Component.options)
 ' + '  }
   module.hot.dispose(function (data) {
     disposed = true
@@ -124606,7 +124858,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 303 */
+/* 309 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -124647,127 +124899,162 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    name: 'add-ticker',
+    name: 'coin-card2',
     data: function data() {
         return {
-            coinSelected: "",
-            coin: "",
+            chartistCoinChart: {},
+            responsiveOptions: [],
+            chartistCoinChartData: { labels: [], series: [] },
+            chartistCoinChartOptions: {},
+            compactMode: false,
             updating: false,
             csrf: ""
         };
     },
-    props: ['coins', 'validation-errors'],
+    props: ['coin', 'compact'],
     computed: {},
     watch: {},
     mounted: function mounted() {
-        var _this = this;
 
-        console.log(this.origins);
-        var coins = $.map(this.coins, function (a) {
-            return a.toString();
-        });
+        if (this.compact) this.compactMode = true;
 
-        var options = {
-            data: coins,
-            list: {
-                onClickEvent: function onClickEvent() {
-                    _this.coinSelected = $("#coins").getSelectedItemData();
-                },
-                maxNumberOfElements: 2000,
-                match: {
-                    enabled: true
-                },
-                showAnimation: {
-                    type: "fade", //normal|slide|fade
-                    time: 400,
-                    callback: function callback() {}
-                },
-                hideAnimation: {
-                    type: "fade s", //normal|slide|fade
-                    time: 400,
-                    callback: function callback() {}
-                }
+        this.chartistCoinChartOptions = {
+            low: 0,
+            showArea: true,
+            showLine: true,
+            showPoint: false,
+            fullWidth: true,
+            chartPadding: {
+                top: 5,
+                bottom: -35,
+                right: 5,
+                left: -35
             },
-            theme: "square"
+            axisX: {
+                showLabel: false,
+                showGrid: false
+            },
+            axisY: {
+                showLabel: false,
+                showGrid: false
+            }
         };
-
-        $("#coins").easyAutocomplete(options);
+        this.chartistCoinChartData.series = [[5, 9, 7, 8, 15, 11, 9, 14]];
+        // this.chartistCoinChart = new Chartist.Line('.ct-chart-coin', this.chartistCoinChartData, this.chartistCoinChartOptions,this.responsiveOptions);
+        this.chartistCoinChart = new Chartist.Line('.ct-chart-coin' + this.coin, this.chartistCoinChartData, this.chartistCoinChartOptions);
 
         this.csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-        console.log('Component AddAsset mounted.');
+
+        console.log('Component CoinCard mounted.');
     },
 
     methods: {
-        saveName: function saveName() {}
+        toggleCompact: function toggleCompact() {
+            console.log("Toggle");
+            if (this.compactMode == true) {
+                this.compactMode == false;
+                this.chartistCoinChart = new Chartist.Line('.ct-chart-coin' + this.coin, this.chartistCoinChartData, this.chartistCoinChartOptions);
+            } else {
+                this.compactMode == true;
+            }
+        }
     }
 });
 
 /***/ }),
-/* 304 */
+/* 310 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("section", { attrs: { id: "addticker" } }, [
-    _c("div", { staticClass: "grid-container fluid add-asset" }, [
-      _c("form", { attrs: { method: "POST", action: "/ticker" } }, [
-        _c("input", {
-          attrs: { type: "hidden", name: "_token" },
-          domProps: { value: _vm.csrf }
-        }),
-        _vm._v(" "),
-        _c("div", { staticClass: "grid-x grid-padding-x" }, [
-          _vm._m(0, false, false),
+  return _c("section", { attrs: { id: "coin-card" } }, [
+    _c(
+      "div",
+      {
+        staticClass: "card",
+        on: {
+          click: function($event) {
+            _vm.compactMode = !_vm.compactMode
+          }
+        }
+      },
+      [
+        _c("div", { staticClass: "card-divider" }, [
+          _c(
+            "span",
+            {
+              staticClass: "coin-card-close",
+              attrs: { "aria-hidden": "true" }
+            },
+            [_vm._v("×")]
+          ),
           _vm._v(" "),
-          _c("div", { staticClass: "small-12 cell form-container" }, [
-            _vm.validationErrors.asset_symbol
-              ? _c(
-                  "div",
-                  _vm._l(_vm.validationErrors.asset_symbol, function(error) {
-                    return _c("span", { staticClass: "validation-error" }, [
-                      _vm._v(" " + _vm._s(error) + " ")
-                    ])
-                  })
-                )
-              : _vm._e(),
-            _vm._v(" "),
-            _c("div", { staticClass: "input-group" }, [
-              _c("span", { staticClass: "input-group-label" }, [
-                _vm._v("Asset")
-              ]),
-              _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.coinSelected,
-                    expression: "coinSelected"
-                  }
-                ],
-                staticClass: "input-group-field number",
-                attrs: { name: "asset_symbol", id: "coins", type: "text" },
-                domProps: { value: _vm.coinSelected },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.coinSelected = $event.target.value
-                  }
-                }
-              })
-            ])
+          _c("div", { staticClass: "grid-container fluid" }, [
+            _c(
+              "div",
+              { staticClass: "grid-x grid-padding-x align-middle text-left" },
+              [
+                _c("div", { staticClass: "shrink cell" }, [
+                  _c("div", { staticClass: "nowrap coin-symbol" }, [
+                    _c("img", {
+                      attrs: {
+                        src:
+                          "https://www.cryptocompare.com/media/351995/golem_logo.png",
+                        alt: "",
+                        width: "24"
+                      }
+                    }),
+                    _vm._v(" " + _vm._s(_vm.coin) + " "),
+                    _c("i", {
+                      staticClass: "fa fa-arrow-up green",
+                      attrs: { "aria-hidden": "true" }
+                    })
+                  ])
+                ]),
+                _vm._v(" "),
+                _vm._m(0, false, false)
+              ]
+            )
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "grid-x grid-passing-x align-middle" }, [
+          _c("div", { staticClass: "small-8 cell" }, [
+            _c("div", {
+              class: "ct-chart-coin" + _vm.coin + " ct-major-eleventh"
+            })
           ]),
           _vm._v(" "),
           _vm._m(1, false, false)
-        ])
-      ])
-    ])
+        ]),
+        _vm._v(" "),
+        _vm._m(2, false, false)
+      ]
+    )
   ])
 }
 var staticRenderFns = [
@@ -124775,23 +125062,63 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "small-12 cell form-container" }, [
-      _c("p", { staticClass: "h1" }, [_vm._v("Dashboard: New Asset")]),
-      _vm._v(" "),
-      _c("p", { staticClass: "lead" }, [
-        _c("b", [_vm._v("Add new asset to your dashboard")])
-      ])
+    return _c("div", { staticClass: "auto cell" }, [
+      _c("div", { staticClass: "coin-name" }, [_vm._v(" Golem Network Token ")])
     ])
   },
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "small-12 cell form-container" }, [
+    return _c("div", { staticClass: "small-4 cell text-center" }, [
+      _c("span", { staticClass: "coin-data-change profit-box" }, [
+        _vm._v(" +67.856% ")
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "coin-data-fiat" }, [_vm._v("€8235.47")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "coin-data-btc" }, [_vm._v("B0.00032783")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-section" }, [
       _c(
-        "button",
-        { staticClass: "hollow button", attrs: { type: "submit" } },
-        [_vm._v("\n                       Add Asset\n                    ")]
+        "div",
+        { staticClass: "grid-x grid-padding-x align-middle align-center" },
+        [
+          _c("div", { staticClass: "small-4 cell text-center" }, [
+            _c("div", { staticClass: "card-section-title" }, [
+              _vm._v("Market Cap")
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-section-value" }, [
+              _vm._v("€6.566.732.210")
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "small-4 cell text-center" }, [
+            _c("div", { staticClass: "card-section-title" }, [
+              _vm._v("24h Vol.")
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-section-value" }, [
+              _vm._v("€514.987.168,00")
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "small-4 cell text-center" }, [
+            _c("div", { staticClass: "card-section-title" }, [
+              _vm._v("Supply")
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-section-value" }, [
+              _vm._v("€25.927.070.538")
+            ])
+          ])
+        ]
       )
     ])
   }
@@ -124801,7 +125128,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-19a5abe9", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-c33e3e22", module.exports)
   }
 }
 
