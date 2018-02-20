@@ -124917,8 +124917,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'coin-card2',
@@ -125004,41 +125002,26 @@ var render = function() {
       },
       [
         _c("div", { staticClass: "card-divider" }, [
-          _c(
-            "span",
-            {
-              staticClass: "coin-card-close",
-              attrs: { "aria-hidden": "true" }
-            },
-            [_vm._v("×")]
-          ),
-          _vm._v(" "),
-          _c("div", { staticClass: "grid-container fluid" }, [
-            _c(
-              "div",
-              { staticClass: "grid-x grid-padding-x align-middle text-left" },
-              [
-                _c("div", { staticClass: "shrink cell" }, [
-                  _c("div", { staticClass: "nowrap coin-symbol" }, [
-                    _c("img", {
-                      attrs: {
-                        src:
-                          "https://www.cryptocompare.com/media/351995/golem_logo.png",
-                        alt: "",
-                        width: "24"
-                      }
-                    }),
-                    _vm._v(" " + _vm._s(_vm.coin) + " "),
-                    _c("i", {
-                      staticClass: "fa fa-arrow-up green",
-                      attrs: { "aria-hidden": "true" }
-                    })
-                  ])
-                ]),
-                _vm._v(" "),
-                _vm._m(0, false, false)
-              ]
-            )
+          _c("div", { staticClass: "grid-x grid-margin-x align-middle" }, [
+            _c("div", { staticClass: "shrink cell text-left" }, [
+              _c("div", { staticClass: "nowrap coin-symbol" }, [
+                _c("img", {
+                  attrs: {
+                    src:
+                      "https://www.cryptocompare.com/media/351995/golem_logo.png",
+                    alt: "",
+                    width: "24"
+                  }
+                }),
+                _vm._v(" " + _vm._s(_vm.coin) + " "),
+                _c("i", {
+                  staticClass: "fa fa-arrow-up green",
+                  attrs: { "aria-hidden": "true" }
+                })
+              ])
+            ]),
+            _vm._v(" "),
+            _vm._m(0, false, false)
           ])
         ]),
         _vm._v(" "),
@@ -125062,7 +125045,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "auto cell" }, [
+    return _c("div", { staticClass: "auto cell text-right" }, [
       _c("div", { staticClass: "coin-name" }, [_vm._v(" Golem Network Token ")])
     ])
   },

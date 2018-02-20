@@ -11,5 +11,10 @@ class Order extends Model
     protected $fillable = [
         'user_id', 'order_id', 'trade_id', 'exchange', 'type', 'cancel'
     ];
+
+    public function trade()
+    {
+        return $this->belongsTo('App\Trade');
+    }
     
 }

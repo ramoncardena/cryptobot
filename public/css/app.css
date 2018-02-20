@@ -16577,7 +16577,7 @@ section#coin-card .neutral-box {
 section#coin-card .coin-card-close {
   position: relative;
   top: -11px;
-  left: -2px;
+  right: -2px;
   font-size: 1.5rem;
 }
 

@@ -4,19 +4,17 @@
         <div class="card" v-on:click="compactMode = !compactMode">
             
             <div class="card-divider">
-                <span class="coin-card-close" aria-hidden="true">&times;</span>
-                <div class="grid-container fluid">
-                    <div class="grid-x grid-padding-x align-middle text-left">
+                <!-- <span class="coin-card-close" aria-hidden="true">&times;</span> -->
+                <div class="grid-x grid-margin-x align-middle">
+                
+                    <div class="shrink cell text-left">
+                        <div class="nowrap coin-symbol"><img src="https://www.cryptocompare.com/media/351995/golem_logo.png" alt="" width="24"> {{ coin }} <i class="fa fa-arrow-up green" aria-hidden="true"></i></div>
+                    </div>
+                    <div class="auto cell text-right">
+                        <div class="coin-name"> Golem Network Token </div>
+                    </div>
                     
-                        <div class="shrink cell">
-                            <div class="nowrap coin-symbol"><img src="https://www.cryptocompare.com/media/351995/golem_logo.png" alt="" width="24"> {{ coin }} <i class="fa fa-arrow-up green" aria-hidden="true"></i></div>
-                        </div>
-                        <div class="auto cell">
-                            <div class="coin-name"> Golem Network Token </div>
-                        </div>
-                        
-                    </div>    
-                </div>
+                </div>    
               
             </div>
             <div class="grid-x grid-passing-x align-middle">
