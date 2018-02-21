@@ -10,6 +10,7 @@ use App\Portfolio;
 use App\PortfolioOrigin;
 use App\User;
 use App\Connection;
+use App\Settings;
 
 class SettingsController extends Controller
 {
@@ -76,77 +77,15 @@ class SettingsController extends Controller
     public function store(Request $request)
     {   
         $settings = settings();
+        $settings->reset();
 
         //$settings->set('exchanges', null);
-
-        // $bitstampSwitch=false;
-        // $bittrexSwitch=false;
-
-        // $newExchange = null;
-        // $newExchangeApi = null;
-        // $newExchangeSecret = null;
-        // $newExchangeFee = null;
 
         $user = Auth::user();
 
         foreach ($request->all() as $key => $value) 
         {
             switch ($key) {
-                // case 'new_exchange':
-                //     $newExchange = $value;
-                //     break;
-
-                // case 'new_exchange_api_key':
-                //     $newExchangeApi = $value;
-                //     break;
-
-                // case 'new_exchange_api_secret':
-                //     $newExchangeSecret = $value;
-                //     break;
-
-                // case 'new_exchange_fee':
-                //     $newExchangeFee = $value;
-                //     break;
-
-                // case 'bittrex_switch':
-                //     $settings->addExchange('bittrex');
-
-                //     $origins =  $user->origins;
-
-                //     if ($origins->firstWhere('name', 'Bittrex') == null) {
-                //         $portfolio = Portfolio::where('user_id', $user->id)->first();
-                //         $origin = new PortfolioOrigin;
-                //         $origin->portfolio_id = $portfolio->id;
-                //         $origin->user_id = $user->id;
-                //         $origin->type ='Exchange';
-                //         $origin->name = 'Bittrex';
-                //         $origin->address = "-";
-                //         $origin->save();
-                //     }
-
-                //     $bittrexSwitch = true;
-
-                //     break;
-
-                // case 'bitstamp_switch':
-                //     $settings->addExchange('bitstamp');
-
-                //     $origins =  $user->origins;
-
-                //     if ($origins->firstWhere('name', 'Bitstamp') == null) {
-                //         $portfolio = Portfolio::where('user_id', $user->id)->first();
-                //         $origin = new PortfolioOrigin;
-                //         $origin->portfolio_id = $portfolio->id;
-                //         $origin->user_id = $user->id;
-                //         $origin->type ='Exchange';
-                //         $origin->name = 'Bitstamp';
-                //         $origin->address = "-";
-                //         $origin->save();
-                //     }   
-
-                //     $bitstampSwitch = true;
-
-                //     break;
 
                 case 'initialize_portfolio':
                     $portfolio = new Portfolio;

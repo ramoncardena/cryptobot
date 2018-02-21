@@ -95,8 +95,19 @@
 
                                     </select>
                                 </div>
-                                <div class="input-group">
-
+                                <p>Hide small amounts:</p>
+                                <div class="switch large">
+                                    @isset($settings['hideSmall'])
+                                    <input class="switch-input" checked id="yes-no" type="checkbox" name="hideSmall">
+                                    @endisset
+                                    @empty($settings['hideSmall'])
+                                    <input class="switch-input" id="yes-no" type="checkbox" name="hideSmall">
+                                    @endempty
+                                    <label class="switch-paddle" for="yes-no">
+                                        <span class="show-for-sr">Hide small amounts</span>
+                                        <span class="switch-active" aria-hidden="true">Yes</span>
+                                        <span class="switch-inactive" aria-hidden="true">No</span>
+                                    </label>
                                 </div>
                                 @endisset
 

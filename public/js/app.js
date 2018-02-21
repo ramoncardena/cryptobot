@@ -44325,7 +44325,7 @@ Vue.component('asset', __webpack_require__(275));
 
 Vue.component('coin-card', __webpack_require__(278));
 Vue.component('add-ticker', __webpack_require__(281));
-Vue.component('coin-card2', __webpack_require__(308));
+Vue.component('coin-card2', __webpack_require__(284));
 
 Vue.component('notification-list', __webpack_require__(287));
 Vue.component('connections', __webpack_require__(290));
@@ -123886,9 +123886,312 @@ if (false) {
 }
 
 /***/ }),
-/* 284 */,
-/* 285 */,
-/* 286 */,
+/* 284 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(3)
+/* script */
+var __vue_script__ = __webpack_require__(285)
+/* template */
+var __vue_template__ = __webpack_require__(286)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/dashboard/CoinCard2.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-c33e3e22", Component.options)
+  } else {
+    hotAPI.reload("data-v-c33e3e22", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 285 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: 'coin-card2',
+    data: function data() {
+        return {
+            chartistCoinChart: {},
+            responsiveOptions: [],
+            chartistCoinChartData: { labels: [], series: [] },
+            chartistCoinChartOptions: {},
+            compactMode: false,
+            updating: false,
+            csrf: ""
+        };
+    },
+    props: ['coin', 'compact'],
+    computed: {},
+    watch: {},
+    mounted: function mounted() {
+
+        if (this.compact) this.compactMode = true;
+
+        this.chartistCoinChartOptions = {
+            low: 0,
+            showArea: true,
+            showLine: true,
+            showPoint: false,
+            fullWidth: true,
+            chartPadding: {
+                top: 5,
+                bottom: -35,
+                right: 5,
+                left: -35
+            },
+            axisX: {
+                showLabel: false,
+                showGrid: false
+            },
+            axisY: {
+                showLabel: false,
+                showGrid: false
+            }
+        };
+        this.chartistCoinChartData.series = [[5, 9, 7, 8, 15, 11, 9, 14]];
+        // this.chartistCoinChart = new Chartist.Line('.ct-chart-coin', this.chartistCoinChartData, this.chartistCoinChartOptions,this.responsiveOptions);
+        this.chartistCoinChart = new Chartist.Line('.ct-chart-coin' + this.coin, this.chartistCoinChartData, this.chartistCoinChartOptions);
+
+        this.csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+        console.log('Component CoinCard mounted.');
+    },
+
+    methods: {
+        toggleCompact: function toggleCompact() {
+            console.log("Toggle");
+            if (this.compactMode == true) {
+                this.compactMode == false;
+                this.chartistCoinChart = new Chartist.Line('.ct-chart-coin' + this.coin, this.chartistCoinChartData, this.chartistCoinChartOptions);
+            } else {
+                this.compactMode == true;
+            }
+        }
+    }
+});
+
+/***/ }),
+/* 286 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("section", { attrs: { id: "coin-card" } }, [
+    _c(
+      "div",
+      {
+        staticClass: "card",
+        on: {
+          click: function($event) {
+            _vm.compactMode = !_vm.compactMode
+          }
+        }
+      },
+      [
+        _c("div", { staticClass: "card-divider" }, [
+          _c("div", { staticClass: "grid-x grid-margin-x align-middle" }, [
+            _c("div", { staticClass: "shrink cell text-left" }, [
+              _c("div", { staticClass: "nowrap coin-symbol" }, [
+                _c("img", {
+                  attrs: {
+                    src:
+                      "https://www.cryptocompare.com/media/351995/golem_logo.png",
+                    alt: "",
+                    width: "24"
+                  }
+                }),
+                _vm._v(" " + _vm._s(_vm.coin) + " "),
+                _c("i", {
+                  staticClass: "fa fa-arrow-up green",
+                  attrs: { "aria-hidden": "true" }
+                })
+              ])
+            ]),
+            _vm._v(" "),
+            _vm._m(0, false, false)
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "grid-x grid-passing-x align-middle" }, [
+          _c("div", { staticClass: "small-8 cell" }, [
+            _c("div", {
+              class: "ct-chart-coin" + _vm.coin + " ct-major-eleventh"
+            })
+          ]),
+          _vm._v(" "),
+          _vm._m(1, false, false)
+        ]),
+        _vm._v(" "),
+        _vm._m(2, false, false)
+      ]
+    )
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "auto cell text-right" }, [
+      _c("div", { staticClass: "coin-name" }, [_vm._v(" Golem Network Token ")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "small-4 cell text-center" }, [
+      _c("span", { staticClass: "coin-data-change profit-box" }, [
+        _vm._v(" +67.856% ")
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "coin-data-fiat" }, [_vm._v("€8235.47")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "coin-data-btc" }, [_vm._v("B0.00032783")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-section" }, [
+      _c(
+        "div",
+        { staticClass: "grid-x grid-padding-x align-middle align-center" },
+        [
+          _c("div", { staticClass: "small-4 cell text-center" }, [
+            _c("div", { staticClass: "card-section-title" }, [
+              _vm._v("Market Cap")
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-section-value" }, [
+              _vm._v("€6.566.732.210")
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "small-4 cell text-center" }, [
+            _c("div", { staticClass: "card-section-title" }, [
+              _vm._v("24h Vol.")
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-section-value" }, [
+              _vm._v("€514.987.168,00")
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "small-4 cell text-center" }, [
+            _c("div", { staticClass: "card-section-title" }, [
+              _vm._v("Supply")
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-section-value" }, [
+              _vm._v("€25.927.070.538")
+            ])
+          ])
+        ]
+      )
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-c33e3e22", module.exports)
+  }
+}
+
+/***/ }),
 /* 287 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -124800,320 +125103,6 @@ $('.alerts-callout').hide().delay(1000).slideDown(1000).delay(5000).slideUp(1000
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 300 */,
-/* 301 */,
-/* 302 */,
-/* 303 */,
-/* 304 */,
-/* 305 */,
-/* 306 */,
-/* 307 */,
-/* 308 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(3)
-/* script */
-var __vue_script__ = __webpack_require__(309)
-/* template */
-var __vue_template__ = __webpack_require__(310)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/dashboard/CoinCard2.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-c33e3e22", Component.options)
-  } else {
-    hotAPI.reload("data-v-c33e3e22", Component.options)
-' + '  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 309 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    name: 'coin-card2',
-    data: function data() {
-        return {
-            chartistCoinChart: {},
-            responsiveOptions: [],
-            chartistCoinChartData: { labels: [], series: [] },
-            chartistCoinChartOptions: {},
-            compactMode: false,
-            updating: false,
-            csrf: ""
-        };
-    },
-    props: ['coin', 'compact'],
-    computed: {},
-    watch: {},
-    mounted: function mounted() {
-
-        if (this.compact) this.compactMode = true;
-
-        this.chartistCoinChartOptions = {
-            low: 0,
-            showArea: true,
-            showLine: true,
-            showPoint: false,
-            fullWidth: true,
-            chartPadding: {
-                top: 5,
-                bottom: -35,
-                right: 5,
-                left: -35
-            },
-            axisX: {
-                showLabel: false,
-                showGrid: false
-            },
-            axisY: {
-                showLabel: false,
-                showGrid: false
-            }
-        };
-        this.chartistCoinChartData.series = [[5, 9, 7, 8, 15, 11, 9, 14]];
-        // this.chartistCoinChart = new Chartist.Line('.ct-chart-coin', this.chartistCoinChartData, this.chartistCoinChartOptions,this.responsiveOptions);
-        this.chartistCoinChart = new Chartist.Line('.ct-chart-coin' + this.coin, this.chartistCoinChartData, this.chartistCoinChartOptions);
-
-        this.csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-
-        console.log('Component CoinCard mounted.');
-    },
-
-    methods: {
-        toggleCompact: function toggleCompact() {
-            console.log("Toggle");
-            if (this.compactMode == true) {
-                this.compactMode == false;
-                this.chartistCoinChart = new Chartist.Line('.ct-chart-coin' + this.coin, this.chartistCoinChartData, this.chartistCoinChartOptions);
-            } else {
-                this.compactMode == true;
-            }
-        }
-    }
-});
-
-/***/ }),
-/* 310 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("section", { attrs: { id: "coin-card" } }, [
-    _c(
-      "div",
-      {
-        staticClass: "card",
-        on: {
-          click: function($event) {
-            _vm.compactMode = !_vm.compactMode
-          }
-        }
-      },
-      [
-        _c("div", { staticClass: "card-divider" }, [
-          _c("div", { staticClass: "grid-x grid-margin-x align-middle" }, [
-            _c("div", { staticClass: "shrink cell text-left" }, [
-              _c("div", { staticClass: "nowrap coin-symbol" }, [
-                _c("img", {
-                  attrs: {
-                    src:
-                      "https://www.cryptocompare.com/media/351995/golem_logo.png",
-                    alt: "",
-                    width: "24"
-                  }
-                }),
-                _vm._v(" " + _vm._s(_vm.coin) + " "),
-                _c("i", {
-                  staticClass: "fa fa-arrow-up green",
-                  attrs: { "aria-hidden": "true" }
-                })
-              ])
-            ]),
-            _vm._v(" "),
-            _vm._m(0, false, false)
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "grid-x grid-passing-x align-middle" }, [
-          _c("div", { staticClass: "small-8 cell" }, [
-            _c("div", {
-              class: "ct-chart-coin" + _vm.coin + " ct-major-eleventh"
-            })
-          ]),
-          _vm._v(" "),
-          _vm._m(1, false, false)
-        ]),
-        _vm._v(" "),
-        _vm._m(2, false, false)
-      ]
-    )
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "auto cell text-right" }, [
-      _c("div", { staticClass: "coin-name" }, [_vm._v(" Golem Network Token ")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "small-4 cell text-center" }, [
-      _c("span", { staticClass: "coin-data-change profit-box" }, [
-        _vm._v(" +67.856% ")
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "coin-data-fiat" }, [_vm._v("€8235.47")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "coin-data-btc" }, [_vm._v("B0.00032783")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-section" }, [
-      _c(
-        "div",
-        { staticClass: "grid-x grid-padding-x align-middle align-center" },
-        [
-          _c("div", { staticClass: "small-4 cell text-center" }, [
-            _c("div", { staticClass: "card-section-title" }, [
-              _vm._v("Market Cap")
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "card-section-value" }, [
-              _vm._v("€6.566.732.210")
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "small-4 cell text-center" }, [
-            _c("div", { staticClass: "card-section-title" }, [
-              _vm._v("24h Vol.")
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "card-section-value" }, [
-              _vm._v("€514.987.168,00")
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "small-4 cell text-center" }, [
-            _c("div", { staticClass: "card-section-title" }, [
-              _vm._v("Supply")
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "card-section-value" }, [
-              _vm._v("€25.927.070.538")
-            ])
-          ])
-        ]
-      )
-    ])
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-c33e3e22", module.exports)
-  }
-}
 
 /***/ })
 /******/ ]);

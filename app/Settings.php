@@ -26,30 +26,6 @@ class Settings
 
 	}
 
-	// public function addExchange($exchange) {
-
-	// 	$exchanges = $this->get('exchanges');
-	// 	$exchanges ? $exchanges = array_add($exchanges, $exchange, 'active') : $exchanges=[$exchange => 'active'];
-		
-	// 	$this->settings['exchanges'] = $exchanges;
-
-	// 	$this->persist();
-
-	// }
-
-	// public function removeExchange($exchange) {
-
-	// 	$exchanges = $this->get('exchanges');
-
-	// 	if ($exchanges) {
-	// 		array_pull($exchanges, $exchange);
-	// 	}
-
-	// 	$this->settings['exchanges'] = $exchanges;
-
-	// 	$this->persist();
-		
-	// }
 
 	public function has($key) 
 	{
@@ -84,7 +60,11 @@ class Settings
 
 		return $this->persist();
 	}
-
+    public function reset()
+    {
+    	$this->settings = [];
+    	$this->persist();
+    }
 	protected function persist()
 	{
 		return $this->user->update(['settings' => $this->settings]);
