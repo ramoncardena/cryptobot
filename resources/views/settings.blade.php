@@ -109,6 +109,15 @@
                                         <span class="switch-inactive" aria-hidden="true">No</span>
                                     </label>
                                 </div>
+                                <div v-show="true" class="input-group">
+                                    <span class="input-group-label">Min. Value (BTC)</span>
+                                    @isset($settings['minValue'])
+                                        <input name="minValue" class="input-group-field" type="text" value="{{ $settings['minValue'] }}"> 
+                                    @endisset
+                                    @empty($settings['minValue'])
+                                        <input name="minValue" class="input-group-field" type="text" value="0.00000000"> 
+                                    @endempty
+                                </div>
                                 @endisset
 
                             </div>

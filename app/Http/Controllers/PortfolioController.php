@@ -71,10 +71,12 @@ class PortfolioController extends Controller
             $guru = new CoinGuru;
             $coins = $guru->getCoinList();
 
+            $this->user->settings()->has('hideSmall') ? $hideSmall = $this->user->settings()->get('hideSmall') : $hideSmall = 'off';
+            $this->user->settings()->has('minValue') ? $minValue = $this->user->settings()->get('minValue') : $minValue = 0.00000000;
             // Set origin types for new Portfolio Origins
             $originTypes = ['Online Wallet', 'Mobile Wallet', 'Desktop Wallet', 'Hardware Wallet', 'Paper Wallet'];
 
-            return view('portfolio', ['originTypes' => json_encode($originTypes), 'exchanges' => json_encode($this->exchanges), 'portfolio' => $this->portfolio, 'origins' => $this->origins, 'coins' => json_encode($coins)]);
+            return view('portfolio', ['originTypes' => json_encode($originTypes), 'exchanges' => json_encode($this->exchanges), 'portfolio' => $this->portfolio, 'origins' => $this->origins, 'coins' => json_encode($coins), 'hideSmall' => $hideSmall, 'minValue' => $minValue]);
         }
         else {
             return redirect('/settings');

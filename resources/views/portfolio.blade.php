@@ -70,7 +70,7 @@
 
                             <div class="portfolio-area">
                                
-                                 <portfolio :portfolio="{{$portfolio}}"></portfolio>
+                                 <portfolio hidesmall="{{ $hideSmall }}" minvalue="{{ $minValue }}" :portfolio="{{ $portfolio }}" ></portfolio>
 
                             </div>
                     </div>

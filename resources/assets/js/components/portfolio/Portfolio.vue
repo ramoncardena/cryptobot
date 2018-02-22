@@ -88,10 +88,14 @@ export default {
     name: 'portfolio',
     props: [
     'portfolio',
+    'hidesmall',
+    'minvalue'
     ],
     data: () => {
         return {
             assets: [],
+            hideSmallAssets: "no",
+            minAssetValue: 0.00000000,
             totalBtc: 0,
             totalFiat: 0,
             totalExchanges: 0,
@@ -135,6 +139,8 @@ export default {
         this.totalFiat = 0;
         this.uniqueAssetsOriginFiat = [];
         this.uniqueAssetsOriginName = [];
+        this.hideSmallAssets = this.hidesmall;
+        this.minAssetValue = this.minvalue; 
 
         // Setup DATATABLE
         this.portfolioTable = $('#portfolioTable').DataTable( {
@@ -226,35 +232,36 @@ export default {
             // ************
             // ASSET LOADED
             // ************
-            
-            // console.log("Portfolio UpdateID: " + this.portfolio.update_id  + " Asset UpdateID: " + e.asset.update_id);
+    
             if (this.portfolio.update_id == e.asset.update_id) {
 
-                var tools = '<div class="asset-tools nowrap"><button class="clear button" data-open="edit-asset-modal"><i class="fa fa-pencil edit-icon" aria-hidden="true"></i></button></div>';
+                if ( (this.hideSmallAssets == "on" && parseFloat(e.asset.balance) > parseFloat(this.minAssetValue)) || this.hideSmallAssets != "on" ) {
+                    var tools = '<div class="asset-tools nowrap"><button class="clear button" data-open="edit-asset-modal"><i class="fa fa-pencil edit-icon" aria-hidden="true"></i></button></div>';
 
-                // Set coin url, logo, name and symbol
-                var coin = '<div class="asset-info nowrap"><a href="' + e.asset.info_url + '" target="_blank"><img class="asset-img" src="' + e.asset.logo_url + '" width="20"></a> <span class="show-for-medium asset-name">' + e.asset.full_name + '</span> <span class="asset-symbol">' + e.asset.symbol + '</span></div>';
+                    // Set coin url, logo, name and symbol
+                    var coin = '<div class="asset-info nowrap"><a href="' + e.asset.info_url + '" target="_blank"><img class="asset-img" src="' + e.asset.logo_url + '" width="20"></a> <span class="show-for-medium asset-name">' + e.asset.full_name + '</span> <span class="asset-symbol">' + e.asset.symbol + '</span></div>';
 
-                // Set coin amount
-                var amount = '<div class="asset-amount nowrap">' + parseFloat(e.asset.amount).toFixed(4) + '</div>'
+                    // Set coin amount
+                    var amount = '<div class="asset-amount nowrap">' + parseFloat(e.asset.amount).toFixed(4) + '</div>'
 
-                // Set coin origin
-                var origin = '<div class="asset-origin  nowrap">' + e.asset.origin_name + '</div>';
+                    // Set coin origin
+                    var origin = '<div class="asset-origin  nowrap">' + e.asset.origin_name + '</div>';
 
-                var counterValue = '<div class="asset-counter-value nowrap">' + parseFloat(e.asset.counter_value).toFixed(2) + '</div>';
-                
-                // Add row to the table with the new asset
-                this.portfolioTable.row.add( [
-                    coin,
-                    '',  
-                    counterValue,
-                    amount,
-                    parseFloat(e.asset.balance).toFixed(8),
-                    parseFloat(e.asset.price).toFixed(8),
-                    parseFloat(e.asset.initial_price).toFixed(8),
-                    e.asset.id,
-                    origin
-                ] ).order( [ this.portfolioTable.column( 'origin:name' ).index(), 'asc' ] ).invalidate().draw();   
+                    var counterValue = '<div class="asset-counter-value nowrap">' + parseFloat(e.asset.counter_value).toFixed(2) + '</div>';
+                    
+                    // Add row to the table with the new asset
+                    this.portfolioTable.row.add( [
+                        coin,
+                        '',  
+                        counterValue,
+                        amount,
+                        parseFloat(e.asset.balance).toFixed(8),
+                        parseFloat(e.asset.price).toFixed(8),
+                        parseFloat(e.asset.initial_price).toFixed(8),
+                        e.asset.id,
+                        origin
+                    ] ).order( [ this.portfolioTable.column( 'origin:name' ).index(), 'asc' ] ).invalidate().draw();   
+                }
             }
             
         })
@@ -262,9 +269,8 @@ export default {
             // ************
             // ASSET UPDATED
             // ************
-            
-            if (this.portfolio.update_id == e.asset.update_id) {
-                //console.log(e.asset.symbol);
+            // 
+            if ( this.portfolio.update_id == e.asset.update_id ) {
                 
                 // Calculate current TOTAL balances (btc and fiat)
                 this.totalBtc = (parseFloat(this.totalBtc) + parseFloat(e.asset.balance)).toFixed(8);
@@ -327,40 +333,42 @@ export default {
                     this.chartistOriginsData.series.push( parseFloat( parseFloat(e.asset.counter_value).toFixed(2) ));
                 }
 
-                // Locate current coin row in DATATABLE
-                var indexes = this.portfolioTable.rows().eq( 0 ).filter( rowIdx => {
-                    return this.portfolioTable.cell( rowIdx, this.portfolioTable.column( 'id:name' ).index() ).data() === e.asset.id ? true : false;
-                } );
+                if ( (this.hideSmallAssets == "on" && parseFloat(e.asset.balance) > parseFloat(this.minAssetValue)) || this.hideSmallAssets != "on" ) {
+                    // Locate current coin row in DATATABLE
+                    var indexes = this.portfolioTable.rows().eq( 0 ).filter( rowIdx => {
+                        return this.portfolioTable.cell( rowIdx, this.portfolioTable.column( 'id:name' ).index() ).data() === e.asset.id ? true : false;
+                    } );
 
-                // Update DATATABLE values (Price, Balance and Counter Value)
-                var formated_counter_value = '<span class="asset-counter-value nowrap">' + this.counterValueSymbolHtml + parseFloat(counter_value).toFixed(2)  + '</span>';
-                var formated_balance = '<span class="nowrap"><i class="fa fa-btc" aria-hidden="true"></i>' + parseFloat(balance).toFixed(8) + '</span>';
-                var formated_price = '<span class="nowrap"><i class="fa fa-btc" aria-hidden="true"></i>' + parseFloat(price).toFixed(8) + '</span>';
+                    // Update DATATABLE values (Price, Balance and Counter Value)
+                    var formated_counter_value = '<span class="asset-counter-value nowrap">' + this.counterValueSymbolHtml + parseFloat(counter_value).toFixed(2)  + '</span>';
+                    var formated_balance = '<span class="nowrap"><i class="fa fa-btc" aria-hidden="true"></i>' + parseFloat(balance).toFixed(8) + '</span>';
+                    var formated_price = '<span class="nowrap"><i class="fa fa-btc" aria-hidden="true"></i>' + parseFloat(price).toFixed(8) + '</span>';
 
-                var formated_purchase_price = '<span class="nowrap"><i class="fa fa-btc" aria-hidden="true"></i>' + parseFloat(purchase_price).toFixed(8) + '</span>';
+                    var formated_purchase_price = '<span class="nowrap"><i class="fa fa-btc" aria-hidden="true"></i>' + parseFloat(purchase_price).toFixed(8) + '</span>';
 
-                this.portfolioTable.cell(indexes[0], this.portfolioTable.column( 'fiatvalue:name' ).index()).data(formated_counter_value).invalidate();
-                this.portfolioTable.cell(indexes[0], this.portfolioTable.column( 'btcvalue:name' ).index()).data(formated_balance).invalidate();
-                this.portfolioTable.cell(indexes[0], this.portfolioTable.column( 'last:name' ).index()).data(formated_price).invalidate();
-                this.portfolioTable.cell(indexes[0], this.portfolioTable.column( 'purchase:name' ).index()).data(formated_purchase_price).invalidate();
+                    this.portfolioTable.cell(indexes[0], this.portfolioTable.column( 'fiatvalue:name' ).index()).data(formated_counter_value).invalidate();
+                    this.portfolioTable.cell(indexes[0], this.portfolioTable.column( 'btcvalue:name' ).index()).data(formated_balance).invalidate();
+                    this.portfolioTable.cell(indexes[0], this.portfolioTable.column( 'last:name' ).index()).data(formated_price).invalidate();
+                    this.portfolioTable.cell(indexes[0], this.portfolioTable.column( 'purchase:name' ).index()).data(formated_purchase_price).invalidate();
+                    
+                    var balance = '<i class="fa fa-btc" aria-hidden="true"></i>' + parseFloat(e.asset.balance).toFixed(8);
+                    if (e.asset.initial_price == 0 ) {
+                        var profit = "-";
+                    }
+                    else {
+                        var profit = ( ( ( parseFloat(price)-parseFloat(e.asset.initial_price) ) / parseFloat(e.asset.initial_price)) * 100 ).toFixed(2);
+                    }
+                    if (profit > 0) {
+                        this.portfolioTable.cell(indexes[0], this.portfolioTable.column( 'profit:name' ).index()).data('<span class="profit-box nowrap">+' + profit + '%</span>' ).invalidate();
+                    }
+                    else if (profit < 0){
+                        this.portfolioTable.cell(indexes[0], this.portfolioTable.column( 'profit:name' ).index()).data('<span class="loss-box nowrap">' + profit + '%</span>' ).invalidate();
+                    }
+                    else {
+                        this.portfolioTable.cell(indexes[0], this.portfolioTable.column( 'profit:name' ).index()).data('<span class="neutral-box nowrap">' + profit + '%</span>' ).invalidate();
+                    }
                 
-                var balance = '<i class="fa fa-btc" aria-hidden="true"></i>' + parseFloat(e.asset.balance).toFixed(8);
-                if (e.asset.initial_price == 0 ) {
-                    var profit = "-";
                 }
-                else {
-                    var profit = ( ( ( parseFloat(price)-parseFloat(e.asset.initial_price) ) / parseFloat(e.asset.initial_price)) * 100 ).toFixed(2);
-                }
-                if (profit > 0) {
-                    this.portfolioTable.cell(indexes[0], this.portfolioTable.column( 'profit:name' ).index()).data('<span class="profit-box nowrap">+' + profit + '%</span>' ).invalidate();
-                }
-                else if (profit < 0){
-                    this.portfolioTable.cell(indexes[0], this.portfolioTable.column( 'profit:name' ).index()).data('<span class="loss-box nowrap">' + profit + '%</span>' ).invalidate();
-                }
-                else {
-                    this.portfolioTable.cell(indexes[0], this.portfolioTable.column( 'profit:name' ).index()).data('<span class="neutral-box nowrap">' + profit + '%</span>' ).invalidate();
-                }
-                
 
                 // Gainers and losers
                 if (parseFloat(profit) > parseFloat(this.biggestGainer.profit) && (e.asset.symbol!='BTC' && e.asset.symbol!='BTG')) {
