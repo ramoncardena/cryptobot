@@ -23,6 +23,7 @@ class DashboardController extends Controller
 
       $user =  Auth::user();
       $tickers = $user->tickers->all();
+      
    		return view('dashboard', ['coins' => json_encode($coins), 'tickers' => $tickers]);
    	}
 }

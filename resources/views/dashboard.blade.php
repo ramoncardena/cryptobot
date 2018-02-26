@@ -33,6 +33,7 @@
 	        </div>
 	   	</div>
 	</div>
+    
      <!-- MODAL: Add Ticker -->
     <div class="reveal portfolio-modal" id="new-ticker-modal" data-reveal>
         

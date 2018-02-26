@@ -11,6 +11,7 @@
                         <p class="lead"><b>Add new asset to your dashboard</b></p>
                     </div>
                     
+                    
                     <div class="small-12 cell form-container">
                         <div v-if="validationErrors.asset_symbol">
                            <span class="validation-error" v-for="error in validationErrors.asset_symbol"> {{ error }} </span>
