@@ -15482,11 +15482,12 @@ a.thumbnail image {
   margin-top: 0;
   z-index: 9999;
   display: none;
-  padding: 2rem;
+  padding: 1rem;
   border-radius: 0;
   width: 100%;
   text-align: center;
-  font-size: 1.3rem;
+  font-size: 1.1rem;
+  opacity: 0.9;
 }
 
 .form-callout {
@@ -15803,25 +15804,6 @@ section#register .login-icon .fa {
   font-size: 3rem;
   font-weight: 100;
   margin-bottom: 1rem;
-}
-
-section#dashboard {
-  margin-top: 1rem;
-}
-
-section#dashboard .section-title {
-  background-color: #FBFCF9;
-  border-bottom: 1px solid #e6e6e6;
-  padding: 1rem;
-  margin-bottom: 1rem;
-}
-
-section#dashboard .section-title h1 {
-  color: #FF7276;
-}
-
-section#dashboard .section-title .value {
-  color: #FF7276;
 }
 
 section#dashboard .add-coin {
@@ -16658,6 +16640,7 @@ section#coin-card {
   border: 1px solid rgba(52, 86, 120, 0.1);
   background-color: #fefefe;
   padding: 0.2rem;
+  margin-top: 0.5rem;
   margin-bottom: 0.5rem;
 }
 
@@ -16737,5 +16720,22 @@ section#coin-card .coin-footer .fa {
 section#coin-card .coin-footer-value {
   font-size: 0.7rem;
   color: #345678;
+}
+
+section#addticker .easy-autocomplete.eac-square input {
+  border: 1px solid #cacaca;
+  border-radius: 0;
+  min-width: 1rem;
+  width: 100%;
+  font-weight: 400;
+  padding: 5px 25px 5px 5px;
+}
+
+section#addticker .easy-autocomplete {
+  width: 100% !important;
+}
+
+section#addticker .easy-autocomplete input {
+  width: 100%;
 }
 

@@ -3,7 +3,14 @@
 @section('content')
 
 <section id="dashboard">
-
+    @if( Session::has('status-text') )
+        <div class="callout {{ Session::get('status-class') }} alerts-callout" data-closable>
+            <div class="alerts-callout-text">{{ Session::get('status-text') }}</div>
+            <button class="close-button" aria-label="Dismiss" type="button" data-close>
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
 	<div class="grid-container fluid">
 	    <div class="grid-x grid-margin-x align-middle align-center">
             <!-- <div class="small-12 cell text-center toolbar">

@@ -57,6 +57,7 @@ export default {
             compactMode: false,
             updating: false,
             csrf: "",
+            errors: [],
             CccCurrentFields: {
                   'TYPE'            : 0x0       // hex for binary 0, it is a special case of fields that are always there
                 , 'MARKET'          : 0x0       // hex for binary 0, it is a special case of fields that are always there
@@ -95,28 +96,12 @@ export default {
     watch: {
 
     },
-    sockets:{
-        connect: function(){
-            console.log('socket connected')
-        },
-        m: function(message){
-
-            var messageType = message.substring(0, message.indexOf("~"));
-            var res = {};
-            if (messageType == 5) {
-                res = this.CccCurrentUnpack(message);
-                console.log(res);
-                 //console.log(this.dataUnpack(res));
-            }
-            //console.log(message);
-        }
-    },
     mounted() {
         this.coinObj = JSON.parse(this.coin);
 
         if (this.compact) this.compactMode = true;
 
-        this.$socket.emit('SubAdd',{ subs: ['5~CCCAGG~' + this.coinObj.symbol+ '~EUR'] });
+        this.$socket.emit('SubAdd',{ subs: ['5~CCCAGG~' + this.coinObj.symbol+ '~BTC'] });
 
         this.csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
@@ -155,9 +140,33 @@ export default {
 
         this.chartistCoinChart = new Chartist.Line(this.chartClass, this.chartistCoinChartData, this.chartistCoinChartOptions);
     },
+    sockets:{
+        connect: function(){
+            console.log('socket connected')
+        },
+        m: function(message){
+
+            var messageType = message.substring(0, message.indexOf("~"));
+            var res = {};
+            if (messageType == 5) {
+                res = this.CccCurrentUnpack(message);
+                console.log(res);
+                 //console.log(this.dataUnpack(res));
+            }
+            //console.log(message);
+        }
+    },
     methods: {
         removeTicker: (function () {
-
+            let uri = '/dashboard/ticker/' + this.coinObj.symbol;
+            axios.delete(uri)
+            .then(response => {
+                 window.location.replace("/dashboard");
+            })
+            .catch(e => {
+                this.errors.push(e);
+                console.log("Error: " + e.message);
+            });
         }),
         dataUnpack: ( data => {
             var from = data['FROMSYMBOL'];

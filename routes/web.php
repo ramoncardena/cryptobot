@@ -58,6 +58,7 @@ Route::patch('/assets/{id}/transaction', 'PortfolioAssetController@settransactio
 
 Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
 Route::post('/dashboard/ticker', 'TickerController@store');
+Route::delete('/dashboard/ticker/{id}', 'TickerController@destroy');
 
 
 
