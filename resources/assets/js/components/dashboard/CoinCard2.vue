@@ -4,22 +4,24 @@
         <div class="card" v-on:click="compactMode = !compactMode">
             
             <div class="card-divider">
-                <!-- <span class="coin-card-close" aria-hidden="true">&times;</span> -->
-                <div class="grid-x grid-margin-x align-middle">
-                
-                    <div class="shrink cell text-left">
-                        <div class="nowrap coin-symbol"><img src="https://www.cryptocompare.com/media/351995/golem_logo.png" alt="" width="24"> {{ coin }} <i class="fa fa-arrow-up green" aria-hidden="true"></i></div>
-                    </div>
-                    <div class="auto cell text-right">
-                        <div class="coin-name"> Golem Network Token </div>
-                    </div>
-                    
-                </div>    
+
+                <div class="grid-container fluid">
+                    <div class="grid-x grid-padding-x align-middle">
+                        <div class="small-6 cell">
+                            <div class="nowrap coin-symbol"><img :src="coinObj.imageurl" alt="" width="24"> {{ coinObj.symbol }} <i class="fa fa-arrow-up green" aria-hidden="true"></i></div>
+                        </div>
+                        <div class="small-6 cell">
+                            <div class="coin-name"> {{ coinObj.coinname }}</div>
+                            <span class="coin-card-close" aria-hidden="true">&times;</span>
+                        </div>
+                        <!-- <span class="coin-card-close" aria-hidden="true">&times;</span> -->
+                    </div>    
+                </div>
               
             </div>
             <div class="grid-x grid-passing-x align-middle">
                 <div class="small-8 cell">
-                    <div :class="'ct-chart-coin' + coin + ' ct-major-eleventh'"></div>
+                    <div :class="'ct-chart-coin' + coinObj.symbol + ' ct-major-eleventh'"></div>
                 </div>
 
                 <div class="small-4 cell text-center">
@@ -57,6 +59,8 @@ export default {
     name: 'coin-card2',
     data: () => {
         return {
+            coinObj: {},
+            chartClass: "",
             chartistCoinChart: {},
             responsiveOptions: [],
             chartistCoinChartData: {labels: [], series: []},
@@ -77,10 +81,16 @@ export default {
 
     },
     mounted() {
-       
+        this.coinObj = JSON.parse(this.coin);
+
         if (this.compact) this.compactMode = true;
 
-         this.chartistCoinChartOptions = {
+        this.csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+  
+        console.log('Component CoinCard mounted.');
+    },
+    updated(){
+        this.chartistCoinChartOptions = {
             low: 0,
             showArea: true,
             showLine: true,
@@ -104,19 +114,20 @@ export default {
         this.chartistCoinChartData.series = [
             [5, 9, 7, 8, 15, 11, 9, 14]
             ]
-        // this.chartistCoinChart = new Chartist.Line('.ct-chart-coin', this.chartistCoinChartData, this.chartistCoinChartOptions,this.responsiveOptions);
-        this.chartistCoinChart = new Chartist.Line('.ct-chart-coin' + this.coin, this.chartistCoinChartData, this.chartistCoinChartOptions);
+        // this.chartistCoinChart = new Chartist.Line('.ct-chart-coin', this.chartistCoinChartData, this.chartistCoinChartOptions,this.responsiveOptions);ç
+   
 
-        this.csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-  
-        console.log('Component CoinCard mounted.');
+        this.chartClass = '.ct-chart-coin' + this.coinObj.symbol;
+        console.log(this.chartClass);
+
+        this.chartistCoinChart = new Chartist.Line(this.chartClass, this.chartistCoinChartData, this.chartistCoinChartOptions);
     },
     methods: {
         toggleCompact: (function () {
             console.log("Toggle");
             if (this.compactMode == true) {
                 this.compactMode == false;
-                this.chartistCoinChart = new Chartist.Line('.ct-chart-coin' + this.coin, this.chartistCoinChartData, this.chartistCoinChartOptions);
+                this.chartistCoinChart = new Chartist.Line(this.chartClass, this.chartistCoinChartData, this.chartistCoinChartOptions);
             }
             else {
                 this.compactMode == true;

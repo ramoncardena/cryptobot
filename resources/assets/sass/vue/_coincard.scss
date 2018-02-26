@@ -1,6 +1,11 @@
 section#coin-card {
 	color: $medium-gray;
 	font-family: 'Nunito', sans-serif;
+	border: 1px solid rgba(get-color(primary), 0.1);
+	background-color: $white;
+	padding: 0.2rem;
+	margin-bottom: 0.5rem;
+
 
 	.profit-box {
 		color: get-color(profit);
@@ -24,17 +29,21 @@ section#coin-card {
 	}
 	.coin-card-close {
 		position: relative;
-		top: -11px;
-		right: -2px;
-		font-size: 1.5rem;
+		top: 0px;
+		right: 0px;
+		font-size: 1rem;
+		font-weight: bold;
+		color: get-color(alert);
+		cursor: pointer;
 	}
-	.card-divider {
-		font-size: 0.9rem;
+	.coin-header {
+		font-size: 1rem;
+		padding-top: 0.5rem;
+		padding-bottom: 0.7rem;
 		border-bottom: 1px solid rgba(get-color(primary), 0.1);
 		color: get-color(primary);
 
 		.coin-symbol {
-			font-size: 1rem;
 			font-weight: bold;
 		}
 		.coin-name {
@@ -54,9 +63,10 @@ section#coin-card {
 			margin-top: 0.4rem;
 		}
 	}
-	.card-section {
+	
+	.coin-footer {
 		&-title {
-			font-size: 0.8rem;
+			font-size: 0.7rem;
 			text-transform: uppercase;
 			color: get-color(primary);
 		}
@@ -69,6 +79,7 @@ section#coin-card {
 			color: get-color(primary);
 		}
 	}
+
 	
 
 }

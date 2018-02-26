@@ -15,4 +15,16 @@ section#addasset {
 	.easy-autocomplete input{
 		width: 100%;
 	}
+	.input-group {
+		#initial-price-currency {
+			width: 6rem;
+			margin: 0;
+			height: auto;
+			min-width: 0;
+			color: get-color(primary);
+		}
+		.number {
+			text-align: right;
+		}
+	}
 }

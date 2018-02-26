@@ -51,9 +51,27 @@
                         </div>
                          <div class="input-group">
                             <span class="input-group-label">
-                                Initial Price
+                                Purchase Price
                             </span>
                             <input name="asset_initial_price"  class="input-group-field number" type="text" >
+                            <select id="initial-price-currency" name="asset_initial_price_currency">
+                                <option disabled value="">Currency</option>
+                                <option value="eur">EUR</option>
+                                <option value="usd">USD</option>
+                                <option value="btc">BTC</option>
+                                <option value="btc">ETH</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="small-12 cell form-container">
+                        <div v-if="validationErrors.asset_purchase_date">
+                           <span class="validation-error" v-for="error in validationErrors.asset_purchase_date"> {{ error }} </span>
+                        </div>
+                         <div class="input-group">
+                            <span class="input-group-label">
+                                Purchase Date
+                            </span>
+                            <input name="asset_purchase_date"  class="input-group-field number" type="date" >
                         </div>
                     </div>
 

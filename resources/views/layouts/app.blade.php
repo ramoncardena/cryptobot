@@ -95,7 +95,7 @@
 
                             <div class="title-bar-right">
                                 @if (Auth::check())
-                                <a href="#" data-open="notificationsModal"><i class="fa fa-bell-o badge-icon" aria-hidden="true"></i><span class="badge alert">{{ count(Auth::user()->Notifications) }}</span></a>
+                                <a href="#" data-open="notificationsModal"><div class="icon icons8-Bell"></div><span class="badge alert">{{ count(Auth::user()->Notifications) }}</span></a>
                                 @endif
                                 <button class="menu-icon" type="button" data-open="offCanvas"></button>
                             </div>
@@ -115,25 +115,26 @@
                                         <li><a href="{{ route('login') }}">Login</i></a></li>
                                         <li><a href="{{ route('register') }}">Register</a></li>
                                     @else
-                                        <li> <a href="{{ route('home') }}" title="Home">  <i class="fa fa-home" aria-hidden="true"></i> </a></li>
-                                        <li> <a href="{{ route('dashboard') }}" title="Dashboard">  <i class="fa fa-tachometer" aria-hidden="true"></i></i></a></li>
-                                        <li> <a href="{{ route('portfolio') }}" title="Portfolio">  <i class="fa fa-pie-chart" aria-hidden="true"></i></a></li>
-                                        <li> <a href="{{ route('trades') }}" title="Trades">  <i class="fa fa-line-chart" aria-hidden="true"></i></a></li>
-                                        <li><a href="{{ route('settings') }}" title="Settings" ><i class="fa fa-cog" aria-hidden="true"></i></a></li>
+                                        <li> <a href="{{ route('home') }}" title="Home">  <div class="icon icons8-Home"></div> </a></li>
+                                        <li> <a href="{{ route('dashboard') }}" title="Dashboard"> <div class="icon icons8-Speedometer"></div></a></li>
+                                        <li> <a href="{{ route('portfolio') }}" title="Portfolio">  <div class="icon icons8-Pie-Chart"></div></a></li>
+                                        <li> <a href="{{ route('trades') }}" title="Trades">  <div class="icon icons8-Banknotes"></div></a></li>
+                                        <li><a href="{{ route('settings') }}" title="Settings" ><div class="icon icons8-Settings"></div></a></li>
                                         <li  class="show-for-medium">
-                                            <a href="#" data-open="notificationsModal" title="Alerts"><i class="fa fa-bell-o" aria-hidden="true"></i><span class="badge alert">{{ count(Auth::user()->Notifications) }}</span></a>
+                                            <a href="#" data-open="notificationsModal" title="Alerts"> <div class="icon icons8-Bell"></div><span class="badge alert">{{ count(Auth::user()->Notifications) }}</span></a>
                                         </li>
                                         <li>
                                             <a href="{{ route('logout') }}" title="Logout" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
-                                                <i class="fa fa-sign-out" aria-hidden="true"></i>
+                                                <!-- <i class="fa fa-sign-out" aria-hidden="true"></i> -->
+                                                <div class="icon icons8-Log-Out"></div>
                                             </a>
 
                                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                                 {{ csrf_field() }}
                                             </form>
                                         </li>
-                                        <li>
-                                            <a href="#" title="Menu" ><i class="fa fa-th" aria-hidden="true" data-toggle="offCanvas"></i></a>
+                                        <li class="hide-for-small-only">
+                                            <a href="#" title="Menu"><div class="icon icons8-Menu" data-toggle="offCanvas"></div></i></a>
                                         </li>
                                     @endif
                                 </ul>
@@ -158,6 +159,7 @@
                         $(".loader").fadeOut("slow");
                     });
                 </script>
+
 
             </div>
         </div>

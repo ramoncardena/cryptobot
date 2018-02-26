@@ -52,6 +52,8 @@ class PortfolioAssetController extends Controller
             $infoBaseUrl = $guru->cryptocompareCoingetList()->BaseLinkUrl;
             $symbol = $request->asset_symbol;
             $coinInfo = $guru->cryptocompareCoingetList()->Data->$symbol;
+            $nativeCurrency = strtoupper($request->asset_initial_price_currency);
+            $coinPriceInBtc = $guru->getHistoricalPrice($nativeCurrency, ['BTC'], (string)strtotime($request->asset_purchase_date))->$nativeCurrency->BTC;
 
 	        $asset = new PortfolioAsset;
 	        $asset->portfolio_id = $portfolio->id;
@@ -67,14 +69,15 @@ class PortfolioAssetController extends Controller
 	        $asset->balance = 0;
 	        $asset->counter_value = 0;
             $asset->update_id = "-";
-            $asset->initial_price = $request->asset_initial_price;
+            $asset->initial_price = floatval($request->asset_initial_price) * floatval($coinPriceInBtc);
+            $asset->purchase_date = $request->asset_purchase_date; 
 	        $asset->save();
 
 	        return redirect('/portfolio');
     	
     	} catch (\Exception $e) {
     
-    		return response($e->getMessage(), 500)->header('Content-Type', 'text/plain');
+    		return response($e->getMessage(). " " . $e->getCode() . " " . $e->getFile() . ":" . $e->getLine(), 500)->header('Content-Type', 'text/plain');
     		
     	}
     	

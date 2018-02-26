@@ -65,4 +65,12 @@ class CoinGuru
     	return $cryptocomparePrice->getSinglePrice("1",$symbol,$counterValue,"CCCAGG","false");
     	 	
     }
+
+    public function getHistoricalPrice($from, $to, $date)
+    {
+        $cryptocomparePrice = new \Cryptocompare\Price();
+
+        return $cryptocomparePrice->getHistoricalPrice("1", $from, $to, $date,"CCCAGG", "false");
+
+    }
 }

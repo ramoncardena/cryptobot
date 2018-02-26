@@ -21,6 +21,8 @@ class DashboardController extends Controller
     	$guru = new CoinGuru;
 	    $coins = $guru->getCoinList();
 
-   		return view('dashboard', ['coins' => json_encode($coins)]);
+      $user =  Auth::user();
+      $tickers = $user->tickers->all();
+   		return view('dashboard', ['coins' => json_encode($coins), 'tickers' => $tickers]);
    	}
 }

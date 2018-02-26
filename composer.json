@@ -6,6 +6,8 @@
     "type": "project",
     "require": {
         "php": ">=7.0.0",
+        "atbox/invi": "^2.0",
+        "ccxt/ccxt": "^1.10",
         "fideloper/proxy": "~3.3",
         "guzzlehttp/guzzle": "^6.3",
         "laravel-frontend-presets/zurb-foundation": "^1.2",
@@ -13,12 +15,11 @@
         "laravel/horizon": "^1.0",
         "laravel/passport": "^4.0",
         "laravel/tinker": "~1.0",
+        "loeken/cryptocompare-api-php-wrapper": "dev-master",
         "predis/predis": "^1.1",
         "pusher/pusher-php-server": "~3.0",
         "ratchet/pawl": "^0.2.3",
-        "loeken/cryptocompare-api-php-wrapper": "dev-master",
-        "ccxt/ccxt": "^1.10",
-        "atbox/invi": "^2.0"
+        "wisembly/elephant.io": "^3.3"
     },
     "require-dev": {
         "filp/whoops": "~2.0",

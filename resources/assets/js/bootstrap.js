@@ -18,17 +18,13 @@ try {
     
     require( 'datatables.net-colreorder');
     //require('footable/dist/footable');
-    //
+    
     require('easy-autocomplete/dist/jquery.easy-autocomplete');
-
 
     var Chart = require('chart.js');
     
     var Chartist = require( 'chartist/dist/chartist' );
     window.Chartist = Chartist;
-
-
-
     
 } catch (e) {}
 

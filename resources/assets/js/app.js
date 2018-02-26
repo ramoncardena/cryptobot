@@ -5,9 +5,18 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
- require('./bootstrap');
 
- window.Vue = require('vue');
+require('./bootstrap');
+
+window.Vue = require('vue');
+
+
+/**
+ *  Connect to CryptoCompare socket.io stream 
+ */
+import VueSocketio from 'vue-socket.io';
+Vue.use(VueSocketio, 'wss://streamer.cryptocompare.com');
+
 
 /**
  * Passport componets 

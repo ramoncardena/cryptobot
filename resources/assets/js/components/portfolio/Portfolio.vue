@@ -141,7 +141,7 @@ export default {
         this.uniqueAssetsOriginName = [];
         this.hideSmallAssets = this.hidesmall;
         this.minAssetValue = this.minvalue; 
-
+        
         // Setup DATATABLE
         this.portfolioTable = $('#portfolioTable').DataTable( {
             "columns": [

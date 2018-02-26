@@ -62,8 +62,8 @@ class CryptocompareWebsocketCommand extends Command
         $client = new Client(new Version2X('https://streamer.cryptocompare.com/'));
         $client->initialize();
 
-        $client->emit('SubAdd',['subs'=>['0~Coinbase~BTC~USD', '0~Poloniex~BTC~USD']]);
-        $client->keepAlive();
+        $client->emit('SubAdd',['subs'=>['5~CCCAGG~BTC~USD']]);
+        // $client->keepAlive();
         while (true) {
             $r = $client->read();
             if (!empty($r)) {

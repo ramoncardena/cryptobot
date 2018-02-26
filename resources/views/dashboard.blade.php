@@ -17,18 +17,12 @@
 	        <div class="small-12 cell">
                 <div class="grid-container fluid">
                     <div class="grid-x grid-padding-x align-middle">
-                        
-                        <div class="small-12 medium-6 large-4 cell">
-                            <coin-card2 coin="GNT" :compact="false"> </coin-card>
-                        </div>
 
+                        @foreach($tickers as $ticker)
                         <div class="small-12 medium-6 large-4 cell">
-                            <coin-card2 coin="NXT" :compact="false"> </coin-card>
+                            <coin-card coin="{{$ticker}}" :compact="false"> </coin-card>
                         </div>
-
-                        <div class="small-12 medium-6 large-4 cell">
-                            <coin-card2 coin="BTC" :compact="false"> </coin-card>
-                        </div>
+                        @endforeach
                         
                         <div class="small-12 medium-6 large-4 cell text-center">
                             <a href="#" data-open="new-ticker-modal"><i class="fa fa-plus add-coin" aria-hidden="true"></i>

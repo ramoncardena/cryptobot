@@ -1,7 +1,7 @@
 <template>
     <section id="addticker">
         <div class="grid-container fluid add-asset">
-            <form method="POST" action="/ticker">
+            <form method="POST" action="/dashboard/ticker">
                 <input type="hidden" name="_token" :value="csrf">
 
                 <div class="grid-x grid-padding-x">

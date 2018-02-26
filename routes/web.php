@@ -15,7 +15,8 @@ use Illuminate\Support\Facades\Auth;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
+Auth::routes();
+Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/settings', 'SettingsController@index')->name('settings');
 Route::get('/settings/{setting}', 'SettingsController@show');
@@ -55,9 +56,9 @@ Route::delete('/portfolio/asset/{id}', 'PortfolioAssetController@destroy');
 
 Route::patch('/assets/{id}/transaction', 'PortfolioAssetController@settransaction');
 
-Auth::routes();
+Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
+Route::post('/dashboard/ticker', 'TickerController@store');
 
 
-Route::get('/home', 'HomeController@index')->name('home');
 
 
