@@ -6,14 +6,14 @@
 
 	<div class="grid-container fluid">
 	    <div class="grid-x grid-margin-x align-middle align-center">
-            <div class="small-12 cell text-center toolbar">
+            <!-- <div class="small-12 cell text-center toolbar">
                 <div class="expanded button-group">
                     <a class="hollow button"> Day </a>
                     <a class="hollow button"> Week </a>
                     <a class="hollow button"> Month </a>
                     <a class="hollow button"> Year </a>
                 </div>
-            </div>
+            </div> -->
 	        <div class="small-12 cell">
                 <div class="grid-container fluid">
                     <div class="grid-x grid-padding-x align-middle">

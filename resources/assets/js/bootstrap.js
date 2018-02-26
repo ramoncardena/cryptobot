@@ -1,6 +1,8 @@
 
 window._ = require('lodash');
 
+window.streamer = require('./ccc-streamer-utilities');
+
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
  * for JavaScript based Bootstrap features such as modals and tabs. This
@@ -25,7 +27,8 @@ try {
     
     var Chartist = require( 'chartist/dist/chartist' );
     window.Chartist = Chartist;
-    
+
+
 } catch (e) {}
 
 
@@ -70,3 +73,5 @@ window.Echo = new Echo({
     cluster: 'eu',
     encrypted: true
 });
+
+

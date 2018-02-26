@@ -7,10 +7,10 @@
                 <div class="grid-x grid-padding-x">
                     <!-- Header -->
                     <div class="small-12 cell form-container">
-                        <p class="h1">Dashboard: New Asset</p>
-                        <p class="lead"><b>Add new asset to your dashboard</b></p>
+                        <p class="h1">Dashboard: New Tracking</p>
+                        <p class="lead"><b>Track new asset to your dashboard</b></p>
                     </div>
-                    
+
                     
                     <div class="small-12 cell form-container">
                         <div v-if="validationErrors.asset_symbol">

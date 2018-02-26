@@ -10,6 +10,9 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
+// import * as CCC from './ccc-streamer-utilities';
+// console.log(CCC);
+// Vue.prototype.$CCC = CCC;
 
 /**
  *  Connect to CryptoCompare socket.io stream 
@@ -17,6 +20,9 @@ window.Vue = require('vue');
 import VueSocketio from 'vue-socket.io';
 Vue.use(VueSocketio, 'wss://streamer.cryptocompare.com');
 
+// import * as streamer from './ccc-streamer-utilities';
+// console.log(streamer);
+// Vue.prototype.$streamer = streamer;
 
 /**
  * Passport componets 
