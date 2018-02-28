@@ -17,20 +17,21 @@
                 </div>
 
                 <div class="small-4 cell text-center">
-                    <span class="coin-data-change profit-box"> +67.856% </span> 
-                    <div class="coin-data-fiat">€8235.47</div>
+                    <span v-model="prop24hChangePercent" :class="'coin-data-change ' + percentColor +'-box'"> {{ prop24hChangePercent }} </span> 
+
+                    <div v-model="display['PRICE']" :class="priceColor + ' coin-data-fiat'">{{ display['PRICE'] }}</div>
                     <div class="coin-data-btc">B0.00032783</div>
                 </div>
 
                 <div class="small-4 cell text-center">
                     <!-- <div><i class="fa fa-pie-chart" aria-hidden="true"></i></div> -->
-                    <div class="coin-footer-title">Market Cap</div>
-                    <div class="coin-footer-value">€6.566.732.210</div>
+                    <div v-model="display['HIGHHOUR']" class="coin-footer-title">High Hour: {{ display['HIGHHOUR'] }}</div>
+                    <div v-model="display['LOWHOUR']" class="coin-footer-title">Low Hour: {{ display['LOWHOUR'] }}</div>
                 </div>
                 <div class="small-4 cell text-center">
                     <!-- <div><i class="fa fa-bar-chart" aria-hidden="true"></i></div> -->
-                    <div class="coin-footer-title">24h Vol.</div>
-                    <div class="coin-footer-value">€514.987.168,00</div>
+                     <div v-model="display['HIGH24HOUR']" class="coin-footer-title">High 24h: {{ display['HIGH24HOUR'] }}</div>
+                    <div v-model="display['LOW24HOUR']" class="coin-footer-title">Low 24h: {{ display['LOW24HOUR'] }}</div>
                 </div>
                 <div class="small-4 cell text-center">
                     <!-- <div><i class="fa fa-money" aria-hidden="true"></i></div> -->
@@ -56,8 +57,31 @@ export default {
             chartistCoinChartOptions: {},
             compactMode: false,
             updating: false,
+            display :[],
+            priceColor: '',
+            percentColor: '',
+            propPrice: 0,
+            propOpen24Hour:0 ,
+            prop24hChangeTo: "",
+            prop24hChangePercent: "",
+            propPriceDirection: "",
+            prop24hChangeDirection: "",
+            propLastMarket: "",
+            propTradeID: "",
+            propOpenHour: 0,
+            propHighHour: 0,
+            propLowHour: 0,
+            propOpenDay: 0,
+            propHighDay: 0,
+            propLowDay: 0,
+            propLastTradeVolume: 0,
+            propLastTradeVolumeTo: 0,
+            prop24hVolume: 0,
+            prop24hVolumeTo: 0,
+            propUpdateData: false,
             csrf: "",
             errors: [],
+            subscription: [],
             CccCurrentFields: {
                   'TYPE'            : 0x0       // hex for binary 0, it is a special case of fields that are always there
                 , 'MARKET'          : 0x0       // hex for binary 0, it is a special case of fields that are always there
@@ -83,11 +107,26 @@ export default {
                 , 'HIGH24HOUR'      : 0x10000   // hex for binary 10000000000000000
                 , 'LOW24HOUR'       : 0x20000   // hex for binary 100000000000000000
                 , 'LASTMARKET'      : 0x40000   // hex for binary 1000000000000000000, this is a special case and will only appear on CCCAGG messages
+            },
+            CccCurrentFlags: {
+                'PRICEUP'        : 0x1    // hex for binary 1
+                , 'PRICEDOWN'      : 0x2    // hex for binary 10
+                , 'PRICEUNCHANGED' : 0x4    // hex for binary 100
+                , 'BIDUP'          : 0x8    // hex for binary 1000
+                , 'BIDDOWN'        : 0x10   // hex for binary 10000
+                , 'BIDUNCHANGED'   : 0x20   // hex for binary 100000
+                , 'OFFERUP'        : 0x40   // hex for binary 1000000
+                , 'OFFERDOWN'      : 0x80   // hex for binary 10000000
+                , 'OFFERUNCHANGED' : 0x100  // hex for binary 100000000
+                , 'AVGUP'          : 0x200  // hex for binary 1000000000
+                , 'AVGDOWN'        : 0x400  // hex for binary 10000000000
+                , 'AVGUNCHANGED'   : 0x800  // hex for binary 100000000000
             }
         }
     },
     props: [
     'coin',
+    'fiat',
     'compact'
     ],
     computed: {
@@ -101,7 +140,11 @@ export default {
 
         if (this.compact) this.compactMode = true;
 
-        this.$socket.emit('SubAdd',{ subs: ['5~CCCAGG~' + this.coinObj.symbol+ '~BTC'] });
+        this.subscription = [
+            '5~CCCAGG~' + this.coinObj.symbol + '~' + this.fiat
+        ];
+
+        this.$socket.emit('SubAdd',{ subs: this.subscription });
 
         this.csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
@@ -144,16 +187,25 @@ export default {
         connect: function(){
             console.log('socket connected')
         },
-        m: function(message){
-
+        m: function(message){     
+            // console.log(message);      
             var messageType = message.substring(0, message.indexOf("~"));
             var res = {};
-            if (messageType == 5) {
-                res = this.CccCurrentUnpack(message);
-                console.log(res);
-                 //console.log(this.dataUnpack(res));
+            var messageSplit = message.split("~");
+            // console.log(messageSplit);
+            if (messageSplit[2] == this.coinObj.symbol) {
+                if (messageType == 5) {
+                    res = this.CccCurrentUnpack(message);
+                    console.log(res);
+                    this.dataUnpack(res);
+                    // this.$socket.disconnect();
+                 }
+                //console.log(message);
             }
-            //console.log(message);
+            else {
+                // this.$socket.emit('SubAdd',{ subs: ['5~CCCAGG~' + this.coinObj.symbol + '~' + 'BTC'] });
+            }
+            
         }
     },
     methods: {
@@ -161,19 +213,21 @@ export default {
             let uri = '/dashboard/ticker/' + this.coinObj.symbol;
             axios.delete(uri)
             .then(response => {
-                 window.location.replace("/dashboard");
-            })
+               window.location.replace("/dashboard");
+           })
             .catch(e => {
                 this.errors.push(e);
                 console.log("Error: " + e.message);
             });
         }),
-        dataUnpack: ( data => {
+        dataUnpack: ( function (data) {
             var from = data['FROMSYMBOL'];
             var to = data['TOSYMBOL'];
-            var fsym = CCC.STATIC.CURRENCY.getSymbol(from);
-            var tsym = CCC.STATIC.CURRENCY.getSymbol(to);
+            var fsym = from;
+            var tsym = to;
             var pair = from + to;
+            var currentPrice = {};
+            var valid = true;
 
             if (!currentPrice.hasOwnProperty(pair)) {
                 currentPrice[pair] = {};
@@ -186,42 +240,72 @@ export default {
             if (currentPrice[pair]['LASTTRADEID']) {
                 currentPrice[pair]['LASTTRADEID'] = parseInt(currentPrice[pair]['LASTTRADEID']).toFixed(0);
             }
-            currentPrice[pair]['CHANGE24HOUR'] = CCC.convertValueToDisplay(tsym, (currentPrice[pair]['PRICE'] - currentPrice[pair]['OPEN24HOUR']));
-            currentPrice[pair]['CHANGE24HOURPCT'] = ((currentPrice[pair]['PRICE'] - currentPrice[pair]['OPEN24HOUR']) / currentPrice[pair]['OPEN24HOUR'] * 100).toFixed(2) + "%";;
-            displayData(currentPrice[pair], from, tsym, fsym);
+
+            if (currentPrice[pair]['OPEN24HOUR']) {
+                this.propOpen24Hour = currentPrice[pair]['OPEN24HOUR'];
+            } 
+            else {
+                this.propOpen24Hour = this.propOpen24Hour;
+            }
+            if (currentPrice[pair]['PRICE']) {
+                this.propPrice = currentPrice[pair]['PRICE'];
+            } 
+            else {
+                this.propPrice = this.propPrice;
+            }
+           
+           currentPrice[pair]['CHANGE24HOUR'] = this.CccConvertValueToDisplay(tsym, (this.propPrice - this.propOpen24Hour));
+
+            currentPrice[pair]['CHANGE24HOURPCT'] = ((this.propPrice - this.propOpen24Hour) / this.propOpen24Hour * 100).toFixed(2) + "%";
+
+            this.displayData(currentPrice[pair], from, tsym, fsym);
+            
         }),
-        displayData: ( (current, from, tsym, fsym) => {
-            var priceDirection = current.FLAGS;
+        displayData: ( function (current, from, tsym, fsym) {
+            console.log(current);
+            var priceDirection = current['FLAGS'];
             for (var key in current) {
                 if (key == 'CHANGE24HOURPCT') {
-                    console.log(current[key]);
+                    this.prop24hChangePercent = current[key].toString();
+                    // console.log(current[key].toString());
                 }
                 else if (key == 'LASTVOLUMETO' || key == 'VOLUME24HOURTO') {
-                    console.log(CCC.convertValueToDisplay(tsym, current[key]));
+                    this.display[key] = this.CccConvertValueToDisplay(tsym, current[key]);
+                    // console.log(key + ': ' + this.CccConvertValueToDisplay(tsym, current[key]));
                 }
                 else if (key == 'LASTVOLUME' || key == 'VOLUME24HOUR' || key == 'OPEN24HOUR' || key == 'OPENHOUR' || key == 'HIGH24HOUR' || key == 'HIGHHOUR' || key == 'LOWHOUR' || key == 'LOW24HOUR') {
-                    console.log(CCC.convertValueToDisplay(fsym, current[key]));
+                    this.display[key] = this.CccConvertValueToDisplay(tsym, current[key]);
+                    // console.log(key + ': ' + this.CccConvertValueToDisplay(fsym, current[key]));
                 }
                 else {
-                    console.log(current[key]);
+                    if (tsym == 'BTC') {
+                        this.display[key + '_BTC'] = current[key];
+                    }
+                    else {
+                        if (key == 'PRICE') console.log('PRICE');
+                        this.display[key] = current[key];
+                    }
+                    // console.log(key + ': ' + current[key].toString());
+                }
+
+                if (priceDirection & 1) {
+                    this.propPriceDirection = "up";
+                    this.priceColor = 'green';
+                }
+                else if (priceDirection & 2) {
+                   this.propPriceDirection = "down";
+                   this.priceColor = 'red';
+                }
+                if (current['PRICE'] > current['OPEN24HOUR']) {
+                    this.prop24hChangeDirection = "up";
+                    this.percentColor = 'profit';
+                }
+                else if (current['PRICE'] < current['OPEN24HOUR']) {
+                    this.prop24hChangeDirection = "down";
+                    this.percentColor = 'loss';
                 }
             }
-
-            $('#PRICE_' + from).removeClass();
-            if (priceDirection & 1) {
-                $('#PRICE_' + from).addClass("up");
-            }
-            else if (priceDirection & 2) {
-                $('#PRICE_' + from).addClass("down");
-            }
-            if (current['PRICE'] > current['OPEN24HOUR']) {
-                $('#CHANGE24HOURPCT_' + from).removeClass();
-                $('#CHANGE24HOURPCT_' + from).addClass("up");
-            }
-            else if (current['PRICE'] < current['OPEN24HOUR']) {
-                $('#CHANGE24HOURPCT_' + from).removeClass();
-                $('#CHANGE24HOURPCT_' + from).addClass("down");
-            }
+            
         }),
         CccCurrentUnpack: ( function (value) {
             var valuesArray = value.split("~");
@@ -251,6 +335,89 @@ export default {
             }
 
             return unpackedCurrent;
+        }),
+        CccConvertValueToDisplay: ( function (symbol,value,type,fullNumbers) {
+            var prefix = '';
+            var valueSign=1;
+            value = parseFloat(value);
+            var valueAbs=Math.abs(value);
+            var decimalsOnBigNumbers = 2;
+            var decimalsOnNormalNumbers = 2;
+            var decimalsOnSmallNumbers = 4;
+            if(fullNumbers===true){
+                decimalsOnBigNumbers =2;
+                decimalsOnNormalNumbers = 0;
+                decimalsOnSmallNumbers= 4;
+            }
+            if(symbol!=''){
+                prefix = symbol+' ';
+            }
+            if(value<0){
+                valueSign = -1;
+            }
+
+            if(value==0){
+                return prefix+'0';
+            }
+
+            if(value<0.00001000 && value>=0.00000100 && decimalsOnSmallNumbers>3){
+                decimalsOnSmallNumbers=3;
+            }
+            if(value<0.00000100 && value>=0.00000010 && decimalsOnSmallNumbers>2){
+                decimalsOnSmallNumbers=2;
+            }
+            if(value<0.00000010 && value>=0.00000001 && decimalsOnSmallNumbers>1){
+                decimalsOnSmallNumbers=1;
+            }
+
+            if(type=="short"){
+                if(valueAbs>10000000000){
+                    valueAbs=valueAbs/1000000000;
+                    return prefix+this.CccFilterNumberFunctionPolyfill(valueSign*valueAbs,decimalsOnBigNumbers)+' B';
+                }
+                if(valueAbs>10000000){
+                    valueAbs=valueAbs/1000000;
+                    return prefix+this.CccFilterNumberFunctionPolyfill(valueSign*valueAbs,decimalsOnBigNumbers)+' M';
+                }
+                if(valueAbs>10000){
+                    valueAbs=valueAbs/1000;
+                    return prefix+this.CccFilterNumberFunctionPolyfill(valueSign*valueAbs,decimalsOnBigNumbers)+' K';
+                }
+                if(valueAbs>=1){
+                    return prefix+this.CccFilterNumberFunctionPolyfill(valueSign*valueAbs,decimalsOnNormalNumbers);
+                }
+                return prefix+(valueSign*valueAbs).toPrecision(decimalsOnSmallNumbers);
+            }else{
+                if(valueAbs>=1){
+                    return prefix+this.CccFilterNumberFunctionPolyfill(valueSign*valueAbs,decimalsOnNormalNumbers);
+                }
+
+                return prefix+this.CccNoExponents((valueSign*valueAbs).toPrecision(decimalsOnSmallNumbers));
+            }
+        }),
+        CccFilterNumberFunctionPolyfill: ( function (value,decimals) {
+            var decimalsDenominator = Math.pow(10,decimals);
+            var numberWithCorrectDecimals = Math.round(value*decimalsDenominator)/decimalsDenominator;
+            var parts = numberWithCorrectDecimals.toString().split(".");
+            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            return parts.join(".");
+        }),
+        CccNoExponents: ( function (value) {
+            var data= String(value).split(/[eE]/);
+            if(data.length== 1) return data[0]; 
+
+            var  z= '', sign= value<0? '-':'',
+            str= data[0].replace('.', ''),
+            mag= Number(data[1])+ 1;
+
+            if(mag<0){
+                z= sign + '0.';
+                while(mag++) z += '0';
+                return z + str.replace(/^\-/,'');
+            }
+            mag -= str.length;  
+            while(mag--) z += '0';
+            return str + z;
         })
     }
 }

@@ -18,7 +18,8 @@ section#coin-card {
 	.loss-box {
 		color: get-color(loss);
 		background-color: rgba(get-color(loss),0.3);
-		padding: 0.5rem;
+		padding: 0.2rem;
+		margin: 0.3rem;
 		border-radius: 5px;
 	}
 	.neutral-box {

@@ -27,7 +27,7 @@
 
                         @foreach($tickers as $ticker)
                         <div class="small-12 medium-6 large-4 cell">
-                            <coin-card coin="{{$ticker}}" :compact="false"> </coin-card>
+                            <coin-card coin="{{$ticker}}" fiat="{{$fiat}}" :compact="false"> </coin-card>
                         </div>
                         @endforeach
                         
@@ -40,7 +40,7 @@
 	        </div>
 	   	</div>
 	</div>
-    
+
      <!-- MODAL: Add Ticker -->
     <div class="reveal portfolio-modal" id="new-ticker-modal" data-reveal>
         
