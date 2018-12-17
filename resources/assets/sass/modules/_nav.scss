@@ -1,0 +1,32 @@
+.top-bar {
+	border-bottom: 1px solid get-color(primary);
+	.fa {
+		font-size: 1.1rem;
+	}
+	.logo {
+		margin-left: 15px;
+	}
+	a {
+		color: $white;
+		&:hover {
+			color: $light-gray;
+		}
+	}
+}
+.nav-title {
+		font-size: 1.6rem;
+		vertical-align: bottom;
+		margin-left: 0.5rem;
+		color: $white;
+}
+
+.title-bar-right {
+	.badge-icon {
+		color: $white;
+		margin-right: 0.2rem;
+	}
+	.badge {
+		margin-right: 1rem;
+	}
+}
+

@@ -1,0 +1,35 @@
+.balance {
+	font-size: 1rem;
+	color: $dark-gray;
+	.cell {
+		border: 0px solid #000;
+	}
+
+	.header {
+		.cell {
+			color: get-color(primary);
+		}
+	}
+
+	.col-coin {
+		.coin-logo {
+			height: 20px;
+			margin: 2px;
+		}
+	}
+	hr {
+		margin: 0;
+	}
+	.coin-logo {
+		height: 35px;
+		padding: 2px;
+	}
+	.coin-name {
+		font-size: 1.1rem;
+	}
+	.balance-title {
+		color: $medium-gray;
+		font-size: 0.8rem;
+		font-style: italic;
+	}
+}

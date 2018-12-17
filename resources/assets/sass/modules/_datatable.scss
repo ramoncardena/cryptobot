@@ -1,0 +1,33 @@
+
+
+.dataTables_empty {
+  display:none;
+}
+.group {
+	background-color:  get-color(background-dark);
+	color: get-color(primary);
+	font-size: 1.3rem;
+	text-transform: uppercase;
+}
+
+.dataTable {
+	margin-bottom: 2rem !important;
+	margin-top: 1rem !important;
+}
+
+/* Header cells */
+table.trade thead th {
+    text-align: center;
+    font-weight: 200;
+}
+thead {
+    background: get-color(primary);
+    color: $white;
+}
+.icons-area {
+    width: 55px;
+    .fa-cog {
+        font-size: 0.8rem;
+    }
+}
+

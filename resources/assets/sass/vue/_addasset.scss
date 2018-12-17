@@ -1,0 +1,30 @@
+section#addasset {
+	.easy-autocomplete.eac-square input {
+	    border: 1px solid #cacaca;
+		border-radius: 0;
+		//margin: 0;
+		min-width: 1rem;
+		width: 100%;
+		font-weight: 400;
+		padding: 5px 25px 5px 5px;
+	}
+	.easy-autocomplete{
+		width:100% !important
+	}
+
+	.easy-autocomplete input{
+		width: 100%;
+	}
+	.input-group {
+		#initial-price-currency {
+			width: 6rem;
+			margin: 0;
+			height: auto;
+			min-width: 0;
+			color: get-color(primary);
+		}
+		.number {
+			text-align: right;
+		}
+	}
+}

@@ -1,0 +1,54 @@
+section#settings{
+	.h4 {
+		color: get-color(primary);
+	}
+	.exchange-settings {
+		margin-bottom: 3rem;
+	}
+	.api-switch {
+		margin-left: 2rem;
+	}
+	.section-title {
+		background-color: $title-background;
+		border-bottom: 1px solid $light-gray;
+		padding: 1rem;
+
+		h1 {
+			color: get-color(secondary);
+		}	
+	}
+	.delete-exchange-button {
+		color: get-color(alert);
+		font-size: 1.3rem;
+		position: relative;
+		float: right;
+		margin: 0;
+		padding: 0 0 0 1rem;
+	}
+	.settings-area {
+		margin-top: 20px;
+	}
+
+	.align-vertical {
+		  display: inline;
+		  button {
+		  	margin: 0;
+		  	display: inline;
+		  	vertical-align: middle;
+		  }
+		  h1 {
+		  	display: inline;
+		  	vertical-align: middle;
+		  }
+	}
+	.switch-label {
+		color: get-color(secondary);
+		padding-left: 1rem;
+		font-size: 1.1rem;
+		margin-top: 1px;
+	}
+	.input-group-label {
+		color: get-color(secondary);
+		background-color: transparent;
+	}
+}

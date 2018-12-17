@@ -1,0 +1,21 @@
+section#home {
+
+	.section-title {
+		background-color: $title-background;
+		border-bottom: 1px solid $light-gray;
+		padding: 1rem;
+
+		h1 {
+			color: get-color(secondary);
+		}	
+
+		.value {
+			color: get-color(secondary);
+		}	
+	}
+
+	.portfolio {
+		margin-top: 20px;
+	}
+
+}

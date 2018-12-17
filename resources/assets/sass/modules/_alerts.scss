@@ -1,0 +1,19 @@
+	.alerts-callout {
+		position: absolute;
+		margin-top: 0;
+		z-index: 9999;
+		display: none;
+		padding: 1rem;
+		border-radius: 0;
+		width: 100%;
+		text-align: center;
+		font-size: 1.1rem;
+		opacity: 0.9;
+	}
+	.form-callout {
+		position: absolute;
+		right: 1rem;
+		margin-top: 0.3rem;
+		z-index: 9999;
+		display: none;
+	}

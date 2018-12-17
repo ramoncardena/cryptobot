@@ -13,7 +13,13 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        Commands\CryptocompareFetcher::class,
+        Commands\CryptocompareWebsocketCommand::class
+        //Commands\BitfinexWebsocketCommand::class,
+        // Commands\CoincapWebsocketCommand::class,
+        // Commands\BittrexStreamCommand::class,
+        // Commands\BittrexOrderWatcher::class,
+        // Commands\BittrexTradeWatcher::class
     ];
 
     /**
@@ -26,6 +32,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
+        $schedule->command('cryptobot:FetchCryptocompare')->hourly()->withoutOverlapping();
     }
 
     /**

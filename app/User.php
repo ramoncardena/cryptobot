@@ -2,12 +2,13 @@
 
 namespace App;
 
+use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use HasApiTokens, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -15,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'settings'
     ];
 
     /**
@@ -26,4 +27,37 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    protected $casts = [
+        'settings' => 'json',
+    ];
+
+    public function settings() {
+        return new Settings($this->settings, $this);
+    }
+
+    public function assets()
+    {
+        return $this->hasMany('App\PortfolioAsset');
+    }
+
+    public function transactions()
+    {
+        return $this->hasMany('App\Transaction');
+    }
+
+    public function origins()
+    {
+        return $this->hasMany('App\PortfolioOrigin');
+    }
+
+    public function connections()
+    {
+        return $this->hasMany('App\Connection');
+    }
+
+    public function tickers()
+    {
+        return $this->hasMany('App\Ticker');
+    }
 }

@@ -34,5 +34,8 @@ return [
         'key' => env('STRIPE_KEY'),
         'secret' => env('STRIPE_SECRET'),
     ],
-
+    'bittrex' => [
+        'key' => env('BITTREX_KEY'),
+        'secret' => env('BITTREX_SECRET'),
+    ]
 ];

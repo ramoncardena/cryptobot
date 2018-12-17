@@ -1,0 +1,104 @@
+section#coin-card {
+	color: $medium-gray;
+	font-family: 'Nunito', sans-serif;
+	border: 1px solid rgba(get-color(primary), 0.1);
+	background-color: $white;
+	padding: 0.2rem;
+	margin-top: 0.5rem;
+	margin-bottom: 0.5rem;
+
+
+	.profit-box {
+		color: get-color(profit);
+		background-color: rgba(get-color(profit),0.3);
+		padding: 0.2rem;
+		margin: 0.3rem;
+		border-radius: 5px;
+	}
+	.loss-box {
+		color: get-color(loss);
+		background-color: rgba(get-color(loss),0.3);
+		padding: 0.2rem;
+		margin: 0.3rem;
+		border-radius: 5px;
+	}
+	.neutral-box {
+		color: $dark-gray;
+		background-color: rgba($medium-gray,0.3);
+		padding: 0.3rem;
+		margin: 0.3rem;
+		border-radius: 5px;
+	}
+	.coin-card-close {
+		position: relative;
+		top: 0px;
+		right: 0px;
+		font-size: 1rem;
+		font-weight: bold;
+		color: get-color(alert);
+		cursor: pointer;
+	}
+	.coin-header {
+		font-size: 1rem;
+		padding-top: 0.5rem;
+		padding-bottom: 0.7rem;
+		border-bottom: 1px solid rgba(get-color(primary), 0.1);
+		color: get-color(primary);
+
+		.coin-symbol {
+			font-weight: bold;
+		}
+		.coin-name {
+			padding: 2px;
+		}
+	}
+	.coin-data {
+
+		&-fiat {
+			font-size: 1rem;
+		}
+		&-btc {
+			font-size: 0.8rem;
+		}
+		&-change {
+			display: inline-block;
+			margin-top: 0.4rem;
+		}
+	}
+	
+	.coin-footer {
+		&-title {
+			font-size: 0.7rem;
+			text-transform: uppercase;
+			color: get-color(primary);
+		}
+		.fa {
+			font-size: 1rem;
+			color: get-color(primary);
+		}
+		&-value {
+			font-size: 0.7rem;
+			color: get-color(primary);
+		}
+	}
+	
+}
+
+section#addticker {
+	.easy-autocomplete.eac-square input {
+	    border: 1px solid #cacaca;
+		border-radius: 0;
+		//margin: 0;
+		min-width: 1rem;
+		width: 100%;
+		font-weight: 400;
+		padding: 5px 25px 5px 5px;
+	}
+	.easy-autocomplete{
+		width:100% !important
+	}
+
+	.easy-autocomplete input{
+		width: 100%;
+	}
+}

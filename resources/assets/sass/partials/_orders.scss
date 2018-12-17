@@ -1,0 +1,34 @@
+section#orders{
+	
+	.section-title {
+		background-color: $title-background;
+		border-bottom: 1px solid $light-gray;
+		padding: 1rem;
+
+		h1 {
+			color: get-color(secondary);
+		}	
+	}
+
+	.orders-area {
+		margin-top: 20px;
+	}
+
+	.align-vertical {
+		  display: inline;
+		  button {
+		  	margin: 0;
+		  	display: inline;
+		  	vertical-align: middle;
+		  }
+		  h1 {
+		  	display: inline;
+		  	vertical-align: middle;
+		  }
+	}
+
+	.input-group-label {
+		color: get-color(secondary);
+		background-color: transparent;
+	}
+}

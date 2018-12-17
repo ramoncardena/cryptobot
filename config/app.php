@@ -13,7 +13,8 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'CryptoBot'),
+    'version' => env('APP_VERSION', '0.0.0'),
 
     /*
     |--------------------------------------------------------------------------
@@ -167,16 +168,23 @@ return [
         /*
          * Package Service Providers...
          */
+        Atbox\Invi\InviServiceProvider::class,
 
         /*
          * Application Service Providers...
          */
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
-        // App\Providers\BroadcastServiceProvider::class,
+        App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\BittrexServiceProvider::class,
+        App\Providers\BitcoinServiceProvider::class,
 
+        /*
+         * User Service Providers...
+         */
+       
     ],
 
     /*
@@ -225,6 +233,10 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+        'Bittrex' => App\Library\Services\Facades\Bittrex::class,
+        'Bitcoin' => App\Library\Services\Facades\Bitcoin::class,
+
+        'Invi' => Atbox\Invi\Facades\Invi::class,
 
     ],
 

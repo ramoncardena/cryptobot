@@ -10,8 +10,26 @@ window._ = require('lodash');
 try {
     window.$ = window.jQuery = require('jquery');
 
-    require('bootstrap-sass');
+    require('foundation-sites/dist/js/foundation'); // 'foundation.min' can also be used if you like
+    // require( 'datatables.net/js/jquery.dataTables' );
+    require( 'datatables.net-zf' );
+    // require( 'datatables.net-responsive/js/dataTables.responsive' );
+    require( 'datatables.net-responsive-zf' );
+    
+    require( 'datatables.net-colreorder');
+    //require('footable/dist/footable');
+    
+    require('easy-autocomplete/dist/jquery.easy-autocomplete');
+
+    var Chart = require('chart.js');
+    
+    var Chartist = require( 'chartist/dist/chartist' );
+    window.Chartist = Chartist;
+
+
 } catch (e) {}
+
+
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -43,11 +61,15 @@ if (token) {
  * allows your team to easily build robust real-time web applications.
  */
 
-// import Echo from 'laravel-echo'
+import Echo from 'laravel-echo'
 
-// window.Pusher = require('pusher-js');
+window.Pusher = require('pusher-js');
 
-// window.Echo = new Echo({
-//     broadcaster: 'pusher',
-//     key: 'your-pusher-key'
-// });
+window.Echo = new Echo({
+    broadcaster: 'pusher',
+    key: '11e4ce555a8c88dc2f4c',
+    cluster: 'eu',
+    encrypted: true
+});
+
+

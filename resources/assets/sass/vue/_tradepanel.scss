@@ -1,0 +1,73 @@
+.tradepanel {
+	
+	.easy-autocomplete.eac-square input {
+	    border: 1px solid #cacaca;
+	    border-radius: 0;
+	    //margin: 0;
+	    min-width: 1rem;
+	    width: 100%;
+	    font-weight: 400;
+	    padding: 6px 25px 6px 6px;
+	}
+	.easy-autocomplete{
+		width:100% !important
+	}
+
+	.easy-autocomplete input{
+		width: 100%;
+	}
+
+	.input-group {
+		#price-select {
+			width: 6rem;
+			margin: 0;
+			height: auto;
+			min-width: 0;
+			color: get-color(primary);
+		}
+		.number {
+			text-align: right;
+		}
+		#condition-select {
+			width: 9rem;
+			margin: 0;
+			height: auto;
+			min-width: 0;
+			color: get-color(primary);
+		}
+	}
+	.input-group-label {
+		color: get-color(primary);
+		background-color: transparent;
+	}
+
+	#cryptologo {
+		width: 3rem;
+	}
+	
+	.loading-info-icon {
+		font-size: 1.5rem;
+	}
+	.high-low, .ask, .bid, .last, .volume {
+		font-weight: bold;
+	}
+
+	.ask {
+		color: get-color(alert);
+		background-color: #F7F8FB;
+		padding-top: 0.2rem;
+		margin-top: 0.5rem;
+		margin-bottom: 0.5rem;
+
+	}
+	.bid {
+		color: get-color(success);
+		background-color: #F7F8FB;
+		padding-top: 0.2rem;
+		margin-top: 0.5rem;
+		margin-bottom: 0.5rem;
+	}
+	.last, .volume {
+		margin-bottom: 1rem;
+	}
+}
